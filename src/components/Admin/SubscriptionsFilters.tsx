@@ -1,0 +1,76 @@
+import type { SubscriptionPlan, SubscriptionStatus } from '../../services/adminSubscriptionsService';
+
+const PLAN_LABELS: Record<SubscriptionPlan, string> = {
+  BASIC: 'Basic',
+  PRO: 'Pro',
+  ENTERPRISE: 'Enterprise',
+  PREMIUM_DOCTOR: 'Premium arts',
+};
+
+const STATUS_LABELS: Record<SubscriptionStatus, string> = {
+  ACTIVE: 'Actief',
+  CANCELLED: 'Geannuleerd',
+  EXPIRED: 'Verlopen',
+};
+
+export type PlanFilter = '' | SubscriptionPlan;
+export type StatusFilter = '' | SubscriptionStatus;
+
+interface SubscriptionsFiltersProps {
+  plan: PlanFilter;
+  status: StatusFilter;
+  search: string;
+  onPlanChange: (v: PlanFilter) => void;
+  onStatusChange: (v: StatusFilter) => void;
+  onSearchChange: (v: string) => void;
+}
+
+export function SubscriptionsFilters({
+  plan,
+  status,
+  search,
+  onPlanChange,
+  onStatusChange,
+  onSearchChange,
+}: SubscriptionsFiltersProps) {
+  return (
+    <div className="flex flex-wrap items-center gap-4 mb-6">
+      <div>
+        <label className="block text-xs font-medium text-gray-500 mb-1">Plan</label>
+        <select
+          value={plan}
+          onChange={(e) => onPlanChange(e.target.value as PlanFilter)}
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+        >
+          <option value="">Alle</option>
+          {(Object.keys(PLAN_LABELS) as SubscriptionPlan[]).map((p) => (
+            <option key={p} value={p}>{PLAN_LABELS[p]}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs font-medium text-gray-500 mb-1">Status</label>
+        <select
+          value={status}
+          onChange={(e) => onStatusChange(e.target.value as StatusFilter)}
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+        >
+          <option value="">Alle</option>
+          {(Object.keys(STATUS_LABELS) as SubscriptionStatus[]).map((s) => (
+            <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+          ))}
+        </select>
+      </div>
+      <div className="flex-1 min-w-[200px]">
+        <label className="block text-xs font-medium text-gray-500 mb-1">Zoeken</label>
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder="Naam of e-mail..."
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+        />
+      </div>
+    </div>
+  );
+}

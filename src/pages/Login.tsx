@@ -1,0 +1,158 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { AlertCircle, Wifi, Lock, Clock, Shield, Database, HelpCircle } from 'lucide-react';
+import { LogoText } from '../components/ui/Logo';
+import type { AuthErrorCategory } from '../utils/auth';
+
+const errorIcons: Record<AuthErrorCategory, typeof AlertCircle> = {
+  invalid_credentials: Lock,
+  email_not_confirmed: AlertCircle,
+  too_many_requests: Clock,
+  network_error: Wifi,
+  permission_denied: Shield,
+  schema_error: Database,
+  user_not_found: HelpCircle,
+  unknown: AlertCircle,
+};
+
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [errorCategory, setErrorCategory] = useState<AuthErrorCategory | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { signIn, healthStatus } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setErrorCategory(null);
+    setLoading(true);
+
+    const { profile: userProfile, error: signInError } = await signIn(email, password);
+
+    if (signInError) {
+      setError(signInError.userMessage);
+      setErrorCategory(signInError.category);
+      setLoading(false);
+      return;
+    }
+
+    if (userProfile?.role === 'ARTS') {
+      navigate('/arts/dashboard');
+    } else if (userProfile?.role === 'OPDRACHTGEVER') {
+      navigate('/opdrachtgever/dashboard');
+    } else if (userProfile?.role === 'ADMIN') {
+      navigate('/admin/dashboard');
+    } else {
+      navigate('/');
+    }
+
+    setLoading(false);
+  };
+
+  const ErrorIcon = errorCategory ? errorIcons[errorCategory] : AlertCircle;
+
+  return (
+    <div className="min-h-screen bg-[#F3F4F6] flex flex-col items-center justify-center py-12 px-4">
+      <div className="mb-8">
+        <Link to="/">
+          <LogoText theme="light" className="text-2xl" />
+        </Link>
+      </div>
+
+      {healthStatus && !healthStatus.healthy && (
+        <div className="w-full max-w-md mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <div className="flex items-start">
+            <Database className="w-5 h-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-amber-800">Database probleem gedetecteerd</p>
+              <p className="text-xs text-amber-700 mt-1">
+                {healthStatus.category === 'env_missing' && 'Omgevingsvariabelen ontbreken'}
+                {healthStatus.category === 'network_error' && 'Kan geen verbinding maken met de database'}
+                {healthStatus.category === 'schema_error' && 'Database schema probleem'}
+                {healthStatus.category === 'rls_error' && 'Database toegangsprobleem'}
+                {healthStatus.category === 'unknown' && 'Onbekend database probleem'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm p-8">
+        <h1 className="text-2xl font-bold text-[#0F172A] mb-6">Inloggen</h1>
+
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
+            <ErrorIcon className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
+            <div>
+              <p className="text-sm text-red-800">{error}</p>
+              {errorCategory && errorCategory !== 'invalid_credentials' && (
+                <p className="text-xs text-red-600 mt-1 font-mono">
+                  Foutcode: {errorCategory}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-500 mb-2">
+              E-mailadres
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
+              placeholder="uw@email.nl"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-500 mb-2">
+              Wachtwoord
+            </label>
+            <input
+              id="password"
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div>
+            <Link to="/wachtwoord-vergeten" className="text-sm text-[#4FA151] hover:underline">
+              Wachtwoord vergeten?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-[#4FA151] text-white py-3 rounded-lg font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? 'Bezig met inloggen...' : 'Inloggen'}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-gray-600">
+            Nog geen account?{' '}
+            <Link to="/register" className="text-[#4FA151] hover:underline font-medium">
+              Maak een nieuw account
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
