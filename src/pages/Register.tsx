@@ -139,7 +139,7 @@ export default function Register() {
     setLoading(true);
     setError('');
 
-    const { error: signUpError } = await signUp(email, password, selectedRole);
+    const { error: signUpError, hasSession } = await signUp(email, password, selectedRole);
 
     if (signUpError) {
       if (signUpError.category === 'too_many_requests') {
@@ -154,10 +154,14 @@ export default function Register() {
       return;
     }
 
-    if (selectedRole === 'ARTS') {
-      navigate('/arts/profiel');
-    } else if (selectedRole === 'OPDRACHTGEVER') {
-      navigate('/opdrachtgever/profiel');
+    if (hasSession) {
+      if (selectedRole === 'ARTS') {
+        navigate('/arts/profiel');
+      } else if (selectedRole === 'OPDRACHTGEVER') {
+        navigate('/opdrachtgever/profiel');
+      }
+    } else {
+      navigate('/registratie-gelukt');
     }
     setLoading(false);
     submittingRef.current = false;

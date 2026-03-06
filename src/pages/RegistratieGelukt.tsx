@@ -1,0 +1,35 @@
+import { Link } from 'react-router-dom';
+import { Check } from 'lucide-react';
+import { LogoText } from '../components/ui/Logo';
+
+export default function RegistratieGelukt() {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center justify-center py-12 px-4">
+      <div className="mb-8">
+        <Link to="/">
+          <LogoText theme="light" className="text-2xl" />
+        </Link>
+      </div>
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm p-8 text-center">
+        <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-6">
+          <Check className="w-7 h-7" />
+        </div>
+        <h1 className="text-xl font-bold text-[#0F172A] mb-2">Account aangemaakt</h1>
+        <p className="text-gray-600 mb-6">
+          We hebben een e-mail gestuurd om je adres te bevestigen. Klik op de link in de e-mail en log daarna in.
+        </p>
+        <div className="flex flex-col gap-3">
+          <Link
+            to="/login"
+            className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition text-center"
+          >
+            Naar inloggen
+          </Link>
+          <Link to="/email-verificatie" className="text-[#4FA151] hover:underline text-sm">
+            Meer over e-mailverificatie
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

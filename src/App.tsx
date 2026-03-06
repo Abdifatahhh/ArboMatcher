@@ -19,6 +19,7 @@ const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const WachtwoordVergeten = lazy(() => import('./pages/WachtwoordVergeten'));
 const EmailVerificatie = lazy(() => import('./pages/EmailVerificatie'));
+const RegistratieGelukt = lazy(() => import('./pages/RegistratieGelukt'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Contact = lazy(() => import('./pages/Contact'));
@@ -135,6 +136,10 @@ function App() {
             <Route
             path="/email-verificatie"
             element={<EmailVerificatie />}
+          />
+            <Route
+            path="/registratie-gelukt"
+            element={<RegistratieGelukt />}
           />
             <Route
             path="/dashboard"

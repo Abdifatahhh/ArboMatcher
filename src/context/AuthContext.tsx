@@ -10,7 +10,7 @@ interface AuthContextType {
   loading: boolean;
   healthStatus: HealthCheckResult | null;
   signIn: (email: string, password: string) => Promise<{ profile: Profile | null; error: CategorizedError | null }>;
-  signUp: (email: string, password: string, role: Profile['role']) => Promise<{ error: CategorizedError | null }>;
+  signUp: (email: string, password: string, role: Profile['role']) => Promise<{ error: CategorizedError | null; hasSession?: boolean }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -155,7 +155,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     email: string,
     password: string,
     role: Profile['role']
-  ): Promise<{ error: CategorizedError | null }> => {
+  ): Promise<{ error: CategorizedError | null; hasSession?: boolean }> => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -178,7 +178,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         };
       }
 
-      return { error: null };
+      return { error: null, hasSession: !!data.session };
     } catch (err) {
       const categorized = categorizeAuthError(err, 'auth');
       return { error: categorized };
