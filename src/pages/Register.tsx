@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { AlertCircle, Briefcase, Stethoscope, User, Building2, Search, Loader2, Check } from 'lucide-react';
@@ -33,8 +33,29 @@ export default function Register() {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
+  const [, setCooldownTick] = useState(0);
+  const submittingRef = useRef(false);
   const { signUp } = useAuth();
   const navigate = useNavigate();
+
+  const COOLDOWN_SECONDS = 60;
+  const cooldownSecondsLeft = cooldownUntil ? Math.max(0, Math.ceil((cooldownUntil - Date.now()) / 1000)) : 0;
+  const isOnCooldown = cooldownSecondsLeft > 0;
+
+  useEffect(() => {
+    if (!cooldownUntil) return;
+    const id = setInterval(() => {
+      const left = Math.ceil((cooldownUntil - Date.now()) / 1000);
+      if (left <= 0) {
+        setCooldownUntil(null);
+        clearInterval(id);
+        return;
+      }
+      setCooldownTick((t) => t + 1);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [cooldownUntil]);
 
   const [kvkSearch, setKvkSearch] = useState('');
   const [kvkResults, setKvkResults] = useState<KvkResult[]>([]);
@@ -77,7 +98,10 @@ export default function Register() {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
+    if (isOnCooldown) {
+      setError(`Wacht nog ${cooldownSecondsLeft} seconden voordat u opnieuw kunt proberen.`);
+      return;
+    }
     if (password !== confirmPassword) {
       setError('Wachtwoorden komen niet overeen');
       return;
@@ -106,15 +130,27 @@ export default function Register() {
   };
 
   const handleFinalSubmit = async (selectedRole: UserRole) => {
+    if (submittingRef.current) return;
+    if (isOnCooldown) {
+      setError(`Wacht nog ${cooldownSecondsLeft} seconden voordat u opnieuw kunt proberen.`);
+      return;
+    }
+    submittingRef.current = true;
     setLoading(true);
     setError('');
 
     const { error: signUpError } = await signUp(email, password, selectedRole);
 
     if (signUpError) {
-      setError(signUpError.userMessage);
+      if (signUpError.category === 'too_many_requests') {
+        setCooldownUntil(Date.now() + COOLDOWN_SECONDS * 1000);
+        setError('De aanmeldservice heeft even een limiet bereikt. U kunt over een minuut opnieuw proberen.');
+      } else {
+        setError(signUpError.userMessage);
+      }
       setStep(1);
       setLoading(false);
+      submittingRef.current = false;
       return;
     }
 
@@ -123,8 +159,8 @@ export default function Register() {
     } else if (selectedRole === 'OPDRACHTGEVER') {
       navigate('/opdrachtgever/profiel');
     }
-
     setLoading(false);
+    submittingRef.current = false;
   };
 
   const handleOpdrachtgeverConfirm = () => {
@@ -151,8 +187,8 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] flex flex-col items-center py-8 px-4">
-      <div className="mb-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-24 pb-12 px-4">
+      <div className="mb-10">
         <Link to="/">
           <LogoText theme="light" className="text-2xl" />
         </Link>
@@ -162,10 +198,12 @@ export default function Register() {
         <div className="w-full max-w-xl bg-white rounded-2xl shadow-sm p-8">
           <h1 className="text-2xl font-bold text-[#0F172A] mb-6">Aanmelden</h1>
 
-          {error && (
+          {(error || isOnCooldown) && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
               <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
-              <p className="text-sm text-red-800">{error}</p>
+              <div className="text-sm text-red-800">
+                <p>{error || (isOnCooldown ? `Te veel pogingen. Probeer over ${cooldownSecondsLeft} seconden opnieuw.` : '')}</p>
+              </div>
             </div>
           )}
 
@@ -296,11 +334,16 @@ export default function Register() {
               </label>
             </div>
 
+            <p className="text-sm text-gray-500 mb-3">
+              Na aanmelding sturen we een e-mail om uw adres te verifiëren.{' '}
+              <Link to="/email-verificatie" className="text-[#4FA151] hover:underline">Meer uitleg</Link>
+            </p>
             <button
               type="submit"
-              className="w-full bg-[#4FA151] text-white py-3 rounded-lg font-semibold hover:bg-[#3E8E45] transition"
+              disabled={isOnCooldown}
+              className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Doorgaan
+              {isOnCooldown ? `Wacht ${cooldownSecondsLeft}s` : 'Doorgaan'}
             </button>
           </form>
 
@@ -316,52 +359,71 @@ export default function Register() {
       )}
 
       {step === 2 && (
-        <div className="w-full max-w-2xl">
-          <button
-            onClick={() => setStep(1)}
-            className="text-sm text-gray-500 hover:text-[#0F172A] mb-4"
-          >
-            &#8592; Terug
-          </button>
+        <div className="w-full max-w-4xl mx-auto px-2">
+          <div className="flex items-center justify-between mb-10">
+            <button
+              onClick={() => setStep(1)}
+              className="inline-flex items-center gap-2 text-base font-medium text-slate-500 hover:text-slate-800 transition"
+            >
+              <span className="text-xl leading-none">←</span> Terug
+            </button>
+            <span className="text-sm font-medium text-slate-400 uppercase tracking-wider">Stap 2 van 3</span>
+          </div>
 
-          <h1 className="text-2xl font-bold text-[#0F172A] text-center mb-2">Bijna klaar!</h1>
-          <p className="text-gray-500 text-center mb-8">Kies uw rol om uw registratie te voltooien</p>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-3">Bijna klaar</h1>
+            <p className="text-slate-500 text-lg md:text-xl">Kies uw rol om uw registratie te voltooien</p>
+          </div>
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start max-w-md mx-auto">
-              <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
-              <p className="text-sm text-red-800">{error}</p>
+          {(error || isOnCooldown) && (
+            <div className="mb-8 p-5 bg-red-50 border border-red-200 rounded-xl flex items-start max-w-lg mx-auto">
+              <AlertCircle className="w-6 h-6 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
+              <p className="text-base text-red-800">{error || (isOnCooldown ? `Te veel pogingen. Probeer over ${cooldownSecondsLeft} seconden opnieuw.` : '')}</p>
             </div>
           )}
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8">
             <button
               onClick={() => handleRoleCardClick('OPDRACHTGEVER')}
-              disabled={loading}
-              className="bg-white p-8 rounded-2xl shadow-sm border-2 border-transparent hover:border-[#4FA151] hover:shadow-md transition text-left disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || isOnCooldown}
+              className="group relative bg-white p-8 md:p-10 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400 transition-all duration-200 text-left disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Briefcase className="w-12 h-12 text-[#4FA151] mb-4" />
-              <h3 className="text-xl font-bold text-[#0F172A] mb-2">Ik ben opdrachtgever</h3>
-              <p className="text-gray-600">
-                Ik zoek bedrijfsartsen voor opdrachten binnen mijn organisatie of arbodienst.
-              </p>
+              <div className="flex items-start gap-6">
+                <span className="flex-shrink-0 w-20 h-20 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-100 transition">
+                  <Briefcase className="w-10 h-10" strokeWidth={2} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-xl md:text-2xl font-semibold text-slate-900 mb-2">Ik ben opdrachtgever</h3>
+                  <p className="text-base md:text-lg text-slate-500 leading-relaxed">
+                    Ik zoek bedrijfsartsen voor opdrachten binnen mijn organisatie of arbodienst.
+                  </p>
+                </div>
+              </div>
             </button>
 
             <button
               onClick={() => handleRoleCardClick('ARTS')}
-              disabled={loading}
-              className="bg-white p-8 rounded-2xl shadow-sm border-2 border-transparent hover:border-[#4FA151] hover:shadow-md transition text-left disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || isOnCooldown}
+              className="group relative bg-white p-8 md:p-10 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400 transition-all duration-200 text-left disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Stethoscope className="w-12 h-12 text-[#4FA151] mb-4" />
-              <h3 className="text-xl font-bold text-[#0F172A] mb-2">Ik ben arts</h3>
-              <p className="text-gray-600">
-                Ik ben bedrijfsarts of arbo-professional en zoek interessante opdrachten.
-              </p>
+              <div className="flex items-start gap-6">
+                <span className="flex-shrink-0 w-20 h-20 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-100 transition">
+                  <Stethoscope className="w-10 h-10" strokeWidth={2} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-xl md:text-2xl font-semibold text-slate-900 mb-2">Ik ben arts</h3>
+                  <p className="text-base md:text-lg text-slate-500 leading-relaxed">
+                    Ik ben bedrijfsarts of arbo-professional en zoek interessante opdrachten.
+                  </p>
+                </div>
+              </div>
             </button>
           </div>
 
           {loading && (
-            <p className="text-center text-gray-500 mt-6">Account wordt aangemaakt...</p>
+            <p className="text-center text-slate-500 text-base mt-8 flex items-center justify-center gap-2">
+              <Loader2 className="w-5 h-5 animate-spin" /> Account wordt aangemaakt...
+            </p>
           )}
         </div>
       )}
@@ -504,7 +566,7 @@ export default function Register() {
               type="button"
               onClick={handleOpdrachtgeverConfirm}
               disabled={loading}
-              className="flex-1 bg-[#4FA151] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-[#4FA151] text-white py-3 px-6 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Bezig...' : 'Bevestigen'}
             </button>
@@ -614,7 +676,7 @@ export default function Register() {
               type="button"
               onClick={handleCompanyConfirm}
               disabled={loading || !selectedCompany}
-              className="flex-1 bg-[#4FA151] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-[#4FA151] text-white py-3 px-6 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Bezig...' : 'Registreer je bedrijf'}
             </button>

@@ -56,8 +56,8 @@ export default function Login() {
   const ErrorIcon = errorCategory ? errorIcons[errorCategory] : AlertCircle;
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] flex flex-col items-center justify-center py-12 px-4">
-      <div className="mb-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-24 pb-12 px-4">
+      <div className="mb-10">
         <Link to="/">
           <LogoText theme="light" className="text-2xl" />
         </Link>
@@ -89,7 +89,12 @@ export default function Login() {
             <ErrorIcon className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
             <div>
               <p className="text-sm text-red-800">{error}</p>
-              {errorCategory && errorCategory !== 'invalid_credentials' && (
+              {errorCategory === 'email_not_confirmed' && (
+                <Link to="/email-verificatie" className="text-sm text-[#4FA151] hover:underline mt-2 inline-block">
+                  Meer over e-mailverificatie
+                </Link>
+              )}
+              {errorCategory && errorCategory !== 'invalid_credentials' && errorCategory !== 'email_not_confirmed' && (
                 <p className="text-xs text-red-600 mt-1 font-mono">
                   Foutcode: {errorCategory}
                 </p>
@@ -138,7 +143,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#4FA151] text-white py-3 rounded-lg font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Bezig met inloggen...' : 'Inloggen'}
           </button>

@@ -33,7 +33,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
       <div className="fixed top-0 left-0 right-0 z-50 bg-[#0F172A]">
         <div className="h-10 bg-[#0F172A] border-b border-gray-700/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
@@ -65,8 +65,8 @@ export function PublicLayout({ children }: PublicLayoutProps) {
 
                 <div className="hidden lg:flex items-center space-x-8">
                   <Link to="/opdrachten" className="transition text-gray-200 hover:text-white">Opdrachten</Link>
-                  <Link to="/hoe-het-werkt" className="transition text-gray-200 hover:text-white">Hoe het werkt</Link>
                   <Link to="/oplossingen" className="transition text-gray-200 hover:text-white">Oplossingen</Link>
+                  <Link to="/community" className="transition text-gray-200 hover:text-white">Community</Link>
                   <Link to="/over" className="transition text-gray-200 hover:text-white">Over ArboMatcher</Link>
                 </div>
               </div>
@@ -86,7 +86,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                 ) : (
                   <>
                     <Link to="/login" className="transition text-gray-200 hover:text-white">Inloggen</Link>
-                    <Link to="/register" className="bg-[#4FA151] text-white px-5 py-2.5 rounded-[16px] font-medium hover:bg-[#3E8E45] transition">Gratis registreren</Link>
+                    <Link to="/register" className="bg-[#4FA151] text-white px-5 py-2.5 rounded-xl font-medium hover:bg-[#3E8E45] transition">Gratis registreren</Link>
                   </>
                 )}
               </div>
@@ -103,8 +103,8 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                   <Link to="/contact" className="text-[#0F172A] font-medium" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
                 </div>
                 <Link to="/opdrachten" className="block px-4 text-gray-700 hover:text-[#0F172A] transition" onClick={() => setMobileMenuOpen(false)}>Opdrachten</Link>
-                <Link to="/hoe-het-werkt" className="block px-4 text-gray-700 hover:text-[#0F172A] transition" onClick={() => setMobileMenuOpen(false)}>Hoe het werkt</Link>
                 <Link to="/oplossingen" className="block px-4 text-gray-700 hover:text-[#0F172A] transition" onClick={() => setMobileMenuOpen(false)}>Oplossingen</Link>
+                <Link to="/community" className="block px-4 text-gray-700 hover:text-[#0F172A] transition" onClick={() => setMobileMenuOpen(false)}>Community</Link>
                 <Link to="/over" className="block px-4 text-gray-700 hover:text-[#0F172A] transition" onClick={() => setMobileMenuOpen(false)}>Over ArboMatcher</Link>
                 {user && profile ? (
                   <>
@@ -115,7 +115,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                   <>
                     <Link to="/login" className="block px-4 text-gray-700 hover:text-[#0F172A] transition" onClick={() => setMobileMenuOpen(false)}>Inloggen</Link>
                     <div className="px-4">
-                      <Link to="/register" className="block bg-[#4FA151] text-white px-4 py-2 rounded-[16px] hover:bg-[#3E8E45] transition text-center" onClick={() => setMobileMenuOpen(false)}>Gratis registreren</Link>
+                      <Link to="/register" className="block bg-[#4FA151] text-white px-4 py-2 rounded-xl hover:bg-[#3E8E45] transition text-center" onClick={() => setMobileMenuOpen(false)}>Gratis registreren</Link>
                     </div>
                   </>
                 )}
@@ -132,14 +132,14 @@ export function PublicLayout({ children }: PublicLayoutProps) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div>
               <LogoText theme="dark" className="text-xl mb-4 block" />
-              <p className="text-gray-400 text-sm leading-relaxed">Het platform voor directe opdrachtgevers, intermediairs en arbo-professionals.</p>
+              <p className="text-gray-400 text-sm leading-relaxed">Het platform voor opdrachtgevers, intermediairs, detacheerders en arbo-professionals.</p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Platform</h4>
               <ul className="space-y-3 text-sm text-gray-400">
                 <li><Link to="/opdrachten" className="hover:text-white transition">Opdrachten</Link></li>
-                <li><Link to="/hoe-het-werkt" className="hover:text-white transition">Hoe het werkt</Link></li>
                 <li><Link to="/oplossingen" className="hover:text-white transition">Oplossingen</Link></li>
+                <li><Link to="/community" className="hover:text-white transition">Community</Link></li>
               </ul>
             </div>
             <div>
@@ -147,6 +147,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
               <ul className="space-y-3 text-sm text-gray-400">
                 <li><Link to="/over" className="hover:text-white transition">Over ArboMatcher</Link></li>
                 <li><Link to="/contact" className="hover:text-white transition">Contact</Link></li>
+                <li><Link to="/faq" className="hover:text-white transition">Veelgestelde vragen</Link></li>
               </ul>
             </div>
             <div>

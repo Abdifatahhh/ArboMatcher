@@ -1,19 +1,23 @@
 import { Link } from 'react-router-dom';
-import { Building2, Briefcase, UserCheck, ArrowRight, CheckCircle, Clock, Shield, Users, Handshake } from 'lucide-react';
+import { Building2, Briefcase, UserCheck, ArrowRight, CheckCircle, Clock, Shield, Users, Handshake, Lightbulb } from 'lucide-react';
 
 export default function Oplossingen() {
   return (
-    <div>
-      <section className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-6">Oplossingen</h1>
-          <p className="text-xl text-gray-300">
-            Flexibele inzet in arbeid & gezondheid voor directe opdrachtgevers, intermediairs en professionals
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+      <section className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] text-white py-16 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3 mb-4">
+            <Lightbulb className="w-8 h-8 text-[#4FA151]" />
+            <span className="text-[#4FA151] font-semibold text-sm uppercase tracking-wider">Platform</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Oplossingen</h1>
+          <p className="text-xl text-gray-300 max-w-2xl">
+            Flexibele inzet in arbeid & gezondheid voor opdrachtgevers, intermediairs, detacheerders en professionals.
           </p>
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
             <div>
@@ -40,17 +44,17 @@ export default function Oplossingen() {
               </div>
               <Link
                 to="/register?type=opdrachtgever"
-                className="inline-flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-[12px] font-semibold hover:bg-[#3E8E45] transition"
+                className="inline-flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Start als opdrachtgever
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </div>
-            <div className="bg-[#F3F4F6] rounded-[16px] p-8">
+            <div className="bg-[#F4FAF4] rounded-[16px] p-8 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30">
               <h3 className="font-bold text-[#0F172A] mb-4">Veelgevraagde profielen</h3>
               <div className="space-y-3">
                 {['Bedrijfsarts', 'Arbo-arts', 'Verzuimspecialist', 'Arbeidshygienist', 'Veiligheidskundige'].map((profile) => (
-                  <div key={profile} className="bg-white rounded-[12px] px-4 py-3 text-[#0F172A] font-medium">
+                  <div key={profile} className="bg-[#FFFFFF] rounded-[12px] px-4 py-3 text-[#0F172A] font-medium border border-[#4FA151]/15 shadow-lg shadow-slate-200/30">
                     {profile}
                   </div>
                 ))}
@@ -59,7 +63,7 @@ export default function Oplossingen() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-            <div className="order-2 lg:order-1 bg-[#F3F4F6] rounded-[16px] p-8">
+            <div className="order-2 lg:order-1 bg-[#F4FAF4] rounded-[16px] p-8 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30">
               <h3 className="font-bold text-[#0F172A] mb-4">Voordelen voor intermediairs</h3>
               <div className="space-y-4">
                 {[
@@ -67,11 +71,11 @@ export default function Oplossingen() {
                   { icon: Users, label: 'Breed bereik', desc: 'Toegang tot 350+ professionals' },
                   { icon: Shield, label: 'Betrouwbaar', desc: 'BIG-geverifieerde professionals' },
                 ].map((item) => (
-                  <div key={item.label} className="bg-white rounded-[12px] p-4 flex items-start gap-4">
+                  <div key={item.label} className="bg-[#FFFFFF] rounded-[12px] p-4 flex items-start gap-4 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30">
                     <item.icon className="w-6 h-6 text-[#4FA151] flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-[#0F172A]">{item.label}</p>
-                      <p className="text-sm text-gray-500">{item.desc}</p>
+                      <p className="text-sm text-slate-600">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -101,7 +105,7 @@ export default function Oplossingen() {
               </div>
               <Link
                 to="/register?type=opdrachtgever"
-                className="inline-flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-[12px] font-semibold hover:bg-[#3E8E45] transition"
+                className="inline-flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Start als intermediair
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -135,13 +139,13 @@ export default function Oplossingen() {
               </div>
               <Link
                 to="/register?type=arts"
-                className="inline-flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-[12px] font-semibold hover:bg-[#3E8E45] transition"
+                className="inline-flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Registreer als professional
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </div>
-            <div className="bg-[#F3F4F6] rounded-[16px] p-8">
+            <div className="bg-[#F4FAF4] rounded-[16px] p-8 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30">
               <h3 className="font-bold text-[#0F172A] mb-4">Type inzet</h3>
               <div className="grid grid-cols-2 gap-3 mb-6">
                 {[
@@ -150,9 +154,12 @@ export default function Oplossingen() {
                   { label: 'Detachering', desc: 'Langere projecten' },
                   { label: 'Structureel', desc: 'Vaste inzet' },
                 ].map((type) => (
-                  <div key={type.label} className="bg-white rounded-[12px] p-4">
+                  <div
+                    key={type.label}
+                    className="rounded-2xl bg-white shadow-lg shadow-gray-200/50 border border-gray-100 p-4"
+                  >
                     <p className="font-semibold text-[#0F172A]">{type.label}</p>
-                    <p className="text-sm text-gray-500">{type.desc}</p>
+                    <p className="text-sm text-slate-600">{type.desc}</p>
                   </div>
                 ))}
               </div>
@@ -163,11 +170,14 @@ export default function Oplossingen() {
                   { icon: Shield, label: 'Zekerheid', desc: 'Geverifieerde opdrachtgevers' },
                   { icon: Users, label: 'Netwerk', desc: 'Bouw aan uw professionele netwerk' },
                 ].map((item) => (
-                  <div key={item.label} className="bg-white rounded-[12px] p-4 flex items-start gap-4">
+                  <div
+                    key={item.label}
+                    className="rounded-2xl bg-white shadow-lg shadow-gray-200/50 border border-gray-100 p-4 flex items-start gap-4"
+                  >
                     <item.icon className="w-6 h-6 text-[#4FA151] flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-[#0F172A]">{item.label}</p>
-                      <p className="text-sm text-gray-500">{item.desc}</p>
+                      <p className="text-sm text-slate-600">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -177,27 +187,29 @@ export default function Oplossingen() {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Ontdek de mogelijkheden
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            ArboMatcher - Het platform voor directe opdrachtgevers, intermediairs en arbo-professionals.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/opdrachten"
-              className="bg-white text-[#0F172A] px-8 py-4 rounded-[16px] font-semibold hover:bg-gray-100 transition"
-            >
-              Bekijk opdrachten
-            </Link>
-            <Link
-              to="/register"
-              className="bg-[#4FA151] text-white px-8 py-4 rounded-[16px] font-semibold hover:bg-[#3E8E45] transition"
-            >
-              Gratis registreren
-            </Link>
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-[#F4FAF4] rounded-2xl border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 p-8 sm:p-10 hover:shadow-[#4FA151]/10 hover:border-[#4FA151]/25 transition-all duration-300 text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4">
+              Ontdek de mogelijkheden
+            </h2>
+            <p className="text-xl text-slate-600 mb-8">
+              ArboMatcher - Het platform voor opdrachtgevers, intermediairs, detacheerders en arbo-professionals.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/opdrachten"
+                className="inline-flex items-center justify-center bg-[#0F172A] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+              >
+                Bekijk opdrachten
+              </Link>
+              <Link
+                to="/register"
+                className="inline-flex items-center justify-center bg-[#4FA151] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+              >
+                Gratis registreren
+              </Link>
+            </div>
           </div>
         </div>
       </section>

@@ -234,7 +234,7 @@ export default function AdminDashboard() {
   return (
     <div className="p-6">
       {isDemo && (
-        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-center gap-3">
+        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-3 shadow-sm">
           <Info className="w-5 h-5 text-amber-600 flex-shrink-0" />
           <p className="text-amber-900 text-sm">Demo-cijfers worden getoond. Zodra er echte data in de database staat, ziet u de echte aantallen.</p>
         </div>
@@ -242,10 +242,10 @@ export default function AdminDashboard() {
 
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-[#0F172A]">Admin Dashboard</h1>
-        <p className="text-gray-600 mt-1">Welkom, {displayName}</p>
+        <p className="text-[#0F172A]/70 mt-1 font-medium">Welkom, {displayName}</p>
       </div>
 
-      <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+      <div className="mb-6 p-5 bg-amber-50 border border-amber-200 rounded-xl shadow-sm">
         <h2 className="font-semibold text-amber-900 flex items-center gap-2 mb-2">
           <AlertCircle className="w-5 h-5" />
           Aandacht nodig
@@ -264,40 +264,40 @@ export default function AdminDashboard() {
         </ul>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5 mb-6">
         <Link
           to="/admin/verificaties"
-          className="bg-white p-6 rounded-lg shadow-lg border-2 border-transparent hover:border-[#0F172A] transition"
+          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-4">
-            <CheckCircle className="w-8 h-8 text-[#16A34A]" />
-            <span className="text-3xl font-bold text-[#16A34A]">{stats.pendingVerifications}</span>
+            <CheckCircle className="w-8 h-8 text-[#4FA151]" />
+            <span className="text-3xl font-bold text-[#4FA151]">{stats.pendingVerifications}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-700">Verificaties</h3>
+          <h3 className="text-lg font-semibold text-gray-800">Verificaties</h3>
           <p className="text-sm text-gray-600">Wachtend op goedkeuring</p>
         </Link>
 
         <Link
           to="/admin/artsen"
-          className="bg-white p-6 rounded-lg shadow-lg border-2 border-transparent hover:border-[#0F172A] transition"
+          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-4">
             <User className="w-8 h-8 text-[#0F172A]" />
             <span className="text-3xl font-bold text-[#0F172A]">{stats.totalDoctors}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-700">Artsen</h3>
+          <h3 className="text-lg font-semibold text-gray-800">Artsen</h3>
           <p className="text-sm text-gray-600">Totaal geregistreerd</p>
         </Link>
 
         <Link
           to="/admin/gebruikers"
-          className="bg-white p-6 rounded-lg shadow-lg border-2 border-transparent hover:border-[#0F172A] transition"
+          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-4">
             <Users className="w-8 h-8 text-[#0F172A]" />
             <span className="text-3xl font-bold text-[#0F172A]">{stats.totalUsers}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-700">Gebruikers</h3>
+          <h3 className="text-lg font-semibold text-gray-800">Gebruikers</h3>
           <p className="text-sm text-gray-600">
             Totaal geregistreerd
             {(stats.newUsersToday > 0 || stats.newUsersWeek > 0) && (
@@ -310,13 +310,13 @@ export default function AdminDashboard() {
 
         <Link
           to="/admin/opdrachten"
-          className="bg-white p-6 rounded-lg shadow-lg border-2 border-transparent hover:border-[#0F172A] transition"
+          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-4">
             <Briefcase className="w-8 h-8 text-[#0F172A]" />
             <span className="text-3xl font-bold text-[#0F172A]">{stats.activeJobs}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-700">Opdrachten</h3>
+          <h3 className="text-lg font-semibold text-gray-800">Opdrachten</h3>
           <p className="text-sm text-gray-600">
             Actief gepubliceerd
             <span className="block text-xs text-gray-500 mt-0.5">
@@ -330,13 +330,13 @@ export default function AdminDashboard() {
 
         <Link
           to="/admin/reacties"
-          className="bg-white p-6 rounded-lg shadow-lg border-2 border-transparent hover:border-[#0F172A] transition"
+          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-4">
             <FileText className="w-8 h-8 text-[#0F172A]" />
             <span className="text-3xl font-bold text-[#0F172A]">{stats.totalApplications}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-700">Reacties</h3>
+          <h3 className="text-lg font-semibold text-gray-800">Reacties</h3>
           <p className="text-sm text-gray-600">
             Sollicitaties
             {stats.pendingApplications > 0 && (
@@ -350,13 +350,13 @@ export default function AdminDashboard() {
 
         <Link
           to="/admin/abonnementen"
-          className="bg-white p-6 rounded-lg shadow-lg border-2 border-transparent hover:border-[#0F172A] transition"
+          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-4">
-            <CreditCard className="w-8 h-8 text-[#16A34A]" />
-            <span className="text-3xl font-bold text-[#16A34A]">{stats.activeSubscriptions}</span>
+            <CreditCard className="w-8 h-8 text-[#4FA151]" />
+            <span className="text-3xl font-bold text-[#4FA151]">{stats.activeSubscriptions}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-700">Abonnementen</h3>
+          <h3 className="text-lg font-semibold text-gray-800">Abonnementen</h3>
           <p className="text-sm text-gray-600">Actieve betalingen</p>
         </Link>
       </div>
@@ -364,42 +364,42 @@ export default function AdminDashboard() {
       <div className="mb-6 flex flex-wrap gap-3">
         <Link
           to="/admin/verificaties"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-[#0F172A] text-white rounded-lg text-sm font-medium hover:bg-[#1e293b] transition"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#4FA151] text-white rounded-xl text-sm font-medium hover:bg-[#3E8E45] shadow-md shadow-[#4FA151]/20 transition"
         >
           <CheckCircle className="w-4 h-4" />
           Verificaties beoordelen
         </Link>
         <Link
           to="/admin/gebruikers"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
         >
           <UserPlus className="w-4 h-4" />
           Gebruikers bekijken
         </Link>
         <Link
           to="/admin/opdrachten"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
         >
           <ClipboardList className="w-4 h-4" />
           Open opdrachten
         </Link>
         <Link
           to="/admin/reacties"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
         >
           <Zap className="w-4 h-4" />
           Sollicitaties bekijken
         </Link>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-lg">
+      <div className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
         <h2 className="text-xl font-bold text-[#0F172A] mb-4">Recent activiteit</h2>
         {activity.length === 0 ? (
           <p className="text-gray-600">Nog geen activiteit.</p>
         ) : (
           <ul className="space-y-3">
             {activity.map((item) => (
-              <li key={item.id} className="flex flex-wrap items-baseline justify-between gap-2 py-2 border-b border-gray-100 last:border-0">
+              <li key={item.id} className="flex flex-wrap items-baseline justify-between gap-2 py-2 border-b border-slate-100 last:border-0">
                 <div>
                   <Link to={item.link} className="font-medium text-[#0F172A] hover:underline">
                     {item.title}

@@ -1,6 +1,6 @@
 export default function Terms() {
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
       <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Algemene Voorwaarden</h1>

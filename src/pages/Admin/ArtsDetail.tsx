@@ -29,35 +29,37 @@ export default function AdminArtsDetail() {
   const [bigCheckResult, setBigCheckResult] = useState<BigCheckResult | null>(null);
   const [bigCheckLoading, setBigCheckLoading] = useState(false);
 
-  useEffect(() => {
-    if (id) {
-      setLoading(true);
-      if (id.startsWith('demo-')) {
-        const demoRow = demoDoctorsList.find((r) => r.doctor.id === id);
-        if (demoRow) {
-          setDoctor(demoRow.doctor);
-          setProfile(demoRow.profile);
-          setIsDemo(true);
-        } else {
-          setDoctor(null);
-          setProfile(null);
-          setIsDemo(false);
-        }
-        setLoading(false);
+  const loadDoctor = async () => {
+    if (!id) return;
+    setLoading(true);
+    if (id.startsWith('demo-')) {
+      const demoRow = demoDoctorsList.find((r) => r.doctor.id === id);
+      if (demoRow) {
+        setDoctor(demoRow.doctor);
+        setProfile(demoRow.profile);
+        setIsDemo(true);
       } else {
-        getDoctorById(id).then((row) => {
-          if (row) {
-            setDoctor(row.doctor);
-            setProfile(row.profile);
-            setIsDemo(false);
-          } else {
-            setDoctor(null);
-            setProfile(null);
-          }
-          setLoading(false);
-        });
+        setDoctor(null);
+        setProfile(null);
+        setIsDemo(false);
       }
+      setLoading(false);
+      return;
     }
+    const row = await getDoctorById(id);
+    if (row) {
+      setDoctor(row.doctor);
+      setProfile(row.profile);
+      setIsDemo(false);
+    } else {
+      setDoctor(null);
+      setProfile(null);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (id) loadDoctor();
   }, [id]);
 
   useEffect(() => {
@@ -136,13 +138,12 @@ export default function AdminArtsDetail() {
           availability_text: doctor.availability_text ?? null,
           verification_status: doctor.verification_status ?? 'UNVERIFIED',
           verification_reason: doctor.verification_reason ?? null,
-          premium_status: Boolean(doctor.premium_status),
-          premium_until: doctor.premium_until || null,
+          doctor_plan: (doctor as { doctor_plan?: string }).doctor_plan === 'PRO' ? 'PRO' : 'BASIC',
         })
         .eq('id', id);
 
       setMessage({ type: 'success', text: 'Arts-profiel opgeslagen.' });
-      fetchData();
+      await loadDoctor();
     } catch {
       setMessage({ type: 'error', text: 'Opslaan mislukt.' });
     }
@@ -151,8 +152,8 @@ export default function AdminArtsDetail() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]" />
+      <div className="flex justify-center items-center min-h-[60vh] rounded-xl bg-white/60 border border-emerald-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-emerald-200 border-t-[#4FA151]" />
       </div>
     );
   }
@@ -173,21 +174,16 @@ export default function AdminArtsDetail() {
 
   return (
     <div className="p-6 max-w-4xl">
-      <button
-        onClick={() => navigate('/admin/artsen')}
-        className="flex items-center gap-2 text-gray-600 hover:text-[#0F172A] mb-6"
-      >
+      <button onClick={() => navigate('/admin/artsen')} className="flex items-center gap-2 text-emerald-700/80 hover:text-[#4FA151] mb-6 transition">
         <ArrowLeft className="w-4 h-4" />
         Terug naar artsen
       </button>
 
       <h1 className="text-3xl font-bold text-[#0F172A] mb-2">{profile?.full_name || 'Arts bewerken'}</h1>
-      <p className="text-gray-600 mb-6">
-        {(profile as Profile)?.email}
-      </p>
+      <p className="text-emerald-700/80 text-sm mb-6">{(profile as Profile)?.email}</p>
 
       {isDemo && (
-        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-center gap-3">
+        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-3 shadow-sm">
           <Info className="w-5 h-5 text-amber-600 flex-shrink-0" />
           <p className="text-amber-900 text-sm">Dit is een demo-arts. Wijzigingen worden niet opgeslagen.</p>
         </div>
@@ -195,26 +191,22 @@ export default function AdminArtsDetail() {
 
       {profile && (
         <div className="mb-6 flex items-center gap-4">
-          <span className={`px-3 py-1 rounded-full text-sm font-medium ${profile.status === 'BLOCKED' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+          <span className={`px-3 py-1 rounded-xl text-sm font-medium ${profile.status === 'BLOCKED' ? 'bg-red-100 text-red-800 border border-red-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200'}`}>
             {profile.status === 'BLOCKED' ? 'Geblokkeerd' : 'Actief'}
           </span>
           {!isDemo && (
-            <button
-              type="button"
-              onClick={handleToggleBlock}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium ${profile.status === 'BLOCKED' ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200'}`}
-            >
+            <button type="button" onClick={handleToggleBlock} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl font-medium ${profile.status === 'BLOCKED' ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-red-100 text-red-800 hover:bg-red-200'}`}>
               {profile.status === 'BLOCKED' ? <CheckCircle className="w-4 h-4" /> : <Ban className="w-4 h-4" />}
               {profile.status === 'BLOCKED' ? 'Deblokkeren' : 'Blokkeren'}
             </button>
           )}
           {!editMode && (
-            <Link to={`/admin/artsen/${id}?edit=1`} className="px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50">
+            <Link to={`/admin/artsen/${id}?edit=1`} className="px-4 py-2 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
               Bewerken
             </Link>
           )}
           {editMode && (
-            <button type="button" onClick={() => navigate(`/admin/artsen/${id}`)} className="px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50">
+            <button type="button" onClick={() => navigate(`/admin/artsen/${id}`)} className="px-4 py-2 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
               Annuleren
             </button>
           )}
@@ -222,20 +214,16 @@ export default function AdminArtsDetail() {
       )}
 
       {message && (
-        <div
-          className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
-            message.type === 'success' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
-          }`}
-        >
-          <AlertCircle className={`w-5 h-5 flex-shrink-0 ${message.type === 'success' ? 'text-green-600' : 'text-red-600'}`} />
-          <span className={message.type === 'success' ? 'text-green-900' : 'text-red-900'}>{message.text}</span>
+        <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${message.type === 'success' ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}`}>
+          <AlertCircle className={`w-5 h-5 flex-shrink-0 ${message.type === 'success' ? 'text-emerald-600' : 'text-red-600'}`} />
+          <span className={message.type === 'success' ? 'text-emerald-900' : 'text-red-900'}>{message.text}</span>
         </div>
       )}
 
       {!editMode && doctor && profile && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-            <h2 className="text-lg font-semibold text-[#0F172A] flex items-center gap-2">
+        <div className="bg-white rounded-xl shadow-md border border-emerald-100 overflow-hidden mb-6">
+          <div className="px-6 py-4 border-b border-emerald-100 bg-emerald-50/80">
+            <h2 className="text-lg font-semibold text-emerald-900/90 flex items-center gap-2">
               <User className="w-5 h-5 text-[#4FA151]" />
               Gegevens
             </h2>
@@ -270,7 +258,7 @@ export default function AdminArtsDetail() {
               </div>
             )}
             <p><strong>Verificatie:</strong> {doctor.verification_status}</p>
-            <p><strong>Premium:</strong> {doctor.premium_status ? 'Ja' : 'Nee'}</p>
+            <p><strong>Plan:</strong> {(doctor as { doctor_plan?: string }).doctor_plan === 'PRO' ? 'PRO' : 'BASIC'}</p>
             {doctor.bio && <p><strong>Bio:</strong> {doctor.bio}</p>}
           </div>
         </div>
@@ -278,69 +266,48 @@ export default function AdminArtsDetail() {
 
       {editMode && (
       <form onSubmit={handleSave} className="space-y-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-            <h2 className="text-lg font-semibold text-[#0F172A] flex items-center gap-2">
+        <div className="bg-white rounded-xl shadow-md border border-emerald-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-emerald-100 bg-emerald-50/80">
+            <h2 className="text-lg font-semibold text-emerald-900/90 flex items-center gap-2">
               <User className="w-5 h-5 text-[#4FA151]" />
               Persoonlijke gegevens
             </h2>
           </div>
           <div className="p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Volledige naam</label>
-              <input
-                type="text"
-                value={profile?.full_name ?? ''}
-                onChange={(e) => setProfile((p) => (p ? { ...p, full_name: e.target.value || null } : null))}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
-              />
+              <label className="block text-sm font-medium text-emerald-800/80 mb-2">Volledige naam</label>
+              <input type="text" value={profile?.full_name ?? ''} onChange={(e) => setProfile((p) => (p ? { ...p, full_name: e.target.value || null } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Telefoonnummer</label>
-              <input
-                type="tel"
-                value={profile?.phone ?? ''}
-                onChange={(e) => setProfile((p) => (p ? { ...p, phone: e.target.value || null } : null))}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
-              />
+              <label className="block text-sm font-medium text-emerald-800/80 mb-2">Telefoonnummer</label>
+              <input type="tel" value={profile?.phone ?? ''} onChange={(e) => setProfile((p) => (p ? { ...p, phone: e.target.value || null } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">E-mailadres</label>
-              <input
-                type="email"
-                value={(profile as Profile)?.email ?? ''}
-                disabled
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-500"
-              />
+              <label className="block text-sm font-medium text-emerald-800/80 mb-2">E-mailadres</label>
+              <input type="email" value={(profile as Profile)?.email ?? ''} disabled className="w-full px-4 py-2.5 border border-emerald-100 rounded-xl bg-emerald-50/50 text-gray-600" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-            <h2 className="text-lg font-semibold text-[#0F172A] flex items-center gap-2">
+        <div className="bg-white rounded-xl shadow-md border border-emerald-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-emerald-100 bg-emerald-50/80">
+            <h2 className="text-lg font-semibold text-emerald-900/90 flex items-center gap-2">
               <Stethoscope className="w-5 h-5 text-[#4FA151]" />
               Professionele gegevens
             </h2>
           </div>
           <div className="p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">BIG-nummer</label>
-              <input
-                type="text"
-                value={doctor.big_number ?? ''}
-                onChange={(e) => setDoctor((d) => (d ? { ...d, big_number: e.target.value } : null))}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
-                placeholder="123456789"
-              />
+              <label className="block text-sm font-medium text-emerald-800/80 mb-2">BIG-nummer</label>
+              <input type="text" inputMode="numeric" maxLength={11} value={doctor.big_number ?? ''} onChange={(e) => setDoctor((d) => (d ? { ...d, big_number: e.target.value.replace(/\D/g, '').slice(0, 11) } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition" placeholder="12345678901" title="BIG-nummer bestaat uit 11 cijfers" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+              <label className="block text-sm font-medium text-emerald-800/80 mb-2">Bio</label>
               <textarea
                 value={doctor.bio ?? ''}
                 onChange={(e) => setDoctor((d) => (d ? { ...d, bio: e.target.value || null } : null))}
                 rows={4}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition"
                 placeholder="Vertel iets over uzelf en uw ervaring..."
               />
             </div>
@@ -354,7 +321,7 @@ export default function AdminArtsDetail() {
                     d ? { ...d, specialties: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) } : null
                   )
                 }
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition"
                 placeholder="Bedrijfsgeneeskunde, Verzekeringsgeneeskunde"
               />
             </div>
@@ -368,7 +335,7 @@ export default function AdminArtsDetail() {
                     d ? { ...d, regions: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) } : null
                   )
                 }
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition"
                 placeholder="Amsterdam, Utrecht, Rotterdam"
               />
             </div>
@@ -382,7 +349,7 @@ export default function AdminArtsDetail() {
                 onChange={(e) =>
                   setDoctor((d) => (d ? { ...d, hourly_rate: e.target.value === '' ? null : parseFloat(e.target.value) } : null))
                 }
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition"
                 placeholder="125"
               />
             </div>
@@ -392,99 +359,59 @@ export default function AdminArtsDetail() {
                 value={doctor.availability_text ?? ''}
                 onChange={(e) => setDoctor((d) => (d ? { ...d, availability_text: e.target.value || null } : null))}
                 rows={3}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition"
                 placeholder="Bijv: Beschikbaar vanaf 1 april, 3 dagen per week"
               />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 bg-amber-50">
-            <h2 className="text-lg font-semibold text-[#0F172A] flex items-center gap-2">
+        <div className="bg-white rounded-xl shadow-md border border-emerald-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-emerald-100 bg-amber-50">
+            <h2 className="text-lg font-semibold text-amber-900 flex items-center gap-2">
               <Shield className="w-5 h-5 text-amber-600" />
-              Admin: verificatie & premium
+              Admin: verificatie & plan
             </h2>
           </div>
           <div className="p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Verificatiestatus</label>
-              <select
-                value={doctor.verification_status ?? 'UNVERIFIED'}
-                onChange={(e) =>
-                  setDoctor((d) =>
-                    d ? { ...d, verification_status: e.target.value as Doctor['verification_status'] } : null
-                  )
-                }
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
-              >
+              <label className="block text-sm font-medium text-emerald-800/80 mb-2">Verificatiestatus</label>
+              <select value={doctor.verification_status ?? 'UNVERIFIED'} onChange={(e) => setDoctor((d) => d ? { ...d, verification_status: e.target.value as Doctor['verification_status'] } : null)} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition">
                 {VERIFICATION_STATUSES.map((s) => (
-                  <option key={s} value={s}>
-                    {s === 'VERIFIED' ? 'Geverifieerd' : s === 'PENDING' ? 'In behandeling' : s === 'REJECTED' ? 'Afgewezen' : 'Niet geverifieerd'}
-                  </option>
+                  <option key={s} value={s}>{s === 'VERIFIED' ? 'Geverifieerd' : s === 'PENDING' ? 'In behandeling' : s === 'REJECTED' ? 'Afgewezen' : 'Niet geverifieerd'}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Reden (bij afwijzing)</label>
-              <input
-                type="text"
-                value={doctor.verification_reason ?? ''}
-                onChange={(e) => setDoctor((d) => (d ? { ...d, verification_reason: e.target.value || null } : null))}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
-                placeholder="Optioneel"
-              />
-            </div>
-            <div className="flex items-center gap-4">
-              <label className="inline-flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={Boolean(doctor.premium_status)}
-                  onChange={(e) => setDoctor((d) => (d ? { ...d, premium_status: e.target.checked } : null))}
-                  className="rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
-                />
-                <Crown className="w-5 h-5 text-amber-500" />
-                <span className="font-medium">Premium-artsenaccount</span>
-              </label>
+              <label className="block text-sm font-medium text-emerald-800/80 mb-2">Reden (bij afwijzing)</label>
+              <input type="text" value={doctor.verification_reason ?? ''} onChange={(e) => setDoctor((d) => (d ? { ...d, verification_reason: e.target.value || null } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition" placeholder="Optioneel" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Premium tot (datum)</label>
-              <input
-                type="date"
-                value={doctor.premium_until ? doctor.premium_until.slice(0, 10) : ''}
-                onChange={(e) =>
-                  setDoctor((d) => (d ? { ...d, premium_until: e.target.value ? new Date(e.target.value).toISOString() : null } : null))
-                }
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
-              />
+              <label className="block text-sm font-medium text-emerald-800/80 mb-2">Plan arts</label>
+              <select value={(doctor as { doctor_plan?: string }).doctor_plan ?? 'BASIC'} onChange={(e) => setDoctor((d) => (d ? { ...d, doctor_plan: e.target.value as 'BASIC' | 'PRO' } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition">
+                <option value="BASIC">BASIC</option>
+                <option value="PRO">PRO</option>
+              </select>
             </div>
           </div>
         </div>
 
         <div className="flex gap-3">
-          <button
-            type="submit"
-            disabled={saving}
-            className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#3E8E45] transition disabled:opacity-50"
-          >
+          <button type="submit" disabled={saving} className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-2.5 rounded-xl font-medium hover:bg-[#3E8E45] transition disabled:opacity-50">
             <Save className="w-4 h-4" />
             {saving ? 'Opslaan...' : 'Opslaan'}
           </button>
-          <button
-            type="button"
-            onClick={() => navigate('/admin/artsen')}
-            className="px-6 py-2.5 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50"
-          >
+          <button type="button" onClick={() => navigate('/admin/artsen')} className="px-6 py-2.5 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
             Annuleren
           </button>
         </div>
       </form>
       )}
 
-      <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center gap-2">
+      <div className="mt-8 bg-white rounded-xl shadow-md border border-emerald-100 overflow-hidden">
+        <div className="px-6 py-4 border-b border-emerald-100 bg-emerald-50/80 flex items-center gap-2">
           <FileText className="w-5 h-5 text-[#4FA151]" />
-          <h2 className="text-lg font-semibold text-[#0F172A]">Sollicitaties ({applicationsTotal})</h2>
+          <h2 className="text-lg font-semibold text-emerald-900/90">Sollicitaties ({applicationsTotal})</h2>
         </div>
         <div className="p-6">
           {applications.length === 0 ? (
@@ -493,7 +420,7 @@ export default function AdminArtsDetail() {
             <>
               <ul className="space-y-2">
                 {applications.map((app) => (
-                  <li key={app.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                  <li key={app.id} className="flex items-center justify-between py-2 border-b border-emerald-50 last:border-0">
                     <div>
                       <Link to="/admin/reacties" className="font-medium text-[#0F172A] hover:underline">
                         {app.jobs?.title || 'Opdracht'}
@@ -519,7 +446,7 @@ export default function AdminArtsDetail() {
                       type="button"
                       onClick={() => setApplicationsPage((p) => Math.max(1, p - 1))}
                       disabled={applicationsPage <= 1}
-                      className="px-3 py-1.5 border border-gray-300 rounded text-sm disabled:opacity-50"
+                      className="px-3 py-1.5 border border-emerald-200 rounded-xl text-sm text-emerald-800 hover:bg-emerald-50 disabled:opacity-50 transition"
                     >
                       Vorige
                     </button>
@@ -527,7 +454,7 @@ export default function AdminArtsDetail() {
                       type="button"
                       onClick={() => setApplicationsPage((p) => p + 1)}
                       disabled={applicationsPage * APPLICATIONS_PAGE_SIZE >= applicationsTotal}
-                      className="px-3 py-1.5 border border-gray-300 rounded text-sm disabled:opacity-50"
+                      className="px-3 py-1.5 border border-emerald-200 rounded-xl text-sm text-emerald-800 hover:bg-emerald-50 disabled:opacity-50 transition"
                     >
                       Volgende
                     </button>

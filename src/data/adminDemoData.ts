@@ -131,7 +131,7 @@ export const demoDoctors: (Doctor & { profiles: Profile | null })[] = [
   {
     id: 'demo-doctor-1',
     user_id: 'demo-user-1',
-    big_number: '199012345',
+    big_number: '19901234567',
     verification_status: 'VERIFIED',
     verification_reason: null,
     bio: 'Ervaren bedrijfsarts met focus op verzuimbegeleiding en PMO. Werkzaam in regio Randstad.',
@@ -141,8 +141,7 @@ export const demoDoctors: (Doctor & { profiles: Profile | null })[] = [
     availability_text: 'Beschikbaar 3 dagen per week, start per direct.',
     availability_calendar: null,
     cv_url: null,
-    premium_status: true,
-    premium_until: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+    doctor_plan: 'PRO',
     created_at: lastWeek,
     updated_at: now,
     profiles: demoProfiles[0],
@@ -150,7 +149,7 @@ export const demoDoctors: (Doctor & { profiles: Profile | null })[] = [
   {
     id: 'demo-doctor-2',
     user_id: 'demo-user-2',
-    big_number: '198876543',
+    big_number: '19887654321',
     verification_status: 'PENDING',
     verification_reason: null,
     bio: 'Verzekeringsarts met ervaring in WIA- en WAO-beoordelingen.',
@@ -160,8 +159,7 @@ export const demoDoctors: (Doctor & { profiles: Profile | null })[] = [
     availability_text: 'Beschikbaar vanaf 1 april.',
     availability_calendar: null,
     cv_url: null,
-    premium_status: false,
-    premium_until: null,
+    doctor_plan: 'BASIC',
     created_at: lastWeek,
     updated_at: now,
     profiles: demoProfiles[1],
@@ -183,7 +181,7 @@ export const demoJobs: (Job & { employers: Employer })[] = [
     rate_min: 100,
     rate_max: 130,
     status: 'PUBLISHED',
-    is_pro: true,
+    job_tier: 'PRO',
     company_name: 'ArboZorg Nederland B.V.',
     views_count: 42,
     applications_count: 5,
@@ -209,7 +207,7 @@ export const demoJobs: (Job & { employers: Employer })[] = [
     rate_min: 110,
     rate_max: 140,
     status: 'DRAFT',
-    is_pro: false,
+    job_tier: 'STANDARD',
     company_name: 'ArboZorg Nederland B.V.',
     views_count: 0,
     applications_count: 0,
@@ -235,7 +233,7 @@ export const demoJobs: (Job & { employers: Employer })[] = [
     rate_min: 120,
     rate_max: 150,
     status: 'PUBLISHED',
-    is_pro: false,
+    job_tier: 'STANDARD',
     company_name: 'ArboZorg Nederland B.V.',
     views_count: 18,
     applications_count: 2,
@@ -261,7 +259,7 @@ export const demoJobs: (Job & { employers: Employer })[] = [
     rate_min: null,
     rate_max: null,
     status: 'CLOSED',
-    is_pro: false,
+    job_tier: 'STANDARD',
     company_name: 'ArboZorg Nederland B.V.',
     views_count: 88,
     applications_count: 12,
@@ -274,6 +272,7 @@ export const demoJobs: (Job & { employers: Employer })[] = [
     employers: demoEmployers[0],
   },
 ];
+
 
 /** Demo opdrachtgevers voor admin lijst (employer + profile + jobs_count). Gebruikt wanneer DB leeg is. */
 export type DemoClientRow = { employer: Employer; profile: Profile; jobs_count: number };
@@ -333,7 +332,7 @@ export const demoSubscriptions: (Subscription & { profiles: Profile | null })[] 
   {
     id: 'demo-sub-1',
     user_id: 'demo-user-1',
-    plan: 'PREMIUM_DOCTOR',
+    plan: 'PRO',
     status: 'ACTIVE',
     renew_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
     provider_ref: null,

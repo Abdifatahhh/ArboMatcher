@@ -30,7 +30,7 @@ export default function WachtwoordVergeten() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] flex flex-col items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center justify-center py-12 px-4">
       <div className="mb-8">
         <Link to="/">
           <LogoText theme="light" className="text-2xl" />
@@ -87,7 +87,7 @@ export default function WachtwoordVergeten() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#4FA151] text-white py-3 rounded-lg font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Bezig...' : 'Wachtwoord herstellen'}
               </button>

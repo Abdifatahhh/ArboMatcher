@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
+import { useToast } from '../../context/ToastContext';
 import type { Job, PosterType } from '../../lib/types';
 import { Plus, Briefcase, Eye, Trash2, X, Save, Building2, Users } from 'lucide-react';
 
 export default function OpdrachtgeverOpdrachten() {
   const { user } = useAuth();
+  const toast = useToast();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -65,12 +67,12 @@ export default function OpdrachtgeverOpdrachten() {
       .maybeSingle();
 
     if (!employer) {
-      alert('Vul eerst uw bedrijfsprofiel in');
+      toast.error('Vul eerst uw bedrijfsprofiel in');
       return;
     }
 
     if (!formData.title || !formData.description) {
-      alert('Titel en beschrijving zijn verplicht');
+      toast.error('Titel en beschrijving zijn verplicht');
       return;
     }
 
@@ -83,6 +85,7 @@ export default function OpdrachtgeverOpdrachten() {
       region: formData.region,
       remote_type: formData.remote_type as any,
       job_type: formData.job_type as any,
+      job_tier: (formData as { job_tier?: string }).job_tier ?? 'STANDARD',
       start_date: formData.start_date || null,
       duration_weeks: formData.duration_weeks || null,
       hours_per_week: formData.hours_per_week || null,
@@ -96,8 +99,9 @@ export default function OpdrachtgeverOpdrachten() {
     });
 
     if (error) {
-      alert('Er is een fout opgetreden');
+      toast.error('Er is een fout opgetreden');
     } else {
+      toast.success('Opdracht aangemaakt.');
       setFormData({
         title: '',
         description: '',
@@ -138,7 +142,7 @@ export default function OpdrachtgeverOpdrachten() {
         <h1 className="text-3xl font-bold text-[#0F172A]">Mijn Opdrachten</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center bg-[#16A34A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#15803d] transition"
+          className="flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
         >
           {showForm ? <X className="w-5 h-5 mr-2" /> : <Plus className="w-5 h-5 mr-2" />}
           {showForm ? 'Annuleren' : 'Nieuwe opdracht'}
@@ -368,7 +372,7 @@ export default function OpdrachtgeverOpdrachten() {
             <button
               onClick={handleSubmit}
               disabled={submitting}
-              className="w-full md:w-auto flex items-center justify-center bg-[#16A34A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#15803d] transition disabled:opacity-50"
+              className="w-full md:w-auto flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50"
             >
               <Save className="w-5 h-5 mr-2" />
               {submitting ? 'Bezig...' : 'Opdracht plaatsen'}
@@ -426,7 +430,7 @@ export default function OpdrachtgeverOpdrachten() {
                 </Link>
                 <Link
                   to={`/opdrachtgever/kandidaten?job=${job.id}`}
-                  className="flex items-center text-[#16A34A] hover:underline"
+                  className="flex items-center text-[#4FA151] hover:underline"
                 >
                   Kandidaten
                 </Link>

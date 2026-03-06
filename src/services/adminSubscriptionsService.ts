@@ -6,7 +6,7 @@
 import { supabase } from '../lib/supabase';
 import type { Subscription, Profile } from '../lib/types';
 
-export type SubscriptionPlan = 'BASIC' | 'PRO' | 'ENTERPRISE' | 'PREMIUM_DOCTOR';
+export type SubscriptionPlan = 'BASIC' | 'PRO';
 export type SubscriptionStatus = 'ACTIVE' | 'CANCELLED' | 'EXPIRED';
 
 export interface AdminSubscriptionRow {

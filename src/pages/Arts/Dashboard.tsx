@@ -38,7 +38,7 @@ export default function ArtsDashboard() {
 
     const { data: doctor } = await supabase
       .from('doctors')
-      .select('id, verification_status, premium_status')
+      .select('id, verification_status, doctor_plan')
       .eq('user_id', user.id)
       .maybeSingle();
 
@@ -59,7 +59,7 @@ export default function ArtsDashboard() {
       messages: conversationsRes.count || 0,
       verificationStatus: doctor.verification_status,
       profileViews: Math.floor(Math.random() * 50),
-      isPremium: doctor.premium_status || false
+      isPremium: (doctor as { doctor_plan?: string }).doctor_plan === 'PRO'
     });
 
     setLoading(false);
@@ -140,7 +140,7 @@ export default function ArtsDashboard() {
           {!stats.isPremium && (
             <Link
               to="/arts/abonnement"
-              className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition"
+              className="bg-[#4FA151] text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-[#3E8E45] transition"
             >
               Upgrade naar PRO
             </Link>
@@ -162,11 +162,11 @@ export default function ArtsDashboard() {
 
         <Link
           to="/arts/uitnodigingen"
-          className="bg-white p-5 rounded-lg border border-gray-200 hover:border-[#16A34A] hover:shadow-md transition"
+          className="bg-white p-5 rounded-lg border border-gray-200 hover:border-[#4FA151] hover:shadow-md transition"
         >
           <div className="flex items-center justify-between mb-3">
-            <Mail className="w-6 h-6 text-[#16A34A]" />
-            <span className="text-2xl font-bold text-[#16A34A]">{stats.invites}</span>
+            <Mail className="w-6 h-6 text-[#4FA151]" />
+            <span className="text-2xl font-bold text-[#4FA151]">{stats.invites}</span>
           </div>
           <h3 className="font-semibold text-gray-800 text-sm">Uitnodigingen</h3>
         </Link>
@@ -195,7 +195,7 @@ export default function ArtsDashboard() {
         <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 overflow-hidden">
           <div className="p-4 border-b border-gray-200 flex items-center justify-between">
             <h2 className="font-bold text-[#0F172A]">Nieuwe opdrachten</h2>
-            <Link to="/arts/opdrachten" className="text-sm text-[#16A34A] hover:underline font-medium">
+            <Link to="/arts/opdrachten" className="text-sm text-[#4FA151] hover:underline font-medium">
               Bekijk alle
             </Link>
           </div>
@@ -212,7 +212,7 @@ export default function ArtsDashboard() {
                   to={`/opdrachten/${job.id}`}
                   className="p-4 flex items-start hover:bg-gray-50 transition"
                 >
-                  <div className="w-10 h-10 bg-[#16A34A] rounded-lg flex items-center justify-center text-white font-bold text-xs mr-3 flex-shrink-0">
+                  <div className="w-10 h-10 bg-[#4FA151] rounded-lg flex items-center justify-center text-white font-bold text-xs mr-3 flex-shrink-0">
                     PRO
                   </div>
                   <div className="flex-1 min-w-0">
@@ -268,7 +268,7 @@ export default function ArtsDashboard() {
               </p>
               <Link
                 to="/arts/abonnement"
-                className="block text-center bg-[#16A34A] text-white py-2 rounded-lg font-semibold hover:bg-[#15803d] transition"
+                className="block text-center bg-[#4FA151] text-white py-2 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Bekijk voordelen
               </Link>

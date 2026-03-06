@@ -3,7 +3,7 @@ import { Check, X } from 'lucide-react';
 
 export default function Prijzen() {
   return (
-    <div className="py-16">
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-[#0F172A] mb-4">Prijzen</h1>
@@ -23,15 +23,15 @@ export default function Prijzen() {
               </div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">1 actieve opdracht</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Maximaal 10 reacties per maand</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Basisfilters artsenlijst</span>
                 </li>
                 <li className="flex items-start">
@@ -51,8 +51,8 @@ export default function Prijzen() {
               </Link>
             </div>
 
-            <div className="bg-white rounded-lg shadow-xl border-2 border-[#16A34A] p-8 relative">
-              <div className="absolute top-0 right-0 bg-[#16A34A] text-white px-4 py-1 text-sm font-semibold rounded-bl-lg rounded-tr-lg">
+            <div className="bg-white rounded-lg shadow-xl border-2 border-[#4FA151] p-8 relative">
+              <div className="absolute top-0 right-0 bg-[#4FA151] text-white px-4 py-1 text-sm font-semibold rounded-bl-lg rounded-tr-lg">
                 Populair
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Pro</h3>
@@ -62,29 +62,29 @@ export default function Prijzen() {
               </div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">5 actieve opdrachten</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Onbeperkt reacties</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Volledige artsenlijst</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Direct messaging</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Artsen uitnodigen</span>
                 </li>
               </ul>
               <Link
                 to="/register"
-                className="block w-full bg-[#16A34A] text-white text-center py-3 rounded-lg font-semibold hover:bg-[#15803d] transition"
+                className="block w-full bg-[#4FA151] text-white text-center py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Start met Pro
               </Link>
@@ -97,23 +97,23 @@ export default function Prijzen() {
               </div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Onbeperkt opdrachten</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Alle Pro functies</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Dedicated support</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Custom SLA</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">API toegang</span>
                 </li>
               </ul>
@@ -140,11 +140,11 @@ export default function Prijzen() {
               </div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Direct toegang tot een selectie van opdrachten</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Beperkt aantal reacties per week</span>
                 </li>
               </ul>
@@ -156,9 +156,9 @@ export default function Prijzen() {
               </Link>
             </div>
 
-            <div className="bg-white rounded-lg shadow-xl border-2 border-[#16A34A] p-8 relative">
+            <div className="bg-white rounded-lg shadow-xl border-2 border-[#4FA151] p-8 relative">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#16A34A] text-white text-sm px-4 py-1 rounded-full">
+                <span className="bg-[#4FA151] text-white text-sm px-4 py-1 rounded-full">
                   Meest gekozen
                 </span>
               </div>
@@ -172,25 +172,25 @@ export default function Prijzen() {
               </div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Direct toegang tot alle opdrachten</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Onbeperkt reageren op opdrachten</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Onbeperkt zoekopdrachten opslaan</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Bespaar 42% t.o.v. een Flex abonnement</span>
                 </li>
               </ul>
               <Link
                 to="/register"
-                className="block w-full bg-[#16A34A] text-white text-center py-3 rounded-lg font-semibold hover:bg-[#15803d] transition"
+                className="block w-full bg-[#4FA151] text-white text-center py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Ga verder
               </Link>
@@ -207,21 +207,21 @@ export default function Prijzen() {
               </div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Direct toegang tot alle opdrachten</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Onbeperkt reageren op opdrachten</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-5 h-5 text-[#16A34A] mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Onbeperkt zoekopdrachten opslaan</span>
                 </li>
               </ul>
               <Link
                 to="/register"
-                className="block w-full bg-[#16A34A] text-white text-center py-3 rounded-lg font-semibold hover:bg-[#15803d] transition"
+                className="block w-full bg-[#4FA151] text-white text-center py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Ga verder
               </Link>

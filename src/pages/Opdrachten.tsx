@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import type { Job } from '../lib/types';
-import { Search, MapPin, Briefcase, Calendar, ChevronDown, X, CheckCircle, ArrowRight, Home, Users } from 'lucide-react';
+import { Search, MapPin, Briefcase, Calendar, ChevronDown, ChevronLeft, ChevronRight, X, CheckCircle, ArrowRight, Home, Users } from 'lucide-react';
 import { fakeJobs, type FakeJob } from '../data/fakeJobs';
 
 const expertiseOptions = [
@@ -31,9 +31,18 @@ export default function Opdrachten() {
     expertise: [] as string[],
     location: [] as string[],
   });
+  const [page, setPage] = useState(1);
+
+  const PAGE_SIZE = 15;
+  const totalPages = Math.max(1, Math.ceil(jobs.length / PAGE_SIZE));
+  const paginatedJobs = jobs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   useEffect(() => {
     fetchJobs();
+  }, [filters, searchTerm, sortOrder]);
+
+  useEffect(() => {
+    setPage(1);
   }, [filters, searchTerm, sortOrder]);
 
   const fetchJobs = async () => {
@@ -109,9 +118,9 @@ export default function Opdrachten() {
   };
 
   return (
-    <div className="bg-[#F3F4F6] min-h-screen">
-      <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div className="min-h-screen bg-[#0F172A]">
+      <div className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] py-16 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
             <Link to="/" className="hover:text-white transition flex items-center gap-1">
               <Home className="w-4 h-4" />
@@ -119,36 +128,39 @@ export default function Opdrachten() {
             <span>/</span>
             <span className="text-white font-medium">Opdrachten</span>
           </div>
+          <div className="flex items-center gap-3 mb-4">
+            <Briefcase className="w-8 h-8 text-[#4FA151]" />
+            <span className="text-[#4FA151] font-semibold text-sm uppercase tracking-wider">Vacatures</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Opdrachten</h1>
+          <p className="text-xl text-gray-300 max-w-2xl">
+            Bekijk alle beschikbare opdrachten voor bedrijfsartsen en arbo-professionals.
+            Of het nu gaat om freelance, interim of detachering – zoek in onze actuele opdrachten en ga aan de slag.
+          </p>
+        </div>
+      </div>
 
-          <div className="grid lg:grid-cols-2 gap-8 items-start">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Opdrachten</h1>
-              <p className="text-gray-300 text-lg leading-relaxed">
-                Bekijk alle beschikbare opdrachten voor bedrijfsartsen en arbo-professionals.
-                Of het nu gaat om freelance opdrachten, interim opdrachten of detachering -
-                er is veel keuze. Zoek in onze actuele opdrachten en ga aan de slag!
-              </p>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm rounded-[16px] p-6 border border-white/10">
-              <h2 className="text-xl font-bold text-white mb-4">De juiste professional vinden?</h2>
-              <div className="space-y-3 mb-6">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0 mt-0.5" />
-                  <p className="text-gray-200"><span className="font-semibold text-white">Persoonlijke hulp</span> bij opdracht plaatsing en selectie</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0 mt-0.5" />
-                  <p className="text-gray-200">Binnen <span className="font-semibold text-white">24 uur</span> de juiste match</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0 mt-0.5" />
-                  <p className="text-gray-200">Geheel <span className="font-semibold text-white">onafhankelijk</span></p>
-                </div>
+      <div className="bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white rounded-t-3xl pt-8 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <div className="bg-[#F4FAF4] rounded-2xl p-8 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 hover:shadow-[#4FA151]/10 hover:border-[#4FA151]/25 transition-all duration-300">
+            <h2 className="text-lg font-semibold text-[#0F172A] mb-4">De juiste professional vinden?</h2>
+            <div className="flex flex-wrap items-center gap-6">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0" />
+                <span className="text-slate-600"><span className="font-semibold text-[#0F172A]">Persoonlijke hulp</span> bij opdracht plaatsing</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0" />
+                <span className="text-slate-600">Binnen <span className="font-semibold text-[#0F172A]">48 uur</span> de juiste match</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0" />
+                <span className="text-slate-600">Geheel <span className="font-semibold text-[#0F172A]">onafhankelijk</span></span>
               </div>
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-3 rounded-[12px] font-semibold hover:bg-[#3E8E45] transition w-full justify-center"
+                className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition ml-auto"
               >
                 Plaats je eerste opdracht gratis
                 <ArrowRight className="w-4 h-4" />
@@ -156,9 +168,7 @@ export default function Opdrachten() {
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1 order-2 lg:order-1">
             {error && (
@@ -167,7 +177,7 @@ export default function Opdrachten() {
               </div>
             )}
             <div className="flex items-center justify-between mb-6">
-              <p className="text-sm text-gray-500">{jobs.length} opdrachten gevonden</p>
+              <p className="text-sm text-gray-500">{jobs.length} opdrachten (pagina {page} van {totalPages})</p>
               <div className="relative">
                 <select
                   value={sortOrder}
@@ -193,56 +203,93 @@ export default function Opdrachten() {
               </div>
             ) : (
               <div className="space-y-3">
-                {jobs.map((job) => (
+                {paginatedJobs.map((job) => (
                   <Link
                     key={job.id}
                     to={`/opdrachten/${job.id}`}
                     className="block bg-white rounded-[16px] border border-gray-100 hover:border-[#4FA151]/30 hover:shadow-md transition group"
                   >
-                    <div className="flex items-center px-6 py-5">
+                    <div className="flex items-center px-6 py-5 gap-4">
                       <div className="flex-1 min-w-0 pr-4">
                         <h3 className="text-base font-semibold text-[#0F172A] group-hover:text-[#4FA151] transition truncate">
                           {job.title}
                         </h3>
                       </div>
 
-                      <div className="flex items-center gap-8 text-sm text-gray-500 flex-shrink-0">
-                        <div className="flex items-center gap-2 min-w-[140px]">
+                      <div className="flex items-center gap-6 sm:gap-8 text-sm text-gray-500 flex-shrink-0">
+                        <div className="flex items-center gap-2 min-w-[120px]">
                           <MapPin className="w-4 h-4 text-[#4FA151] flex-shrink-0" />
                           <span className="truncate">{job.region || '-'}</span>
                         </div>
-
-                        <div className="flex items-center gap-2 min-w-[60px]">
+                        <div className="flex items-center gap-2 min-w-[50px]">
                           <Users className="w-4 h-4 text-[#0F172A] flex-shrink-0" />
                           <span>{(job as any).applicants_count || 0}</span>
                         </div>
-
-                        <div className="flex items-center gap-2 min-w-[100px]">
+                        <div className="flex items-center gap-2 min-w-[90px]">
                           <Calendar className="w-4 h-4 text-[#0F172A] flex-shrink-0" />
                           <span>{formatDate(job.created_at)}</span>
                         </div>
+                        <span className="flex items-center gap-1.5 text-[#4FA151] font-medium text-sm whitespace-nowrap">
+                          Bekijk
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                        </span>
                       </div>
                     </div>
                   </Link>
                 ))}
 
-                <div className="bg-white rounded-[16px] p-8 text-center border border-gray-200 mt-8">
+                {totalPages > 1 && (
+                  <nav className="flex items-center justify-center gap-2 mt-6 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => setPage(p => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                      className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => setPage(p)}
+                        className={`min-w-[2.5rem] py-2 px-3 rounded-lg text-sm font-medium transition ${
+                          p === page
+                            ? 'bg-[#4FA151] text-white'
+                            : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                      disabled={page === totalPages}
+                      className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </nav>
+                )}
+
+                <div className="bg-[#F4FAF4] rounded-2xl p-8 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 mt-8">
                   <h3 className="text-lg font-semibold text-[#0F172A] mb-2">
                     Reageren op deze opdracht?
                   </h3>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-slate-600 mb-6">
                     Registreer gratis om te reageren op opdrachten.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <Link
                       to="/login"
-                      className="px-6 py-3 border border-gray-300 rounded-[12px] text-[#0F172A] font-semibold hover:bg-gray-50 transition"
+                      className="px-6 py-3 bg-[#0F172A] text-white rounded-xl font-semibold hover:bg-[#1E293B] transition"
                     >
                       Inloggen
                     </Link>
                     <Link
                       to="/register"
-                      className="px-6 py-3 bg-[#4FA151] text-white rounded-[12px] font-semibold hover:bg-[#3E8E45] transition"
+                      className="px-6 py-3 bg-[#4FA151] text-white rounded-xl font-semibold hover:bg-[#3E8E45] transition"
                     >
                       Gratis registreren
                     </Link>
@@ -325,13 +372,14 @@ export default function Opdrachten() {
 
                 <button
                   onClick={() => fetchJobs()}
-                  className="w-full bg-[#4FA151] text-white py-3 rounded-[12px] font-semibold hover:bg-[#3E8E45] transition"
+                  className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
                 >
                   Filters toepassen
                 </button>
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

@@ -65,7 +65,7 @@ export default function OpdrachtgeverDashboard() {
         <h1 className="text-3xl font-bold text-[#0F172A]">Dashboard</h1>
         <Link
           to="/opdrachtgever/opdrachten"
-          className="flex items-center bg-[#16A34A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#15803d] transition"
+          className="flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
         >
           <Plus className="w-5 h-5 mr-2" />
           Nieuwe opdracht
@@ -90,8 +90,8 @@ export default function OpdrachtgeverDashboard() {
           className="bg-white p-6 rounded-lg shadow-lg border-2 border-transparent hover:border-[#0F172A] transition"
         >
           <div className="flex items-center justify-between mb-4">
-            <Users className="w-8 h-8 text-[#16A34A]" />
-            <span className="text-3xl font-bold text-[#16A34A]">{stats.applications}</span>
+            <Users className="w-8 h-8 text-[#4FA151]" />
+            <span className="text-3xl font-bold text-[#4FA151]">{stats.applications}</span>
           </div>
           <h3 className="text-lg font-semibold text-gray-700">Kandidaten</h3>
           <p className="text-sm text-gray-600">Totaal aantal reacties</p>

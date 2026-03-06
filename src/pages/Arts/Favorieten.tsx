@@ -77,7 +77,7 @@ export default function ArtsFavorieten() {
           </p>
           <Link
             to="/arts/opdrachten"
-            className="inline-block bg-[#16A34A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#15803d] transition"
+            className="inline-block bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
           >
             Bekijk opdrachten
           </Link>
@@ -98,11 +98,17 @@ export default function ArtsFavorieten() {
               </button>
 
               <div className="mb-4">
-                <div className="w-12 h-12 bg-[#16A34A] rounded-lg flex items-center justify-center text-white font-bold text-xs mb-3">
-                  PRO
-                </div>
+                {(job as { job_tier?: string }).job_tier === 'PRO' ? (
+                  <div className="w-12 h-12 bg-[#4FA151] rounded-lg flex items-center justify-center text-white font-bold text-xs mb-3">
+                    PRO
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 font-bold text-xs mb-3">
+                    {job.company_name?.slice(0, 2).toUpperCase() || 'OP'}
+                  </div>
+                )}
                 <Link to={`/opdrachten/${job.id}`}>
-                  <h3 className="font-bold text-[#0F172A] hover:text-[#16A34A] transition line-clamp-2 pr-6">
+                  <h3 className="font-bold text-[#0F172A] hover:text-[#4FA151] transition line-clamp-2 pr-6">
                     {job.title}
                   </h3>
                 </Link>

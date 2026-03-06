@@ -3,11 +3,13 @@ export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'REJECT
 export type JobStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED';
 export type ApplicationStatus = 'PENDING' | 'SHORTLISTED' | 'REJECTED' | 'ACCEPTED';
 export type InviteStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED';
-export type SubscriptionPlan = 'BASIC' | 'PRO' | 'ENTERPRISE' | 'PREMIUM_DOCTOR';
+export type DoctorPlan = 'BASIC' | 'PRO';
+export type SubscriptionPlan = 'BASIC' | 'PRO';
 export type SubscriptionStatus = 'ACTIVE' | 'CANCELLED' | 'EXPIRED';
 export type InvoiceStatus = 'DRAFT' | 'PAID' | 'FAILED';
 export type FavoriteType = 'JOB' | 'DOCTOR';
 export type JobType = 'TIJDELIJK' | 'INTERIM' | 'VAST' | 'PROJECT';
+export type JobTier = 'PRO' | 'STANDARD';
 export type RemoteType = 'REMOTE' | 'HYBRID' | 'ONSITE';
 export type PosterType = 'DIRECT' | 'INTERMEDIARY';
 
@@ -52,8 +54,7 @@ export interface Doctor {
   availability_text: string | null;
   availability_calendar: any;
   cv_url: string | null;
-  premium_status: boolean;
-  premium_until: string | null;
+  doctor_plan: DoctorPlan;
   created_at: string;
   updated_at: string;
 }
@@ -66,13 +67,13 @@ export interface Job {
   region: string | null;
   remote_type: RemoteType;
   job_type: JobType;
+  job_tier: JobTier;
   start_date: string | null;
   duration_weeks: number | null;
   hours_per_week: number | null;
   rate_min: number | null;
   rate_max: number | null;
   status: JobStatus;
-  is_pro: boolean;
   company_name: string | null;
   views_count: number;
   applications_count: number;
@@ -163,6 +164,12 @@ export interface Invoice {
   created_at: string;
 }
 
+export interface ContentStoreRow {
+  key: string;
+  value: unknown;
+  updated_at: string;
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -236,6 +243,12 @@ export interface Database {
         Row: Invoice;
         Insert: Omit<Invoice, 'id' | 'created_at'>;
         Update: Partial<Omit<Invoice, 'id' | 'created_at'>>;
+        Relationships: [];
+      };
+      content_store: {
+        Row: ContentStoreRow;
+        Insert: { key: string; value: unknown; updated_at?: string };
+        Update: { value?: unknown; updated_at?: string };
         Relationships: [];
       };
     };

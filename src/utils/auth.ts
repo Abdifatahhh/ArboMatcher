@@ -72,7 +72,7 @@ export function categorizeAuthError(error: unknown, step: AuthDiagnostic['step']
     diagnostic.category = 'too_many_requests';
     result = {
       category: 'too_many_requests',
-      userMessage: 'Te veel inlogpogingen. Wacht een moment en probeer opnieuw.',
+      userMessage: 'Te veel pogingen. Wacht een minuut en probeer opnieuw.',
       technicalMessage: errorMessage,
     };
   } else if (errorMessage.toLowerCase().includes('fetch') ||

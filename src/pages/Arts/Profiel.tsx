@@ -76,7 +76,7 @@ export default function ArtsProfiel() {
             hourly_rate: doctor.hourly_rate,
             availability_text: doctor.availability_text,
             verification_status: 'PENDING',
-            premium_status: false
+            doctor_plan: 'BASIC'
           });
       }
 
@@ -174,10 +174,13 @@ export default function ArtsProfiel() {
               </label>
               <input
                 type="text"
+                inputMode="numeric"
+                maxLength={11}
                 value={doctor.big_number || ''}
-                onChange={(e) => setDoctor({ ...doctor, big_number: e.target.value })}
+                onChange={(e) => setDoctor({ ...doctor, big_number: e.target.value.replace(/\D/g, '').slice(0, 11) })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
-                placeholder="123456789"
+                placeholder="12345678901"
+                title="BIG-nummer bestaat uit 11 cijfers"
               />
             </div>
 
@@ -251,7 +254,7 @@ export default function ArtsProfiel() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="w-full md:w-auto flex items-center justify-center bg-[#16A34A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#15803d] transition disabled:opacity-50"
+          className="w-full md:w-auto flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50"
         >
           <Save className="w-5 h-5 mr-2" />
           {saving ? 'Bezig met opslaan...' : 'Opslaan'}

@@ -93,13 +93,13 @@ function FilterDropdown({ label, options, selected, onChange }: FilterDropdownPr
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition text-sm font-medium ${
           selected.length > 0
-            ? 'bg-[#F0FDF4] border-[#16A34A] text-[#16A34A]'
+            ? 'bg-[#F0FDF4] border-[#4FA151] text-[#4FA151]'
             : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
         }`}
       >
         <span>{label}</span>
         <span className={`flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full text-xs ${
-          selected.length > 0 ? 'bg-[#16A34A] text-white' : 'bg-gray-100 text-gray-600'
+          selected.length > 0 ? 'bg-[#4FA151] text-white' : 'bg-gray-100 text-gray-600'
         }`}>
           {selected.length}
         </span>
@@ -117,7 +117,7 @@ function FilterDropdown({ label, options, selected, onChange }: FilterDropdownPr
                 type="checkbox"
                 checked={selected.includes(option.value)}
                 onChange={() => toggleOption(option.value)}
-                className="w-4 h-4 rounded border-gray-300 text-[#16A34A] focus:ring-[#16A34A]"
+                className="w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
               />
               <span className="text-sm text-gray-700">{option.label}</span>
             </label>
@@ -308,16 +308,16 @@ export default function ArtsOpdrachten() {
       <div className="mb-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <div className="flex flex-wrap items-center gap-2 pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus-within:ring-2 focus-within:ring-[#16A34A] focus-within:border-transparent min-h-[44px]">
+          <div className="flex flex-wrap items-center gap-2 pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus-within:ring-2 focus-within:ring-[#4FA151] focus-within:border-transparent min-h-[44px]">
             {searchTags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#F0FDF4] text-[#16A34A] rounded-full text-sm font-medium"
+                className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#F0FDF4] text-[#4FA151] rounded-full text-sm font-medium"
               >
                 {tag}
                 <button
                   onClick={() => removeSearchTag(tag)}
-                  className="hover:bg-[#16A34A] hover:text-white rounded-full p-0.5 transition"
+                  className="hover:bg-[#4FA151] hover:text-white rounded-full p-0.5 transition"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -426,8 +426,8 @@ export default function ArtsOpdrachten() {
                 className="bg-white rounded-xl border border-gray-100 p-5 cursor-pointer transition-all hover:shadow-md hover:border-gray-200"
               >
                 <div className="flex items-start justify-between mb-4">
-                  {job.is_pro ? (
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#16A34A] to-[#15803D] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                  {(job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro ? (
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#4FA151] to-[#3E8E45] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
                       PRO
                     </div>
                   ) : (
@@ -437,9 +437,9 @@ export default function ArtsOpdrachten() {
                   )}
                   <button
                     onClick={(e) => toggleFavorite(e, job.id)}
-                    className="p-1 transition text-gray-300 hover:text-[#16A34A]"
+                    className="p-1 transition text-gray-300 hover:text-[#4FA151]"
                   >
-                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#16A34A] text-[#16A34A]' : ''}`} />
+                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#4FA151] text-[#4FA151]' : ''}`} />
                   </button>
                 </div>
 
@@ -448,10 +448,10 @@ export default function ArtsOpdrachten() {
                 </h3>
 
                 <div className="space-y-2 text-sm text-gray-500">
-                  {job.is_pro && (
+                  {((job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro) && (
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-gray-400" />
-                      <span className="text-[#16A34A] font-medium">PRO opdracht</span>
+                      <span className="text-[#4FA151] font-medium">PRO opdracht</span>
                     </div>
                   )}
                   {job.region && (
@@ -494,8 +494,8 @@ export default function ArtsOpdrachten() {
               >
                 <div className="flex items-center gap-4">
                   <div className="flex-shrink-0">
-                    {job.is_pro ? (
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#16A34A] to-[#15803D] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                    {(job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro ? (
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#4FA151] to-[#3E8E45] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
                         PRO
                       </div>
                     ) : (
@@ -510,8 +510,8 @@ export default function ArtsOpdrachten() {
                       {job.title}
                     </h3>
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-sm text-gray-500">
-                      {job.is_pro && (
-                        <span className="text-[#16A34A] font-medium">PRO opdracht</span>
+                      {((job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro) && (
+                        <span className="text-[#4FA151] font-medium">PRO opdracht</span>
                       )}
                       {job.region && (
                         <span className="flex items-center gap-1">
@@ -536,9 +536,9 @@ export default function ArtsOpdrachten() {
 
                   <button
                     onClick={(e) => toggleFavorite(e, job.id)}
-                    className="p-2 transition flex-shrink-0 text-gray-300 hover:text-[#16A34A]"
+                    className="p-2 transition flex-shrink-0 text-gray-300 hover:text-[#4FA151]"
                   >
-                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#16A34A] text-[#16A34A]' : ''}`} />
+                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#4FA151] text-[#4FA151]' : ''}`} />
                   </button>
                 </div>
               </div>

@@ -234,7 +234,7 @@ export default function OpdrachtgeverProfiel() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="w-full md:w-auto flex items-center justify-center bg-[#16A34A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#15803d] transition disabled:opacity-50"
+          className="w-full md:w-auto flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50"
         >
           <Save className="w-5 h-5 mr-2" />
           {saving ? 'Bezig met opslaan...' : 'Opslaan'}

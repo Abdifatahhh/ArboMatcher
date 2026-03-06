@@ -146,7 +146,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     role: Profile['role']
   ): Promise<{ error: CategorizedError | null }> => {
     try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { role } },
+      });
 
       if (error) {
         const categorized = categorizeAuthError(error, 'auth');
@@ -163,20 +167,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         };
       }
 
-      const { error: insertError } = await supabase.from('profiles').insert({
-        id: data.user.id,
-        email,
-        role,
-        full_name: null,
-        avatar_url: null,
-        phone: null,
-        status: 'ACTIVE',
-      });
-
-      if (insertError) {
-        const categorized = categorizeAuthError(insertError, 'profile_create');
-        return { error: categorized };
-      }
       return { error: null };
     } catch (err) {
       const categorized = categorizeAuthError(err, 'auth');

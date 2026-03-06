@@ -109,7 +109,7 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
                         <span>{item.label}</span>
                       </div>
                       {badge !== undefined && badge > 0 && (
-                        <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-[#0F172A]' : 'bg-[#16A34A] text-white'}`}>{badge}</span>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-[#0F172A]' : 'bg-[#4FA151] text-white'}`}>{badge}</span>
                       )}
                     </Link>
                   );
@@ -129,7 +129,7 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
   );
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex">
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex">
       <aside className="hidden lg:flex lg:flex-col lg:w-60 bg-white border-r border-gray-200 fixed h-full">
         <SidebarContent />
       </aside>
@@ -150,11 +150,11 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
             <div className="flex items-center space-x-4">
               <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition">
                 <MessageSquare className="w-5 h-5" />
-                {unreadMessages > 0 && <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#16A34A] text-white text-xs rounded-full flex items-center justify-center">{unreadMessages > 9 ? '9+' : unreadMessages}</span>}
+                {unreadMessages > 0 && <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#4FA151] text-white text-xs rounded-full flex items-center justify-center">{unreadMessages > 9 ? '9+' : unreadMessages}</span>}
               </button>
               <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition">
                 <Bell className="w-5 h-5" />
-                {pendingInvites > 0 && <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#16A34A] text-white text-xs rounded-full flex items-center justify-center">{pendingInvites > 9 ? '9+' : pendingInvites}</span>}
+                {pendingInvites > 0 && <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#4FA151] text-white text-xs rounded-full flex items-center justify-center">{pendingInvites > 9 ? '9+' : pendingInvites}</span>}
               </button>
               <Link to="/arts/profiel" className="w-9 h-9 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-300 transition overflow-hidden">
                 {profile?.full_name ? <span className="text-sm font-semibold">{profile.full_name.charAt(0).toUpperCase()}</span> : <User className="w-5 h-5" />}

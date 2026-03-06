@@ -60,3 +60,16 @@ export async function toggleUserBlocked(profileId: string): Promise<{ error: Err
   const { error } = await supabase.from('profiles').update({ status: newStatus }).eq('id', profileId);
   return { error: error ?? null };
 }
+
+export async function deleteUserPermanently(userId: string): Promise<{ error: string | null }> {
+  const { data, error } = await supabase.rpc('admin_delete_user_by_admin', {
+    p_target_user_id: userId,
+  });
+  if (error) {
+    return { error: error.message ?? 'Verwijderen mislukt.' };
+  }
+  if (!data || (typeof data === 'object' && (data as { ok?: boolean }).ok !== true)) {
+    return { error: 'Verwijderen gaf geen succes terug.' };
+  }
+  return { error: null };
+}

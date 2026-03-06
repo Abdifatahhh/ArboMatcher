@@ -78,7 +78,7 @@ export default function ArtsReacties() {
           <p className="text-gray-600 mb-6">Begin met reageren op opdrachten om hier uw reacties te zien</p>
           <Link
             to="/arts/opdrachten"
-            className="inline-block bg-[#16A34A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#15803d] transition"
+            className="inline-block bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
           >
             Bekijk opdrachten
           </Link>
@@ -92,13 +92,19 @@ export default function ArtsReacties() {
                 <div className="p-4 lg:p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start space-x-4 flex-1 min-w-0">
-                      <div className="w-12 h-12 bg-[#16A34A] rounded-lg flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
-                        PRO
-                      </div>
+                      {(application.jobs as { job_tier?: string })?.job_tier === 'PRO' ? (
+                        <div className="w-12 h-12 bg-[#4FA151] rounded-xl flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+                          PRO
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 font-bold text-xs flex-shrink-0">
+                          {application.jobs?.company_name?.slice(0, 2).toUpperCase() || 'OP'}
+                        </div>
+                      )}
                       <div className="flex-1 min-w-0">
                         <Link
                           to={`/opdrachten/${application.jobs.id}`}
-                          className="font-bold text-[#0F172A] hover:text-[#16A34A] transition block truncate"
+                          className="font-bold text-[#0F172A] hover:text-[#4FA151] transition block truncate"
                         >
                           {application.jobs.title}
                         </Link>

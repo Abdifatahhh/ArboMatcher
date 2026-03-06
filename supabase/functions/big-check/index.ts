@@ -8,10 +8,10 @@ const corsHeaders = {
 
 const BIG_API_URL = "https://api.bigregister.nl/zksrv/soap/4";
 
-/** BIG-nummer: 8 of 9 cijfers */
+/** BIG-nummer: 11 cijfers (Nederlands BIG-register) */
 function isValidBigFormat(big: string): boolean {
   const cleaned = String(big).replace(/\s/g, "");
-  return /^[0-9]{8,9}$/.test(cleaned);
+  return /^[0-9]{11}$/.test(cleaned);
 }
 
 /** Roep RIBIZ Openbaar V4 SOAP API aan om BIG op te zoeken. */
@@ -124,7 +124,7 @@ Deno.serve(async (req: Request) => {
           formatValid: false,
           registerChecked: false,
           found: false,
-          message: "Ongeldig formaat. BIG-nummer bestaat uit 8 of 9 cijfers.",
+          message: "Ongeldig formaat. BIG-nummer bestaat uit 11 cijfers.",
         } as BigCheckResponse),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );

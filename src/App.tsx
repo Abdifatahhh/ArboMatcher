@@ -1,54 +1,71 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { RedirectToDashboard, RedirectToProfiel } from './components/auth/RedirectByRole';
+import { MaintenanceGate } from './components/MaintenanceGate';
+import { CookieBanner } from './components/CookieBanner';
 import { PublicLayout } from './components/Layout/PublicLayout';
 import { DashboardLayout } from './components/Layout/DashboardLayout';
 import { ArtsDashboardLayout } from './components/Layout/ArtsDashboardLayout';
 
-import Home from './pages/Home';
-import Over from './pages/Over';
-import Opdrachten from './pages/Opdrachten';
-import OpdrachtDetail from './pages/OpdrachtDetail';
-import Prijzen from './pages/Prijzen';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import WachtwoordVergeten from './pages/WachtwoordVergeten';
-import Privacy from './pages/Privacy';
-import Terms from './pages/Terms';
-import Contact from './pages/Contact';
-import HoeHetWerkt from './pages/HoeHetWerkt';
-import Oplossingen from './pages/Oplossingen';
+const Home = lazy(() => import('./pages/Home'));
+const Over = lazy(() => import('./pages/Over'));
+const Opdrachten = lazy(() => import('./pages/Opdrachten'));
+const OpdrachtDetail = lazy(() => import('./pages/OpdrachtDetail'));
+const Prijzen = lazy(() => import('./pages/Prijzen'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const WachtwoordVergeten = lazy(() => import('./pages/WachtwoordVergeten'));
+const EmailVerificatie = lazy(() => import('./pages/EmailVerificatie'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Community = lazy(() => import('./pages/Community'));
+const CommunityArticle = lazy(() => import('./pages/CommunityArticle'));
+const CommunityTopic = lazy(() => import('./pages/CommunityTopic'));
+const Oplossingen = lazy(() => import('./pages/Oplossingen'));
+const FAQ = lazy(() => import('./pages/FAQ'));
 
-import ArtsDashboard from './pages/Arts/Dashboard';
-import ArtsProfiel from './pages/Arts/Profiel';
-import ArtsOpdrachten from './pages/Arts/Opdrachten';
-import ArtsReacties from './pages/Arts/Reacties';
-import ArtsUitnodigingen from './pages/Arts/Uitnodigingen';
-import ArtsInbox from './pages/Arts/Inbox';
-import ArtsAbonnement from './pages/Arts/Abonnement';
-import ArtsFavorieten from './pages/Arts/Favorieten';
+const ArtsDashboard = lazy(() => import('./pages/Arts/Dashboard'));
+const ArtsProfiel = lazy(() => import('./pages/Arts/Profiel'));
+const ArtsOpdrachten = lazy(() => import('./pages/Arts/Opdrachten'));
+const ArtsReacties = lazy(() => import('./pages/Arts/Reacties'));
+const ArtsUitnodigingen = lazy(() => import('./pages/Arts/Uitnodigingen'));
+const ArtsInbox = lazy(() => import('./pages/Arts/Inbox'));
+const ArtsAbonnement = lazy(() => import('./pages/Arts/Abonnement'));
+const ArtsFavorieten = lazy(() => import('./pages/Arts/Favorieten'));
 
-import OpdrachtgeverDashboard from './pages/Opdrachtgever/Dashboard';
-import OpdrachtgeverProfiel from './pages/Opdrachtgever/Profiel';
-import OpdrachtgeverOpdrachten from './pages/Opdrachtgever/Opdrachten';
-import OpdrachtgeverKandidaten from './pages/Opdrachtgever/Kandidaten';
-import OpdrachtgeverFavorieten from './pages/Opdrachtgever/Favorieten';
-import OpdrachtgeverInbox from './pages/Opdrachtgever/Inbox';
-import OpdrachtgeverAbonnement from './pages/Opdrachtgever/Abonnement';
+const OpdrachtgeverDashboard = lazy(() => import('./pages/Opdrachtgever/Dashboard'));
+const OpdrachtgeverProfiel = lazy(() => import('./pages/Opdrachtgever/Profiel'));
+const OpdrachtgeverOpdrachten = lazy(() => import('./pages/Opdrachtgever/Opdrachten'));
+const OpdrachtgeverKandidaten = lazy(() => import('./pages/Opdrachtgever/Kandidaten'));
+const OpdrachtgeverFavorieten = lazy(() => import('./pages/Opdrachtgever/Favorieten'));
+const OpdrachtgeverInbox = lazy(() => import('./pages/Opdrachtgever/Inbox'));
+const OpdrachtgeverAbonnement = lazy(() => import('./pages/Opdrachtgever/Abonnement'));
 
-import AdminDashboard from './pages/Admin/Dashboard';
-import AdminVerificaties from './pages/Admin/Verificaties';
-import AdminGebruikers from './pages/Admin/Gebruikers';
-import AdminOpdrachten from './pages/Admin/Opdrachten';
-import AdminAbonnementen from './pages/Admin/Abonnementen';
-import AdminInstellingen from './pages/Admin/Instellingen';
-import AdminGebruikerDetail from './pages/Admin/GebruikerDetail';
-import AdminArtsen from './pages/Admin/Artsen';
-import AdminArtsDetail from './pages/Admin/ArtsDetail';
-import AdminReacties from './pages/Admin/Reacties';
-import AdminOpdrachtgevers from './pages/Admin/Opdrachtgevers';
-import AdminOpdrachtgeverDetail from './pages/Admin/OpdrachtgeverDetail';
+const AdminDashboard = lazy(() => import('./pages/Admin/Dashboard'));
+const AdminVerificaties = lazy(() => import('./pages/Admin/Verificaties'));
+const AdminGebruikers = lazy(() => import('./pages/Admin/Gebruikers'));
+const AdminOpdrachten = lazy(() => import('./pages/Admin/Opdrachten'));
+const AdminAbonnementen = lazy(() => import('./pages/Admin/Abonnementen'));
+const AdminInstellingen = lazy(() => import('./pages/Admin/Instellingen'));
+const AdminGebruikerDetail = lazy(() => import('./pages/Admin/GebruikerDetail'));
+const AdminArtsen = lazy(() => import('./pages/Admin/Artsen'));
+const AdminArtsDetail = lazy(() => import('./pages/Admin/ArtsDetail'));
+const AdminReacties = lazy(() => import('./pages/Admin/Reacties'));
+const AdminOpdrachtgevers = lazy(() => import('./pages/Admin/Opdrachtgevers'));
+const AdminOpdrachtgeverDetail = lazy(() => import('./pages/Admin/OpdrachtgeverDetail'));
+const AdminCommunityBeheer = lazy(() => import('./pages/Admin/CommunityBeheer'));
+
+function PageLoader() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]" />
+    </div>
+  );
+}
 
 function OpdrachtRedirect() {
   const { id } = useParams<{ id: string }>();
@@ -59,8 +76,11 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <Routes>
-          <Route
+        <ToastProvider>
+          <MaintenanceGate>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+            <Route
             path="/"
             element={
               <PublicLayout>
@@ -68,7 +88,7 @@ function App() {
               </PublicLayout>
             }
           />
-          <Route
+            <Route
             path="/over"
             element={
               <PublicLayout>
@@ -76,7 +96,7 @@ function App() {
               </PublicLayout>
             }
           />
-          <Route
+            <Route
             path="/opdrachten"
             element={
               <PublicLayout>
@@ -84,7 +104,7 @@ function App() {
               </PublicLayout>
             }
           />
-          <Route
+            <Route
             path="/opdrachten/:id"
             element={
               <PublicLayout>
@@ -92,11 +112,11 @@ function App() {
               </PublicLayout>
             }
           />
-          <Route
+            <Route
             path="/opdracht/:id"
             element={<OpdrachtRedirect />}
           />
-          <Route
+            <Route
             path="/prijzen"
             element={
               <PublicLayout>
@@ -104,15 +124,19 @@ function App() {
               </PublicLayout>
             }
           />
-          <Route
+            <Route
             path="/login"
             element={<Login />}
           />
-          <Route
+            <Route
             path="/register"
             element={<Register />}
           />
-          <Route
+            <Route
+            path="/email-verificatie"
+            element={<EmailVerificatie />}
+          />
+            <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
@@ -120,7 +144,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/profiel"
             element={
               <ProtectedRoute>
@@ -128,11 +152,11 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/wachtwoord-vergeten"
             element={<WachtwoordVergeten />}
           />
-          <Route
+            <Route
             path="/privacy"
             element={
               <PublicLayout>
@@ -140,7 +164,7 @@ function App() {
               </PublicLayout>
             }
           />
-          <Route
+            <Route
             path="/terms"
             element={
               <PublicLayout>
@@ -148,7 +172,7 @@ function App() {
               </PublicLayout>
             }
           />
-          <Route
+            <Route
             path="/contact"
             element={
               <PublicLayout>
@@ -156,15 +180,15 @@ function App() {
               </PublicLayout>
             }
           />
-          <Route
-            path="/hoe-het-werkt"
+            <Route
+            path="/faq"
             element={
               <PublicLayout>
-                <HoeHetWerkt />
+                <FAQ />
               </PublicLayout>
             }
           />
-          <Route
+            <Route
             path="/oplossingen"
             element={
               <PublicLayout>
@@ -172,8 +196,32 @@ function App() {
               </PublicLayout>
             }
           />
+            <Route
+            path="/community"
+            element={
+              <PublicLayout>
+                <Community />
+              </PublicLayout>
+            }
+          />
+            <Route
+            path="/community/artikel/:slug"
+            element={
+              <PublicLayout>
+                <CommunityArticle />
+              </PublicLayout>
+            }
+          />
+            <Route
+            path="/community/onderwerp/:slug"
+            element={
+              <PublicLayout>
+                <CommunityTopic />
+              </PublicLayout>
+            }
+          />
 
-          <Route
+            <Route
             path="/arts/dashboard"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -183,7 +231,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/profiel"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -193,7 +241,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/opdrachten"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -203,7 +251,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/reacties"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -213,7 +261,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/uitnodigingen"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -223,7 +271,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/inbox"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -233,7 +281,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/abonnement"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -243,7 +291,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/favorieten"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -253,7 +301,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/zoekopdrachten"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -263,7 +311,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/beoordelingen"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -273,7 +321,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/arts/instellingen"
             element={
               <ProtectedRoute allowedRoles={['ARTS']}>
@@ -284,7 +332,7 @@ function App() {
             }
           />
 
-          <Route
+            <Route
             path="/opdrachtgever/dashboard"
             element={
               <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
@@ -294,7 +342,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/opdrachtgever/profiel"
             element={
               <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
@@ -304,7 +352,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/opdrachtgever/opdrachten"
             element={
               <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
@@ -314,7 +362,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/opdrachtgever/kandidaten"
             element={
               <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
@@ -324,7 +372,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/opdrachtgever/favorieten"
             element={
               <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
@@ -334,7 +382,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/opdrachtgever/inbox"
             element={
               <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
@@ -344,7 +392,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/opdrachtgever/abonnement"
             element={
               <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
@@ -355,7 +403,7 @@ function App() {
             }
           />
 
-          <Route
+            <Route
             path="/admin/dashboard"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -365,7 +413,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/verificaties"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -375,7 +423,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/gebruikers"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -385,7 +433,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/gebruikers/:id"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -395,7 +443,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/artsen"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -405,7 +453,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/artsen/:id"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -415,7 +463,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/reacties"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -425,7 +473,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/opdrachtgevers"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -435,7 +483,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/opdrachtgevers/:id"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -445,7 +493,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/opdrachten"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -455,7 +503,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/abonnementen"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -465,7 +513,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+            <Route
             path="/admin/instellingen"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -475,7 +523,21 @@ function App() {
               </ProtectedRoute>
             }
           />
-        </Routes>
+            <Route
+            path="/admin/community"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <DashboardLayout>
+                  <AdminCommunityBeheer />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+            </Routes>
+          </Suspense>
+          <CookieBanner />
+          </MaintenanceGate>
+        </ToastProvider>
       </AuthProvider>
     </Router>
   );
