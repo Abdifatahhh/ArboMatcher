@@ -40,30 +40,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     let mounted = true;
 
+    const AUTH_INIT_TIMEOUT_MS = 12000;
+
     const initializeAuth = async () => {
-      const health = await checkDatabaseHealth();
-      if (mounted) setHealthStatus(health);
-
-      if (!health.healthy) {
+      const timeoutId = setTimeout(() => {
         if (mounted) setLoading(false);
-        return;
+      }, AUTH_INIT_TIMEOUT_MS);
+
+      try {
+        const health = await checkDatabaseHealth();
+        if (mounted) setHealthStatus(health);
+
+        if (!health.healthy) {
+          clearTimeout(timeoutId);
+          if (mounted) setLoading(false);
+          return;
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        setUser(session?.user ?? null);
+
+        if (session?.user) {
+          const { profile: profileData } = await getOrCreateProfile(
+            session.user.id,
+            session.user.email || ''
+          );
+          if (mounted) setProfile(profileData);
+        }
+
+        if (mounted) setLoading(false);
+      } finally {
+        clearTimeout(timeoutId);
       }
-
-      const { data: { session } } = await supabase.auth.getSession();
-
-      if (!mounted) return;
-
-      setUser(session?.user ?? null);
-
-      if (session?.user) {
-        const { profile: profileData } = await getOrCreateProfile(
-          session.user.id,
-          session.user.email || ''
-        );
-        if (mounted) setProfile(profileData);
-      }
-
-      if (mounted) setLoading(false);
     };
 
     initializeAuth();
