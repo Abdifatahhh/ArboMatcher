@@ -153,7 +153,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
             <div>
               <h4 className="font-semibold mb-4">Juridisch</h4>
               <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link to="/privacy" className="hover:text-white transition">Privacy</Link></li>
+                <li><Link to="/privacy" className="hover:text-white transition">Privacy & cookies</Link></li>
                 <li><Link to="/terms" className="hover:text-white transition">Voorwaarden</Link></li>
               </ul>
             </div>

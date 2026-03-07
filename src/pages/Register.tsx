@@ -104,14 +104,14 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-24 pb-12 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-8 pb-8 md:pt-24 md:pb-12 px-3 md:px-4">
       <div className="mb-10">
         <Link to="/">
           <LogoText theme="light" className="text-2xl" />
         </Link>
       </div>
 
-      <div className="w-full max-w-xl bg-white rounded-2xl shadow-sm p-8">
+      <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-8">
         <h1 className="text-2xl font-bold text-[#0F172A] mb-6">Account aanmaken</h1>
 
         {(error || isOnCooldown) && (
@@ -213,7 +213,7 @@ export default function Register() {
               />
               <span className="text-sm text-gray-700">
                 Ik ga akkoord met de verwerking van mijn persoonsgegevens.{' '}
-                <Link to="/privacy" className="text-[#4FA151] hover:underline">Privacy</Link>
+                <Link to="/privacy" className="text-[#4FA151] hover:underline">Privacy & cookies</Link>
               </span>
             </label>
             <label className="flex items-start gap-3 cursor-pointer">

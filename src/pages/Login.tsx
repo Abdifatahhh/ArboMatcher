@@ -87,113 +87,104 @@ export default function Login() {
   const ErrorIcon = errorCategory ? errorIcons[errorCategory] : AlertCircle;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-24 pb-12 px-4">
-      <div className="mb-10">
-        <Link to="/">
-          <LogoText theme="light" className="text-2xl" />
-        </Link>
-      </div>
-
-      {healthStatus && !healthStatus.healthy && (
-        <div className="w-full max-w-md mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-          <div className="flex items-start">
-            <Database className="w-5 h-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" />
-            <div>
-              <p className="text-sm font-medium text-amber-800">Database probleem gedetecteerd</p>
-              <p className="text-xs text-amber-700 mt-1">
-                {healthStatus.category === 'env_missing' && 'Omgevingsvariabelen ontbreken'}
-                {healthStatus.category === 'network_error' && 'Kan geen verbinding maken met de database'}
-                {healthStatus.category === 'schema_error' && 'Database schema probleem'}
-                {healthStatus.category === 'rls_error' && 'Database toegangsprobleem'}
-                {healthStatus.category === 'unknown' && 'Onbekend database probleem'}
-              </p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-6 pb-8 md:pt-24 md:pb-12 px-4">
+      <div className="w-full max-w-md">
+        <div className="flex justify-center mb-8 md:mb-10">
+          <Link to="/">
+            <LogoText theme="light" className="text-5xl min-[768px]:text-2xl" />
+          </Link>
         </div>
-      )}
 
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm p-8">
-        <h1 className="text-2xl font-bold text-[#0F172A] mb-6">Inloggen</h1>
-
-        {verified && !error && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start">
-            <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 mr-3 flex-shrink-0" />
-            <p className="text-sm text-green-800">Je e-mail is geverifieerd. Log in om verder te gaan met je profiel.</p>
-          </div>
-        )}
-
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
-            <ErrorIcon className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
-            <div>
-              <p className="text-sm text-red-800">{error}</p>
-              {errorCategory === 'email_not_confirmed' && (
-                <Link to="/email-verificatie" className="text-sm text-[#4FA151] hover:underline mt-2 inline-block">
-                  Meer over e-mailverificatie
-                </Link>
-              )}
-              {errorCategory && errorCategory !== 'invalid_credentials' && errorCategory !== 'email_not_confirmed' && (
-                <p className="text-xs text-red-600 mt-1 font-mono">
-                  Foutcode: {errorCategory}
-                </p>
-              )}
+        {healthStatus && !healthStatus.healthy && (
+          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm">
+            <div className="flex items-start">
+              <Database className="w-5 h-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" />
+              <div>
+                <p className="font-medium text-amber-800">Database probleem</p>
+                <p className="text-xs text-amber-700 mt-1">{healthStatus.error}</p>
+              </div>
             </div>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-500 mb-2">
-              E-mailadres
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
-              placeholder="uw@email.nl"
-            />
+        <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-5 md:mb-6">Inloggen</h1>
+
+        <div className="bg-white md:rounded-2xl md:shadow-sm md:p-8 md:border md:border-slate-100">
+          {verified && !error && (
+            <div className="mb-5 p-3 bg-green-50 border border-green-200 rounded-lg flex items-start text-sm">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 mr-3 flex-shrink-0" />
+              <p className="text-green-800">Je e-mail is geverifieerd. Log in om verder te gaan.</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="mb-5 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start text-sm">
+              <ErrorIcon className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
+              <div>
+                <p className="text-red-800">{error}</p>
+                {errorCategory === 'email_not_confirmed' && (
+                  <Link to="/email-verificatie" className="text-[#4FA151] hover:underline mt-2 inline-block">
+                    Meer over e-mailverificatie
+                  </Link>
+                )}
+              </div>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-[#0F172A] mb-1.5">
+                E-mailadres
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition text-[#0F172A] placeholder:text-gray-400"
+                placeholder="Vul hier je e-mailadres in"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-[#0F172A] mb-1.5">
+                Wachtwoord
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition text-[#0F172A] placeholder:text-gray-400"
+                placeholder="Vul hier je wachtwoord in"
+              />
+            </div>
+
+            <div>
+              <Link to="/wachtwoord-vergeten" className="text-sm text-[#4FA151] hover:underline font-medium">
+                Wachtwoord vergeten?
+              </Link>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#4FA151] text-white py-3.5 rounded-lg font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed text-base"
+            >
+              {loading ? 'Bezig met inloggen...' : 'Inloggen'}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-[#0F172A]/80 text-sm">
+              Nog geen account?{' '}
+              <Link to="/register" className="text-[#4FA151] hover:underline font-semibold">
+                Maak een nieuw account
+              </Link>
+            </p>
           </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-500 mb-2">
-              Wachtwoord
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
-              placeholder="••••••••"
-            />
-          </div>
-
-          <div>
-            <Link to="/wachtwoord-vergeten" className="text-sm text-[#4FA151] hover:underline">
-              Wachtwoord vergeten?
-            </Link>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Bezig met inloggen...' : 'Inloggen'}
-          </button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <p className="text-gray-600">
-            Nog geen account?{' '}
-            <Link to="/register" className="text-[#4FA151] hover:underline font-medium">
-              Maak een nieuw account
-            </Link>
-          </p>
         </div>
       </div>
     </div>

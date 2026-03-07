@@ -7,3 +7,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@media (max-width: 767px) {
+  html { font-size: 15px; }
+}

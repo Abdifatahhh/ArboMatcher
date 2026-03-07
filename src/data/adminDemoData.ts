@@ -70,6 +70,28 @@ export const demoProfiles: Profile[] = [
     created_at: lastWeek,
     updated_at: now,
   },
+  {
+    id: 'demo-user-7',
+    role: 'intermediary',
+    full_name: 'Thomas Intermediair',
+    avatar_url: null,
+    phone: '06-66778899',
+    email: 'thomas@intermediair.nl',
+    status: 'ACTIVE',
+    created_at: lastWeek,
+    updated_at: now,
+  },
+  {
+    id: 'demo-user-8',
+    role: 'intermediary',
+    full_name: 'Emma Bemiddeling',
+    avatar_url: null,
+    phone: '06-10101010',
+    email: 'emma@bemiddeling.nl',
+    status: 'ACTIVE',
+    created_at: lastWeek,
+    updated_at: now,
+  },
 ];
 
 export const demoEmployers: Employer[] = [

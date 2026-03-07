@@ -11,13 +11,14 @@ import {
   Send,
   Star,
   Crown,
-  Menu,
+  List,
   X,
   Bell,
   MessageSquare,
   LayoutDashboard,
   Settings,
   LogOut,
+  User,
 } from 'lucide-react';
 
 interface ArtsDashboardLayoutProps {
@@ -26,22 +27,24 @@ interface ArtsDashboardLayoutProps {
 
 const ARTS_NAV: { path: string; label: string; icon: React.ElementType; badge?: 'invites' | 'messages' }[] = [
   { path: '/arts/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/arts/opdrachten', label: 'Zoeken', icon: Search },
-  { path: '/arts/zoekopdrachten', label: 'Mijn zoekopdrachten', icon: Bookmark },
-  { path: '/arts/favorieten', label: 'Favorieten', icon: Heart },
-  { path: '/arts/profiel', label: 'Mijn profiel', icon: FileText },
-  { path: '/arts/reacties', label: 'Verstuurde reacties', icon: Send },
-  { path: '/arts/beoordelingen', label: 'Gegeven beoordelingen', icon: Star },
-  { path: '/arts/abonnement', label: 'Upgrade naar PRO', icon: Crown },
-  { path: '/arts/uitnodigingen', label: 'Uitnodigingen', icon: Bell, badge: 'invites' },
-  { path: '/arts/inbox', label: 'Berichten', icon: MessageSquare, badge: 'messages' },
+  ...[
+    { path: '/arts/opdrachten', label: 'Zoeken', icon: Search },
+    { path: '/arts/zoekopdrachten', label: 'Mijn zoekopdrachten', icon: Bookmark },
+    { path: '/arts/favorieten', label: 'Favorieten', icon: Heart },
+    { path: '/arts/profiel', label: 'Mijn profiel', icon: FileText },
+    { path: '/arts/reacties', label: 'Verstuurde reacties', icon: Send },
+    { path: '/arts/beoordelingen', label: 'Gegeven beoordelingen', icon: Star },
+    { path: '/arts/abonnement', label: 'Upgrade naar PRO', icon: Crown },
+    { path: '/arts/uitnodigingen', label: 'Uitnodigingen', icon: Bell, badge: 'invites' as const },
+    { path: '/arts/inbox', label: 'Berichten', icon: MessageSquare, badge: 'messages' as const },
+  ].sort((a, b) => a.label.localeCompare(b.label, 'nl')),
 ];
 
 export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
   const { profile, signOut, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [pendingInvites, setPendingInvites] = useState(0);
 
@@ -81,13 +84,13 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
 
   const SidebarContent = () => (
     <>
-      <div className={`p-6 border-b ${headerBorder}`}>
+      <div className={`p-4 lg:p-6 border-b ${headerBorder}`}>
         <Link to="/" className="inline-block">
-          <LogoText theme="light" className="text-xl" />
+          <LogoText theme="light" className="text-lg lg:text-xl" />
         </Link>
-        <p className="text-sm mt-2 text-[#0F172A]/70 font-medium">Arts Dashboard</p>
+        <p className="text-xs lg:text-sm mt-1.5 lg:mt-2 text-[#0F172A]/70 font-medium">Arts Dashboard</p>
       </div>
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-3 lg:p-4 space-y-0.5 lg:space-y-1">
         {ARTS_NAV.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
@@ -97,7 +100,7 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
               key={item.path}
               to={item.path}
               onClick={() => setSidebarOpen(false)}
-              className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 ${isActive ? navActive : navInactive}`}
+              className={`flex items-center justify-between px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition-all duration-200 text-sm lg:text-base ${isActive ? navActive : navInactive}`}
             >
               <div className="flex items-center space-x-3">
                 <Icon className="w-5 h-5 shrink-0" />
@@ -112,20 +115,20 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
           );
         })}
       </nav>
-      <div className={`p-4 ${footerStyle}`}>
+      <div className={`p-3 lg:p-4 ${footerStyle}`}>
         <Link
           to="/arts/instellingen"
-          className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition mb-2 ${footerLink}`}
+          className={`flex items-center space-x-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition mb-1.5 lg:mb-2 text-sm lg:text-base ${footerLink}`}
           onClick={() => setSidebarOpen(false)}
         >
-          <Settings className="w-5 h-5" />
+          <Settings className="w-4 h-4 lg:w-5 lg:h-5" />
           <span>Instellingen</span>
         </Link>
         <button
           onClick={handleSignOut}
-          className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition w-full ${footerLink}`}
+          className={`flex items-center space-x-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition w-full text-sm lg:text-base ${footerLink}`}
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4 lg:w-5 lg:h-5" />
           <span>Uitloggen</span>
         </button>
       </div>
@@ -137,28 +140,122 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
       <aside className={`hidden lg:flex lg:flex-col lg:w-64 flex-col ${sidebarBg}`}>
         <SidebarContent />
       </aside>
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
-          <aside className={`absolute left-0 top-0 bottom-0 w-64 flex flex-col ${sidebarBg}`}>
-            <button onClick={() => setSidebarOpen(false)} className="absolute top-4 right-4 p-2 rounded-lg hover:bg-white/80 text-[#0F172A]">
-              <X className="w-6 h-6" />
-            </button>
-            <SidebarContent />
-          </aside>
-        </div>
-      )}
       <div className="flex-1 flex flex-col min-w-0">
         <header className={`bg-white border-b lg:hidden ${headerBorder}`}>
-          <div className="flex items-center justify-between px-4 py-4">
-            <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-gray-100">
-              <Menu className="w-6 h-6" />
-            </button>
-            <Link to="/" className="inline-block"><LogoText theme="light" className="text-lg" /></Link>
-            <div className="w-6" />
+          <div className="flex items-center justify-between px-3 py-2.5 md:px-4 md:py-4">
+            <Link to="/arts/dashboard" className="inline-block"><LogoText theme="light" className="text-lg" /></Link>
+            <div className="flex items-center gap-1">
+              <Link to="/arts/inbox" className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A] relative">
+                <MessageSquare className="w-5 h-5" />
+                {unreadMessages > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-[#4FA151] text-white rounded-full px-1">
+                    {unreadMessages > 9 ? '9+' : unreadMessages}
+                  </span>
+                )}
+              </Link>
+              <Link to="/arts/uitnodigingen" className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A] relative">
+                <Bell className="w-5 h-5" />
+                {pendingInvites > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-[#4FA151] text-white rounded-full px-1">
+                    {pendingInvites > 9 ? '9+' : pendingInvites}
+                  </span>
+                )}
+              </Link>
+              <Link to="/arts/profiel" className="p-1.5 rounded-full hover:bg-gray-100 text-[#0F172A] flex items-center justify-center w-9 h-9 bg-[#F4FAF4] border border-[#4FA151]/20">
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="" className="w-6 h-6 rounded-full object-cover" />
+                ) : (
+                  <User className="w-5 h-5 text-[#4FA151]" />
+                )}
+              </Link>
+            </div>
           </div>
         </header>
-        <main className="flex-1 overflow-auto">{children}</main>
+        <main className="flex-1 overflow-auto pb-20 lg:pb-0">{children}</main>
+
+        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#4FA151]/15 z-40 lg:hidden safe-area-pb">
+          <div className="grid grid-cols-3 h-14">
+            <Link to="/arts/opdrachten" className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition">
+              <Search className="w-5 h-5 text-[#4FA151]" />
+              <span className="text-[10px] font-medium">Zoeken</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => setBottomSheetOpen(true)}
+              className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition"
+            >
+              <List className="w-5 h-5 text-[#4FA151]" />
+              <span className="text-[10px] font-medium">Menu</span>
+            </button>
+            <Link to="/arts/abonnement" className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition">
+              <Crown className="w-5 h-5 text-[#4FA151]" />
+              <span className="text-[10px] font-medium">Upgrade PRO</span>
+            </Link>
+          </div>
+        </nav>
+
+        {bottomSheetOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <div className="absolute inset-0 bg-black/50" onClick={() => setBottomSheetOpen(false)} />
+            <div className="absolute bottom-0 left-0 right-0 max-h-[75vh] flex flex-col bg-white rounded-t-2xl overflow-hidden animate-in slide-in-from-bottom duration-200 border-t border-[#4FA151]/15 shadow-lg">
+              <div className="flex items-center justify-between p-4 border-b border-[#4FA151]/15">
+                <span className="font-semibold text-[#0F172A]">Menu</span>
+                <button onClick={() => setBottomSheetOpen(false)} className="p-2 rounded-lg hover:bg-[#F4FAF4] text-[#0F172A]">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <nav className="flex-1 overflow-auto p-3 space-y-0.5">
+                {ARTS_NAV.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.path;
+                  const badge = getBadge(item);
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setBottomSheetOpen(false)}
+                      className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm ${isActive ? 'bg-[#4FA151] text-white' : 'text-[#0F172A]/90 hover:bg-[#F4FAF4]'}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className="w-5 h-5 shrink-0" />
+                        <span>{item.label}</span>
+                      </div>
+                      {badge > 0 && (
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20' : 'bg-[#4FA151] text-white'}`}>
+                          {badge > 9 ? '9+' : badge}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </nav>
+              <div className="p-3 border-t border-[#4FA151]/15 space-y-1">
+                <Link to="/arts/instellingen" onClick={() => setBottomSheetOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#0F172A]/90 hover:bg-[#F4FAF4] text-sm">
+                  <Settings className="w-5 h-5" />
+                  <span>Instellingen</span>
+                </Link>
+                <button onClick={() => { handleSignOut(); setBottomSheetOpen(false); }} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#0F172A]/90 hover:bg-[#F4FAF4] text-sm w-full">
+                  <LogOut className="w-5 h-5" />
+                  <span>Uitloggen</span>
+                </button>
+              </div>
+              <div className="p-3 grid grid-cols-3 gap-2 bg-[#F4FAF4] border-t border-[#4FA151]/15">
+                <Link to="/arts/opdrachten" onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
+                  <Search className="w-5 h-5 text-[#4FA151] mb-1" />
+                  <span className="text-[10px] text-[#0F172A] font-medium">Zoeken</span>
+                </Link>
+                <Link to="/arts/reacties" onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
+                  <Send className="w-5 h-5 text-[#4FA151] mb-1" />
+                  <span className="text-[10px] text-[#0F172A] font-medium">Reacties</span>
+                </Link>
+                <Link to="/arts/abonnement" onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
+                  <Crown className="w-5 h-5 text-[#4FA151] mb-1" />
+                  <span className="text-[10px] text-[#0F172A] font-medium">Upgrade PRO</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

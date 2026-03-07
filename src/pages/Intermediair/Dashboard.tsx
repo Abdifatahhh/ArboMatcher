@@ -67,106 +67,106 @@ export default function IntermediairDashboard() {
   const displayName = profile?.full_name?.trim() || profile?.first_name || profile?.email || 'Intermediair';
 
   return (
-    <div className="p-6">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+    <div className="p-4 md:p-6">
+      <div className="mb-4 md:mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-[#0F172A]">Intermediair Dashboard</h1>
-          <p className="text-[#0F172A]/70 mt-1 font-medium">Welkom, {displayName}</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A]">Intermediair Dashboard</h1>
+          <p className="text-[#0F172A]/70 mt-0.5 md:mt-1 font-medium text-sm md:text-base">Welkom, {displayName}</p>
         </div>
         <Link
           to="/opdrachtgever/opdrachten"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#4FA151] text-white rounded-xl text-sm font-medium hover:bg-[#3E8E45] shadow-md shadow-[#4FA151]/20 transition"
+          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#4FA151] text-white rounded-xl text-xs md:text-sm font-medium hover:bg-[#3E8E45] shadow-md shadow-[#4FA151]/20 transition"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4 md:w-5 md:h-5" />
           Nieuwe opdracht
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-4 md:mb-6">
         <Link
           to="/opdrachtgever/opdrachten"
-          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
+          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
-          <div className="flex items-center justify-between mb-4">
-            <Briefcase className="w-8 h-8 text-[#0F172A]" />
-            <span className="text-3xl font-bold text-[#0F172A]">{stats.activeJobs}</span>
+          <div className="flex items-center justify-between mb-2 md:mb-4">
+            <Briefcase className="w-6 h-6 md:w-8 md:h-8 text-[#0F172A]" />
+            <span className="text-xl md:text-3xl font-bold text-[#0F172A]">{stats.activeJobs}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-800">Actieve opdrachten</h3>
-          <p className="text-sm text-gray-600">Openstaande vacatures</p>
+          <h3 className="text-sm md:text-lg font-semibold text-gray-800">Actieve opdrachten</h3>
+          <p className="text-xs md:text-sm text-gray-600">Openstaande vacatures</p>
         </Link>
         <Link
           to="/opdrachtgever/kandidaten"
-          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
+          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
-          <div className="flex items-center justify-between mb-4">
-            <Users className="w-8 h-8 text-[#4FA151]" />
-            <span className="text-3xl font-bold text-[#4FA151]">{stats.applications}</span>
+          <div className="flex items-center justify-between mb-2 md:mb-4">
+            <Users className="w-6 h-6 md:w-8 md:h-8 text-[#4FA151]" />
+            <span className="text-xl md:text-3xl font-bold text-[#4FA151]">{stats.applications}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-800">Kandidaten</h3>
-          <p className="text-sm text-gray-600">Reacties op opdrachten</p>
+          <h3 className="text-sm md:text-lg font-semibold text-gray-800">Kandidaten</h3>
+          <p className="text-xs md:text-sm text-gray-600">Reacties op opdrachten</p>
         </Link>
         <Link
           to="/opdrachtgever/inbox"
-          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
+          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
-          <div className="flex items-center justify-between mb-4">
-            <MessageSquare className="w-8 h-8 text-[#0F172A]" />
-            <span className="text-3xl font-bold text-[#0F172A]">{stats.messages}</span>
+          <div className="flex items-center justify-between mb-2 md:mb-4">
+            <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-[#0F172A]" />
+            <span className="text-xl md:text-3xl font-bold text-[#0F172A]">{stats.messages}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-800">Berichten</h3>
-          <p className="text-sm text-gray-600">Conversaties</p>
+          <h3 className="text-sm md:text-lg font-semibold text-gray-800">Berichten</h3>
+          <p className="text-xs md:text-sm text-gray-600">Conversaties</p>
         </Link>
         <Link
           to="/opdrachtgever/profiel"
-          className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
+          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
-          <div className="flex items-center justify-between mb-4">
-            <User className="w-8 h-8 text-gray-500" />
-            <span className="text-3xl font-bold text-gray-700">—</span>
+          <div className="flex items-center justify-between mb-2 md:mb-4">
+            <User className="w-6 h-6 md:w-8 md:h-8 text-gray-500" />
+            <span className="text-xl md:text-3xl font-bold text-gray-700">—</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-800">Organisatiegegevens</h3>
-          <p className="text-sm text-gray-600">Bedrijfsgegevens (KvK vast)</p>
+          <h3 className="text-sm md:text-lg font-semibold text-gray-800">Organisatiegegevens</h3>
+          <p className="text-xs md:text-sm text-gray-600">Bedrijfsgegevens (KvK vast)</p>
         </Link>
       </div>
 
-      <div className="mb-6 flex flex-wrap gap-3">
+      <div className="mb-4 md:mb-6 flex flex-wrap gap-2 md:gap-3">
         <Link
           to="/opdrachtgever/opdrachten"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#4FA151] text-white rounded-xl text-sm font-medium hover:bg-[#3E8E45] shadow-md shadow-[#4FA151]/20 transition"
+          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#4FA151] text-white rounded-xl text-xs md:text-sm font-medium hover:bg-[#3E8E45] shadow-md shadow-[#4FA151]/20 transition"
         >
-          <Briefcase className="w-4 h-4" />
+          <Briefcase className="w-3.5 h-3.5 md:w-4 md:h-4" />
           Nieuwe opdracht
         </Link>
         <Link
           to="/opdrachtgever/profiel"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
+          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-xs md:text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
         >
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
           Organisatiegegevens
         </Link>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
-          <h2 className="text-xl font-bold text-[#0F172A] mb-4 flex items-center justify-between">
+      <div className="grid lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="lg:col-span-2 bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
+          <h2 className="text-base md:text-xl font-bold text-[#0F172A] mb-3 md:mb-4 flex items-center justify-between">
             Snelle acties
-            <Link to="/opdrachtgever/opdrachten" className="text-sm text-[#4FA151] hover:underline font-medium">Alle opdrachten</Link>
+            <Link to="/opdrachtgever/opdrachten" className="text-xs md:text-sm text-[#4FA151] hover:underline font-medium">Alle opdrachten</Link>
           </h2>
-          <div className="space-y-2">
-            <Link to="/opdrachtgever/opdrachten" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition">
+          <div className="space-y-1.5 md:space-y-2">
+            <Link to="/opdrachtgever/opdrachten" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
               <span className="font-medium text-gray-800">Nieuwe opdracht plaatsen</span>
-              <ArrowRight className="w-4 h-4 text-gray-500" />
+              <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
             </Link>
-            <Link to="/opdrachtgever/profiel" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition">
+            <Link to="/opdrachtgever/profiel" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
               <span className="font-medium text-gray-800">Organisatiegegevens bewerken</span>
-              <ArrowRight className="w-4 h-4 text-gray-500" />
+              <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
             </Link>
           </div>
         </div>
-        <div className="space-y-4">
-          <div className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
-            <h2 className="text-xl font-bold text-[#0F172A] mb-4">Overzicht</h2>
-            <p className="text-sm text-gray-600">
+        <div className="space-y-3 md:space-y-4">
+          <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
+            <h2 className="text-base md:text-xl font-bold text-[#0F172A] mb-3 md:mb-4">Overzicht</h2>
+            <p className="text-xs md:text-sm text-gray-600">
               Plaats en beheer opdrachten namens uw klanten. Bekijk kandidaten en voer gesprekken met artsen.
             </p>
           </div>

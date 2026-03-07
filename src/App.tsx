@@ -61,6 +61,7 @@ const AdminArtsDetail = lazy(() => import('./pages/Admin/ArtsDetail'));
 const AdminReacties = lazy(() => import('./pages/Admin/Reacties'));
 const AdminOpdrachtgevers = lazy(() => import('./pages/Admin/Opdrachtgevers'));
 const AdminOpdrachtgeverDetail = lazy(() => import('./pages/Admin/OpdrachtgeverDetail'));
+const AdminIntermediairs = lazy(() => import('./pages/Admin/Intermediairs'));
 const AdminCommunityBeheer = lazy(() => import('./pages/Admin/CommunityBeheer'));
 
 function PageLoader() {
@@ -520,6 +521,16 @@ function App() {
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <DashboardLayout>
                   <AdminOpdrachtgeverDetail />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+            <Route
+            path="/admin/intermediairs"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <DashboardLayout>
+                  <AdminIntermediairs />
                 </DashboardLayout>
               </ProtectedRoute>
             }

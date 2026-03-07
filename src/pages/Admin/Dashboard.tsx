@@ -65,7 +65,7 @@ function formatDate(iso: string) {
 }
 
 export default function AdminDashboard() {
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const [stats, setStats] = useState<Stats>(defaultStats);
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,7 +76,7 @@ export default function AdminDashboard() {
       await fetchStats();
       await fetchActivity();
     })();
-  }, []);
+  }, [user?.id]);
 
   const fetchStats = async () => {
     try {
@@ -86,6 +86,13 @@ export default function AdminDashboard() {
       startOfWeek.setDate(startOfWeek.getDate() - 7);
       const startOfWeekIso = startOfWeek.toISOString();
 
+      const excludeUserId = user?.id;
+      const pendingVerifQuery = excludeUserId
+        ? supabase.from('professionals').select('id', { count: 'exact' }).eq('verification_status', 'PENDING').neq('user_id', excludeUserId)
+        : supabase.from('professionals').select('id', { count: 'exact' }).eq('verification_status', 'PENDING');
+      const totalProfsQuery = excludeUserId
+        ? supabase.from('professionals').select('id', { count: 'exact' }).neq('user_id', excludeUserId)
+        : supabase.from('professionals').select('id', { count: 'exact' });
       const [
         verificationsRes,
         usersRes,
@@ -103,9 +110,9 @@ export default function AdminDashboard() {
         appsTodayRes,
         appsWeekRes,
       ] = await Promise.all([
-        supabase.from('professionals').select('id', { count: 'exact' }).eq('verification_status', 'PENDING'),
+        pendingVerifQuery,
         supabase.from('profiles').select('id', { count: 'exact' }),
-        supabase.from('professionals').select('id', { count: 'exact' }),
+        totalProfsQuery,
         supabase.from('jobs').select('id', { count: 'exact' }).eq('status', 'PUBLISHED'),
         supabase.from('jobs').select('id', { count: 'exact' }).eq('status', 'DRAFT'),
         supabase.from('jobs').select('id', { count: 'exact' }).eq('status', 'CLOSED'),
@@ -147,9 +154,13 @@ export default function AdminDashboard() {
 
   const fetchActivity = async () => {
     try {
+      const excludeUserId = user?.id;
+      const pendingProfsQuery = excludeUserId
+        ? supabase.from('professionals').select('id, user_id, big_number, created_at, profiles(full_name)').eq('verification_status', 'PENDING').neq('user_id', excludeUserId).order('created_at', { ascending: false }).limit(5)
+        : supabase.from('professionals').select('id, user_id, big_number, created_at, profiles(full_name)').eq('verification_status', 'PENDING').order('created_at', { ascending: false }).limit(5);
       const [profilesRes, doctorsRes, jobsRes, applicationsRes] = await Promise.all([
         supabase.from('profiles').select('id, full_name, email, role, created_at').order('created_at', { ascending: false }).limit(5),
-        supabase.from('professionals').select('id, user_id, big_number, created_at, profiles(full_name)').eq('verification_status', 'PENDING').order('created_at', { ascending: false }).limit(5),
+        pendingProfsQuery,
         supabase.from('jobs').select('id, title, status, company_name, created_at').order('created_at', { ascending: false }).limit(5),
         supabase.from('applications').select('id, status, created_at, jobs(title), professionals(profiles(full_name))').order('created_at', { ascending: false }).limit(5),
       ]);
@@ -285,7 +296,7 @@ export default function AdminDashboard() {
             <User className="w-8 h-8 text-[#0F172A]" />
             <span className="text-3xl font-bold text-[#0F172A]">{stats.totalDoctors}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-800">Artsen</h3>
+          <h3 className="text-lg font-semibold text-gray-800">Artsen / Professionals</h3>
           <p className="text-sm text-gray-600">Totaal geregistreerd</p>
         </Link>
 

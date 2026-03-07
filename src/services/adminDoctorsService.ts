@@ -21,6 +21,8 @@ export interface ListDoctorsParams {
   search?: string;
   page?: number;
   pageSize?: number;
+  /** Exclude this user id (e.g. current admin) from the list */
+  excludeUserId?: string;
 }
 
 export interface ListDoctorsResult {
@@ -36,13 +38,15 @@ const PAGE_SIZE_DEFAULT = 20;
  * Application counts in one extra query (no N+1).
  */
 export async function listDoctors(params: ListDoctorsParams): Promise<ListDoctorsResult> {
-  const { verification, status, search, page = 1, pageSize = PAGE_SIZE_DEFAULT } = params;
+  const { verification, status, search, page = 1, pageSize = PAGE_SIZE_DEFAULT, excludeUserId } = params;
 
   let query = supabase
     .from('professionals')
-    .select('*, profiles!inner(*)', { count: 'exact' })
-    .eq('profiles.role', 'ARTS');
+    .select('*, profiles!inner(*)', { count: 'exact' });
 
+  if (excludeUserId) {
+    query = query.neq('user_id', excludeUserId);
+  }
   if (verification && verification !== '') {
     query = query.eq('verification_status', verification);
   }
@@ -99,7 +103,7 @@ export async function getDoctorById(id: string): Promise<AdminDoctorRow | null> 
 
   if (error || !doctor) return null;
   const row = doctor as Doctor & { profiles: Profile | null };
-  if (!row.profiles || row.profiles.role !== 'ARTS') return null;
+  if (!row.profiles) return null;
 
   const { count } = await supabase
     .from('applications')

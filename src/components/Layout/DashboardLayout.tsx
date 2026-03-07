@@ -14,9 +14,11 @@ import {
   FileText,
   CreditCard,
   CheckCircle,
-  Menu,
+  List,
   X,
   BookOpen,
+  Bell,
+  UserCircle,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -28,7 +30,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
@@ -38,8 +40,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const getInstellingenPath = () => {
     if (!profile) return '/';
     switch (profile.role) {
-      case 'ARTS':
-      case 'professional': return '/arts/instellingen';
       case 'OPDRACHTGEVER':
       case 'company': return '/opdrachtgever/profiel';
       case 'intermediary': return '/opdrachtgever/profiel';
@@ -48,53 +48,83 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     }
   };
 
+  const getInboxPath = () => {
+    if (!profile) return '/';
+    switch (profile.role) {
+      case 'OPDRACHTGEVER':
+      case 'company':
+      case 'intermediary': return '/opdrachtgever/inbox';
+      default: return '#';
+    }
+  };
+
+  const getProfilePath = () => {
+    if (!profile) return '/';
+    switch (profile.role) {
+      case 'OPDRACHTGEVER':
+      case 'company':
+      case 'intermediary': return '/opdrachtgever/profiel';
+      case 'ADMIN': return '/admin/instellingen';
+      default: return '/';
+    }
+  };
+
+  const getMobileQuickActions = () => {
+    if (!profile) return [];
+    if (profile.role === 'ADMIN') {
+      return [
+        { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { path: '/admin/artsen', label: 'Professionals', icon: User },
+        { path: '/admin/instellingen', label: 'Instellingen', icon: Settings },
+      ];
+    }
+    return [
+      { path: '/opdrachtgever/opdrachten', label: 'Opdrachten', icon: Briefcase },
+      { path: '/opdrachtgever/kandidaten', label: 'Kandidaten', icon: Users },
+      { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard },
+    ];
+  };
+
   const getNavigationItems = () => {
     if (!profile) return [];
     switch (profile.role) {
-      case 'ARTS':
-      case 'professional':
-        return [
-          { path: '/arts/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-          { path: '/arts/profiel', label: 'Profiel', icon: User },
-          { path: '/arts/opdrachten', label: 'Opdrachten', icon: Briefcase },
-          { path: '/arts/reacties', label: 'Mijn reacties', icon: FileText },
-          { path: '/arts/uitnodigingen', label: 'Uitnodigingen', icon: Users },
-          { path: '/arts/inbox', label: 'Berichten', icon: MessageSquare },
-          { path: '/arts/abonnement', label: 'Premium', icon: CreditCard }
-        ];
       case 'OPDRACHTGEVER':
-      case 'company':
-        return [
-          { path: '/opdrachtgever/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+      case 'company': {
+        const ogRest = [
           { path: '/opdrachtgever/profiel', label: 'Bedrijfsprofiel', icon: User },
           { path: '/opdrachtgever/opdrachten', label: 'Mijn opdrachten', icon: Briefcase },
           { path: '/opdrachtgever/kandidaten', label: 'Kandidaten', icon: Users },
           { path: '/opdrachtgever/favorieten', label: 'Favorieten', icon: Heart },
           { path: '/opdrachtgever/inbox', label: 'Berichten', icon: MessageSquare },
-          { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard }
-        ];
-      case 'intermediary':
-        return [
-          { path: '/intermediair/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+          { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard },
+        ].sort((a, b) => a.label.localeCompare(b.label, 'nl'));
+        return [{ path: '/opdrachtgever/dashboard', label: 'Dashboard', icon: LayoutDashboard }, ...ogRest];
+      }
+      case 'intermediary': {
+        const intRest = [
           { path: '/opdrachtgever/profiel', label: 'Bedrijfsprofiel', icon: User },
           { path: '/opdrachtgever/opdrachten', label: 'Mijn opdrachten', icon: Briefcase },
           { path: '/opdrachtgever/kandidaten', label: 'Kandidaten', icon: Users },
           { path: '/opdrachtgever/favorieten', label: 'Favorieten', icon: Heart },
           { path: '/opdrachtgever/inbox', label: 'Berichten', icon: MessageSquare },
-          { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard }
-        ];
-      case 'ADMIN':
-        return [
-          { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+          { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard },
+        ].sort((a, b) => a.label.localeCompare(b.label, 'nl'));
+        return [{ path: '/intermediair/dashboard', label: 'Dashboard', icon: LayoutDashboard }, ...intRest];
+      }
+      case 'ADMIN': {
+        const rest = [
           { path: '/admin/verificaties', label: 'BIG Verificaties', icon: CheckCircle },
-          { path: '/admin/artsen', label: 'Artsen', icon: User },
+          { path: '/admin/artsen', label: 'Professionals', icon: User },
           { path: '/admin/gebruikers', label: 'Gebruikers', icon: Users },
-          { path: '/admin/opdrachtgevers', label: 'Opdrachtgevers', icon: Building2 },
+          { path: '/admin/opdrachtgevers', label: 'Organisaties', icon: Building2 },
+          { path: '/admin/intermediairs', label: 'Intermediairs', icon: UserCircle },
           { path: '/admin/opdrachten', label: 'Opdrachten', icon: Briefcase },
           { path: '/admin/reacties', label: 'Reacties', icon: FileText },
           { path: '/admin/abonnementen', label: 'Abonnementen', icon: CreditCard },
-          { path: '/admin/community', label: 'Community', icon: BookOpen }
-        ];
+          { path: '/admin/community', label: 'Community', icon: BookOpen },
+        ].sort((a, b) => a.label.localeCompare(b.label, 'nl'));
+        return [{ path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard }, ...rest];
+      }
       default: return [];
     }
   };
@@ -121,20 +151,19 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const SidebarContent = () => (
     <>
-      <div className={`p-6 border-b ${headerBorder}`}>
+      <div className={`p-4 lg:p-6 border-b ${headerBorder}`}>
         <Link to="/" className="inline-block">
-          <LogoText theme="light" className="text-xl" />
+          <LogoText theme="light" className="text-lg lg:text-xl" />
         </Link>
         {profile && (
-          <p className={`text-sm mt-2 ${useGreenSidebar ? 'text-[#0F172A]/70 font-medium' : 'text-gray-600'}`}>
-            {(profile.role === 'ARTS' || profile.role === 'professional') && 'Professional Dashboard'}
+          <p className={`text-xs lg:text-sm mt-1.5 lg:mt-2 ${useGreenSidebar ? 'text-[#0F172A]/70 font-medium' : 'text-gray-600'}`}>
             {(profile.role === 'OPDRACHTGEVER' || profile.role === 'company') && 'Bedrijf Dashboard'}
             {profile.role === 'intermediary' && 'Intermediair Dashboard'}
             {profile.role === 'ADMIN' && 'Admin Dashboard'}
           </p>
         )}
       </div>
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-3 lg:p-4 space-y-0.5 lg:space-y-1">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
@@ -142,29 +171,27 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <Link
               key={item.path}
               to={item.path}
-              onClick={() => setSidebarOpen(false)}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive ? navActive : navInactive}`}
+              className={`flex items-center space-x-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition-all duration-200 text-sm lg:text-base ${isActive ? navActive : navInactive}`}
             >
-              <Icon className="w-5 h-5 shrink-0" />
+              <Icon className="w-4 h-4 lg:w-5 lg:h-5 shrink-0" />
               <span>{item.label}</span>
             </Link>
           );
         })}
       </nav>
-      <div className={`p-4 ${footerStyle}`}>
+      <div className={`p-3 lg:p-4 ${footerStyle}`}>
         <Link
           to={getInstellingenPath()}
-          className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition mb-2 ${footerLink}`}
-          onClick={() => setSidebarOpen(false)}
+          className={`flex items-center space-x-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition mb-1.5 lg:mb-2 text-sm lg:text-base ${footerLink}`}
         >
-          <Settings className="w-5 h-5" />
+          <Settings className="w-4 h-4 lg:w-5 lg:h-5" />
           <span>Instellingen</span>
         </Link>
         <button
           onClick={handleSignOut}
-          className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition w-full ${footerLink}`}
+          className={`flex items-center space-x-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition w-full text-sm lg:text-base ${footerLink}`}
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4 lg:w-5 lg:h-5" />
           <span>Uitloggen</span>
         </button>
       </div>
@@ -176,28 +203,110 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <aside className={`hidden lg:flex lg:flex-col lg:w-64 flex-col ${sidebarBg}`}>
         <SidebarContent />
       </aside>
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
-          <aside className={`absolute left-0 top-0 bottom-0 w-64 flex flex-col ${sidebarBg}`}>
-            <button onClick={() => setSidebarOpen(false)} className="absolute top-4 right-4 p-2 rounded-lg hover:bg-white/80 text-[#0F172A]">
-              <X className="w-6 h-6" />
-            </button>
-            <SidebarContent />
-          </aside>
-        </div>
-      )}
       <div className="flex-1 flex flex-col min-w-0">
         <header className={`bg-white border-b lg:hidden ${headerBorder}`}>
-          <div className="flex items-center justify-between px-4 py-4">
-            <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-gray-100">
-              <Menu className="w-6 h-6" />
-            </button>
-            <Link to="/" className="inline-block"><LogoText theme="light" className="text-lg" /></Link>
-            <div className="w-6" />
+          <div className="flex items-center justify-between px-3 py-2.5 md:px-4 md:py-4">
+            <Link to={profile?.role === 'ADMIN' ? '/admin/dashboard' : '/opdrachtgever/dashboard'} className="inline-block"><LogoText theme="light" className="text-lg" /></Link>
+            <div className="flex items-center gap-1">
+              {getInboxPath() !== '#' && (
+                <Link to={getInboxPath()} className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A]">
+                  <MessageSquare className="w-5 h-5" />
+                </Link>
+              )}
+              <Link to={getInboxPath() !== '#' ? getInboxPath() : '#'} className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A]">
+                <Bell className="w-5 h-5" />
+              </Link>
+              <Link to={getProfilePath()} className="p-1.5 rounded-full hover:bg-gray-100 text-[#0F172A] flex items-center justify-center w-9 h-9 bg-[#F4FAF4] border border-[#4FA151]/20">
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="" className="w-6 h-6 rounded-full object-cover" />
+                ) : (
+                  <User className="w-5 h-5 text-[#4FA151]" />
+                )}
+              </Link>
+            </div>
           </div>
         </header>
-        <main className="flex-1 overflow-auto">{children}</main>
+        <main className="flex-1 overflow-auto pb-20 lg:pb-0">{children}</main>
+
+        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#4FA151]/15 z-40 lg:hidden safe-area-pb">
+          <div className="grid grid-cols-3 h-14">
+            {(() => {
+              const qa = getMobileQuickActions();
+              if (qa.length < 3) return null;
+              const [first, , third] = qa;
+              const FirstIcon = first.icon;
+              const ThirdIcon = third.icon;
+              return (
+                <>
+                  <Link to={first.path} className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition">
+                    <FirstIcon className="w-5 h-5 text-[#4FA151]" />
+                    <span className="text-[10px] font-medium">{first.label}</span>
+                  </Link>
+                  <button type="button" onClick={() => setBottomSheetOpen(true)} className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition">
+                    <List className="w-5 h-5 text-[#4FA151]" />
+                    <span className="text-[10px] font-medium">Menu</span>
+                  </button>
+                  <Link to={third.path} className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition">
+                    <ThirdIcon className="w-5 h-5 text-[#4FA151]" />
+                    <span className="text-[10px] font-medium">{third.label}</span>
+                  </Link>
+                </>
+              );
+            })()}
+          </div>
+        </nav>
+
+        {bottomSheetOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <div className="absolute inset-0 bg-black/50" onClick={() => setBottomSheetOpen(false)} />
+            <div className="absolute bottom-0 left-0 right-0 max-h-[75vh] flex flex-col bg-white rounded-t-2xl overflow-hidden animate-in slide-in-from-bottom duration-200 border-t border-[#4FA151]/15 shadow-lg">
+              <div className="flex items-center justify-between p-4 border-b border-[#4FA151]/15">
+                <span className="font-semibold text-[#0F172A]">Menu</span>
+                <button onClick={() => setBottomSheetOpen(false)} className="p-2 rounded-lg hover:bg-[#F4FAF4] text-[#0F172A]">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <nav className="flex-1 overflow-auto p-3 space-y-0.5">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.path;
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setBottomSheetOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm ${isActive ? 'bg-[#4FA151] text-white' : 'text-[#0F172A]/90 hover:bg-[#F4FAF4]'}`}
+                    >
+                      <Icon className="w-5 h-5 shrink-0" />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+              <div className="p-3 border-t border-[#4FA151]/15 space-y-1">
+                <Link to={getInstellingenPath()} onClick={() => setBottomSheetOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#0F172A]/90 hover:bg-[#F4FAF4] text-sm">
+                  <Settings className="w-5 h-5" />
+                  <span>Instellingen</span>
+                </Link>
+                <button onClick={() => { handleSignOut(); setBottomSheetOpen(false); }} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#0F172A]/90 hover:bg-[#F4FAF4] text-sm w-full">
+                  <LogOut className="w-5 h-5" />
+                  <span>Uitloggen</span>
+                </button>
+              </div>
+              <div className="p-3 grid grid-cols-3 gap-2 bg-[#F4FAF4] border-t border-[#4FA151]/15">
+                {getMobileQuickActions().map((action, i) => {
+                  const Icon = action.icon;
+                  return (
+                    <Link key={action.path} to={action.path} onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
+                      <Icon className="w-5 h-5 mb-1 text-[#4FA151]" />
+                      <span className="text-[10px] text-[#0F172A] font-medium">{action.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

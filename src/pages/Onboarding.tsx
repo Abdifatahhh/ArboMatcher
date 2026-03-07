@@ -265,20 +265,20 @@ export default function Onboarding() {
 
   if (showRoleStep) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-12 pb-12 px-4">
-        <div className="mb-8">
-          <LogoText theme="light" className="text-2xl" />
+      <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-6 pb-6 md:pt-12 md:pb-12 px-3 md:px-4">
+        <div className="mb-4 md:mb-8">
+          <LogoText theme="light" className="text-xl md:text-2xl" />
         </div>
-        <div className="w-full max-w-xl bg-white rounded-2xl shadow-sm p-8">
-          <h1 className="text-2xl font-bold text-[#0F172A] mb-2">Ik ben</h1>
-          <p className="text-gray-600 mb-6">Kies hoe je het platform wilt gebruiken.</p>
+        <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-8">
+          <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1.5 md:mb-2">Ik ben</h1>
+          <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6">Kies hoe je het platform wilt gebruiken.</p>
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
-              <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
-              <p className="text-sm text-red-800">{error}</p>
+            <div className="mb-4 md:mb-6 p-3 md:p-4 bg-red-50 border border-red-200 rounded-lg flex items-start text-sm">
+              <AlertCircle className="w-4 h-4 md:w-5 md:h-5 text-red-600 mt-0.5 mr-2 md:mr-3 flex-shrink-0" />
+              <p className="text-red-800">{error}</p>
             </div>
           )}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
             {ROLE_OPTIONS.map((opt) => {
               const Icon = opt.icon;
               return (
@@ -287,11 +287,11 @@ export default function Onboarding() {
                   type="button"
                   disabled={roleChoosing}
                   onClick={() => handleRoleChoose(opt.value)}
-                  className="p-6 rounded-xl border-2 border-gray-200 hover:border-[#4FA151] hover:bg-[#4FA151]/5 transition flex flex-col items-center text-center disabled:opacity-50"
+                  className="p-4 md:p-6 rounded-xl border-2 border-gray-200 hover:border-[#4FA151] hover:bg-[#4FA151]/5 transition flex flex-col items-center text-center disabled:opacity-50"
                 >
-                  <Icon className="w-10 h-10 mb-3 text-[#4FA151]" />
-                  <span className="font-semibold text-[#0F172A]">{opt.label}</span>
-                  <span className="text-sm text-gray-500 mt-1">{opt.sub}</span>
+                  <Icon className="w-8 h-8 md:w-10 md:h-10 mb-2 md:mb-3 text-[#4FA151]" />
+                  <span className="font-semibold text-[#0F172A] text-sm md:text-base">{opt.label}</span>
+                  <span className="text-xs md:text-sm text-gray-500 mt-0.5 md:mt-1">{opt.sub}</span>
                 </button>
               );
             })}
@@ -320,13 +320,13 @@ export default function Onboarding() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-12 pb-12 px-4">
-      <div className="mb-8">
-        <LogoText theme="light" className="text-2xl" />
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-6 pb-6 md:pt-12 md:pb-12 px-3 md:px-4">
+      <div className="mb-4 md:mb-8">
+        <LogoText theme="light" className="text-xl md:text-2xl" />
       </div>
 
       {isProfessional && (
-        <div className="w-full max-w-xl bg-white rounded-2xl shadow-sm p-8">
+        <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-8">
           {professionStep === 2 && (
             <>
               <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-6 flex items-center gap-2 disabled:opacity-50">
@@ -431,8 +431,8 @@ export default function Onboarding() {
       )}
 
       {(isCompany || isIntermediary) && (
-        <div className="w-full max-w-xl bg-white rounded-2xl shadow-sm p-8">
-          <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-6 flex items-center gap-2 disabled:opacity-50">
+        <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-8">
+          <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-4 md:mb-6 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
             {backToRoleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}← Terug naar rolkeuze
           </button>
           <h1 className="text-2xl font-bold text-[#0F172A] mb-2">
