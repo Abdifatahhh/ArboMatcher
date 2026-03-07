@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
-import type { Doctor, Profile } from '../../lib/types';
-import { PROFESSION_TYPES } from '../Register';
+import type { Doctor, Profile, ProfessionType } from '../../lib/types';
 import { Save, AlertCircle, FileText, Upload } from 'lucide-react';
+
+const PROFESSION_TYPES: { value: ProfessionType; label: string }[] = [
+  { value: 'BEDRIJFSARTS', label: 'Bedrijfsarts' },
+  { value: 'ARBO_ARTS', label: 'Arbo-arts' },
+  { value: 'VERZEKERINGSARTS', label: 'Verzekeringsarts' },
+  { value: 'CASEMANAGER_VERZUIM', label: 'Casemanager verzuim' },
+];
 
 const CV_BUCKET = 'doctor-cvs';
 
