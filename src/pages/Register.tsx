@@ -139,7 +139,11 @@ export default function Register() {
     setLoading(true);
     setError('');
 
-    const { error: signUpError, hasSession } = await signUp(email, password, selectedRole);
+    const fullName = [firstName.trim(), lastName.trim()].filter(Boolean).join(' ') || undefined;
+    const { error: signUpError, hasSession } = await signUp(email, password, selectedRole, {
+      full_name: fullName,
+      phone: phone.trim() || undefined,
+    });
 
     if (signUpError) {
       if (signUpError.category === 'too_many_requests') {

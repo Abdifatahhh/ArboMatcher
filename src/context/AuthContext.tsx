@@ -10,7 +10,7 @@ interface AuthContextType {
   loading: boolean;
   healthStatus: HealthCheckResult | null;
   signIn: (email: string, password: string) => Promise<{ profile: Profile | null; error: CategorizedError | null }>;
-  signUp: (email: string, password: string, role: Profile['role']) => Promise<{ error: CategorizedError | null; hasSession?: boolean }>;
+  signUp: (email: string, password: string, role: Profile['role'], meta?: { full_name?: string; phone?: string }) => Promise<{ error: CategorizedError | null; hasSession?: boolean }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -66,7 +66,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (session?.user) {
           const { profile: profileData } = await getOrCreateProfile(
             session.user.id,
-            session.user.email || ''
+            session.user.email || '',
+            'ARTS',
+            session.user.user_metadata as Record<string, unknown>
           );
           if (mounted) setProfile(profileData);
         }
@@ -87,7 +89,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (session?.user) {
           const { profile: profileData } = await getOrCreateProfile(
             session.user.id,
-            session.user.email || ''
+            session.user.email || '',
+            'ARTS',
+            session.user.user_metadata as Record<string, unknown>
           );
           if (mounted) setProfile(profileData);
         } else {
@@ -104,7 +108,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshProfile = async () => {
     if (user) {
-      const { profile: profileData } = await getOrCreateProfile(user.id, user.email || '');
+      const { profile: profileData } = await getOrCreateProfile(
+        user.id,
+        user.email || '',
+        'ARTS',
+        user.user_metadata as Record<string, unknown>
+      );
       setProfile(profileData);
     }
   };
@@ -134,7 +143,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const { profile: profileData, error: profileError } = await getOrCreateProfile(
         data.user.id,
-        data.user.email || email
+        data.user.email || email,
+        'ARTS',
+        data.user.user_metadata as Record<string, unknown>
       );
 
       if (profileError) {
@@ -154,13 +165,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUp = async (
     email: string,
     password: string,
-    role: Profile['role']
+    role: Profile['role'],
+    meta?: { full_name?: string; phone?: string }
   ): Promise<{ error: CategorizedError | null; hasSession?: boolean }> => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { role } },
+        options: { data: { role, full_name: meta?.full_name, phone: meta?.phone } },
       });
 
       if (error) {

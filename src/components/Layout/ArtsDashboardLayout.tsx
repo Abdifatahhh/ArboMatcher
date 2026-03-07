@@ -2,6 +2,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import ArtsProfiel from '../../pages/Arts/Profiel';
+import { LogoText } from '../ui/Logo';
 import {
   Search,
   Bookmark,
@@ -20,7 +22,10 @@ import {
   LogOut,
   LayoutDashboard,
   Settings,
+  Info,
 } from 'lucide-react';
+
+const ARTS_PROFILE_SAVED_EVENT = 'arts-profile-saved';
 
 interface ArtsDashboardLayoutProps {
   children: React.ReactNode;
@@ -39,6 +44,7 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [pendingInvites, setPendingInvites] = useState(0);
+  const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
   const [sections, setSections] = useState<NavSection[]>([
     { title: 'Opdrachten vinden', isOpen: true, items: [
       { path: '/arts/opdrachten', label: 'Zoeken', icon: Search },
@@ -56,6 +62,24 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
       { path: '/arts/instellingen', label: 'Instellingen', icon: Settings }
     ]}
   ]);
+
+  const checkProfileComplete = async () => {
+    if (!user) return;
+    const hasName = !!(profile?.full_name?.trim());
+    const { data: doctor } = await supabase.from('doctors').select('big_number').eq('user_id', user.id).maybeSingle();
+    const hasBig = !!(doctor?.big_number?.trim());
+    setProfileComplete(hasName && hasBig);
+  };
+
+  useEffect(() => {
+    checkProfileComplete();
+  }, [user, profile?.full_name]);
+
+  useEffect(() => {
+    const onSaved = () => checkProfileComplete();
+    window.addEventListener(ARTS_PROFILE_SAVED_EVENT, onSaved);
+    return () => window.removeEventListener(ARTS_PROFILE_SAVED_EVENT, onSaved);
+  }, []);
 
   useEffect(() => { fetchNotifications(); }, [user]);
 
@@ -127,6 +151,44 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
       </div>
     </div>
   );
+
+  if (profileComplete === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F4FAF4]">
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#4FA151] border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!profileComplete) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col">
+        <header className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200 shrink-0">
+          <Link to="/" className="text-xl font-bold text-[#0F172A]">
+            <LogoText theme="dark" />
+          </Link>
+          <button
+            onClick={handleSignOut}
+            className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition text-sm"
+          >
+            <LogOut className="w-4 h-4" />
+            Later voltooien
+          </button>
+        </header>
+        <div className="flex-1 overflow-auto py-8 px-4 flex flex-col items-center">
+          <div className="w-full max-w-2xl mx-auto">
+            <div className="flex items-center gap-3 p-4 mb-6 bg-amber-50 border border-amber-200 rounded-xl text-amber-900">
+              <Info className="w-5 h-5 flex-shrink-0" />
+              <p className="text-sm font-medium">
+                Voltooi je profiel om het platform te gebruiken. Dit profiel is zichtbaar voor opdrachtgevers.
+              </p>
+            </div>
+            <ArtsProfiel variant="onboarding" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex">

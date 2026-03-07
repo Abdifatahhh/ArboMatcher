@@ -130,7 +130,8 @@ export function categorizeAuthError(error: unknown, step: AuthDiagnostic['step']
 export async function getOrCreateProfile(
   userId: string,
   email: string,
-  defaultRole: UserRole = 'ARTS'
+  defaultRole: UserRole = 'ARTS',
+  userMetadata?: Record<string, unknown>
 ): Promise<{ profile: Profile | null; error: CategorizedError | null }> {
   try {
     const { data: existingProfile, error: selectError } = await supabase
@@ -145,6 +146,20 @@ export async function getOrCreateProfile(
     }
 
     if (existingProfile) {
+      const needName = (existingProfile.full_name == null || existingProfile.full_name === '') && userMetadata?.full_name;
+      const needPhone = (existingProfile.phone == null || existingProfile.phone === '') && userMetadata?.phone;
+      if (needName || needPhone) {
+        const updates: { full_name?: string; phone?: string } = {};
+        if (needName) updates.full_name = String(userMetadata.full_name);
+        if (needPhone) updates.phone = String(userMetadata.phone);
+        const { data: updated, error: updateErr } = await supabase
+          .from('profiles')
+          .update(updates)
+          .eq('id', userId)
+          .select()
+          .single();
+        if (!updateErr && updated) return { profile: updated, error: null };
+      }
       return { profile: existingProfile, error: null };
     }
 

@@ -2,15 +2,19 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { Doctor, Profile } from '../../lib/types';
-import { Save, AlertCircle } from 'lucide-react';
+import { Save, AlertCircle, FileText, Upload } from 'lucide-react';
 
-export default function ArtsProfiel() {
+const CV_BUCKET = 'doctor-cvs';
+
+export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboarding' }) {
   const { user, refreshProfile } = useAuth();
   const [profile, setProfile] = useState<Partial<Profile>>({});
   const [doctor, setDoctor] = useState<Partial<Doctor>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingCv, setUploadingCv] = useState(false);
   const [message, setMessage] = useState('');
+  const isOnboarding = variant === 'onboarding';
 
   useEffect(() => {
     fetchData();
@@ -61,6 +65,7 @@ export default function ArtsProfiel() {
             regions: doctor.regions,
             hourly_rate: doctor.hourly_rate,
             availability_text: doctor.availability_text,
+            cv_url: doctor.cv_url,
             verification_status: doctor.verification_status === 'UNVERIFIED' && doctor.big_number ? 'PENDING' : doctor.verification_status
           })
           .eq('id', doctor.id);
@@ -75,6 +80,7 @@ export default function ArtsProfiel() {
             regions: doctor.regions || [],
             hourly_rate: doctor.hourly_rate,
             availability_text: doctor.availability_text,
+            cv_url: doctor.cv_url,
             verification_status: 'PENDING',
             doctor_plan: 'BASIC'
           });
@@ -83,11 +89,37 @@ export default function ArtsProfiel() {
       await refreshProfile();
       setMessage('Profiel succesvol opgeslagen!');
       fetchData();
+      window.dispatchEvent(new CustomEvent('arts-profile-saved'));
     } catch (error) {
       setMessage('Er is een fout opgetreden bij het opslaan');
     }
 
     setSaving(false);
+  };
+
+  const CV_ACCEPT = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  const handleCvUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    if (!CV_ACCEPT.includes(file.type)) {
+      setMessage('Alleen PDF of Word (.doc, .docx) is toegestaan.');
+      return;
+    }
+    setUploadingCv(true);
+    setMessage('');
+    try {
+      const ext = file.name.split('.').pop() || 'pdf';
+      const path = `${user.id}/cv-${Date.now()}.${ext}`;
+      const { error: uploadError } = await supabase.storage.from(CV_BUCKET).upload(path, file, { upsert: true });
+      if (uploadError) throw uploadError;
+      const { data: urlData } = supabase.storage.from(CV_BUCKET).getPublicUrl(path);
+      setDoctor({ ...doctor, cv_url: urlData.publicUrl });
+      setMessage('CV geüpload. Klik Opslaan om te bevestigen.');
+    } catch (err: any) {
+      setMessage(err?.message || 'Upload mislukt. Controleer of de bucket bestaat.');
+    }
+    setUploadingCv(false);
+    e.target.value = '';
   };
 
   if (loading) {
@@ -99,8 +131,10 @@ export default function ArtsProfiel() {
   }
 
   return (
-    <div className="p-6 max-w-4xl">
-      <h1 className="text-3xl font-bold text-[#0F172A] mb-6">Mijn Profiel</h1>
+    <div className={isOnboarding ? 'max-w-2xl mx-auto' : 'p-6 max-w-4xl'}>
+      <h1 className={`font-bold text-[#0F172A] mb-6 ${isOnboarding ? 'text-2xl text-center' : 'text-3xl'}`}>
+        {isOnboarding ? 'Voltooi je profiel' : 'Mijn Profiel'}
+      </h1>
 
       {message && (
         <div className={`mb-6 p-4 rounded-lg flex items-start ${
@@ -248,13 +282,43 @@ export default function ArtsProfiel() {
                 placeholder="Bijv: Beschikbaar vanaf 1 april, 3 dagen per week"
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                CV (PDF of Word)
+              </label>
+              <div className="flex items-center gap-3 flex-wrap">
+                <label className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition text-sm">
+                  <Upload className="w-4 h-4" />
+                  {uploadingCv ? 'Bezig...' : 'Kies bestand'}
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    className="hidden"
+                    onChange={handleCvUpload}
+                    disabled={uploadingCv}
+                  />
+                </label>
+                {doctor.cv_url && (
+                  <a
+                    href={doctor.cv_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-[#4FA151] hover:underline"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Huidige CV bekijken
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
         <button
           onClick={handleSave}
           disabled={saving}
-          className="w-full md:w-auto flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50"
+          className={`w-full flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 ${isOnboarding ? '' : 'md:w-auto'}`}
         >
           <Save className="w-5 h-5 mr-2" />
           {saving ? 'Bezig met opslaan...' : 'Opslaan'}

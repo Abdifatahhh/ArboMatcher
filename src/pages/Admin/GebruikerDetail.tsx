@@ -5,6 +5,7 @@ import type { Profile, Doctor, Employer, UserRole } from '../../lib/types';
 import { demoProfiles, demoDoctors, demoEmployers } from '../../data/adminDemoData';
 import { Save, ArrowLeft, AlertCircle, User, Briefcase, Stethoscope, Info, Trash2 } from 'lucide-react';
 import { deleteUserPermanently } from '../../services/adminUsersService';
+import { useToast } from '../../context/ToastContext';
 
 const ROLE_OPTIONS: UserRole[] = ['ARTS', 'OPDRACHTGEVER', 'ADMIN'];
 const STATUS_OPTIONS = ['ACTIVE', 'BLOCKED'];
@@ -12,6 +13,7 @@ const STATUS_OPTIONS = ['ACTIVE', 'BLOCKED'];
 export default function AdminGebruikerDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { success: toastSuccess } = useToast();
   const [profile, setProfile] = useState<Partial<Profile> | null>(null);
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [employer, setEmployer] = useState<Employer | null>(null);
@@ -97,7 +99,9 @@ export default function AdminGebruikerDetail() {
       setDeleting(false);
       return;
     }
-    navigate('/admin/gebruikers', { replace: true });
+    toastSuccess('Account is verwijderd.');
+    setDeleting(false);
+    setTimeout(() => navigate('/admin/gebruikers', { replace: true }), 150);
   };
 
   if (loading) {
