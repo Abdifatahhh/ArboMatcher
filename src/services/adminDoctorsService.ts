@@ -39,7 +39,7 @@ export async function listDoctors(params: ListDoctorsParams): Promise<ListDoctor
   const { verification, status, search, page = 1, pageSize = PAGE_SIZE_DEFAULT } = params;
 
   let query = supabase
-    .from('doctors')
+    .from('professionals')
     .select('*, profiles!inner(*)', { count: 'exact' })
     .eq('profiles.role', 'ARTS');
 
@@ -92,7 +92,7 @@ export async function listDoctors(params: ListDoctorsParams): Promise<ListDoctor
  */
 export async function getDoctorById(id: string): Promise<AdminDoctorRow | null> {
   const { data: doctor, error } = await supabase
-    .from('doctors')
+    .from('professionals')
     .select('*, profiles(*)')
     .eq('id', id)
     .maybeSingle();

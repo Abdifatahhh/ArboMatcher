@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { Doctor, Profile } from '../../lib/types';
+import { PROFESSION_TYPES } from '../Register';
 import { Save, AlertCircle, FileText, Upload } from 'lucide-react';
 
 const CV_BUCKET = 'doctor-cvs';
@@ -29,11 +30,51 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
       .eq('id', user.id)
       .maybeSingle();
 
-    const { data: doctorData } = await supabase
-      .from('doctors')
+    let doctorData = (await supabase
+      .from('professionals')
       .select('*')
       .eq('user_id', user.id)
-      .maybeSingle();
+      .maybeSingle()).data;
+
+    const meta = user.user_metadata as Record<string, unknown> | undefined;
+    const metaBig = meta?.big_number ? String(meta.big_number).trim() : '';
+    const metaProfession = meta?.profession_type ? String(meta.profession_type).trim() : '';
+    const metaRcm = meta?.rcm_number ? String(meta.rcm_number).trim() : '';
+
+    if (doctorData && (metaBig || metaProfession || metaRcm)) {
+      const needBig = (!doctorData.big_number || doctorData.big_number === '') && metaBig;
+      const needProf = !doctorData.profession_type && metaProfession;
+      const needRcm = (doctorData.rcm_number == null || doctorData.rcm_number === '') && metaRcm;
+      if (needBig || needProf || needRcm) {
+        const updates: { big_number?: string | null; profession_type?: string | null; rcm_number?: string | null } = {};
+        if (needBig) updates.big_number = metaBig;
+        if (needProf) updates.profession_type = metaProfession;
+        if (needRcm) updates.rcm_number = metaRcm;
+        const { data: updated } = await supabase
+          .from('professionals')
+          .update(updates)
+          .eq('id', doctorData.id)
+          .select()
+          .single();
+        if (updated) doctorData = updated;
+      }
+    } else if (!doctorData && (metaBig || metaProfession)) {
+      const { data: inserted } = await supabase
+        .from('professionals')
+        .insert({
+          user_id: user.id,
+          big_number: metaBig || null,
+          profession_type: metaProfession || null,
+          rcm_number: metaRcm || null,
+          verification_status: metaBig && metaBig.length >= 8 ? 'PENDING' : 'UNVERIFIED',
+          doctor_plan: 'BASIC',
+          specialties: [],
+          regions: [],
+        })
+        .select()
+        .single();
+      if (inserted) doctorData = inserted;
+    }
 
     if (profileData) setProfile(profileData);
     if (doctorData) setDoctor(doctorData);
@@ -57,31 +98,35 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
 
       if (doctor.id) {
         await supabase
-          .from('doctors')
+          .from('professionals')
           .update({
-            big_number: doctor.big_number,
+            big_number: doctor.big_number?.trim() || null,
+            profession_type: doctor.profession_type,
+            rcm_number: doctor.rcm_number?.trim() || null,
             bio: doctor.bio,
             specialties: doctor.specialties,
             regions: doctor.regions,
             hourly_rate: doctor.hourly_rate,
             availability_text: doctor.availability_text,
             cv_url: doctor.cv_url,
-            verification_status: doctor.verification_status === 'UNVERIFIED' && doctor.big_number ? 'PENDING' : doctor.verification_status
+            verification_status: doctor.verification_status === 'UNVERIFIED' && (doctor.big_number?.trim() || '').length >= 8 ? 'PENDING' : doctor.verification_status
           })
           .eq('id', doctor.id);
-      } else if (doctor.big_number) {
+      } else {
         await supabase
-          .from('doctors')
+          .from('professionals')
           .insert({
             user_id: user.id,
-            big_number: doctor.big_number,
+            big_number: doctor.big_number?.trim() || null,
+            profession_type: doctor.profession_type,
+            rcm_number: doctor.rcm_number?.trim() || null,
             bio: doctor.bio,
             specialties: doctor.specialties || [],
             regions: doctor.regions || [],
             hourly_rate: doctor.hourly_rate,
             availability_text: doctor.availability_text,
             cv_url: doctor.cv_url,
-            verification_status: 'PENDING',
+            verification_status: (doctor.big_number?.trim() || '').length >= 8 ? 'PENDING' : 'UNVERIFIED',
             doctor_plan: 'BASIC'
           });
       }
@@ -190,33 +235,54 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
         <div className="border-t pt-6">
           <h2 className="text-xl font-bold text-[#0F172A] mb-4">Professionele gegevens</h2>
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                BIG-nummer * {doctor.verification_status && (
-                  <span className={`ml-2 text-sm ${
-                    doctor.verification_status === 'VERIFIED' ? 'text-green-600' :
-                    doctor.verification_status === 'PENDING' ? 'text-yellow-600' :
-                    doctor.verification_status === 'REJECTED' ? 'text-red-600' :
-                    'text-gray-600'
-                  }`}>
-                    ({doctor.verification_status === 'VERIFIED' ? 'Geverifieerd' :
-                      doctor.verification_status === 'PENDING' ? 'In behandeling' :
-                      doctor.verification_status === 'REJECTED' ? 'Afgewezen' :
-                      'Niet geverifieerd'})
-                  </span>
-                )}
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                maxLength={11}
-                value={doctor.big_number || ''}
-                onChange={(e) => setDoctor({ ...doctor, big_number: e.target.value.replace(/\D/g, '').slice(0, 11) })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
-                placeholder="12345678901"
-                title="BIG-nummer bestaat uit 11 cijfers"
-              />
-            </div>
+            {doctor.profession_type && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Beroep</label>
+                <p className="text-[#0F172A] font-medium">
+                  {PROFESSION_TYPES.find((p) => p.value === doctor.profession_type)?.label ?? doctor.profession_type}
+                </p>
+              </div>
+            )}
+            {(doctor.profession_type === 'CASEMANAGER_VERZUIM' || doctor.rcm_number != null) && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">RCM-nummer (optioneel)</label>
+                <input
+                  type="text"
+                  value={doctor.rcm_number || ''}
+                  onChange={(e) => setDoctor({ ...doctor, rcm_number: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  placeholder="RCM-nummer"
+                />
+              </div>
+            )}
+            {(!doctor.profession_type || doctor.profession_type !== 'CASEMANAGER_VERZUIM') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  BIG-nummer * (min. 8 cijfers) {doctor.verification_status && doctor.profession_type !== 'CASEMANAGER_VERZUIM' && (
+                    <span className={`ml-2 text-sm ${
+                      doctor.verification_status === 'VERIFIED' ? 'text-green-600' :
+                      doctor.verification_status === 'PENDING' ? 'text-yellow-600' :
+                      doctor.verification_status === 'REJECTED' ? 'text-red-600' :
+                      'text-gray-600'
+                    }`}>
+                      ({doctor.verification_status === 'VERIFIED' ? 'Geverifieerd' :
+                        doctor.verification_status === 'PENDING' ? 'In behandeling' :
+                        doctor.verification_status === 'REJECTED' ? 'Afgewezen' :
+                        'Niet geverifieerd'})
+                    </span>
+                  )}
+                </label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={11}
+                  value={doctor.big_number || ''}
+                  onChange={(e) => setDoctor({ ...doctor, big_number: e.target.value.replace(/\D/g, '').slice(0, 11) })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  placeholder="Alleen cijfers, min. 8"
+                />
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

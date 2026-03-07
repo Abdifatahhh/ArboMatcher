@@ -47,7 +47,7 @@ export default function AdminVerificaties() {
 
   const handleApprove = async (doctorId: string) => {
     await supabase
-      .from('doctors')
+      .from('professionals')
       .update({ verification_status: 'VERIFIED', verification_reason: null })
       .eq('id', doctorId);
     load();
@@ -56,7 +56,7 @@ export default function AdminVerificaties() {
   const handleReject = async (doctorId: string) => {
     const reason = window.prompt('Reden voor afwijzing (optioneel):');
     await supabase
-      .from('doctors')
+      .from('professionals')
       .update({ verification_status: 'REJECTED', verification_reason: reason || null })
       .eq('id', doctorId);
     load();

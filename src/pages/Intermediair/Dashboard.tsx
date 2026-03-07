@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { Briefcase, Users, MessageSquare, Plus, ArrowRight, User } from 'lucide-react';
 
-export default function OpdrachtgeverDashboard() {
+export default function IntermediairDashboard() {
   const { user, profile } = useAuth();
   const [stats, setStats] = useState({
     activeJobs: 0,
@@ -19,13 +19,11 @@ export default function OpdrachtgeverDashboard() {
 
   const fetchStats = async () => {
     if (!user) return;
-
     let { data: employer } = await supabase
       .from('employers')
       .select('id')
       .eq('user_id', user.id)
       .maybeSingle();
-
     if (!employer) {
       const { data: org } = await supabase.from('organizations').select('*').eq('profile_id', user.id).maybeSingle();
       if (org) {
@@ -44,24 +42,17 @@ export default function OpdrachtgeverDashboard() {
       setLoading(false);
       return;
     }
-
     const [jobsRes, applicationsRes, conversationsRes] = await Promise.all([
       supabase.from('jobs').select('id', { count: 'exact' }).eq('employer_id', employer.id).neq('status', 'CLOSED'),
-      supabase
-        .from('applications')
-        .select('id', { count: 'exact' })
-        .in('job_id',
-          (await supabase.from('jobs').select('id').eq('employer_id', employer.id)).data?.map(j => j.id) || []
-        ),
+      supabase.from('applications').select('id', { count: 'exact' })
+        .in('job_id', (await supabase.from('jobs').select('id').eq('employer_id', employer.id)).data?.map(j => j.id) || []),
       supabase.from('conversations').select('id', { count: 'exact' }).contains('participant_ids', [user.id])
     ]);
-
     setStats({
       activeJobs: jobsRes.count || 0,
       applications: applicationsRes.count || 0,
       messages: conversationsRes.count || 0
     });
-
     setLoading(false);
   };
 
@@ -73,13 +64,13 @@ export default function OpdrachtgeverDashboard() {
     );
   }
 
-  const displayName = profile?.full_name?.trim() || profile?.email || 'Opdrachtgever';
+  const displayName = profile?.full_name?.trim() || profile?.first_name || profile?.email || 'Intermediair';
 
   return (
     <div className="p-6">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[#0F172A]">Bedrijf Dashboard</h1>
+          <h1 className="text-3xl font-bold text-[#0F172A]">Intermediair Dashboard</h1>
           <p className="text-[#0F172A]/70 mt-1 font-medium">Welkom, {displayName}</p>
         </div>
         <Link
@@ -101,7 +92,7 @@ export default function OpdrachtgeverDashboard() {
             <span className="text-3xl font-bold text-[#0F172A]">{stats.activeJobs}</span>
           </div>
           <h3 className="text-lg font-semibold text-gray-800">Actieve opdrachten</h3>
-          <p className="text-sm text-gray-600">Uw openstaande vacatures</p>
+          <p className="text-sm text-gray-600">Openstaande vacatures</p>
         </Link>
         <Link
           to="/opdrachtgever/kandidaten"
@@ -112,7 +103,7 @@ export default function OpdrachtgeverDashboard() {
             <span className="text-3xl font-bold text-[#4FA151]">{stats.applications}</span>
           </div>
           <h3 className="text-lg font-semibold text-gray-800">Kandidaten</h3>
-          <p className="text-sm text-gray-600">Totaal aantal reacties</p>
+          <p className="text-sm text-gray-600">Reacties op opdrachten</p>
         </Link>
         <Link
           to="/opdrachtgever/inbox"
@@ -123,7 +114,7 @@ export default function OpdrachtgeverDashboard() {
             <span className="text-3xl font-bold text-[#0F172A]">{stats.messages}</span>
           </div>
           <h3 className="text-lg font-semibold text-gray-800">Berichten</h3>
-          <p className="text-sm text-gray-600">Conversaties met artsen</p>
+          <p className="text-sm text-gray-600">Conversaties</p>
         </Link>
         <Link
           to="/opdrachtgever/profiel"
@@ -133,8 +124,8 @@ export default function OpdrachtgeverDashboard() {
             <User className="w-8 h-8 text-gray-500" />
             <span className="text-3xl font-bold text-gray-700">—</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-800">Bedrijfsprofiel</h3>
-          <p className="text-sm text-gray-600">Gegevens beheren</p>
+          <h3 className="text-lg font-semibold text-gray-800">Organisatiegegevens</h3>
+          <p className="text-sm text-gray-600">Bedrijfsgegevens (KvK vast)</p>
         </Link>
       </div>
 
@@ -151,14 +142,7 @@ export default function OpdrachtgeverDashboard() {
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
         >
           <ArrowRight className="w-4 h-4" />
-          Bedrijfsprofiel
-        </Link>
-        <Link
-          to="/artsen"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
-        >
-          <User className="w-4 h-4" />
-          Zoek artsen
+          Organisatiegegevens
         </Link>
       </div>
 
@@ -174,11 +158,7 @@ export default function OpdrachtgeverDashboard() {
               <ArrowRight className="w-4 h-4 text-gray-500" />
             </Link>
             <Link to="/opdrachtgever/profiel" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition">
-              <span className="font-medium text-gray-800">Bedrijfsprofiel bewerken</span>
-              <ArrowRight className="w-4 h-4 text-gray-500" />
-            </Link>
-            <Link to="/artsen" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition">
-              <span className="font-medium text-gray-800">Zoek artsen</span>
+              <span className="font-medium text-gray-800">Organisatiegegevens bewerken</span>
               <ArrowRight className="w-4 h-4 text-gray-500" />
             </Link>
           </div>
@@ -187,7 +167,7 @@ export default function OpdrachtgeverDashboard() {
           <div className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
             <h2 className="text-xl font-bold text-[#0F172A] mb-4">Overzicht</h2>
             <p className="text-sm text-gray-600">
-              Beheer uw opdrachten, bekijk kandidaten en voer gesprekken met artsen vanuit dit dashboard.
+              Plaats en beheer opdrachten namens uw klanten. Bekijk kandidaten en voer gesprekken met artsen.
             </p>
           </div>
         </div>

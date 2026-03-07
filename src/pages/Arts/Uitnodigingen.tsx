@@ -22,7 +22,7 @@ export default function ArtsUitnodigingen() {
     if (!user) return;
 
     const { data: doctor } = await supabase
-      .from('doctors')
+      .from('professionals')
       .select('id')
       .eq('user_id', user.id)
       .maybeSingle();

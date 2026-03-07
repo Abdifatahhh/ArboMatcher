@@ -9,6 +9,7 @@ import type { Profile, UserRole } from '../lib/types';
 export type AuthErrorCategory =
   | 'invalid_credentials'
   | 'email_not_confirmed'
+  | 'email_already_exists'
   | 'too_many_requests'
   | 'network_error'
   | 'permission_denied'
@@ -66,6 +67,17 @@ export function categorizeAuthError(error: unknown, step: AuthDiagnostic['step']
     result = {
       category: 'email_not_confirmed',
       userMessage: 'Uw e-mailadres is nog niet bevestigd. Controleer uw inbox.',
+      technicalMessage: errorMessage,
+    };
+  } else if (errorMessage.toLowerCase().includes('already registered') ||
+             errorMessage.toLowerCase().includes('already been registered') ||
+             errorMessage.toLowerCase().includes('email already in use') ||
+             errorMessage.toLowerCase().includes('user already exists') ||
+             errorCode === 'user_already_exists') {
+    diagnostic.category = 'email_already_exists';
+    result = {
+      category: 'email_already_exists',
+      userMessage: 'Dit e-mailadres is al in gebruik. Log in of gebruik wachtwoord vergeten.',
       technicalMessage: errorMessage,
     };
   } else if (status === 429 || errorMessage.toLowerCase().includes('too many requests')) {

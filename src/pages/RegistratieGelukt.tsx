@@ -16,7 +16,7 @@ export default function RegistratieGelukt() {
         </div>
         <h1 className="text-xl font-bold text-[#0F172A] mb-2">Account aangemaakt</h1>
         <p className="text-gray-600 mb-6">
-          We hebben een e-mail gestuurd om je adres te bevestigen. Klik op de link in de e-mail en log daarna in.
+          We hebben een e-mail gestuurd om je adres te verifiëren. Klik op de link in de e-mail. Je komt dan op een bedankpagina waar je kunt inloggen om je profiel af te maken.
         </p>
         <div className="flex flex-col gap-3">
           <Link

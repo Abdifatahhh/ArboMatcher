@@ -128,7 +128,7 @@ export default function AdminArtsDetail() {
         : [];
 
       await supabase
-        .from('doctors')
+        .from('professionals')
         .update({
           big_number: doctor.big_number ?? '',
           bio: doctor.bio ?? null,

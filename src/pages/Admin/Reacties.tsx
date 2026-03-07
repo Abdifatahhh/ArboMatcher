@@ -38,8 +38,8 @@ export default function AdminReacties() {
           if (status && a.status !== status) return false;
           if (term) {
             const jobTitle = a.jobs?.title?.toLowerCase() ?? '';
-            const docName = (a.doctors as { profiles: { full_name?: string; email?: string } | null } | null)?.profiles?.full_name?.toLowerCase() ?? '';
-            const docEmail = (a.doctors as { profiles: { email?: string } | null } | null)?.profiles?.email?.toLowerCase() ?? '';
+            const docName = (a.professionals as { profiles: { full_name?: string; email?: string } | null } | null)?.profiles?.full_name?.toLowerCase() ?? '';
+            const docEmail = (a.professionals as { profiles: { email?: string } | null } | null)?.profiles?.email?.toLowerCase() ?? '';
             if (!jobTitle.includes(term) && !docName.includes(term) && !docEmail.includes(term)) return false;
           }
           return true;
@@ -50,8 +50,8 @@ export default function AdminReacties() {
           filtered.slice(from, from + PAGE_SIZE).map((a) => ({
             application: a,
             job: a.jobs ?? null,
-            doctor: a.doctors ?? null,
-            profile: (a.doctors as { profiles: import('../../lib/types').Profile | null } | null)?.profiles ?? null,
+            doctor: a.professionals ?? null,
+            profile: (a.professionals as { profiles: import('../../lib/types').Profile | null } | null)?.profiles ?? null,
           }))
         );
         setIsDemo(true);

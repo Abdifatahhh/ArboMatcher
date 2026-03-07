@@ -38,8 +38,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const getInstellingenPath = () => {
     if (!profile) return '/';
     switch (profile.role) {
-      case 'ARTS': return '/arts/instellingen';
-      case 'OPDRACHTGEVER': return '/opdrachtgever/profiel';
+      case 'ARTS':
+      case 'professional': return '/arts/instellingen';
+      case 'OPDRACHTGEVER':
+      case 'company': return '/opdrachtgever/profiel';
+      case 'intermediary': return '/opdrachtgever/profiel';
       case 'ADMIN': return '/admin/instellingen';
       default: return '/';
     }
@@ -49,6 +52,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     if (!profile) return [];
     switch (profile.role) {
       case 'ARTS':
+      case 'professional':
         return [
           { path: '/arts/dashboard', label: 'Dashboard', icon: LayoutDashboard },
           { path: '/arts/profiel', label: 'Profiel', icon: User },
@@ -59,8 +63,19 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           { path: '/arts/abonnement', label: 'Premium', icon: CreditCard }
         ];
       case 'OPDRACHTGEVER':
+      case 'company':
         return [
           { path: '/opdrachtgever/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+          { path: '/opdrachtgever/profiel', label: 'Bedrijfsprofiel', icon: User },
+          { path: '/opdrachtgever/opdrachten', label: 'Mijn opdrachten', icon: Briefcase },
+          { path: '/opdrachtgever/kandidaten', label: 'Kandidaten', icon: Users },
+          { path: '/opdrachtgever/favorieten', label: 'Favorieten', icon: Heart },
+          { path: '/opdrachtgever/inbox', label: 'Berichten', icon: MessageSquare },
+          { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard }
+        ];
+      case 'intermediary':
+        return [
+          { path: '/intermediair/dashboard', label: 'Dashboard', icon: LayoutDashboard },
           { path: '/opdrachtgever/profiel', label: 'Bedrijfsprofiel', icon: User },
           { path: '/opdrachtgever/opdrachten', label: 'Mijn opdrachten', icon: Briefcase },
           { path: '/opdrachtgever/kandidaten', label: 'Kandidaten', icon: Users },
@@ -86,19 +101,20 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const navItems = getNavigationItems();
   const isAdmin = profile?.role === 'ADMIN';
+  const useGreenSidebar = isAdmin || profile?.role === 'OPDRACHTGEVER' || profile?.role === 'company' || profile?.role === 'intermediary';
 
-  const sidebarBg = isAdmin
+  const sidebarBg = useGreenSidebar
     ? 'bg-[#F4FAF4] border-r border-[#4FA151]/15 shadow-lg shadow-slate-200/20'
     : 'bg-white border-r border-gray-200';
-  const headerBorder = isAdmin ? 'border-[#4FA151]/15' : 'border-gray-200';
-  const navActive = isAdmin
+  const headerBorder = useGreenSidebar ? 'border-[#4FA151]/15' : 'border-gray-200';
+  const navActive = useGreenSidebar
     ? 'bg-[#4FA151] text-white shadow-md shadow-[#4FA151]/25'
     : 'bg-[#0F172A] text-white';
-  const navInactive = isAdmin
+  const navInactive = useGreenSidebar
     ? 'text-[#0F172A]/80 hover:bg-white/80 hover:text-[#0F172A]'
     : 'text-gray-700 hover:bg-gray-100';
-  const footerStyle = isAdmin ? 'border-t border-[#4FA151]/15' : 'border-t border-gray-200';
-  const footerLink = isAdmin
+  const footerStyle = useGreenSidebar ? 'border-t border-[#4FA151]/15' : 'border-t border-gray-200';
+  const footerLink = useGreenSidebar
     ? 'text-[#0F172A]/80 hover:bg-white/80 hover:text-[#0F172A]'
     : 'text-gray-700 hover:bg-gray-100';
   const mainBg = 'bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white';
@@ -110,9 +126,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <LogoText theme="light" className="text-xl" />
         </Link>
         {profile && (
-          <p className={`text-sm mt-2 ${isAdmin ? 'text-[#0F172A]/70 font-medium' : 'text-gray-600'}`}>
-            {profile.role === 'ARTS' && 'Arts Dashboard'}
-            {profile.role === 'OPDRACHTGEVER' && 'Opdrachtgever Dashboard'}
+          <p className={`text-sm mt-2 ${useGreenSidebar ? 'text-[#0F172A]/70 font-medium' : 'text-gray-600'}`}>
+            {(profile.role === 'ARTS' || profile.role === 'professional') && 'Professional Dashboard'}
+            {(profile.role === 'OPDRACHTGEVER' || profile.role === 'company') && 'Bedrijf Dashboard'}
+            {profile.role === 'intermediary' && 'Intermediair Dashboard'}
             {profile.role === 'ADMIN' && 'Admin Dashboard'}
           </p>
         )}

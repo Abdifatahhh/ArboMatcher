@@ -103,9 +103,9 @@ export default function AdminDashboard() {
         appsTodayRes,
         appsWeekRes,
       ] = await Promise.all([
-        supabase.from('doctors').select('id', { count: 'exact' }).eq('verification_status', 'PENDING'),
+        supabase.from('professionals').select('id', { count: 'exact' }).eq('verification_status', 'PENDING'),
         supabase.from('profiles').select('id', { count: 'exact' }),
-        supabase.from('doctors').select('id', { count: 'exact' }),
+        supabase.from('professionals').select('id', { count: 'exact' }),
         supabase.from('jobs').select('id', { count: 'exact' }).eq('status', 'PUBLISHED'),
         supabase.from('jobs').select('id', { count: 'exact' }).eq('status', 'DRAFT'),
         supabase.from('jobs').select('id', { count: 'exact' }).eq('status', 'CLOSED'),
@@ -149,9 +149,9 @@ export default function AdminDashboard() {
     try {
       const [profilesRes, doctorsRes, jobsRes, applicationsRes] = await Promise.all([
         supabase.from('profiles').select('id, full_name, email, role, created_at').order('created_at', { ascending: false }).limit(5),
-        supabase.from('doctors').select('id, user_id, big_number, created_at, profiles(full_name)').eq('verification_status', 'PENDING').order('created_at', { ascending: false }).limit(5),
+        supabase.from('professionals').select('id, user_id, big_number, created_at, profiles(full_name)').eq('verification_status', 'PENDING').order('created_at', { ascending: false }).limit(5),
         supabase.from('jobs').select('id, title, status, company_name, created_at').order('created_at', { ascending: false }).limit(5),
-        supabase.from('applications').select('id, status, created_at, jobs(title), doctors(profiles(full_name))').order('created_at', { ascending: false }).limit(5),
+        supabase.from('applications').select('id, status, created_at, jobs(title), professionals(profiles(full_name))').order('created_at', { ascending: false }).limit(5),
       ]);
 
       const items: ActivityItem[] = [];
@@ -194,10 +194,10 @@ export default function AdminDashboard() {
         status: string;
         created_at: string;
         jobs: { title: string } | null;
-        doctors: { profiles: { full_name: string | null } | null } | null;
+        professionals: { profiles: { full_name: string | null } | null } | null;
       }[];
       applications.forEach((a) => {
-        const docName = (a.doctors?.profiles as { full_name: string | null } | undefined)?.full_name || 'Arts';
+        const docName = (a.professionals?.profiles as { full_name: string | null } | undefined)?.full_name || 'Arts';
         const jobTitle = a.jobs?.title || 'Opdracht';
         items.push({
           id: `app-${a.id}`,

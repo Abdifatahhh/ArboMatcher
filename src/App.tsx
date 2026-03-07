@@ -17,9 +17,11 @@ const OpdrachtDetail = lazy(() => import('./pages/OpdrachtDetail'));
 const Prijzen = lazy(() => import('./pages/Prijzen'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
+const Onboarding = lazy(() => import('./pages/Onboarding'));
 const WachtwoordVergeten = lazy(() => import('./pages/WachtwoordVergeten'));
 const EmailVerificatie = lazy(() => import('./pages/EmailVerificatie'));
 const RegistratieGelukt = lazy(() => import('./pages/RegistratieGelukt'));
+const VerificatieGelukt = lazy(() => import('./pages/VerificatieGelukt'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Contact = lazy(() => import('./pages/Contact'));
@@ -40,6 +42,7 @@ const ArtsFavorieten = lazy(() => import('./pages/Arts/Favorieten'));
 
 const OpdrachtgeverDashboard = lazy(() => import('./pages/Opdrachtgever/Dashboard'));
 const OpdrachtgeverProfiel = lazy(() => import('./pages/Opdrachtgever/Profiel'));
+const IntermediairDashboard = lazy(() => import('./pages/Intermediair/Dashboard'));
 const OpdrachtgeverOpdrachten = lazy(() => import('./pages/Opdrachtgever/Opdrachten'));
 const OpdrachtgeverKandidaten = lazy(() => import('./pages/Opdrachtgever/Kandidaten'));
 const OpdrachtgeverFavorieten = lazy(() => import('./pages/Opdrachtgever/Favorieten'));
@@ -142,6 +145,18 @@ function App() {
             element={<RegistratieGelukt />}
           />
             <Route
+            path="/verificatie-gelukt"
+            element={<VerificatieGelukt />}
+          />
+            <Route
+            path="/onboarding"
+            element={
+              <ProtectedRoute>
+                <Onboarding />
+              </ProtectedRoute>
+            }
+          />
+            <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
@@ -229,7 +244,7 @@ function App() {
             <Route
             path="/arts/dashboard"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsDashboard />
                 </ArtsDashboardLayout>
@@ -239,7 +254,7 @@ function App() {
             <Route
             path="/arts/profiel"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsProfiel />
                 </ArtsDashboardLayout>
@@ -249,7 +264,7 @@ function App() {
             <Route
             path="/arts/opdrachten"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsOpdrachten />
                 </ArtsDashboardLayout>
@@ -259,7 +274,7 @@ function App() {
             <Route
             path="/arts/reacties"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsReacties />
                 </ArtsDashboardLayout>
@@ -269,7 +284,7 @@ function App() {
             <Route
             path="/arts/uitnodigingen"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsUitnodigingen />
                 </ArtsDashboardLayout>
@@ -279,7 +294,7 @@ function App() {
             <Route
             path="/arts/inbox"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsInbox />
                 </ArtsDashboardLayout>
@@ -289,7 +304,7 @@ function App() {
             <Route
             path="/arts/abonnement"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsAbonnement />
                 </ArtsDashboardLayout>
@@ -299,7 +314,7 @@ function App() {
             <Route
             path="/arts/favorieten"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsFavorieten />
                 </ArtsDashboardLayout>
@@ -309,7 +324,7 @@ function App() {
             <Route
             path="/arts/zoekopdrachten"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsOpdrachten />
                 </ArtsDashboardLayout>
@@ -319,7 +334,7 @@ function App() {
             <Route
             path="/arts/beoordelingen"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsReacties />
                 </ArtsDashboardLayout>
@@ -329,7 +344,7 @@ function App() {
             <Route
             path="/arts/instellingen"
             element={
-              <ProtectedRoute allowedRoles={['ARTS']}>
+              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
                 <ArtsDashboardLayout>
                   <ArtsProfiel />
                 </ArtsDashboardLayout>
@@ -340,7 +355,7 @@ function App() {
             <Route
             path="/opdrachtgever/dashboard"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
                 <DashboardLayout>
                   <OpdrachtgeverDashboard />
                 </DashboardLayout>
@@ -350,7 +365,7 @@ function App() {
             <Route
             path="/opdrachtgever/profiel"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
                 <DashboardLayout>
                   <OpdrachtgeverProfiel />
                 </DashboardLayout>
@@ -360,7 +375,7 @@ function App() {
             <Route
             path="/opdrachtgever/opdrachten"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
                 <DashboardLayout>
                   <OpdrachtgeverOpdrachten />
                 </DashboardLayout>
@@ -370,7 +385,7 @@ function App() {
             <Route
             path="/opdrachtgever/kandidaten"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
                 <DashboardLayout>
                   <OpdrachtgeverKandidaten />
                 </DashboardLayout>
@@ -380,7 +395,7 @@ function App() {
             <Route
             path="/opdrachtgever/favorieten"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
                 <DashboardLayout>
                   <OpdrachtgeverFavorieten />
                 </DashboardLayout>
@@ -390,7 +405,7 @@ function App() {
             <Route
             path="/opdrachtgever/inbox"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
                 <DashboardLayout>
                   <OpdrachtgeverInbox />
                 </DashboardLayout>
@@ -400,9 +415,20 @@ function App() {
             <Route
             path="/opdrachtgever/abonnement"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
                 <DashboardLayout>
                   <OpdrachtgeverAbonnement />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+
+            <Route
+            path="/intermediair/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['intermediary']}>
+                <DashboardLayout>
+                  <IntermediairDashboard />
                 </DashboardLayout>
               </ProtectedRoute>
             }

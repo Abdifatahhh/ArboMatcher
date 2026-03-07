@@ -5,8 +5,8 @@ import { useAuth } from '../../context/AuthContext';
 import type { Application, Doctor, Profile, Job } from '../../lib/types';
 import { Users } from 'lucide-react';
 
-interface ApplicationWithDoctor extends Application {
-  doctors: Doctor & { profiles: Profile };
+interface ApplicationWithProfessional extends Application {
+  professionals: Doctor & { profiles: Profile };
   jobs: Job;
 }
 
@@ -14,7 +14,7 @@ export default function OpdrachtgeverKandidaten() {
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const jobId = searchParams.get('job');
-  const [applications, setApplications] = useState<ApplicationWithDoctor[]>([]);
+  const [applications, setApplications] = useState<ApplicationWithProfessional[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function OpdrachtgeverKandidaten() {
 
     let query = supabase
       .from('applications')
-      .select('*, doctors(*, profiles(*)), jobs(*)')
+      .select('*, professionals(*, profiles(*)), jobs(*)')
       .in('job_id',
         (await supabase.from('jobs').select('id').eq('employer_id', employer.id)).data?.map(j => j.id) || []
       );
@@ -49,7 +49,7 @@ export default function OpdrachtgeverKandidaten() {
     const { data } = await query.order('created_at', { ascending: false });
 
     if (data) {
-      setApplications(data as ApplicationWithDoctor[]);
+      setApplications(data as ApplicationWithProfessional[]);
     }
 
     setLoading(false);
@@ -98,10 +98,10 @@ export default function OpdrachtgeverKandidaten() {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <Link
-                    to={`/artsen/${application.doctors.id}`}
+                    to={`/artsen/${application.professionals.id}`}
                     className="text-xl font-bold text-[#0F172A] hover:underline"
                   >
-                    {application.doctors.profiles.full_name || 'Naam onbekend'}
+                    {application.professionals.profiles.full_name || 'Naam onbekend'}
                   </Link>
                   <p className="text-sm text-gray-600">
                     Voor: <Link to={`/opdrachten/${application.jobs.id}`} className="hover:underline">{application.jobs.title}</Link>
@@ -112,8 +112,8 @@ export default function OpdrachtgeverKandidaten() {
                 </span>
               </div>
 
-              {application.doctors.bio && (
-                <p className="text-gray-700 mb-4">{application.doctors.bio.substring(0, 200)}...</p>
+              {application.professionals.bio && (
+                <p className="text-gray-700 mb-4">{application.professionals.bio.substring(0, 200)}...</p>
               )}
 
               {application.message && (
@@ -148,7 +148,7 @@ export default function OpdrachtgeverKandidaten() {
                     </>
                   )}
                   <Link
-                    to={`/artsen/${application.doctors.id}`}
+                    to={`/artsen/${application.professionals.id}`}
                     className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                   >
                     Bekijk profiel

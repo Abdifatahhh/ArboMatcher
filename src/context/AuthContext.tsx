@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User } from '@supabase/supabase-js';
 import { supabase, validateSupabaseEnv, checkDatabaseHealth, type HealthCheckResult } from '../lib/supabase';
 import { getOrCreateProfile, categorizeAuthError, type CategorizedError } from '../utils/auth';
-import type { Profile } from '../lib/types';
+import type { Profile, UserRole } from '../lib/types';
 
 interface AuthContextType {
   user: User | null;
@@ -10,7 +10,7 @@ interface AuthContextType {
   loading: boolean;
   healthStatus: HealthCheckResult | null;
   signIn: (email: string, password: string) => Promise<{ profile: Profile | null; error: CategorizedError | null }>;
-  signUp: (email: string, password: string, role: Profile['role'], meta?: { full_name?: string; phone?: string }) => Promise<{ error: CategorizedError | null; hasSession?: boolean }>;
+  signUp: (email: string, password: string, role: Profile['role'], meta?: { first_name?: string; last_name?: string; full_name?: string; phone?: string; profession_type?: string; big_number?: string; rcm_number?: string }) => Promise<{ error: CategorizedError | null; hasSession?: boolean }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -64,11 +64,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
 
         if (session?.user) {
+          const meta = session.user.user_metadata as Record<string, unknown>;
+          const defaultRole: UserRole = (meta?.role as UserRole) || 'onboarding';
           const { profile: profileData } = await getOrCreateProfile(
             session.user.id,
             session.user.email || '',
-            'ARTS',
-            session.user.user_metadata as Record<string, unknown>
+            defaultRole,
+            meta
           );
           if (mounted) setProfile(profileData);
         }
@@ -87,11 +89,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       (async () => {
         setUser(session?.user ?? null);
         if (session?.user) {
+          const meta = session.user.user_metadata as Record<string, unknown>;
+          const defaultRole: UserRole = (meta?.role as UserRole) || 'onboarding';
           const { profile: profileData } = await getOrCreateProfile(
             session.user.id,
             session.user.email || '',
-            'ARTS',
-            session.user.user_metadata as Record<string, unknown>
+            defaultRole,
+            meta
           );
           if (mounted) setProfile(profileData);
         } else {
@@ -108,11 +112,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshProfile = async () => {
     if (user) {
+      const meta = user.user_metadata as Record<string, unknown>;
+      const defaultRole: UserRole = (meta?.role as UserRole) || 'onboarding';
       const { profile: profileData } = await getOrCreateProfile(
         user.id,
         user.email || '',
-        'ARTS',
-        user.user_metadata as Record<string, unknown>
+        defaultRole,
+        meta
       );
       setProfile(profileData);
     }
@@ -141,11 +147,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         };
       }
 
+      const meta = data.user.user_metadata as Record<string, unknown>;
+      const defaultRole: UserRole = (meta?.role as UserRole) || 'onboarding';
       const { profile: profileData, error: profileError } = await getOrCreateProfile(
         data.user.id,
         data.user.email || email,
-        'ARTS',
-        data.user.user_metadata as Record<string, unknown>
+        defaultRole,
+        meta
       );
 
       if (profileError) {
@@ -166,13 +174,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     email: string,
     password: string,
     role: Profile['role'],
-    meta?: { full_name?: string; phone?: string }
+    meta?: { first_name?: string; last_name?: string; full_name?: string; phone?: string; profession_type?: string; big_number?: string; rcm_number?: string }
   ): Promise<{ error: CategorizedError | null; hasSession?: boolean }> => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { role, full_name: meta?.full_name, phone: meta?.phone } },
+        options: {
+          emailRedirectTo: typeof window !== 'undefined' ? `${window.location.origin}/verificatie-gelukt` : undefined,
+          data: {
+            role,
+            first_name: meta?.first_name,
+            last_name: meta?.last_name,
+            full_name: meta?.full_name,
+            phone: meta?.phone,
+            profession_type: meta?.profession_type,
+            big_number: meta?.big_number,
+            rcm_number: meta?.rcm_number,
+          },
+        },
       });
 
       if (error) {

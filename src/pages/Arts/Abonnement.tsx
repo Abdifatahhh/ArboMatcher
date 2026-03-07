@@ -15,14 +15,14 @@ export default function ArtsAbonnement() {
 
   const fetchDoctor = async () => {
     if (!user) return;
-    const { data } = await supabase.from('doctors').select('id, doctor_plan').eq('user_id', user.id).maybeSingle();
+    const { data } = await supabase.from('professionals').select('id, doctor_plan').eq('user_id', user.id).maybeSingle();
     if (data) setDoctor(data);
     setLoading(false);
   };
 
   const handleSelectPlan = async (plan: DoctorPlan) => {
     if (!user || !doctor) return;
-    await supabase.from('doctors').update({ doctor_plan: plan }).eq('id', doctor.id);
+    await supabase.from('professionals').update({ doctor_plan: plan }).eq('id', doctor.id);
     fetchDoctor();
   };
 

@@ -5,7 +5,7 @@ import type { Profile, Doctor, Employer, UserRole } from '../../lib/types';
 import { demoProfiles, demoDoctors, demoEmployers } from '../../data/adminDemoData';
 import { Save, ArrowLeft, AlertCircle, User, Briefcase, Stethoscope, Info, Trash2 } from 'lucide-react';
 import { deleteUserPermanently } from '../../services/adminUsersService';
-import { useToast } from '../../context/ToastContext';
+import { CheckCircle } from 'lucide-react';
 
 const ROLE_OPTIONS: UserRole[] = ['ARTS', 'OPDRACHTGEVER', 'ADMIN'];
 const STATUS_OPTIONS = ['ACTIVE', 'BLOCKED'];
@@ -13,7 +13,6 @@ const STATUS_OPTIONS = ['ACTIVE', 'BLOCKED'];
 export default function AdminGebruikerDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { success: toastSuccess } = useToast();
   const [profile, setProfile] = useState<Partial<Profile> | null>(null);
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [employer, setEmployer] = useState<Employer | null>(null);
@@ -22,6 +21,7 @@ export default function AdminGebruikerDetail() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [isDemo, setIsDemo] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
 
   useEffect(() => {
     if (id) fetchData();
@@ -34,7 +34,7 @@ export default function AdminGebruikerDetail() {
 
     const [profileRes, doctorRes, employerRes] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', id).maybeSingle(),
-      supabase.from('doctors').select('*').eq('user_id', id).maybeSingle(),
+      supabase.from('professionals').select('*').eq('user_id', id).maybeSingle(),
       supabase.from('employers').select('*').eq('user_id', id).maybeSingle(),
     ]);
 
@@ -99,9 +99,9 @@ export default function AdminGebruikerDetail() {
       setDeleting(false);
       return;
     }
-    toastSuccess('Account is verwijderd.');
     setDeleting(false);
-    setTimeout(() => navigate('/admin/gebruikers', { replace: true }), 150);
+    setDeleteSuccess(true);
+    setTimeout(() => navigate('/admin/gebruikers', { replace: true }), 2500);
   };
 
   if (loading) {
@@ -112,13 +112,25 @@ export default function AdminGebruikerDetail() {
     );
   }
 
-  if (!profile) {
+  if (!profile && !deleteSuccess) {
     return (
       <div className="p-6">
         <p className="text-red-600">Gebruiker niet gevonden.</p>
         <Link to="/admin/gebruikers" className="text-[#4FA151] hover:underline mt-2 inline-block">
           Terug naar gebruikers
         </Link>
+      </div>
+    );
+  }
+
+  if (deleteSuccess) {
+    return (
+      <div className="p-6 flex items-center justify-center min-h-[50vh]">
+        <div className="rounded-xl border-2 border-green-300 bg-green-50 p-8 text-center shadow-lg max-w-md w-full">
+          <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-green-800 mb-2">Account is verwijderd</h2>
+          <p className="text-green-700">U wordt doorgestuurd naar de gebruikerslijst.</p>
+        </div>
       </div>
     );
   }

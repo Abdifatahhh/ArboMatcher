@@ -288,7 +288,7 @@ function buildDemoOpdrachtgevers(): DemoClientRow[] {
 
 export const demoOpdrachtgevers: DemoClientRow[] = buildDemoOpdrachtgevers();
 
-export const demoApplications: (Application & { jobs: Job | null; doctors: (Doctor & { profiles: Profile | null }) | null })[] = [
+export const demoApplications: (Application & { jobs: Job | null; professionals: (Doctor & { profiles: Profile | null }) | null })[] = [
   {
     id: 'demo-app-1',
     job_id: 'demo-job-1',
@@ -299,7 +299,7 @@ export const demoApplications: (Application & { jobs: Job | null; doctors: (Doct
     created_at: lastWeek,
     updated_at: now,
     jobs: demoJobs[0],
-    doctors: demoDoctors[0],
+    professionals: demoDoctors[0],
   },
   {
     id: 'demo-app-2',
@@ -311,7 +311,7 @@ export const demoApplications: (Application & { jobs: Job | null; doctors: (Doct
     created_at: now,
     updated_at: now,
     jobs: demoJobs[0],
-    doctors: demoDoctors[1],
+    professionals: demoDoctors[1],
   },
 ];
 
@@ -414,7 +414,7 @@ function toActivityItems(): ActivityItem[] {
     });
   });
   demoApplications.forEach((a) => {
-    const docName = a.doctors?.profiles?.full_name || 'Arts';
+    const docName = a.professionals?.profiles?.full_name || 'Arts';
     const jobTitle = a.jobs?.title || 'Opdracht';
     items.push({
       id: `app-${a.id}`,

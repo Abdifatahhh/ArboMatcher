@@ -34,7 +34,7 @@ export async function listApplications(params: ListApplicationsParams): Promise<
 
   let query = supabase
     .from('applications')
-    .select('*, jobs(*), doctors(*, profiles(*))', { count: 'exact' })
+    .select('*, jobs(*), professionals(*, profiles(*))', { count: 'exact' })
     .order('created_at', { ascending: false });
 
   if (status && status !== '') {
@@ -50,7 +50,7 @@ export async function listApplications(params: ListApplicationsParams): Promise<
     const jobIds = (jobsRes.data ?? []).map((r) => r.id);
     const profileIds = (doctorsRes.data ?? []).map((r) => r.id);
     const { data: doctorsByProfile } = profileIds.length
-      ? await supabase.from('doctors').select('id').in('user_id', profileIds)
+      ? await supabase.from('professionals').select('id').in('user_id', profileIds)
       : { data: [] };
     const doctorIds = (doctorsByProfile ?? []).map((r) => r.id);
     const allAppIds: string[] = [];
@@ -74,12 +74,12 @@ export async function listApplications(params: ListApplicationsParams): Promise<
 
   if (error) throw error;
 
-  const list = (rows as (Application & { jobs: Job | null; doctors: (Doctor & { profiles: Profile | null }) | null })[]) ?? [];
+  const list = (rows as (Application & { jobs: Job | null; professionals: (Doctor & { profiles: Profile | null }) | null })[]) ?? [];
   const data: AdminApplicationRow[] = list.map((r) => ({
     application: r as Application,
     job: r.jobs ?? null,
-    doctor: r.doctors ?? null,
-    profile: r.doctors?.profiles ?? null,
+    doctor: r.professionals ?? null,
+    profile: r.professionals?.profiles ?? null,
   }));
 
   return { data, total: count ?? 0 };

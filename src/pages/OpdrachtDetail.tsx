@@ -38,7 +38,7 @@ export default function OpdrachtDetail() {
       return;
     }
     (async () => {
-      const { data } = await supabase.from('doctors').select('doctor_plan').eq('user_id', user.id).maybeSingle();
+      const { data } = await supabase.from('professionals').select('doctor_plan').eq('user_id', user.id).maybeSingle();
       setDoctorPlan((data?.doctor_plan === 'PRO' ? 'PRO' : 'BASIC') ?? null);
     })();
   }, [user, profile?.role, job?.id, isFakeJob]);
@@ -86,7 +86,7 @@ export default function OpdrachtDetail() {
     if (!id || !user) return;
 
     const { data: doctor } = await supabase
-      .from('doctors')
+      .from('professionals')
       .select('id')
       .eq('user_id', user.id)
       .maybeSingle();
@@ -120,7 +120,7 @@ export default function OpdrachtDetail() {
     }
 
     const { data: doctor } = await supabase
-      .from('doctors')
+      .from('professionals')
       .select('id, verification_status, doctor_plan')
       .eq('user_id', user.id)
       .maybeSingle();

@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { AlertCircle, Wifi, Lock, Clock, Shield, Database, HelpCircle } from 'lucide-react';
+import { AlertCircle, Wifi, Lock, Clock, Shield, Database, HelpCircle, CheckCircle } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
 import type { AuthErrorCategory } from '../utils/auth';
 
@@ -17,13 +17,40 @@ const errorIcons: Record<AuthErrorCategory, typeof AlertCircle> = {
 };
 
 export default function Login() {
+  const [searchParams] = useSearchParams();
+  const verified = searchParams.get('verified') === '1';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [errorCategory, setErrorCategory] = useState<AuthErrorCategory | null>(null);
   const [loading, setLoading] = useState(false);
-  const { signIn, healthStatus } = useAuth();
+  const { signIn, healthStatus, user, profile } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user || !profile) return;
+    if (profile.role !== 'ADMIN' && profile.onboarding_completed !== true) {
+      navigate('/onboarding', { replace: true });
+      return;
+    }
+    if (profile.role === 'ADMIN') {
+      navigate('/admin/dashboard', { replace: true });
+      return;
+    }
+    if (profile.role === 'ARTS' || profile.role === 'professional') {
+      navigate('/arts/dashboard', { replace: true });
+      return;
+    }
+    if (profile.role === 'OPDRACHTGEVER' || profile.role === 'company') {
+      navigate('/opdrachtgever/dashboard', { replace: true });
+      return;
+    }
+    if (profile.role === 'intermediary') {
+      navigate('/intermediair/dashboard', { replace: true });
+      return;
+    }
+    navigate('/', { replace: true });
+  }, [user, profile, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,10 +67,14 @@ export default function Login() {
       return;
     }
 
-    if (userProfile?.role === 'ARTS') {
+    if (userProfile?.role !== 'ADMIN' && userProfile?.onboarding_completed !== true) {
+      navigate('/onboarding');
+    } else if (userProfile?.role === 'ARTS' || userProfile?.role === 'professional') {
       navigate('/arts/dashboard');
-    } else if (userProfile?.role === 'OPDRACHTGEVER') {
+    } else if (userProfile?.role === 'OPDRACHTGEVER' || userProfile?.role === 'company') {
       navigate('/opdrachtgever/dashboard');
+    } else if (userProfile?.role === 'intermediary') {
+      navigate('/intermediair/dashboard');
     } else if (userProfile?.role === 'ADMIN') {
       navigate('/admin/dashboard');
     } else {
@@ -83,6 +114,13 @@ export default function Login() {
 
       <div className="w-full max-w-md bg-white rounded-2xl shadow-sm p-8">
         <h1 className="text-2xl font-bold text-[#0F172A] mb-6">Inloggen</h1>
+
+        {verified && !error && (
+          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start">
+            <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 mr-3 flex-shrink-0" />
+            <p className="text-sm text-green-800">Je e-mail is geverifieerd. Log in om verder te gaan met je profiel.</p>
+          </div>
+        )}
 
         {error && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">

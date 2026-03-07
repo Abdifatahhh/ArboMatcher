@@ -1,4 +1,4 @@
-export type UserRole = 'OPDRACHTGEVER' | 'ARTS' | 'ADMIN';
+export type UserRole = 'OPDRACHTGEVER' | 'ARTS' | 'ADMIN' | 'professional' | 'company' | 'intermediary' | 'onboarding';
 export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
 export type JobStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED';
 export type ApplicationStatus = 'PENDING' | 'SHORTLISTED' | 'REJECTED' | 'ACCEPTED';
@@ -17,10 +17,30 @@ export interface Profile {
   id: string;
   role: UserRole;
   full_name: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
   avatar_url: string | null;
   phone: string | null;
   email: string;
   status: string;
+  onboarding_completed?: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export type OrganizationType = 'company' | 'intermediary';
+
+export interface Organization {
+  id: string;
+  profile_id: string;
+  organization_type: OrganizationType;
+  company_name: string;
+  kvk_number: string;
+  contact_person: string | null;
+  business_email: string | null;
+  phone: string | null;
+  website: string | null;
+  profile_completed: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -41,10 +61,17 @@ export interface Employer {
   updated_at: string;
 }
 
+export type ProfessionType = 'BEDRIJFSARTS' | 'ARBO_ARTS' | 'VERZEKERINGSARTS' | 'CASEMANAGER_VERZUIM';
+
+export type ProfessionValue = 'bedrijfsarts' | 'arbo_arts' | 'verzekeringsarts' | 'casemanager_verzuim';
+
 export interface Doctor {
   id: string;
   user_id: string;
-  big_number: string;
+  big_number: string | null;
+  profession: ProfessionValue | null;
+  profession_type: ProfessionType | null;
+  rcm_number: string | null;
   verification_status: VerificationStatus;
   verification_reason: string | null;
   bio: string | null;
@@ -185,7 +212,7 @@ export interface Database {
         Update: Partial<Omit<Employer, 'id' | 'created_at'>>;
         Relationships: [];
       };
-      doctors: {
+      professionals: {
         Row: Doctor;
         Insert: Omit<Doctor, 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Omit<Doctor, 'id' | 'created_at'>>;
