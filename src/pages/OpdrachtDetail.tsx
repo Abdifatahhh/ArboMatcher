@@ -23,7 +23,7 @@ export default function OpdrachtDetail() {
   const [hasApplied, setHasApplied] = useState(false);
   const [isFakeJob, setIsFakeJob] = useState(false);
   const [viewsCount, setViewsCount] = useState(0);
-  const [doctorPlan, setDoctorPlan] = useState<'BASIC' | 'PRO' | null>(null);
+  const [doctorPlan, setDoctorPlan] = useState<'GRATIS' | 'PRO' | null>(null);
 
   useEffect(() => {
     fetchJob();
@@ -39,7 +39,7 @@ export default function OpdrachtDetail() {
     }
     (async () => {
       const { data } = await supabase.from('professionals').select('doctor_plan').eq('user_id', user.id).maybeSingle();
-      setDoctorPlan((data?.doctor_plan === 'PRO' ? 'PRO' : 'BASIC') ?? null);
+      setDoctorPlan((data?.doctor_plan === 'PRO' ? 'PRO' : 'GRATIS') ?? null);
     })();
   }, [user, profile?.role, job?.id, isFakeJob]);
 
@@ -139,7 +139,7 @@ export default function OpdrachtDetail() {
     const jobTier = 'job_tier' in job ? job.job_tier : ((job as { is_pro?: boolean }).is_pro ? 'PRO' : 'STANDARD');
     const jobCreatedAt = job.created_at ? new Date(job.created_at).getTime() : 0;
     const cutoff48h = Date.now() - 48 * 60 * 60 * 1000;
-    const plan = (doctor as { doctor_plan?: string }).doctor_plan ?? 'BASIC';
+    const plan = (doctor as { doctor_plan?: string }).doctor_plan ?? 'GRATIS';
     if (jobTier === 'PRO' && jobCreatedAt > cutoff48h && plan !== 'PRO') {
       toast.error('Deze PRO opdracht is de eerste 48 uur exclusief voor PRO artsen.');
       return;

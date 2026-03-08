@@ -1,7 +1,7 @@
 import type { SubscriptionPlan, SubscriptionStatus } from '../../services/adminSubscriptionsService';
 
 const PLAN_LABELS: Record<SubscriptionPlan, string> = {
-  BASIC: 'Basic',
+  GRATIS: 'Gratis',
   PRO: 'Pro',
 };
 

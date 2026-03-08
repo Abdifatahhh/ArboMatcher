@@ -52,9 +52,17 @@ Voor transactional mails (welkom, nieuwe reactie, uitnodiging) gebruik je de **R
 
 3. Dezelfde Resend API Key kan voor SMTP (Auth) en voor de Edge Function worden gebruikt; voor de function moet de key als secret `RESEND_API_KEY` staan.
 
+## Auth-e-mails: Send Email Hook (aanbevolen)
+
+Voor **eigen templates** (ArboMatcher-stijl) voor signup, wachtwoord reset, magic link en invite gebruik je de **Send Email Hook** in plaats van alleen SMTP:
+
+1. Deploy de Edge Function `send-auth-email` en koppel die in Dashboard → **Authentication** → **Hooks** → **Send Email**. Zie `supabase/functions/send-auth-email/README.md` en `docs/EMAIL_ARCHITECTURE.md`.
+2. Stel `SEND_EMAIL_HOOK_SECRET` in (geheim uit de Hooks-pagina).
+3. Auth-e-mails worden dan door Resend verstuurd via de function; SMTP wordt voor auth niet meer gebruikt.
+
 ## Kort overzicht
 
-1. Resend: account → API Key aanmaken → (optioneel) domein verifiëren.  
-2. Supabase: Authentication → Email/SMTP → Custom SMTP aan, host `smtp.resend.com`, port `465`, user `resend`, wachtwoord = API Key.  
-3. Eigen mails: `supabase secrets set RESEND_API_KEY=re_xxx`, daarna Edge Function `send-email` aanroepen (zie send-email/README.md).
-4. Testen met een nieuwe registratie (verificatiemail) en/of aanroep van `send-email`.
+1. Resend: account → API Key → (optioneel) domein verifiëren.  
+2. **Auth:** Send Email Hook met `send-auth-email` (zie EMAIL_ARCHITECTURE.md) of anders Custom SMTP.  
+3. **Business:** `supabase secrets set RESEND_API_KEY=re_xxx`, Edge Function `send-email` aanroepen (zie send-email/README.md).  
+4. Testen: registratie (verificatiemail) en/of `send-email` aanroep.

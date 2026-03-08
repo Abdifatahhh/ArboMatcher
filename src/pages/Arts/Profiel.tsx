@@ -73,7 +73,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
           profession_type: metaProfession || null,
           rcm_number: metaRcm || null,
           verification_status: metaBig && metaBig.length >= 8 ? 'PENDING' : 'UNVERIFIED',
-          doctor_plan: 'BASIC',
+          doctor_plan: 'GRATIS',
           specialties: [],
           regions: [],
         })
@@ -133,7 +133,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
             availability_text: doctor.availability_text,
             cv_url: doctor.cv_url,
             verification_status: (doctor.big_number?.trim() || '').length >= 8 ? 'PENDING' : 'UNVERIFIED',
-            doctor_plan: 'BASIC'
+            doctor_plan: 'GRATIS'
           });
       }
 

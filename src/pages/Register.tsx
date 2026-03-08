@@ -229,11 +229,6 @@ export default function Register() {
             </label>
           </div>
 
-          <p className="text-sm text-gray-500">
-            Na aanmelding sturen we een e-mail om uw adres te verifiëren.{' '}
-            <Link to="/email-verificatie" className="text-[#4FA151] hover:underline">Meer uitleg</Link>
-          </p>
-
           <button
             type="submit"
             disabled={isOnCooldown}

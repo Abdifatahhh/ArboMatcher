@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { triggerAccountBevestigdEmail } from '../services/emailService';
 import { CheckCircle } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
 
@@ -11,10 +12,12 @@ export default function VerificatieGelukt() {
   useEffect(() => {
     if (user && !signedOutRef.current) {
       signedOutRef.current = true;
-      signOut().then(() => {
-        if (window.location.hash) {
-          window.history.replaceState(null, '', window.location.pathname + window.location.search);
-        }
+      triggerAccountBevestigdEmail().finally(() => {
+        signOut().then(() => {
+          if (window.location.hash) {
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+          }
+        });
       });
     }
   }, [user, signOut]);

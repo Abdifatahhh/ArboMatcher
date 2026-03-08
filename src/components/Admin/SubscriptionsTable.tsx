@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 import type { AdminSubscriptionRow } from '../../services/adminSubscriptionsService';
 import type { SubscriptionPlan, SubscriptionStatus } from '../../services/adminSubscriptionsService';
 
-const PLANS: SubscriptionPlan[] = ['BASIC', 'PRO'];
+const PLANS: SubscriptionPlan[] = ['GRATIS', 'PRO'];
 const PLAN_LABELS: Record<SubscriptionPlan, string> = {
-  BASIC: 'Basic',
+  GRATIS: 'Gratis',
   PRO: 'Pro',
 };
 
@@ -23,7 +23,7 @@ const STATUS_STYLE: Record<SubscriptionStatus, string> = {
 
 function normalizePlan(p: string | undefined | null): SubscriptionPlan {
   if (PLANS.includes(p as SubscriptionPlan)) return p as SubscriptionPlan;
-  return 'BASIC';
+  return 'GRATIS';
 }
 function normalizeStatus(s: string | undefined | null): SubscriptionStatus {
   if (STATUSES.includes(s as SubscriptionStatus)) return s as SubscriptionStatus;

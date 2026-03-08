@@ -3,8 +3,8 @@ export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'REJECT
 export type JobStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED';
 export type ApplicationStatus = 'PENDING' | 'SHORTLISTED' | 'REJECTED' | 'ACCEPTED';
 export type InviteStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED';
-export type DoctorPlan = 'BASIC' | 'PRO';
-export type SubscriptionPlan = 'BASIC' | 'PRO';
+export type DoctorPlan = 'GRATIS' | 'PRO';
+export type SubscriptionPlan = 'GRATIS' | 'PRO';
 export type SubscriptionStatus = 'ACTIVE' | 'CANCELLED' | 'EXPIRED';
 export type InvoiceStatus = 'DRAFT' | 'PAID' | 'FAILED';
 export type FavoriteType = 'JOB' | 'DOCTOR';
@@ -24,6 +24,7 @@ export interface Profile {
   email: string;
   status: string;
   onboarding_completed?: boolean;
+  account_bevestigd_email_sent?: boolean;
   created_at: string;
   updated_at: string;
 }

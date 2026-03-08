@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
@@ -21,10 +21,6 @@ import {
   User,
 } from 'lucide-react';
 
-interface ArtsDashboardLayoutProps {
-  children: React.ReactNode;
-}
-
 const ARTS_NAV: { path: string; label: string; icon: React.ElementType; badge?: 'invites' | 'messages' }[] = [
   { path: '/arts/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   ...[
@@ -40,7 +36,7 @@ const ARTS_NAV: { path: string; label: string; icon: React.ElementType; badge?: 
   ].sort((a, b) => a.label.localeCompare(b.label, 'nl')),
 ];
 
-export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
+export function ArtsDashboardLayout() {
   const { profile, signOut, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -88,7 +84,7 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
         <Link to="/" className="inline-block">
           <LogoText theme="light" className="text-lg lg:text-xl" />
         </Link>
-        <p className="text-xs lg:text-sm mt-1.5 lg:mt-2 text-[#0F172A]/70 font-medium">Arts Dashboard</p>
+        <p className="text-xs lg:text-sm mt-1.5 lg:mt-2 text-[#0F172A]/70 font-medium">Arts / professionals Dashboard</p>
       </div>
       <nav className="flex-1 p-3 lg:p-4 space-y-0.5 lg:space-y-1">
         {ARTS_NAV.map((item) => {
@@ -99,7 +95,6 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
             <Link
               key={item.path}
               to={item.path}
-              onClick={() => setSidebarOpen(false)}
               className={`flex items-center justify-between px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition-all duration-200 text-sm lg:text-base ${isActive ? navActive : navInactive}`}
             >
               <div className="flex items-center space-x-3">
@@ -119,7 +114,6 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
         <Link
           to="/arts/instellingen"
           className={`flex items-center space-x-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition mb-1.5 lg:mb-2 text-sm lg:text-base ${footerLink}`}
-          onClick={() => setSidebarOpen(false)}
         >
           <Settings className="w-4 h-4 lg:w-5 lg:h-5" />
           <span>Instellingen</span>
@@ -171,7 +165,7 @@ export function ArtsDashboardLayout({ children }: ArtsDashboardLayoutProps) {
             </div>
           </div>
         </header>
-        <main className="flex-1 overflow-auto pb-20 lg:pb-0">{children}</main>
+        <main className="flex-1 overflow-auto pb-20 lg:pb-0"><Outlet /></main>
 
         <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#4FA151]/15 z-40 lg:hidden safe-area-pb">
           <div className="grid grid-cols-3 h-14">

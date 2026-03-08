@@ -26,7 +26,7 @@ export default function ArtsAbonnement() {
     fetchDoctor();
   };
 
-  const currentPlan: DoctorPlan = doctor?.doctor_plan === 'PRO' ? 'PRO' : 'BASIC';
+  const currentPlan: DoctorPlan = doctor?.doctor_plan === 'PRO' ? 'PRO' : 'GRATIS';
 
   if (loading) {
     return (
@@ -41,7 +41,7 @@ export default function ArtsAbonnement() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-[#0F172A] mb-2">Upgrade naar PRO</h1>
         <p className="text-gray-500">
-          Word PRO en reager direct op alle opdrachten. BASIC-artsen kunnen na 48 uur op PRO-opdrachten reageren.
+          Word PRO en reager direct op alle opdrachten. Gratis-artsen kunnen na 48 uur op PRO-opdrachten reageren.
         </p>
       </div>
 
@@ -49,34 +49,34 @@ export default function ArtsAbonnement() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-3">
-              <h3 className="text-lg font-bold text-[#0F172A]">BASIC</h3>
-              {currentPlan === 'BASIC' && (
+              <h3 className="text-lg font-bold text-[#0F172A]">Gratis kennismaken</h3>
+              {currentPlan === 'GRATIS' && (
                 <span className="bg-[#4FA151] text-white text-xs px-2 py-0.5 rounded">Actief</span>
               )}
             </div>
             <p className="text-sm text-gray-500 mb-5 leading-relaxed">
-              Gratis. Iedere nieuwe arts start met BASIC. Na 48 uur kunt u ook op PRO-opdrachten reageren.
+              Voor freelancers die eerst kennis willen maken met het platform.
             </p>
             <p className="text-2xl font-bold text-[#0F172A] mb-6">Gratis</p>
             <ul className="space-y-3 mb-6">
               <li className="flex items-start">
                 <Check className="w-4 h-4 text-[#4FA151] mr-2 mt-0.5 flex-shrink-0" strokeWidth={3} />
-                <span className="text-gray-600 text-sm">Toegang tot alle opdrachten</span>
+                <span className="text-gray-600 text-sm">Direct toegang tot een selectie van opdrachten</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-4 h-4 text-[#4FA151] mr-2 mt-0.5 flex-shrink-0" strokeWidth={3} />
-                <span className="text-gray-600 text-sm">Na 48 uur ook op PRO-opdrachten reageren</span>
+                <span className="text-gray-600 text-sm">Beperkt aantal reacties per week</span>
               </li>
             </ul>
           </div>
-          {currentPlan === 'BASIC' ? (
+          {currentPlan === 'GRATIS' ? (
             <div className="text-center py-3 text-gray-400 font-medium">Huidig abonnement</div>
           ) : (
             <button
-              onClick={() => handleSelectPlan('BASIC')}
+              onClick={() => handleSelectPlan('GRATIS')}
               className="w-full border border-gray-300 text-[#0F172A] py-3 rounded-xl font-semibold hover:bg-gray-50 transition"
             >
-              Selecteer BASIC
+              Selecteer Gratis
             </button>
           )}
         </div>

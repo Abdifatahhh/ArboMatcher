@@ -181,7 +181,7 @@ export const demoDoctors: (Doctor & { profiles: Profile | null })[] = [
     availability_text: 'Beschikbaar vanaf 1 april.',
     availability_calendar: null,
     cv_url: null,
-    doctor_plan: 'BASIC',
+    doctor_plan: 'GRATIS',
     created_at: lastWeek,
     updated_at: now,
     profiles: demoProfiles[1],

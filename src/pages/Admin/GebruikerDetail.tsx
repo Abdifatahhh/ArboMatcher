@@ -206,7 +206,7 @@ export default function AdminGebruikerDetail() {
             <div className="p-6 space-y-2 text-sm">
               <p><strong>BIG-nummer:</strong> {doctor.big_number}</p>
               <p><strong>Verificatie:</strong> {doctor.verification_status}</p>
-              <p><strong>Plan:</strong> {(doctor as { doctor_plan?: string }).doctor_plan === 'PRO' ? 'PRO' : 'BASIC'}</p>
+              <p><strong>Plan:</strong> {(doctor as { doctor_plan?: string }).doctor_plan === 'PRO' ? 'PRO' : 'Gratis'}</p>
               <Link to="/admin/verificaties" className="text-[#4FA151] hover:underline">Naar verificaties →</Link>
             </div>
           </div>

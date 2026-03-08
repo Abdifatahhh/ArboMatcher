@@ -138,7 +138,7 @@ export default function AdminArtsDetail() {
           availability_text: doctor.availability_text ?? null,
           verification_status: doctor.verification_status ?? 'UNVERIFIED',
           verification_reason: doctor.verification_reason ?? null,
-          doctor_plan: (doctor as { doctor_plan?: string }).doctor_plan === 'PRO' ? 'PRO' : 'BASIC',
+          doctor_plan: (doctor as { doctor_plan?: string }).doctor_plan === 'PRO' ? 'PRO' : 'GRATIS',
         })
         .eq('id', id);
 
@@ -258,7 +258,7 @@ export default function AdminArtsDetail() {
               </div>
             )}
             <p><strong>Verificatie:</strong> {doctor.verification_status}</p>
-            <p><strong>Plan:</strong> {(doctor as { doctor_plan?: string }).doctor_plan === 'PRO' ? 'PRO' : 'BASIC'}</p>
+            <p><strong>Plan:</strong> {(doctor as { doctor_plan?: string }).doctor_plan === 'PRO' ? 'PRO' : 'Gratis'}</p>
             {doctor.bio && <p><strong>Bio:</strong> {doctor.bio}</p>}
           </div>
         </div>
@@ -388,8 +388,8 @@ export default function AdminArtsDetail() {
             </div>
             <div>
               <label className="block text-sm font-medium text-emerald-800/80 mb-2">Plan arts</label>
-              <select value={(doctor as { doctor_plan?: string }).doctor_plan ?? 'BASIC'} onChange={(e) => setDoctor((d) => (d ? { ...d, doctor_plan: e.target.value as 'BASIC' | 'PRO' } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition">
-                <option value="BASIC">BASIC</option>
+              <select value={(doctor as { doctor_plan?: string }).doctor_plan ?? 'GRATIS'} onChange={(e) => setDoctor((d) => (d ? { ...d, doctor_plan: e.target.value as 'GRATIS' | 'PRO' } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition">
+                <option value="GRATIS">Gratis</option>
                 <option value="PRO">PRO</option>
               </select>
             </div>

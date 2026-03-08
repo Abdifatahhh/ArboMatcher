@@ -9,9 +9,9 @@ import type { ProfessionValue } from '../lib/types';
 export type OnboardingRole = 'professional' | 'company' | 'intermediary';
 
 const ROLE_OPTIONS: { value: OnboardingRole; label: string; sub: string; icon: typeof Briefcase }[] = [
-  { value: 'professional', label: 'Professional', sub: 'Ik zoek opdrachten', icon: Stethoscope },
-  { value: 'company', label: 'Bedrijf', sub: 'Ik zoek professionals', icon: Building2 },
-  { value: 'intermediary', label: 'Intermediair', sub: 'Ik bemiddel tussen klant en professional', icon: Briefcase },
+  { value: 'professional', label: 'Professional', sub: 'Vind opdrachten als arts', icon: Stethoscope },
+  { value: 'company', label: 'Bedrijf', sub: 'Plaats een opdracht', icon: Building2 },
+  { value: 'intermediary', label: 'Intermediair', sub: 'Plaats opdrachten voor klanten', icon: Briefcase },
 ];
 
 const PROFESSION_OPTIONS: { value: ProfessionValue; label: string }[] = [
@@ -106,7 +106,7 @@ export default function Onboarding() {
         await supabase.from('professionals').insert({
           user_id: user.id,
           verification_status: 'UNVERIFIED',
-          doctor_plan: 'BASIC',
+          doctor_plan: 'GRATIS',
           specialties: [],
           regions: [],
         });
@@ -176,7 +176,7 @@ export default function Onboarding() {
         big_number: bigVal,
         rcm_number: rcmVal,
         verification_status: 'UNVERIFIED',
-        doctor_plan: 'BASIC',
+        doctor_plan: 'GRATIS',
         specialties: [],
         regions: [],
       });
@@ -265,20 +265,20 @@ export default function Onboarding() {
 
   if (showRoleStep) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-6 pb-6 md:pt-12 md:pb-12 px-3 md:px-4">
-        <div className="mb-4 md:mb-8">
-          <LogoText theme="light" className="text-xl md:text-2xl" />
+      <div className="min-h-screen bg-gradient-to-b from-emerald-50/80 via-[#F4FAF4] to-white flex flex-col items-center justify-center pt-8 pb-10 md:pt-12 md:pb-16 px-4 md:px-6">
+        <div className="mb-6 md:mb-10">
+          <LogoText theme="light" className="text-2xl md:text-3xl" />
         </div>
-        <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-8">
-          <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1.5 md:mb-2">Ik ben</h1>
-          <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6">Kies hoe je het platform wilt gebruiken.</p>
+        <div className="w-full max-w-3xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Hoe wil je ArboMatcher gebruiken?</h1>
+          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Kies je rol om verder te gaan.</p>
           {error && (
-            <div className="mb-4 md:mb-6 p-3 md:p-4 bg-red-50 border border-red-200 rounded-lg flex items-start text-sm">
-              <AlertCircle className="w-4 h-4 md:w-5 md:h-5 text-red-600 mt-0.5 mr-2 md:mr-3 flex-shrink-0" />
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start text-sm">
+              <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
               <p className="text-red-800">{error}</p>
             </div>
           )}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
             {ROLE_OPTIONS.map((opt) => {
               const Icon = opt.icon;
               return (
@@ -287,15 +287,20 @@ export default function Onboarding() {
                   type="button"
                   disabled={roleChoosing}
                   onClick={() => handleRoleChoose(opt.value)}
-                  className="p-4 md:p-6 rounded-xl border-2 border-gray-200 hover:border-[#4FA151] hover:bg-[#4FA151]/5 transition flex flex-col items-center text-center disabled:opacity-50"
+                  className="group p-6 md:p-8 rounded-2xl border-2 border-gray-200 hover:border-[#4FA151] hover:bg-emerald-50/50 hover:shadow-md transition-all duration-200 flex flex-col items-center text-center disabled:opacity-50 min-h-[180px] md:min-h-[220px] justify-center"
                 >
-                  <Icon className="w-8 h-8 md:w-10 md:h-10 mb-2 md:mb-3 text-[#4FA151]" />
-                  <span className="font-semibold text-[#0F172A] text-sm md:text-base">{opt.label}</span>
-                  <span className="text-xs md:text-sm text-gray-500 mt-0.5 md:mt-1">{opt.sub}</span>
+                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-emerald-100/80 group-hover:bg-[#4FA151]/15 flex items-center justify-center mb-4 md:mb-5 transition-colors">
+                    <Icon className="w-7 h-7 md:w-9 md:h-9 text-[#4FA151]" strokeWidth={2} />
+                  </div>
+                  <span className="font-bold text-[#0F172A] text-base md:text-lg lg:text-xl">{opt.label}</span>
+                  <span className="text-sm md:text-base text-gray-600 mt-1.5 md:mt-2 leading-snug">{opt.sub}</span>
                 </button>
               );
             })}
           </div>
+          <p className="mt-8 md:mt-10 pt-6 border-t border-gray-100 text-center text-sm text-gray-500">
+            Alle medische professionals worden gecontroleerd via het BIG-register.
+          </p>
         </div>
       </div>
     );
@@ -320,49 +325,51 @@ export default function Onboarding() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-6 pb-6 md:pt-12 md:pb-12 px-3 md:px-4">
-      <div className="mb-4 md:mb-8">
-        <LogoText theme="light" className="text-xl md:text-2xl" />
+    <div className="min-h-screen bg-gradient-to-b from-emerald-50/80 via-[#F4FAF4] to-white flex flex-col items-center justify-center pt-8 pb-10 md:pt-12 md:pb-16 px-4 md:px-6">
+      <div className="mb-6 md:mb-10">
+        <LogoText theme="light" className="text-2xl md:text-3xl" />
       </div>
 
       {isProfessional && (
-        <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-8">
+        <div className="w-full max-w-2xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
           {professionStep === 2 && (
             <>
-              <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-6 flex items-center gap-2 disabled:opacity-50">
+              <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
                 {backToRoleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}← Terug naar rolkeuze
               </button>
-              <h1 className="text-2xl font-bold text-[#0F172A] mb-2">Kies je beroep</h1>
-              <p className="text-gray-600 mb-6">Selecteer het beroep dat bij je past.</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Kies je beroep</h1>
+              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Selecteer het beroep dat bij je past.</p>
               {error && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
                   <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
                   <p className="text-sm text-red-800">{error}</p>
                 </div>
               )}
-              <div className="space-y-3 mb-8">
+              <div className="space-y-3 md:space-y-4 mb-8 md:mb-10">
                 {PROFESSION_OPTIONS.map((p) => (
                   <button
                     key={p.value}
                     type="button"
                     onClick={() => { setProfession(p.value); setError(''); }}
-                    className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 transition text-left ${
-                      profession === p.value ? 'border-[#4FA151] bg-[#4FA151]/5' : 'border-gray-200 hover:border-gray-300'
+                    className={`w-full flex items-center gap-4 p-5 md:p-6 rounded-2xl border-2 transition-all duration-200 text-left ${
+                      profession === p.value
+                        ? 'border-[#4FA151] bg-emerald-50/60 shadow-sm'
+                        : 'border-gray-200 hover:border-emerald-200 hover:bg-gray-50/80'
                     }`}
                   >
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                      profession === p.value ? 'border-[#4FA151]' : 'border-gray-300'
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                      profession === p.value ? 'border-[#4FA151] bg-[#4FA151]/10' : 'border-gray-300'
                     }`}>
-                      {profession === p.value && <div className="w-2.5 h-2.5 rounded-full bg-[#4FA151]" />}
+                      {profession === p.value && <div className="w-3 h-3 rounded-full bg-[#4FA151]" />}
                     </div>
-                    <span className="font-medium text-[#0F172A]">{p.label}</span>
+                    <span className="font-semibold text-[#0F172A] text-base md:text-lg">{p.label}</span>
                   </button>
                 ))}
               </div>
               <button
                 type="button"
                 onClick={handleProfessionalStep2Next}
-                className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+                className="w-full bg-[#4FA151] text-white py-4 rounded-2xl font-semibold text-base md:text-lg hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50"
               >
                 Volgende
               </button>
@@ -371,16 +378,13 @@ export default function Onboarding() {
 
           {professionStep === 3 && (
             <>
-              <div className="flex flex-wrap items-center gap-4 mb-6">
-                <button type="button" onClick={() => setProfessionStep(2)} className="text-[#4FA151] hover:underline font-medium">← Terug</button>
-                <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium flex items-center gap-2 disabled:opacity-50">
-                  {backToRoleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}Terug naar rolkeuze
-                </button>
-              </div>
-              <h1 className="text-2xl font-bold text-[#0F172A] mb-2">Validatie</h1>
+              <button type="button" onClick={() => setProfessionStep(2)} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 text-sm md:text-base">
+                ← Terug naar beroep
+              </button>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Validatie</h1>
               {profession && NEEDS_BIG.includes(profession) && (
                 <>
-                  <p className="text-gray-600 mb-4">Vul je BIG-nummer in (alleen cijfers, minimaal 8).</p>
+                  <p className="text-gray-600 text-base mb-4">Vul je BIG-nummer in (alleen cijfers, minimaal 8).</p>
                   <div className="mb-4">
                     <label htmlFor="bigNumber" className="block text-sm font-medium text-gray-700 mb-2">BIG-nummer *</label>
                     <input
@@ -389,7 +393,7 @@ export default function Onboarding() {
                       inputMode="numeric"
                       value={bigNumber}
                       onChange={(e) => setBigNumber(e.target.value.replace(/\D/g, '').slice(0, 11))}
-                      className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
                       placeholder="Alleen cijfers, min. 8"
                     />
                   </div>
@@ -397,7 +401,7 @@ export default function Onboarding() {
               )}
               {profession === 'casemanager_verzuim' && (
                 <>
-                  <p className="text-gray-600 mb-4">Optioneel: vul je RCM-nummer in.</p>
+                  <p className="text-gray-600 text-base mb-4">Optioneel: vul je RCM-nummer in.</p>
                   <div className="mb-4">
                     <label htmlFor="rcmNumber" className="block text-sm font-medium text-gray-700 mb-2">RCM-nummer (optioneel)</label>
                     <input
@@ -405,14 +409,14 @@ export default function Onboarding() {
                       type="text"
                       value={rcmNumber}
                       onChange={(e) => setRcmNumber(e.target.value)}
-                      className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
                       placeholder="RCM-nummer"
                     />
                   </div>
                 </>
               )}
               {error && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
                   <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
                   <p className="text-sm text-red-800">{error}</p>
                 </div>
@@ -421,7 +425,7 @@ export default function Onboarding() {
                 type="button"
                 disabled={loading || (profession && NEEDS_BIG.includes(profession) && bigNumber.replace(/\D/g, '').length < 8)}
                 onClick={saveProfessionalAndComplete}
-                className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#4FA151] text-white py-4 rounded-2xl font-semibold text-base hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span> : 'Registratie voltooien'}
               </button>

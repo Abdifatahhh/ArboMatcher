@@ -1,19 +1,14 @@
 # Edge Function: send-email
 
-Verstuurt e-mails via de Resend API. De API-key staat alleen op de server (Supabase), niet in de frontend.
+Verstuurt **platform-/business-e-mails** via de Resend API (auth-e-mails gaan via Send Email Hook → `send-auth-email`). API-key alleen server-side.
 
-## Secrets instellen
-
-In Supabase Dashboard → Project → Edge Functions → Secrets, of via CLI:
+## Secrets
 
 ```bash
 supabase secrets set RESEND_API_KEY=re_xxxxxxxx
 ```
 
-Optioneel:
-
-- `RESEND_FROM` – afzender, bijv. `ArboMatcher <noreply@arbomatcher.nl>`. Zonder eigen domein tijdelijk: `ArboMatcher <onboarding@resend.dev>`.
-- `PUBLIC_APP_URL` – basis-URL voor links in mails, bijv. `https://arbomatcher.nl`.
+Optioneel: `RESEND_FROM` (default `ArboMatcher <noreply@arbomatcher.nl>`), `RESEND_REPLY_TO` (default `support@arbomatcher.nl`), `PUBLIC_APP_URL`.
 
 ## Aanroep
 
@@ -31,11 +26,14 @@ Optioneel:
 
 Beschikbare templates:
 
-| template           | data (optioneel)                          |
-|--------------------|-------------------------------------------|
-| `welcome`         | `name` of `recipientName`                 |
-| `new_application` | `jobTitle`, `applicantName`               |
-| `new_invite`      | `jobTitle`, `inviterName`                 |
+| template              | data (optioneel)                |
+|-----------------------|----------------------------------|
+| `welcome`             | `name`, `recipientName`         |
+| `new_application`     | `jobTitle`, `applicantName`     |
+| `new_invite`          | `jobTitle`, `inviterName`       |
+| `opdracht_geplaatst`  | `jobTitle`                      |
+| `profiel_goedgekeurd` | `name`, `recipientName`          |
+| `factuur`             | `factuurNr`, `invoiceNumber`    |
 
 ### Vrije mail (subject + html)
 

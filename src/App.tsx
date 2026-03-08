@@ -242,116 +242,20 @@ function App() {
             }
           />
 
-            <Route
-            path="/arts/dashboard"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsDashboard />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/profiel"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsProfiel />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/opdrachten"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsOpdrachten />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/reacties"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsReacties />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/uitnodigingen"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsUitnodigingen />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/inbox"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsInbox />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/abonnement"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsAbonnement />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/favorieten"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsFavorieten />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/zoekopdrachten"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsOpdrachten />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/beoordelingen"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsReacties />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/arts/instellingen"
-            element={
-              <ProtectedRoute allowedRoles={['ARTS', 'professional']}>
-                <ArtsDashboardLayout>
-                  <ArtsProfiel />
-                </ArtsDashboardLayout>
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/arts" element={<ProtectedRoute allowedRoles={['ARTS', 'professional']}><ArtsDashboardLayout /></ProtectedRoute>}>
+              <Route index element={<Navigate to="/arts/dashboard" replace />} />
+              <Route path="dashboard" element={<ArtsDashboard />} />
+              <Route path="profiel" element={<ArtsProfiel />} />
+              <Route path="opdrachten" element={<ArtsOpdrachten />} />
+              <Route path="reacties" element={<ArtsReacties />} />
+              <Route path="uitnodigingen" element={<ArtsUitnodigingen />} />
+              <Route path="inbox" element={<ArtsInbox />} />
+              <Route path="abonnement" element={<ArtsAbonnement />} />
+              <Route path="favorieten" element={<ArtsFavorieten />} />
+              <Route path="zoekopdrachten" element={<ArtsOpdrachten />} />
+              <Route path="beoordelingen" element={<ArtsReacties />} />
+              <Route path="instellingen" element={<ArtsProfiel />} />
+            </Route>
 
             <Route
             path="/opdrachtgever/dashboard"

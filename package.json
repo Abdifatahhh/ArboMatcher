@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "supabase:login": "supabase login",
     "supabase:link": "supabase link --project-ref apizxgqpdledjutgitpw",
-    "supabase:deploy": "supabase functions deploy big-check"
+    "supabase:deploy": "supabase functions deploy big-check",
+    "supabase:deploy-auth-email": "supabase functions deploy send-auth-email --no-verify-jwt"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
