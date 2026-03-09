@@ -22,33 +22,13 @@ export default function OpdrachtgeverProfiel() {
     const [
       { data: profileData },
       { data: employerData },
-      { data: orgData }
     ] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
       supabase.from('employers').select('*').eq('user_id', user.id).maybeSingle(),
-      supabase.from('organizations').select('*').eq('profile_id', user.id).maybeSingle()
     ]);
 
     if (profileData) setProfile(profileData);
-    if (employerData) {
-      setEmployer(employerData);
-    } else if (orgData) {
-      const { data: created } = await supabase.from('employers').upsert({
-        user_id: user.id,
-        company_name: orgData.company_name,
-        kvk: orgData.kvk_number ?? null,
-        website: orgData.website ?? null,
-        billing_email: orgData.business_email ?? null,
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'user_id' }).select().single();
-      if (created) setEmployer(created);
-      else setEmployer({
-        company_name: orgData.company_name,
-        kvk: orgData.kvk_number ?? null,
-        website: orgData.website ?? null,
-        billing_email: orgData.business_email ?? null
-      });
-    }
+    if (employerData) setEmployer(employerData);
 
     setLoading(false);
   };

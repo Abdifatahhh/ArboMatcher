@@ -7,7 +7,8 @@ const corsHeaders = {
 };
 
 const KVK_TEST_API_KEY = "l7xx1f2691f2520d487b902f4e0b57a0b197";
-const KVK_API_BASE = "https://api.kvk.nl/test/api/v2";
+const KVK_API_BASE_DEFAULT = "https://api.kvk.nl/test/api/v2";
+const KVK_API_BASE_PRODUCTION = "https://api.kvk.nl/api/v2";
 
 interface KvkSearchResult {
   kvkNummer: string;
@@ -42,8 +43,13 @@ Deno.serve(async (req: Request) => {
 
   try {
     const url = new URL(req.url);
-    const query = url.searchParams.get("q") || "";
-    const kvkNummer = url.searchParams.get("kvkNummer") || "";
+    let query = url.searchParams.get("q") || "";
+    let kvkNummer = url.searchParams.get("kvkNummer") || "";
+    if (req.method === "POST") {
+      const body = await req.json().catch(() => ({})) as { q?: string; kvkNummer?: string };
+      query = body.q ?? query;
+      kvkNummer = body.kvkNummer ?? kvkNummer;
+    }
 
     if (!query && !kvkNummer) {
       return new Response(
@@ -55,7 +61,10 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    let searchUrl = `${KVK_API_BASE}/zoeken?`;
+    const apiKey = Deno.env.get("KVK_API_KEY") || KVK_TEST_API_KEY;
+    const useProduction = Deno.env.get("KVK_API_BASE") === "production" || !!Deno.env.get("KVK_API_KEY");
+    const base = useProduction ? KVK_API_BASE_PRODUCTION : KVK_API_BASE_DEFAULT;
+    let searchUrl = `${base}/zoeken?`;
 
     if (kvkNummer) {
       searchUrl += `kvkNummer=${encodeURIComponent(kvkNummer)}`;
@@ -65,21 +74,17 @@ Deno.serve(async (req: Request) => {
 
     const response = await fetch(searchUrl, {
       headers: {
-        "apikey": KVK_TEST_API_KEY,
+        "apikey": apiKey,
         "Accept": "application/json",
       },
     });
 
     if (!response.ok) {
-      if (response.status === 404) {
-        return new Response(
-          JSON.stringify({ resultaten: [], totaal: 0 }),
-          {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
-        );
-      }
-      throw new Error(`KVK API error: ${response.status}`);
+      const empty = { resultaten: [], totaal: 0 };
+      return new Response(JSON.stringify(empty), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const data: KvkSearchResponse = await response.json();
@@ -107,9 +112,9 @@ Deno.serve(async (req: Request) => {
   } catch (error) {
     console.error("KVK search error:", error);
     return new Response(
-      JSON.stringify({ error: "Er is een fout opgetreden bij het zoeken" }),
+      JSON.stringify({ resultaten: [], totaal: 0 }),
       {
-        status: 500,
+        status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );

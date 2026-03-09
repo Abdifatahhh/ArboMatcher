@@ -37,16 +37,12 @@ export default function Login() {
       navigate('/admin/dashboard', { replace: true });
       return;
     }
-    if (profile.role === 'ARTS' || profile.role === 'professional') {
+    if (profile.role === 'professional') {
       navigate('/arts/dashboard', { replace: true });
       return;
     }
-    if (profile.role === 'OPDRACHTGEVER' || profile.role === 'company') {
+    if (profile.role === 'OPDRACHTGEVER') {
       navigate('/opdrachtgever/dashboard', { replace: true });
-      return;
-    }
-    if (profile.role === 'intermediary') {
-      navigate('/intermediair/dashboard', { replace: true });
       return;
     }
     navigate('/', { replace: true });
@@ -69,12 +65,10 @@ export default function Login() {
 
     if (userProfile?.role !== 'ADMIN' && userProfile?.onboarding_completed !== true) {
       navigate('/onboarding');
-    } else if (userProfile?.role === 'ARTS' || userProfile?.role === 'professional') {
+    } else if (userProfile?.role === 'professional') {
       navigate('/arts/dashboard');
-    } else if (userProfile?.role === 'OPDRACHTGEVER' || userProfile?.role === 'company') {
+    } else if (userProfile?.role === 'OPDRACHTGEVER') {
       navigate('/opdrachtgever/dashboard');
-    } else if (userProfile?.role === 'intermediary') {
-      navigate('/intermediair/dashboard');
     } else if (userProfile?.role === 'ADMIN') {
       navigate('/admin/dashboard');
     } else {

@@ -1,4 +1,4 @@
-export type UserRole = 'OPDRACHTGEVER' | 'ARTS' | 'ADMIN' | 'professional' | 'company' | 'intermediary' | 'onboarding';
+export type UserRole = 'OPDRACHTGEVER' | 'ADMIN' | 'professional' | 'onboarding';
 export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
 export type JobStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED';
 export type ApplicationStatus = 'PENDING' | 'SHORTLISTED' | 'REJECTED' | 'ACCEPTED';
@@ -29,25 +29,6 @@ export interface Profile {
   updated_at: string;
 }
 
-export type OrganizationType = 'company' | 'intermediary';
-
-export interface Organization {
-  id: string;
-  profile_id: string;
-  organization_type: OrganizationType;
-  company_name: string;
-  kvk_number: string;
-  contact_person: string | null;
-  business_email: string | null;
-  phone: string | null;
-  website: string | null;
-  profile_completed: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
-export type ClientType = 'direct' | 'intermediair' | 'detacheerder';
-
 export interface Employer {
   id: string;
   user_id: string;
@@ -57,14 +38,13 @@ export interface Employer {
   sector: string | null;
   billing_address: string | null;
   billing_email: string | null;
-  client_type?: ClientType;
   created_at: string;
   updated_at: string;
 }
 
-export type ProfessionType = 'BEDRIJFSARTS' | 'ARBO_ARTS' | 'VERZEKERINGSARTS' | 'CASEMANAGER_VERZUIM';
+export type ProfessionType = 'BEDRIJFSARTS' | 'ARBO_ARTS' | 'VERZEKERINGSARTS' | 'CASEMANAGER_VERZUIM' | 'POB';
 
-export type ProfessionValue = 'bedrijfsarts' | 'arbo_arts' | 'verzekeringsarts' | 'casemanager_verzuim';
+export type ProfessionValue = 'bedrijfsarts' | 'arbo_arts' | 'verzekeringsarts' | 'casemanager_verzuim' | 'pob';
 
 export interface Doctor {
   id: string;

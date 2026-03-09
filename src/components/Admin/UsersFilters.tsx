@@ -1,7 +1,7 @@
 import type { RoleFilter, StatusFilter } from '../../services/adminUsersService';
 
 const ROLE_LABELS: Record<Exclude<RoleFilter, ''>, string> = {
-  ARTS: 'Arts',
+  professional: 'Professional',
   OPDRACHTGEVER: 'Opdrachtgever',
   ADMIN: 'Admin',
 };

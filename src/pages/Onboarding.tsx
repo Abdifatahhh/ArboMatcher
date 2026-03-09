@@ -2,26 +2,36 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
-import { AlertCircle, Loader2, Briefcase, Stethoscope, Building2 } from 'lucide-react';
+import { AlertCircle, Loader2, Briefcase, Stethoscope, Search } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
 import type { ProfessionValue } from '../lib/types';
+import { searchBigByName } from '../services/bigCheckService';
+import type { BigSearchResultItem, BigSearchGender } from '../services/bigCheckService';
 
-export type OnboardingRole = 'professional' | 'company' | 'intermediary';
+export type OnboardingRole = 'professional' | 'opdrachtgever';
 
 const ROLE_OPTIONS: { value: OnboardingRole; label: string; sub: string; icon: typeof Briefcase }[] = [
   { value: 'professional', label: 'Professional', sub: 'Vind opdrachten als arts', icon: Stethoscope },
-  { value: 'company', label: 'Bedrijf', sub: 'Plaats een opdracht', icon: Building2 },
-  { value: 'intermediary', label: 'Intermediair', sub: 'Plaats opdrachten voor klanten', icon: Briefcase },
+  { value: 'opdrachtgever', label: 'Opdrachtgever', sub: 'Plaats opdrachten', icon: Briefcase },
 ];
 
 const PROFESSION_OPTIONS: { value: ProfessionValue; label: string }[] = [
   { value: 'bedrijfsarts', label: 'Bedrijfsarts' },
   { value: 'arbo_arts', label: 'Arbo-arts' },
   { value: 'verzekeringsarts', label: 'Verzekeringsarts' },
+  { value: 'pob', label: 'Praktijkondersteuner bedrijfsarts (POB)' },
   { value: 'casemanager_verzuim', label: 'Casemanager verzuim' },
 ];
 
 const NEEDS_BIG: ProfessionValue[] = ['bedrijfsarts', 'arbo_arts', 'verzekeringsarts'];
+
+const PROFESSION_TO_TYPE: Record<ProfessionValue, string> = {
+  bedrijfsarts: 'BEDRIJFSARTS',
+  arbo_arts: 'ARBO_ARTS',
+  verzekeringsarts: 'VERZEKERINGSARTS',
+  casemanager_verzuim: 'CASEMANAGER_VERZUIM',
+  pob: 'POB',
+};
 
 export default function Onboarding() {
   const { profile, user, refreshProfile } = useAuth();
@@ -33,14 +43,15 @@ export default function Onboarding() {
   const [profession, setProfession] = useState<ProfessionValue | null>(null);
   const [bigNumber, setBigNumber] = useState('');
   const [rcmNumber, setRcmNumber] = useState('');
+  const [bigSearchGeslacht, setBigSearchGeslacht] = useState<BigSearchGender | ''>('');
+  const [bigSearchVoorletters, setBigSearchVoorletters] = useState('');
+  const [bigSearchAchternaam, setBigSearchAchternaam] = useState('');
+  const [bigSearchGeboortedatum, setBigSearchGeboortedatum] = useState('');
+  const [bigSearchResults, setBigSearchResults] = useState<BigSearchResultItem[]>([]);
+  const [bigSearchPendingSelection, setBigSearchPendingSelection] = useState<BigSearchResultItem | null>(null);
+  const [bigSearchLoading, setBigSearchLoading] = useState(false);
+  const [bigSearchError, setBigSearchError] = useState('');
 
-  const [orgCompanyName, setOrgCompanyName] = useState('');
-  const [orgKvk, setOrgKvk] = useState('');
-  const [orgContactPerson, setOrgContactPerson] = useState('');
-  const [orgBusinessEmail, setOrgBusinessEmail] = useState('');
-  const [orgPhone, setOrgPhone] = useState('');
-  const [orgWebsite, setOrgWebsite] = useState('');
-  const [orgSubmitting, setOrgSubmitting] = useState(false);
   const [roleChoosing, setRoleChoosing] = useState(false);
   const [backToRoleLoading, setBackToRoleLoading] = useState(false);
 
@@ -65,9 +76,8 @@ export default function Onboarding() {
   }, [user, profile, navigate]);
 
   const redirectByRole = (role: string) => {
-    if (role === 'professional' || role === 'ARTS') navigate('/arts/dashboard', { replace: true });
-    else if (role === 'company' || role === 'OPDRACHTGEVER') navigate('/opdrachtgever/dashboard', { replace: true });
-    else if (role === 'intermediary') navigate('/intermediair/dashboard', { replace: true });
+    if (role === 'professional') navigate('/arts/dashboard', { replace: true });
+    else if (role === 'OPDRACHTGEVER') navigate('/opdrachtgever/dashboard', { replace: true });
     else navigate('/', { replace: true });
   };
 
@@ -88,29 +98,43 @@ export default function Onboarding() {
     );
   }
 
-  const showRoleStep = profile?.role === 'onboarding' || profile?.role === 'OPDRACHTGEVER';
+  const showRoleStep = profile?.role === 'onboarding';
+
+  const [companyName, setCompanyName] = useState('');
+  const [kvk, setKvk] = useState('');
+  const [opdrachtgeverSaving, setOpdrachtgeverSaving] = useState(false);
+  const [kvkLoading, setKvkLoading] = useState(false);
 
   const handleRoleChoose = async (role: OnboardingRole) => {
     if (!user?.id || roleChoosing) return;
     setError('');
     setRoleChoosing(true);
-    const { error: upErr } = await supabase.from('profiles').update({ role }).eq('id', user.id);
+    if (role === 'opdrachtgever') {
+      const { error: upErr } = await supabase.from('profiles').update({ role: 'OPDRACHTGEVER' }).eq('id', user.id);
+      if (upErr) {
+        setError(upErr.message);
+        setRoleChoosing(false);
+        return;
+      }
+      await refreshProfile();
+      setRoleChoosing(false);
+      return;
+    }
+    const { error: upErr } = await supabase.from('profiles').update({ role: 'professional' }).eq('id', user.id);
     if (upErr) {
       setError(upErr.message);
       setRoleChoosing(false);
       return;
     }
-    if (role === 'professional') {
-      const { data: existing } = await supabase.from('professionals').select('id').eq('user_id', user.id).maybeSingle();
-      if (!existing) {
-        await supabase.from('professionals').insert({
-          user_id: user.id,
-          verification_status: 'UNVERIFIED',
-          doctor_plan: 'GRATIS',
-          specialties: [],
-          regions: [],
-        });
-      }
+    const { data: existing } = await supabase.from('professionals').select('id').eq('user_id', user.id).maybeSingle();
+    if (!existing) {
+      await supabase.from('professionals').insert({
+        user_id: user.id,
+        verification_status: 'UNVERIFIED',
+        doctor_plan: 'GRATIS',
+        specialties: [],
+        regions: [],
+      });
     }
     await refreshProfile();
     setRoleChoosing(false);
@@ -130,14 +154,76 @@ export default function Onboarding() {
     setProfession(null);
     setBigNumber('');
     setRcmNumber('');
-    setOrgCompanyName('');
-    setOrgKvk('');
-    setOrgContactPerson('');
-    setOrgBusinessEmail('');
-    setOrgPhone('');
-    setOrgWebsite('');
+    setCompanyName('');
+    setKvk('');
     await refreshProfile();
     setBackToRoleLoading(false);
+  };
+
+  const fetchBedrijfsnaamByKvk = async () => {
+    const kvkDigits = kvk.replace(/\D/g, '');
+    if (kvkDigits.length !== 8) return;
+    setError('');
+    setKvkLoading(true);
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke('kvk-search', {
+        body: { kvkNummer: kvkDigits },
+      });
+      if (fnError) throw fnError;
+      const resultaten = (data as { resultaten?: { naam: string }[] })?.resultaten;
+      const naam = resultaten?.[0]?.naam?.trim();
+      if (naam) setCompanyName(naam);
+      else setError('Geen bedrijf gevonden voor dit KvK-nummer. De testomgeving van KVK heeft beperkte gegevens; voor echte nummers is een productie API-key nodig. Vul de bedrijfsnaam handmatig in.');
+    } catch {
+      setError('Bedrijfsnaam ophalen mislukt. Vul de bedrijfsnaam handmatig in.');
+    } finally {
+      setKvkLoading(false);
+    }
+  };
+
+  const saveOpdrachtgeverAndComplete = async () => {
+    if (!user?.id) return;
+    const name = companyName.trim();
+    const kvkDigits = kvk.replace(/\D/g, '');
+    if (kvkDigits.length !== 8) {
+      setError('Vul een geldig KvK-nummer in (8 cijfers)');
+      return;
+    }
+    if (!name) {
+      setError('Vul een bedrijfsnaam in of haal deze op via het KvK-nummer');
+      return;
+    }
+    setError('');
+    setOpdrachtgeverSaving(true);
+    const { data: existing } = await supabase.from('employers').select('id').eq('user_id', user.id).maybeSingle();
+    if (existing) {
+      const { error: upErr } = await supabase.from('employers').update({ company_name: name, kvk: kvkDigits }).eq('id', existing.id);
+      if (upErr) {
+        setError(upErr.message);
+        setOpdrachtgeverSaving(false);
+        return;
+      }
+    } else {
+      const { error: inErr } = await supabase.from('employers').insert({
+        user_id: user.id,
+        company_name: name,
+        kvk: kvkDigits,
+      });
+      if (inErr) {
+        setError(inErr.message);
+        setOpdrachtgeverSaving(false);
+        return;
+      }
+    }
+    const { error: upErr } = await supabase.from('profiles').update({ onboarding_completed: true }).eq('id', user.id);
+    if (upErr) {
+      setError(upErr.message);
+      setOpdrachtgeverSaving(false);
+      return;
+    }
+    await refreshProfile();
+    setOpdrachtgeverSaving(false);
+    navigate('/opdrachtgever/dashboard', { replace: true });
   };
 
   const handleProfessionalStep2Next = () => {
@@ -154,8 +240,8 @@ export default function Onboarding() {
     setError('');
     if (profession && NEEDS_BIG.includes(profession)) {
       const digits = bigNumber.replace(/\D/g, '');
-      if (digits.length < 8) {
-        setError('BIG-nummer moet minimaal 8 cijfers bevatten');
+      if (digits.length !== 11) {
+        setError('BIG-nummer moet 11 cijfers bevatten');
         return;
       }
     }
@@ -163,9 +249,11 @@ export default function Onboarding() {
     const { data: proRow } = await supabase.from('professionals').select('id').eq('user_id', user.id).maybeSingle();
     const bigVal = profession && NEEDS_BIG.includes(profession) ? bigNumber.replace(/\D/g, '').trim() || null : null;
     const rcmVal = rcmNumber.trim() || null;
+    const professionType = profession ? PROFESSION_TO_TYPE[profession] : null;
     if (proRow) {
       await supabase.from('professionals').update({
         profession: profession || undefined,
+        profession_type: professionType,
         big_number: bigVal,
         rcm_number: rcmVal,
       }).eq('id', proRow.id);
@@ -173,6 +261,7 @@ export default function Onboarding() {
       await supabase.from('professionals').insert({
         user_id: user.id,
         profession: profession || undefined,
+        profession_type: professionType,
         big_number: bigVal,
         rcm_number: rcmVal,
         verification_status: 'UNVERIFIED',
@@ -192,62 +281,6 @@ export default function Onboarding() {
     navigate('/arts/dashboard', { replace: true });
   };
 
-  const handleOrgSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user?.id || !profile) return;
-    const type = profile.role === 'intermediary' ? 'intermediary' : 'company';
-    if (!orgCompanyName.trim()) {
-      setError('Bedrijfsnaam is verplicht');
-      return;
-    }
-    if (!orgKvk.trim()) {
-      setError('KvK-nummer is verplicht');
-      return;
-    }
-    setOrgSubmitting(true);
-    setError('');
-    const { error: insErr } = await supabase.from('organizations').upsert({
-      profile_id: user.id,
-      organization_type: type,
-      company_name: orgCompanyName.trim(),
-      kvk_number: orgKvk.trim(),
-      contact_person: orgContactPerson.trim() || null,
-      business_email: orgBusinessEmail.trim() || null,
-      phone: orgPhone.trim() || null,
-      website: orgWebsite.trim() || null,
-      profile_completed: true,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'profile_id' });
-    if (insErr) {
-      setError(insErr.message);
-      setOrgSubmitting(false);
-      return;
-    }
-    const { error: empErr } = await supabase.from('employers').upsert({
-      user_id: user.id,
-      company_name: orgCompanyName.trim(),
-      kvk: orgKvk.trim() || null,
-      website: orgWebsite.trim() || null,
-      billing_email: orgBusinessEmail.trim() || null,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'user_id' });
-    if (empErr) {
-      setError(empErr.message);
-      setOrgSubmitting(false);
-      return;
-    }
-    const { error: upErr } = await supabase.from('profiles').update({ onboarding_completed: true }).eq('id', user.id);
-    if (upErr) {
-      setError(upErr.message);
-      setOrgSubmitting(false);
-      return;
-    }
-    await refreshProfile();
-    setOrgSubmitting(false);
-    if (type === 'intermediary') navigate('/intermediair/dashboard', { replace: true });
-    else navigate('/opdrachtgever/dashboard', { replace: true });
-  };
-
   if (user && !profile) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#F4FAF4] px-4">
@@ -259,9 +292,8 @@ export default function Onboarding() {
 
 
   const role = profile?.role;
-  const isProfessional = role === 'professional' || role === 'ARTS';
-  const isCompany = role === 'company' || role === 'OPDRACHTGEVER';
-  const isIntermediary = role === 'intermediary';
+  const isProfessional = role === 'professional';
+  const isOpdrachtgever = role === 'OPDRACHTGEVER';
 
   if (showRoleStep) {
     return (
@@ -278,7 +310,7 @@ export default function Onboarding() {
               <p className="text-red-800">{error}</p>
             </div>
           )}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
             {ROLE_OPTIONS.map((opt) => {
               const Icon = opt.icon;
               return (
@@ -306,7 +338,7 @@ export default function Onboarding() {
     );
   }
 
-  if (!profile || (!isProfessional && !isCompany && !isIntermediary)) {
+  if (!profile || (!isProfessional && !isOpdrachtgever)) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F4FAF4] px-4">
         <p className="text-gray-600">Geen onboarding beschikbaar voor dit account.</p>
@@ -384,7 +416,157 @@ export default function Onboarding() {
               <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Validatie</h1>
               {profession && NEEDS_BIG.includes(profession) && (
                 <>
-                  <p className="text-gray-600 text-base mb-4">Vul je BIG-nummer in (alleen cijfers, minimaal 8).</p>
+                  <p className="text-gray-600 text-base mb-4">Vul je BIG-nummer in of zoek het op met je achternaam.</p>
+                  <div className="mb-6 p-4 bg-emerald-50/80 border border-emerald-200/80 rounded-xl">
+                    <p className="text-sm font-medium text-[#0F172A] mb-3">Zoek je BIG-nummer op (zoals op bigregister.nl)</p>
+                    <div className="flex flex-wrap gap-4 mb-3">
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1.5">Geslacht *</p>
+                        <div className="flex gap-4">
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="bigSearchGeslacht"
+                              checked={bigSearchGeslacht === 'Man'}
+                              onChange={() => { setBigSearchGeslacht('Man'); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
+                              className="text-[#4FA151] focus:ring-[#4FA151]"
+                            />
+                            <span className="text-sm">Man</span>
+                          </label>
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="bigSearchGeslacht"
+                              checked={bigSearchGeslacht === 'Vrouw'}
+                              onChange={() => { setBigSearchGeslacht('Vrouw'); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
+                              className="text-[#4FA151] focus:ring-[#4FA151]"
+                            />
+                            <span className="text-sm">Vrouw</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 mb-3">
+                      <input
+                        type="text"
+                        value={bigSearchVoorletters}
+                        onChange={(e) => { setBigSearchVoorletters(e.target.value.toUpperCase().slice(0, 10)); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
+                        placeholder="Voorletters"
+                        className="sm:col-span-2 px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                      />
+                      <input
+                        type="text"
+                        value={bigSearchAchternaam}
+                        onChange={(e) => { setBigSearchAchternaam(e.target.value); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
+                        placeholder="Achternaam *"
+                        className="sm:col-span-4 px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                      />
+                      <input
+                        type="text"
+                        value={bigSearchGeboortedatum}
+                        onChange={(e) => { setBigSearchGeboortedatum(e.target.value); setBigSearchError(''); }}
+                        placeholder="DD-MM-JJJJ of JJJJ-MM-DD"
+                        className="sm:col-span-3 px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                      />
+                      <button
+                        type="button"
+                        disabled={bigSearchLoading || !bigSearchGeslacht || bigSearchAchternaam.trim().length < 2}
+                        onClick={async () => {
+                          setBigSearchError('');
+                          setBigSearchResults([]);
+                          setBigSearchPendingSelection(null);
+                          const raw = bigSearchGeboortedatum.trim();
+                          let birthDate: string | undefined;
+                          if (raw) {
+                            const ddmmyyyy = raw.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+                            if (ddmmyyyy) {
+                              birthDate = `${ddmmyyyy[3]}-${ddmmyyyy[2].padStart(2, '0')}-${ddmmyyyy[1].padStart(2, '0')}`;
+                            } else if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+                              birthDate = raw;
+                            } else {
+                              setBigSearchError('Geboortedatum: gebruik DD-MM-JJJJ of JJJJ-MM-DD');
+                              return;
+                            }
+                          }
+                          setBigSearchLoading(true);
+                          const res = await searchBigByName(bigSearchAchternaam.trim(), {
+                            gender: bigSearchGeslacht as BigSearchGender,
+                            birthDate,
+                            initials: bigSearchVoorletters.trim() || undefined,
+                          });
+                          setBigSearchLoading(false);
+                          if (res.error) setBigSearchError(res.error);
+                          else setBigSearchResults(res.resultaten ?? []);
+                        }}
+                        className="sm:col-span-3 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#4FA151] text-white rounded-xl font-medium text-sm hover:bg-[#3E8E45] disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {bigSearchLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                        Zoeken
+                      </button>
+                    </div>
+                    {bigSearchError && (
+                      <div className="mb-2">
+                        <p className="text-sm text-red-600">{bigSearchError}</p>
+                        <a
+                          href="https://www.bigregister.nl/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-[#4FA151] hover:underline mt-1 inline-block"
+                        >
+                          Zoek je BIG-nummer op bigregister.nl →
+                        </a>
+                      </div>
+                    )}
+                    {bigSearchResults.length > 0 && (
+                      <div className="space-y-1.5">
+                        <p className="text-xs text-gray-600 mb-1">Klik op je naam om je BIG-nummer in te vullen:</p>
+                        {!bigSearchGeboortedatum.trim() && (
+                          <p className="text-xs text-amber-600 mb-1">Tip: vul geboortedatum in voor minder resultaten.</p>
+                        )}
+                        {bigSearchPendingSelection ? (
+                          <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                            <p className="text-sm font-medium text-[#0F172A] mb-2">Klopt dit? Controleer of dit jouw gegevens zijn.</p>
+                            <p className="text-sm text-gray-700 mb-2">{bigSearchPendingSelection.name || 'Onbekende naam'} — BIG {bigSearchPendingSelection.big_number}</p>
+                            <div className="flex gap-2">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setBigNumber(bigSearchPendingSelection.big_number);
+                                  setBigSearchResults([]);
+                                  setBigSearchPendingSelection(null);
+                                  setError('');
+                                }}
+                                className="px-3 py-1.5 bg-[#4FA151] text-white text-sm font-medium rounded-lg hover:bg-[#3E8E45]"
+                              >
+                                Ja, bevestigen
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setBigSearchPendingSelection(null)}
+                                className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50"
+                              >
+                                Nee, andere kiezen
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="max-h-48 overflow-y-auto space-y-1.5">
+                            {bigSearchResults.map((item) => (
+                              <button
+                                key={item.big_number}
+                                type="button"
+                                onClick={() => setBigSearchPendingSelection(item)}
+                                className="w-full text-left px-3 py-2.5 bg-white border border-emerald-200 rounded-lg hover:bg-emerald-50 hover:border-[#4FA151] transition text-sm"
+                              >
+                                <span className="font-medium text-[#0F172A]">{item.name || 'Onbekende naam'}</span>
+                                <span className="text-gray-500 ml-2">BIG {item.big_number}</span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <div className="mb-4">
                     <label htmlFor="bigNumber" className="block text-sm font-medium text-gray-700 mb-2">BIG-nummer *</label>
                     <input
@@ -394,10 +576,13 @@ export default function Onboarding() {
                       value={bigNumber}
                       onChange={(e) => setBigNumber(e.target.value.replace(/\D/g, '').slice(0, 11))}
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                      placeholder="Alleen cijfers, min. 8"
+                      placeholder="11 cijfers (of kies hierboven uit zoekresultaat)"
                     />
                   </div>
                 </>
+              )}
+              {profession === 'pob' && (
+                <p className="text-gray-600 text-base mb-4">Je hebt gekozen voor Praktijkondersteuner bedrijfsarts (POB). Klik op Registratie voltooien.</p>
               )}
               {profession === 'casemanager_verzuim' && (
                 <>
@@ -423,7 +608,7 @@ export default function Onboarding() {
               )}
               <button
                 type="button"
-                disabled={loading || (profession && NEEDS_BIG.includes(profession) && bigNumber.replace(/\D/g, '').length < 8)}
+                disabled={loading || (profession && NEEDS_BIG.includes(profession) && bigNumber.replace(/\D/g, '').length !== 11)}
                 onClick={saveProfessionalAndComplete}
                 className="w-full bg-[#4FA151] text-white py-4 rounded-2xl font-semibold text-base hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -434,53 +619,66 @@ export default function Onboarding() {
         </div>
       )}
 
-      {(isCompany || isIntermediary) && (
-        <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-8">
-          <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-4 md:mb-6 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
+      {isOpdrachtgever && !profile?.onboarding_completed && (
+        <div className="w-full max-w-2xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
+          <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
             {backToRoleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}← Terug naar rolkeuze
           </button>
-          <h1 className="text-2xl font-bold text-[#0F172A] mb-2">
-            {isIntermediary ? 'Gegevens intermediair' : 'Bedrijfsgegevens'}
-          </h1>
-          <p className="text-gray-600 mb-6">Vul de gegevens van je organisatie in. KvK-nummer is verplicht en kan later niet worden gewijzigd.</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Bedrijfsgegevens</h1>
+          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Vul je KvK-nummer in; de bedrijfsnaam wordt automatisch opgehaald.</p>
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
               <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
               <p className="text-sm text-red-800">{error}</p>
             </div>
           )}
-          <form onSubmit={handleOrgSubmit} className="space-y-4">
+          <div className="space-y-4 mb-8">
             <div>
-              <label htmlFor="orgCompanyName" className="block text-sm font-medium text-gray-700 mb-2">Bedrijfsnaam *</label>
-              <input id="orgCompanyName" type="text" required value={orgCompanyName} onChange={(e) => setOrgCompanyName(e.target.value)} className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]" placeholder="Bedrijfsnaam" />
+              <label htmlFor="kvk" className="block text-sm font-medium text-gray-700 mb-2">KvK-nummer * (8 cijfers)</label>
+              <div className="flex gap-2">
+                <input
+                  id="kvk"
+                  type="text"
+                  inputMode="numeric"
+                  value={kvk}
+                  onChange={(e) => { setKvk(e.target.value.replace(/\D/g, '').slice(0, 8)); setError(''); }}
+                  onBlur={() => kvk.replace(/\D/g, '').length === 8 && fetchBedrijfsnaamByKvk()}
+                  className="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                  placeholder="12345678"
+                />
+                <button
+                  type="button"
+                  disabled={kvk.replace(/\D/g, '').length !== 8 || kvkLoading}
+                  onClick={fetchBedrijfsnaamByKvk}
+                  className="px-4 py-3 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                >
+                  {kvkLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Ophalen'}
+                </button>
+              </div>
             </div>
             <div>
-              <label htmlFor="orgKvk" className="block text-sm font-medium text-gray-700 mb-2">KvK-nummer *</label>
-              <input id="orgKvk" type="text" required value={orgKvk} onChange={(e) => setOrgKvk(e.target.value)} className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]" placeholder="Bijv. 12345678" />
-              <p className="mt-1 text-xs text-gray-500">Na opslaan niet meer wijzigbaar.</p>
+              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">Bedrijfsnaam *</label>
+              <input
+                id="companyName"
+                type="text"
+                value={companyName}
+                onChange={(e) => { setCompanyName(e.target.value); setError(''); }}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                placeholder="Wordt opgehaald via KvK of vul handmatig in"
+              />
             </div>
-            <div>
-              <label htmlFor="orgContactPerson" className="block text-sm font-medium text-gray-700 mb-2">Contactpersoon</label>
-              <input id="orgContactPerson" type="text" value={orgContactPerson} onChange={(e) => setOrgContactPerson(e.target.value)} className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]" placeholder="Naam contactpersoon" />
-            </div>
-            <div>
-              <label htmlFor="orgBusinessEmail" className="block text-sm font-medium text-gray-700 mb-2">Zakelijk e-mailadres</label>
-              <input id="orgBusinessEmail" type="email" value={orgBusinessEmail} onChange={(e) => setOrgBusinessEmail(e.target.value)} className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]" placeholder="zakelijk@bedrijf.nl" />
-            </div>
-            <div>
-              <label htmlFor="orgPhone" className="block text-sm font-medium text-gray-700 mb-2">Telefoonnummer</label>
-              <input id="orgPhone" type="tel" value={orgPhone} onChange={(e) => setOrgPhone(e.target.value)} className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]" placeholder="06-12345678" />
-            </div>
-            <div>
-              <label htmlFor="orgWebsite" className="block text-sm font-medium text-gray-700 mb-2">Website (optioneel)</label>
-              <input id="orgWebsite" type="url" value={orgWebsite} onChange={(e) => setOrgWebsite(e.target.value)} className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]" placeholder="https://..." />
-            </div>
-            <button type="submit" disabled={orgSubmitting} className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50">
-              {orgSubmitting ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Opslaan...</span> : 'Opslaan en doorgaan'}
-            </button>
-          </form>
+          </div>
+          <button
+            type="button"
+            disabled={opdrachtgeverSaving || !companyName.trim() || kvk.replace(/\D/g, '').length !== 8}
+            onClick={saveOpdrachtgeverAndComplete}
+            className="w-full bg-[#4FA151] text-white py-4 rounded-2xl font-semibold text-base hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {opdrachtgeverSaving ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span> : 'Registratie voltooien'}
+          </button>
         </div>
       )}
+
     </div>
   );
 }

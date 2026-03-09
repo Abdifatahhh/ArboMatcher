@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { listClients, toggleClientBlocked } from '../../services/adminClientsService';
 import { ClientsFilters } from '../../components/Admin/ClientsFilters';
-import type { TypeFilter, StatusFilter } from '../../components/Admin/ClientsFilters';
+import type { StatusFilter } from '../../components/Admin/ClientsFilters';
 import { ClientsTable } from '../../components/Admin/ClientsTable';
 import type { AdminClientRow } from '../../services/adminClientsService';
 import { demoOpdrachtgevers } from '../../data/adminDemoData';
@@ -15,7 +15,6 @@ export default function AdminOpdrachtgevers() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [isDemo, setIsDemo] = useState(false);
-  const [type, setType] = useState<TypeFilter>('');
   const [status, setStatus] = useState<StatusFilter>('');
   const [search, setSearch] = useState('');
 
@@ -23,7 +22,6 @@ export default function AdminOpdrachtgevers() {
     setLoading(true);
     try {
       const res = await listClients({
-        type: type || undefined,
         status: status || undefined,
         search: search.trim() || undefined,
         page,
@@ -35,7 +33,6 @@ export default function AdminOpdrachtgevers() {
         setIsDemo(false);
       } else {
         const filtered = demoOpdrachtgevers.filter((row) => {
-          if (type && (row.employer.client_type ?? 'direct') !== type) return false;
           if (status && row.profile.status !== status) return false;
           if (search.trim()) {
             const term = search.trim().toLowerCase();
@@ -61,7 +58,7 @@ export default function AdminOpdrachtgevers() {
 
   useEffect(() => {
     load();
-  }, [page, type, status, search]);
+  }, [page, status, search]);
 
   const handleToggleBlock = async (employerId: string) => {
     if (isDemo) return;
@@ -78,24 +75,19 @@ export default function AdminOpdrachtgevers() {
       {isDemo && (
         <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-3 shadow-sm">
           <Info className="w-5 h-5 text-amber-600 flex-shrink-0" />
-          <p className="text-amber-900 text-sm">Demo-bedrijven worden getoond. Doorklikken op een bedrijf toont de demo-detailpagina. Wijzigingen worden niet opgeslagen.</p>
+          <p className="text-amber-900 text-sm">Demo-opdrachtgevers worden getoond. Doorklikken toont de demo-detailpagina. Wijzigingen worden niet opgeslagen.</p>
         </div>
       )}
       <h1 className="text-3xl font-bold text-[#0F172A] mb-2 flex items-center gap-2">
         <Building2 className="w-8 h-8 text-[#4FA151]" />
         Opdrachtgevers
       </h1>
-      <p className="text-emerald-700/80 text-sm mb-6">Beheer bedrijven, intermediairs en detacheerders</p>
+      <p className="text-emerald-700/80 text-sm mb-6">Beheer opdrachtgevers</p>
 
       <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-emerald-100 shadow-md p-4 mb-6">
         <ClientsFilters
-          type={type}
           status={status}
           search={search}
-          onTypeChange={(v) => {
-            setType(v);
-            setPage(1);
-          }}
           onStatusChange={(v) => {
             setStatus(v);
             setPage(1);

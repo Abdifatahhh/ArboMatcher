@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import type { AdminClientRow } from '../../services/adminClientsService';
-import { CLIENT_TYPE_LABELS } from '../../lib/schemas/adminClientsSchema';
 import { Eye, Pencil, Ban, CheckCircle } from 'lucide-react';
 
 interface ClientsTableProps {
@@ -18,7 +17,6 @@ export function ClientsTable({ rows, onToggleBlock }: ClientsTableProps) {
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Contactpersoon</th>
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Email</th>
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Telefoon</th>
-            <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Type</th>
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider"># Opdrachten</th>
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Registratiedatum</th>
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Status</th>
@@ -27,8 +25,6 @@ export function ClientsTable({ rows, onToggleBlock }: ClientsTableProps) {
         </thead>
         <tbody className="divide-y divide-emerald-50">
           {rows.map(({ employer, profile, jobs_count }, idx) => {
-            const typeKey = employer.client_type ?? 'direct';
-            const typeLabel = CLIENT_TYPE_LABELS[typeKey] ?? typeKey;
             const isBlocked = profile.status === 'BLOCKED';
             const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-emerald-50/30';
             return (
@@ -44,11 +40,6 @@ export function ClientsTable({ rows, onToggleBlock }: ClientsTableProps) {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{profile.full_name || '—'}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{profile.email}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{profile.phone || '—'}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2.5 py-1 text-xs font-medium rounded-lg bg-emerald-100/80 text-emerald-800 border border-emerald-200/60">
-                    {typeLabel}
-                  </span>
-                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{jobs_count}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {new Date(profile.created_at).toLocaleDateString('nl-NL')}

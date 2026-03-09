@@ -6,7 +6,7 @@ const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 export const demoProfiles: Profile[] = [
   {
     id: 'demo-user-1',
-    role: 'ARTS',
+    role: 'professional',
     full_name: 'Dr. Lisa van der Berg',
     avatar_url: null,
     phone: '06-12345678',
@@ -17,7 +17,7 @@ export const demoProfiles: Profile[] = [
   },
   {
     id: 'demo-user-2',
-    role: 'ARTS',
+    role: 'professional',
     full_name: 'Dr. Mark de Vries',
     avatar_url: null,
     phone: '06-87654321',
@@ -72,7 +72,7 @@ export const demoProfiles: Profile[] = [
   },
   {
     id: 'demo-user-7',
-    role: 'intermediary',
+    role: 'OPDRACHTGEVER',
     full_name: 'Thomas Intermediair',
     avatar_url: null,
     phone: '06-66778899',
@@ -83,7 +83,7 @@ export const demoProfiles: Profile[] = [
   },
   {
     id: 'demo-user-8',
-    role: 'intermediary',
+    role: 'OPDRACHTGEVER',
     full_name: 'Emma Bemiddeling',
     avatar_url: null,
     phone: '06-10101010',
@@ -104,7 +104,6 @@ export const demoEmployers: Employer[] = [
     sector: 'Arbodiensten',
     billing_address: 'Hoofdstraat 1, 1000 AA Amsterdam',
     billing_email: 'facturatie@arbovoorbeeld.nl',
-    client_type: 'direct',
     created_at: lastWeek,
     updated_at: now,
   },
@@ -117,7 +116,6 @@ export const demoEmployers: Employer[] = [
     sector: 'Verzekeringen',
     billing_address: 'Verzekeringsweg 50, 3500 AB Utrecht',
     billing_email: 'arbodienst@zeker.nl',
-    client_type: 'direct',
     created_at: lastWeek,
     updated_at: now,
   },
@@ -130,7 +128,6 @@ export const demoEmployers: Employer[] = [
     sector: 'Detachering',
     billing_address: 'Kantoorpark 12, 5000 AA Eindhoven',
     billing_email: 'facturatie@medischdetachering.nl',
-    client_type: 'detacheerder',
     created_at: lastWeek,
     updated_at: now,
   },
@@ -143,7 +140,6 @@ export const demoEmployers: Employer[] = [
     sector: 'Bemiddeling',
     billing_address: 'Bemiddellaan 7, 3000 AB Rotterdam',
     billing_email: 'admin@arbobemiddeling.nl',
-    client_type: 'intermediair',
     created_at: lastWeek,
     updated_at: now,
   },

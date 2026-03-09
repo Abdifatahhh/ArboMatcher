@@ -63,6 +63,13 @@ export default function AdminVerificaties() {
   };
 
   const handleBigCheck = async (doctorId: string, bigNumber: string) => {
+    const digits = (bigNumber ?? '').replace(/\D/g, '');
+    if (digits.length !== 11) {
+      setBigCheckDoctorId(doctorId);
+      setBigCheckResult({ formatValid: false, registerChecked: false, found: false, message: 'BIG-nummer bestaat uit 11 cijfers.' });
+      setCheckingBigId(null);
+      return;
+    }
     setCheckingBigId(doctorId);
     setBigCheckResult(null);
     setBigCheckDoctorId(doctorId);

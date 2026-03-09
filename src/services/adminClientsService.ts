@@ -5,7 +5,7 @@
 
 import { supabase } from '../lib/supabase';
 import type { Employer, Profile } from '../lib/types';
-import { EMPLOYERS_TABLE, JOBS_TABLE, JOBS_EMPLOYER_FK, PROFILES_TABLE, PROFILES_STATUS_COLUMN, EMPLOYERS_CLIENT_TYPE_COLUMN } from '../lib/schemas/adminClientsSchema';
+import { EMPLOYERS_TABLE, JOBS_TABLE, JOBS_EMPLOYER_FK, PROFILES_TABLE, PROFILES_STATUS_COLUMN } from '../lib/schemas/adminClientsSchema';
 
 export interface AdminClientRow {
   employer: Employer;
@@ -14,7 +14,6 @@ export interface AdminClientRow {
 }
 
 export interface ListClientsParams {
-  type?: 'direct' | 'intermediair' | 'detacheerder' | '';
   status?: 'ACTIVE' | 'BLOCKED' | '';
   search?: string;
   page?: number;
@@ -30,20 +29,17 @@ const PAGE_SIZE_DEFAULT = 20;
 
 /**
  * List opdrachtgevers: employers with profile (role OPDRACHTGEVER).
- * Server-side filters: type (employers.client_type), status (profiles.status), search (company_name, email).
+ * Server-side filters: status (profiles.status), search (company_name, email).
  * Job counts in one extra query (no N+1).
  */
 export async function listClients(params: ListClientsParams): Promise<ListClientsResult> {
-  const { type, status, search, page = 1, pageSize = PAGE_SIZE_DEFAULT } = params;
+  const { status, search, page = 1, pageSize = PAGE_SIZE_DEFAULT } = params;
 
   let query = supabase
     .from(EMPLOYERS_TABLE)
     .select('*, profiles!inner(*)', { count: 'exact' })
     .eq('profiles.role', 'OPDRACHTGEVER');
 
-  if (type && type !== '') {
-    query = query.eq(EMPLOYERS_CLIENT_TYPE_COLUMN, type);
-  }
   if (status && status !== '') {
     query = query.eq('profiles.status', status);
   }
@@ -156,7 +152,6 @@ export async function updateClient(
     company_name?: string;
     full_name?: string | null;
     phone?: string | null;
-    client_type?: 'direct' | 'intermediair' | 'detacheerder';
   }
 ): Promise<{ error: Error | null }> {
   const { profile, employer } = (await getClientById(employerId)) ?? {};
@@ -164,10 +159,6 @@ export async function updateClient(
 
   if (payload.company_name !== undefined) {
     const { error } = await supabase.from(EMPLOYERS_TABLE).update({ company_name: payload.company_name }).eq('id', employerId);
-    if (error) return { error };
-  }
-  if (payload.client_type !== undefined) {
-    const { error } = await supabase.from(EMPLOYERS_TABLE).update({ client_type: payload.client_type }).eq('id', employerId);
     if (error) return { error };
   }
   if (payload.full_name !== undefined || payload.phone !== undefined) {

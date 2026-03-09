@@ -52,10 +52,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Alle organisaties en arbo-professionals efficient verbonden.
+              Opdrachtgevers en arbo-professionals efficiënt verbonden.
             </h1>
             <p className="text-xl text-gray-300 mb-10 leading-relaxed">
-              ArboMatcher verbindt directe opdrachtgevers, intermediairs en detacheerders met gekwalificeerde bedrijfsartsen en arbo-professionals voor freelance, interim en detachering.
+              ArboMatcher verbindt opdrachtgevers met gekwalificeerde bedrijfsartsen en arbo-professionals voor freelance, interim en detachering.
             </p>
           </div>
 
@@ -91,7 +91,7 @@ export default function Home() {
             </span>
             <span className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-[#4FA151]" />
-              Eén platform voor opdrachtgevers, intermediairs, detacheerders en professionals
+              Eén platform voor opdrachtgevers en professionals
             </span>
           </div>
         </div>
@@ -168,11 +168,11 @@ export default function Home() {
             <span className="inline-block text-[#4FA151] font-semibold text-sm uppercase tracking-widest mb-3">Doelgroep</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Oplossingen voor iedereen</h2>
             <p className="text-slate-600 text-lg max-w-xl mx-auto">
-              Of u nu opdrachtgever, intermediair, detacheerder of professional bent, ArboMatcher biedt de juiste oplossing.
+              Of u nu opdrachtgever of professional bent, ArboMatcher biedt de juiste oplossing.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
             <Link
               to="/oplossingen"
               className="group block bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-200/30 p-8 hover:shadow-xl hover:shadow-slate-200/40 hover:border-[#4FA151]/30 transition-all duration-300 h-full flex flex-col"
@@ -180,26 +180,9 @@ export default function Home() {
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-800 flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-105 transition-transform">
                 <Building2 className="w-7 h-7" strokeWidth={2} />
               </div>
-              <h3 className="text-xl font-bold text-[#0F172A] mb-3">Voor directe opdrachtgevers</h3>
+              <h3 className="text-xl font-bold text-[#0F172A] mb-3">Voor opdrachtgevers</h3>
               <p className="text-slate-600 leading-relaxed flex-1 mb-6">
                 Direct toegang tot een netwerk van ervaren bedrijfsartsen voor verzuimbegeleiding, preventie en re-integratie.
-              </p>
-              <span className="inline-flex items-center text-[#4FA151] font-semibold group-hover:gap-3 transition-all gap-2">
-                Meer informatie
-                <ArrowRight className="w-4 h-4" />
-              </span>
-            </Link>
-
-            <Link
-              to="/oplossingen"
-              className="group block bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-200/30 p-8 hover:shadow-xl hover:shadow-slate-200/40 hover:border-[#4FA151]/30 transition-all duration-300 h-full flex flex-col"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-800 flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-105 transition-transform">
-                <Briefcase className="w-7 h-7" strokeWidth={2} />
-              </div>
-              <h3 className="text-xl font-bold text-[#0F172A] mb-3">Voor intermediairs</h3>
-              <p className="text-slate-600 leading-relaxed flex-1 mb-6">
-                Vergroot uw bereik binnen de arbo-markt en plaats opdrachten namens uw opdrachtgevers via een platform.
               </p>
               <span className="inline-flex items-center text-[#4FA151] font-semibold group-hover:gap-3 transition-all gap-2">
                 Meer informatie
@@ -216,7 +199,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold text-[#0F172A] mb-3">Voor Professionals</h3>
               <p className="text-slate-600 leading-relaxed flex-1 mb-6">
-                Reageer op opdrachten van zowel directe opdrachtgevers als bemiddelingsbureaus met flexibele inzetvormen.
+                Reageer op opdrachten van opdrachtgevers met flexibele inzetvormen.
               </p>
               <span className="inline-flex items-center text-[#4FA151] font-semibold group-hover:gap-3 transition-all gap-2">
                 Meer informatie
@@ -239,7 +222,7 @@ export default function Home() {
                   { icon: Lock, text: 'AVG-proof communicatie' },
                   { icon: Zap, text: 'Rechtstreeks contact tussen opdrachtgever en professional na matching' },
                   { icon: Globe, text: 'Landelijke dekking in alle 12 provincies' },
-                  { icon: Award, text: 'Eén platform voor opdrachtgevers, intermediairs, detacheerders en professionals' },
+                  { icon: Award, text: 'Eén platform voor opdrachtgevers en professionals' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/80 transition-colors">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4FA151]/15 to-[#4FA151]/5 flex items-center justify-center flex-shrink-0 border border-[#4FA151]/10">

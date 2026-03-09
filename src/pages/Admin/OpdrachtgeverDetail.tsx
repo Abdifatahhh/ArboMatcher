@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { getClientById, updateClient, toggleClientBlocked, listClientJobs } from '../../services/adminClientsService';
 import type { AdminClientRow, JobWithMeta } from '../../services/adminClientsService';
-import { CLIENT_TYPE_LABELS, CLIENT_TYPE_VALUES } from '../../lib/schemas/adminClientsSchema';
-import type { ClientTypeValue } from '../../lib/schemas/adminClientsSchema';
 import { demoOpdrachtgevers, demoJobs } from '../../data/adminDemoData';
 import { ArrowLeft, Save, Ban, CheckCircle, Briefcase, Info } from 'lucide-react';
 
@@ -27,7 +25,6 @@ export default function AdminOpdrachtgeverDetail() {
   const [editCompanyName, setEditCompanyName] = useState('');
   const [editFullName, setEditFullName] = useState('');
   const [editPhone, setEditPhone] = useState('');
-  const [editClientType, setEditClientType] = useState<ClientTypeValue>('direct');
 
   useEffect(() => {
     if (id) {
@@ -40,7 +37,6 @@ export default function AdminOpdrachtgeverDetail() {
           setEditCompanyName(demoRow.employer.company_name);
           setEditFullName(demoRow.profile.full_name ?? '');
           setEditPhone(demoRow.profile.phone ?? '');
-          setEditClientType((demoRow.employer.client_type ?? 'direct') as ClientTypeValue);
         } else {
           setRow(null);
           setIsDemo(false);
@@ -54,7 +50,6 @@ export default function AdminOpdrachtgeverDetail() {
             setEditCompanyName(r.employer.company_name);
             setEditFullName(r.profile.full_name ?? '');
             setEditPhone(r.profile.phone ?? '');
-            setEditClientType((r.employer.client_type ?? 'direct') as ClientTypeValue);
           }
           setLoading(false);
         });
@@ -90,7 +85,6 @@ export default function AdminOpdrachtgeverDetail() {
       company_name: editCompanyName,
       full_name: editFullName || null,
       phone: editPhone || null,
-      client_type: editClientType,
     });
     if (error) {
       setMessage({ type: 'error', text: 'Opslaan mislukt.' });
@@ -133,7 +127,6 @@ export default function AdminOpdrachtgeverDetail() {
 
   const { employer, profile, jobs_count } = row;
   const isBlocked = profile.status === 'BLOCKED';
-  const typeLabel = CLIENT_TYPE_LABELS[employer.client_type ?? 'direct'] ?? employer.client_type;
   const jobsFrom = (jobsPage - 1) * JOBS_PAGE_SIZE + 1;
   const jobsTo = Math.min(jobsPage * JOBS_PAGE_SIZE, jobsTotal);
   const jobsTotalPages = Math.max(1, Math.ceil(jobsTotal / JOBS_PAGE_SIZE));
@@ -187,12 +180,6 @@ export default function AdminOpdrachtgeverDetail() {
                 <label className="block text-sm font-medium text-emerald-800/80 mb-2">Telefoon</label>
                 <input type="tel" value={editPhone} onChange={(e) => setEditPhone(e.target.value)} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition" />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-emerald-800/80 mb-2">Type opdrachtgever</label>
-                <select value={editClientType} onChange={(e) => setEditClientType(e.target.value as ClientTypeValue)} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition">
-                  {CLIENT_TYPE_VALUES.map((v) => <option key={v} value={v}>{CLIENT_TYPE_LABELS[v]}</option>)}
-                </select>
-              </div>
               <div className="flex gap-3">
                 <button type="submit" disabled={saving} className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-2.5 rounded-xl font-medium hover:bg-[#3E8E45] transition disabled:opacity-50">
                   <Save className="w-4 h-4" />
@@ -209,7 +196,6 @@ export default function AdminOpdrachtgeverDetail() {
               <p><strong>Contactpersoon:</strong> {profile.full_name || '—'}</p>
               <p><strong>E-mail:</strong> {profile.email}</p>
               <p><strong>Telefoon:</strong> {profile.phone || '—'}</p>
-              <p><strong>Type:</strong> {typeLabel}</p>
               <p><strong>Registratiedatum:</strong> {new Date(profile.created_at).toLocaleDateString('nl-NL')}</p>
               <div className="flex gap-3 mt-4">
                 <button type="button" onClick={handleToggleBlock} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl font-medium ${isBlocked ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-red-100 text-red-800 hover:bg-red-200'}`}>

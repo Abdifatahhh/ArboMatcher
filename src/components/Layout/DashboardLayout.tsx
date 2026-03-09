@@ -18,7 +18,6 @@ import {
   X,
   BookOpen,
   Bell,
-  UserCircle,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -40,9 +39,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const getInstellingenPath = () => {
     if (!profile) return '/';
     switch (profile.role) {
-      case 'OPDRACHTGEVER':
-      case 'company': return '/opdrachtgever/profiel';
-      case 'intermediary': return '/opdrachtgever/profiel';
+      case 'OPDRACHTGEVER': return '/opdrachtgever/profiel';
       case 'ADMIN': return '/admin/instellingen';
       default: return '/';
     }
@@ -50,20 +47,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const getInboxPath = () => {
     if (!profile) return '/';
-    switch (profile.role) {
-      case 'OPDRACHTGEVER':
-      case 'company':
-      case 'intermediary': return '/opdrachtgever/inbox';
-      default: return '#';
-    }
+    return profile.role === 'OPDRACHTGEVER' ? '/opdrachtgever/inbox' : '#';
   };
 
   const getProfilePath = () => {
     if (!profile) return '/';
     switch (profile.role) {
-      case 'OPDRACHTGEVER':
-      case 'company':
-      case 'intermediary': return '/opdrachtgever/profiel';
+      case 'OPDRACHTGEVER': return '/opdrachtgever/profiel';
       case 'ADMIN': return '/admin/instellingen';
       default: return '/';
     }
@@ -88,36 +78,23 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const getNavigationItems = () => {
     if (!profile) return [];
     switch (profile.role) {
-      case 'OPDRACHTGEVER':
-      case 'company': {
-        const ogRest = [
-          { path: '/opdrachtgever/profiel', label: 'Bedrijfsprofiel', icon: User },
+      case 'OPDRACHTGEVER': {
+        const rest = [
+          { path: '/opdrachtgever/profiel', label: 'Profiel', icon: User },
           { path: '/opdrachtgever/opdrachten', label: 'Mijn opdrachten', icon: Briefcase },
           { path: '/opdrachtgever/kandidaten', label: 'Kandidaten', icon: Users },
           { path: '/opdrachtgever/favorieten', label: 'Favorieten', icon: Heart },
           { path: '/opdrachtgever/inbox', label: 'Berichten', icon: MessageSquare },
           { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard },
         ].sort((a, b) => a.label.localeCompare(b.label, 'nl'));
-        return [{ path: '/opdrachtgever/dashboard', label: 'Dashboard', icon: LayoutDashboard }, ...ogRest];
-      }
-      case 'intermediary': {
-        const intRest = [
-          { path: '/opdrachtgever/profiel', label: 'Bedrijfsprofiel', icon: User },
-          { path: '/opdrachtgever/opdrachten', label: 'Mijn opdrachten', icon: Briefcase },
-          { path: '/opdrachtgever/kandidaten', label: 'Kandidaten', icon: Users },
-          { path: '/opdrachtgever/favorieten', label: 'Favorieten', icon: Heart },
-          { path: '/opdrachtgever/inbox', label: 'Berichten', icon: MessageSquare },
-          { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard },
-        ].sort((a, b) => a.label.localeCompare(b.label, 'nl'));
-        return [{ path: '/intermediair/dashboard', label: 'Dashboard', icon: LayoutDashboard }, ...intRest];
+        return [{ path: '/opdrachtgever/dashboard', label: 'Dashboard', icon: LayoutDashboard }, ...rest];
       }
       case 'ADMIN': {
         const rest = [
           { path: '/admin/verificaties', label: 'BIG Verificaties', icon: CheckCircle },
           { path: '/admin/artsen', label: 'Professionals', icon: User },
           { path: '/admin/gebruikers', label: 'Gebruikers', icon: Users },
-          { path: '/admin/opdrachtgevers', label: 'Organisaties', icon: Building2 },
-          { path: '/admin/intermediairs', label: 'Intermediairs', icon: UserCircle },
+          { path: '/admin/opdrachtgevers', label: 'Opdrachtgevers', icon: Building2 },
           { path: '/admin/opdrachten', label: 'Opdrachten', icon: Briefcase },
           { path: '/admin/reacties', label: 'Reacties', icon: FileText },
           { path: '/admin/abonnementen', label: 'Abonnementen', icon: CreditCard },
@@ -131,7 +108,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const navItems = getNavigationItems();
   const isAdmin = profile?.role === 'ADMIN';
-  const useGreenSidebar = isAdmin || profile?.role === 'OPDRACHTGEVER' || profile?.role === 'company' || profile?.role === 'intermediary';
+  const useGreenSidebar = isAdmin || profile?.role === 'OPDRACHTGEVER';
 
   const sidebarBg = useGreenSidebar
     ? 'bg-[#F4FAF4] border-r border-[#4FA151]/15 shadow-lg shadow-slate-200/20'
@@ -157,8 +134,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </Link>
         {profile && (
           <p className={`text-xs lg:text-sm mt-1.5 lg:mt-2 ${useGreenSidebar ? 'text-[#0F172A]/70 font-medium' : 'text-gray-600'}`}>
-            {(profile.role === 'OPDRACHTGEVER' || profile.role === 'company') && 'Bedrijf Dashboard'}
-            {profile.role === 'intermediary' && 'Intermediair Dashboard'}
+            {profile.role === 'OPDRACHTGEVER' && 'Dashboard'}
             {profile.role === 'ADMIN' && 'Admin Dashboard'}
           </p>
         )}

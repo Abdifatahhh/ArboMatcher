@@ -29,7 +29,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     );
   }
 
-  const needsOnboarding = profile.onboarding_completed !== true && ['professional', 'ARTS', 'company', 'OPDRACHTGEVER', 'intermediary', 'onboarding'].includes(profile.role);
+  const needsOnboarding = profile.onboarding_completed !== true && ['professional', 'OPDRACHTGEVER', 'onboarding'].includes(profile.role);
   if (needsOnboarding && !allowedRoles?.includes('ADMIN') && location.pathname !== '/onboarding') {
     return <Navigate to="/onboarding" replace />;
   }

@@ -102,6 +102,11 @@ export default function AdminArtsDetail() {
       setMessage({ type: 'error', text: 'Demo-data kan niet worden opgeslagen.' });
       return;
     }
+    const bigDigits = (doctor.big_number ?? '').replace(/\D/g, '');
+    if (bigDigits.length > 0 && bigDigits.length !== 11) {
+      setMessage({ type: 'error', text: 'BIG-nummer moet 11 cijfers bevatten.' });
+      return;
+    }
     setSaving(true);
     setMessage(null);
 
@@ -237,6 +242,11 @@ export default function AdminArtsDetail() {
               <button
                 type="button"
                 onClick={async () => {
+                  const digits = (doctor.big_number ?? '').replace(/\D/g, '');
+                  if (digits.length !== 11) {
+                    setBigCheckResult({ formatValid: false, registerChecked: false, found: false, message: 'BIG-nummer bestaat uit 11 cijfers.' });
+                    return;
+                  }
                   setBigCheckLoading(true);
                   setBigCheckResult(null);
                   const res = await checkBigNumber(doctor.big_number ?? '');

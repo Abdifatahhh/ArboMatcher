@@ -33,7 +33,7 @@ export default function OpdrachtDetail() {
   }, [id, user]);
 
   useEffect(() => {
-    if (!user || profile?.role !== 'ARTS' || !job || isFakeJob) {
+    if (!user || profile?.role !== 'professional' || !job || isFakeJob) {
       setDoctorPlan(null);
       return;
     }
@@ -114,7 +114,7 @@ export default function OpdrachtDetail() {
       return;
     }
 
-    if (profile?.role !== 'ARTS') {
+    if (profile?.role !== 'professional') {
       toast.error('Alleen professionals kunnen reageren op opdrachten');
       return;
     }
@@ -266,11 +266,6 @@ export default function OpdrachtDetail() {
                     PRO
                   </span>
                 )}
-                {!isFakeJob && (job as Job).poster_type === 'INTERMEDIARY' && (
-                  <span className="px-2.5 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
-                    Via intermediair
-                  </span>
-                )}
               </div>
               <div className="flex flex-wrap items-center gap-3 mt-2 text-gray-500">
                 {job.region && (
@@ -325,7 +320,7 @@ export default function OpdrachtDetail() {
               </div>
             </div>
 
-            {user && profile?.role === 'ARTS' && !isFakeJob && (
+            {user && profile?.role === 'professional' && !isFakeJob && (
               <div className="bg-white rounded-[16px] p-6 border border-gray-100">
                 {hasApplied ? (
                   <div className="bg-[#4FA151]/10 border border-[#4FA151] text-[#4FA151] p-4 rounded-[12px] text-center flex items-center justify-center gap-2">
@@ -489,7 +484,7 @@ export default function OpdrachtDetail() {
                       </Link>
                     </p>
                   </>
-                ) : profile?.role === 'ARTS' && !isFakeJob ? (
+                ) : profile?.role === 'professional' && !isFakeJob ? (
                   hasApplied ? (
                     <div className="bg-[#4FA151]/10 border border-[#4FA151]/30 text-[#4FA151] p-4 rounded-xl text-center flex items-center justify-center gap-2">
                       <CheckCircle className="w-5 h-5 shrink-0" />
@@ -532,16 +527,16 @@ export default function OpdrachtDetail() {
           </div>
         </div>
 
-        {(!user || profile?.role !== 'ARTS') && (
+        {(!user || profile?.role !== 'professional') && (
           <div className="mt-12 bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-[16px] p-8 sm:p-12 text-white">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-                {user && profile?.role !== 'ARTS'
+                {user && profile?.role !== 'professional'
                   ? 'Arts worden en reageren op opdrachten?'
                   : 'Volledige opdracht bekijken en reageren?'}
               </h2>
               <p className="text-gray-300 mb-8">
-                {user && profile?.role !== 'ARTS'
+                {user && profile?.role !== 'professional'
                   ? 'Registreer als arts (met BIG-nummer) om te solliciteren op opdrachten en in contact te komen met opdrachtgevers.'
                   : 'Maak gratis een account aan om de volledige omschrijving te bekijken, direct te reageren op opdrachten en toegang te krijgen tot alle functies van ArboMatcher.'}
               </p>
@@ -558,7 +553,7 @@ export default function OpdrachtDetail() {
                   to="/register"
                   className="px-8 py-3 bg-[#4FA151] rounded-xl font-semibold hover:bg-[#3E8E45] transition flex items-center justify-center gap-2 shadow-lg shadow-[#4FA151]/25"
                 >
-                  {user && profile?.role !== 'ARTS' ? 'Registreren als arts' : 'Gratis registreren'}
+                  {user && profile?.role !== 'professional' ? 'Registreren als arts' : 'Gratis registreren'}
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

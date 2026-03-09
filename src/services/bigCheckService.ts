@@ -93,3 +93,53 @@ export async function checkBigNumber(
 
   return fallback;
 }
+
+export interface BigSearchResultItem {
+  big_number: string;
+  name: string;
+}
+
+export interface BigSearchResult {
+  resultaten: BigSearchResultItem[];
+  error?: string;
+}
+
+/**
+ * Zoek in het BIG-register op achternaam (en optioneel geboortedatum).
+ * Geeft lijst van BIG-nummers met naam terug; gebruiker kiest de juiste.
+ */
+export type BigSearchGender = 'Man' | 'Vrouw';
+
+export async function searchBigByName(
+  familyName: string,
+  options: { birthDate?: string; initials?: string; gender: BigSearchGender }
+): Promise<BigSearchResult> {
+  const { url, key } = getConfig();
+  if (!url || !key) {
+    return { resultaten: [], error: 'Supabase-config ontbreekt.' };
+  }
+  const functionUrl = `${url.replace(/\/$/, '')}/functions/v1/big-search`;
+  try {
+    const res = await fetch(functionUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        family_name: familyName.trim(),
+        birth_date: options?.birthDate?.trim() || undefined,
+        initials: options?.initials?.trim() || undefined,
+        gender: options.gender,
+      }),
+    });
+    const data = (await res.json()) as BigSearchResult;
+    return {
+      resultaten: data?.resultaten ?? [],
+      error: data?.error,
+    };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { resultaten: [], error: msg };
+  }
+}

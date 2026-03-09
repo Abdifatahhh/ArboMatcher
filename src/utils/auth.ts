@@ -142,7 +142,7 @@ export function categorizeAuthError(error: unknown, step: AuthDiagnostic['step']
 export async function getOrCreateProfile(
   userId: string,
   email: string,
-  defaultRole: UserRole = 'ARTS',
+  defaultRole: UserRole = 'professional',
   userMetadata?: Record<string, unknown>
 ): Promise<{ profile: Profile | null; error: CategorizedError | null }> {
   try {

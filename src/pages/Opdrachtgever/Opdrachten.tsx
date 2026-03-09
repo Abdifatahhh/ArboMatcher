@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import type { Job, PosterType } from '../../lib/types';
-import { Plus, Briefcase, Eye, Trash2, X, Save, Building2, Users } from 'lucide-react';
+import type { Job } from '../../lib/types';
+import { Plus, Briefcase, Eye, Trash2, X, Save, Building2 } from 'lucide-react';
 
 export default function OpdrachtgeverOpdrachten() {
   const { user } = useAuth();
@@ -92,10 +92,10 @@ export default function OpdrachtgeverOpdrachten() {
       rate_min: formData.rate_min || null,
       rate_max: formData.rate_max || null,
       status: formData.status as any,
-      poster_type: formData.poster_type,
-      on_behalf_of: formData.poster_type === 'INTERMEDIARY' ? formData.on_behalf_of : null,
-      contact_person: formData.poster_type === 'INTERMEDIARY' ? formData.contact_person : null,
-      is_anonymous: formData.poster_type === 'INTERMEDIARY' ? formData.is_anonymous : false
+      poster_type: 'DIRECT',
+      on_behalf_of: null,
+      contact_person: null,
+      is_anonymous: false
     });
 
     if (error) {
@@ -152,105 +152,6 @@ export default function OpdrachtgeverOpdrachten() {
       {showForm && (
         <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
           <h2 className="text-xl font-bold text-[#0F172A] mb-6">Nieuwe opdracht plaatsen</h2>
-
-          <div className="mb-6 p-4 bg-[#F3F4F6] rounded-lg">
-            <p className="text-sm font-medium text-[#0F172A] mb-4">Deze opdracht wordt geplaatst door:</p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <label className={`flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer transition ${
-                formData.poster_type === 'DIRECT'
-                  ? 'border-[#4FA151] bg-[#4FA151]/5'
-                  : 'border-gray-200 bg-white hover:border-gray-300'
-              }`}>
-                <input
-                  type="radio"
-                  name="poster_type"
-                  value="DIRECT"
-                  checked={formData.poster_type === 'DIRECT'}
-                  onChange={() => setFormData({ ...formData, poster_type: 'DIRECT' as PosterType, on_behalf_of: '', contact_person: '', is_anonymous: false })}
-                  className="sr-only"
-                />
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  formData.poster_type === 'DIRECT' ? 'bg-[#4FA151]' : 'bg-gray-200'
-                }`}>
-                  <Building2 className={`w-5 h-5 ${formData.poster_type === 'DIRECT' ? 'text-white' : 'text-gray-500'}`} />
-                </div>
-                <div>
-                  <p className={`font-semibold ${formData.poster_type === 'DIRECT' ? 'text-[#0F172A]' : 'text-gray-700'}`}>
-                    Directe opdrachtgever
-                  </p>
-                  <p className="text-sm text-gray-500">U plaatst deze opdracht voor uw eigen organisatie</p>
-                </div>
-              </label>
-
-              <label className={`flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer transition ${
-                formData.poster_type === 'INTERMEDIARY'
-                  ? 'border-[#4FA151] bg-[#4FA151]/5'
-                  : 'border-gray-200 bg-white hover:border-gray-300'
-              }`}>
-                <input
-                  type="radio"
-                  name="poster_type"
-                  value="INTERMEDIARY"
-                  checked={formData.poster_type === 'INTERMEDIARY'}
-                  onChange={() => setFormData({ ...formData, poster_type: 'INTERMEDIARY' as PosterType })}
-                  className="sr-only"
-                />
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  formData.poster_type === 'INTERMEDIARY' ? 'bg-[#4FA151]' : 'bg-gray-200'
-                }`}>
-                  <Users className={`w-5 h-5 ${formData.poster_type === 'INTERMEDIARY' ? 'text-white' : 'text-gray-500'}`} />
-                </div>
-                <div>
-                  <p className={`font-semibold ${formData.poster_type === 'INTERMEDIARY' ? 'text-[#0F172A]' : 'text-gray-700'}`}>
-                    Intermediair / bemiddelingsbureau
-                  </p>
-                  <p className="text-sm text-gray-500">U plaatst deze opdracht namens een opdrachtgever</p>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          {formData.poster_type === 'INTERMEDIARY' && (
-            <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <h3 className="font-semibold text-[#0F172A] mb-4">Intermediair gegevens</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Plaatsing namens (organisatie)</label>
-                  <input
-                    type="text"
-                    value={formData.on_behalf_of || ''}
-                    onChange={(e) => setFormData({ ...formData, on_behalf_of: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
-                    placeholder="Naam van de opdrachtgever"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Contactpersoon</label>
-                  <input
-                    type="text"
-                    value={formData.contact_person || ''}
-                    onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
-                    placeholder="Naam contactpersoon"
-                  />
-                </div>
-              </div>
-              <div className="mt-4">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.is_anonymous || false}
-                    onChange={(e) => setFormData({ ...formData, is_anonymous: e.target.checked })}
-                    className="w-5 h-5 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
-                  />
-                  <div>
-                    <span className="font-medium text-[#0F172A]">Anoniem publiceren</span>
-                    <p className="text-sm text-gray-500">De naam van de opdrachtgever wordt niet getoond aan professionals</p>
-                  </div>
-                </label>
-              </div>
-            </div>
-          )}
 
           <div className="space-y-4">
             <div>
@@ -400,16 +301,8 @@ export default function OpdrachtgeverOpdrachten() {
                     >
                       {job.title}
                     </Link>
-                    {job.poster_type === 'INTERMEDIARY' && (
-                      <span className="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded">
-                        Intermediair
-                      </span>
-                    )}
                   </div>
                   <p className="text-gray-600 line-clamp-2">{job.description}</p>
-                  {job.poster_type === 'INTERMEDIARY' && job.on_behalf_of && !job.is_anonymous && (
-                    <p className="text-sm text-gray-500 mt-1">Namens: {job.on_behalf_of}</p>
-                  )}
                 </div>
                 <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
                   job.status === 'PUBLISHED' ? 'bg-green-100 text-green-800' :

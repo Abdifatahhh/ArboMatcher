@@ -28,7 +28,7 @@ export const COMMUNITY_ARTICLES: CommunityArticle[] = [
 
 ## Waarom verifiëren we je BIG-nummer?
 
-Opdrachtgevers – arbodiensten, werkgevers en intermediairs – willen zeker weten dat ze met gekwalificeerde professionals werken. Door je BIG-nummer te controleren tegen het officiële register geven we hen die zekerheid. Daarnaast voldoen we daarmee aan de eisen die horen bij verantwoord matching in de zorg.
+Opdrachtgevers – arbodiensten en werkgevers – willen zeker weten dat ze met gekwalificeerde professionals werken. Door je BIG-nummer te controleren tegen het officiële register geven we hen die zekerheid. Daarnaast voldoen we daarmee aan de eisen die horen bij verantwoord matching in de zorg.
 
 - Opdrachtgevers zien direct dat je geregistreerd en bevoegd bent
 - Er is geen twijfel over je kwalificatie bij het reageren op opdrachten
@@ -165,7 +165,7 @@ Heeft je organisatie structureel of voor een project behoefte aan een bedrijfsar
 
 ## Voor artsen
 
-De vraag naar bedrijfsartsen en arbo-professionals blijft groot. Op het platform zie je opdrachten van arbodiensten, werkgevers en intermediairs. Door je profiel compleet te houden en je BIG-verificatie up-to-date te houden, maak je kans op opdrachten die bij je expertise en beschikbaarheid passen. Houd daarnaast de ontwikkelingen rond minimumtarief en VBAR in de gaten; voor bedrijfsartsen liggen gangbare tarieven doorgaans boven de voorgestelde ondergrens.
+De vraag naar bedrijfsartsen en arbo-professionals blijft groot. Op het platform zie je opdrachten van arbodiensten en werkgevers. Door je profiel compleet te houden en je BIG-verificatie up-to-date te houden, maak je kans op opdrachten die bij je expertise en beschikbaarheid passen. Houd daarnaast de ontwikkelingen rond minimumtarief en VBAR in de gaten; voor bedrijfsartsen liggen gangbare tarieven doorgaans boven de voorgestelde ondergrens.
 
 ## Blijf op de hoogte
 

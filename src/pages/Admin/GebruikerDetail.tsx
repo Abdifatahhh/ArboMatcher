@@ -7,7 +7,7 @@ import { Save, ArrowLeft, AlertCircle, User, Briefcase, Stethoscope, Info, Trash
 import { deleteUserPermanently } from '../../services/adminUsersService';
 import { CheckCircle } from 'lucide-react';
 
-const ROLE_OPTIONS: UserRole[] = ['ARTS', 'OPDRACHTGEVER', 'ADMIN'];
+const ROLE_OPTIONS: UserRole[] = ['professional', 'OPDRACHTGEVER', 'ADMIN'];
 const STATUS_OPTIONS = ['ACTIVE', 'BLOCKED'];
 
 export default function AdminGebruikerDetail() {
@@ -217,7 +217,7 @@ export default function AdminGebruikerDetail() {
             <div className="px-6 py-4 border-b border-emerald-100 bg-emerald-50/80">
               <h2 className="text-lg font-semibold text-emerald-900/90 flex items-center gap-2">
                 <Briefcase className="w-5 h-5 text-[#4FA151]" />
-                Bedrijf
+                Bedrijfsgegevens
               </h2>
             </div>
             <div className="p-6 space-y-2 text-sm">

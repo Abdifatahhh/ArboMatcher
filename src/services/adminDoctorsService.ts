@@ -33,7 +33,7 @@ export interface ListDoctorsResult {
 const PAGE_SIZE_DEFAULT = 20;
 
 /**
- * List artsen: doctors with profile (role ARTS).
+ * List artsen: professionals (profile role professional).
  * Filters: verification_status, profiles.status, search (full_name, email, big_number).
  * Application counts in one extra query (no N+1).
  */

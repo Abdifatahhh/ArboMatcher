@@ -8,6 +8,7 @@ const PROFESSION_TYPES: { value: ProfessionType; label: string }[] = [
   { value: 'BEDRIJFSARTS', label: 'Bedrijfsarts' },
   { value: 'ARBO_ARTS', label: 'Arbo-arts' },
   { value: 'VERZEKERINGSARTS', label: 'Verzekeringsarts' },
+  { value: 'POB', label: 'Praktijkondersteuner bedrijfsarts (POB)' },
   { value: 'CASEMANAGER_VERZUIM', label: 'Casemanager verzuim' },
 ];
 
@@ -115,7 +116,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
             hourly_rate: doctor.hourly_rate,
             availability_text: doctor.availability_text,
             cv_url: doctor.cv_url,
-            verification_status: doctor.verification_status === 'UNVERIFIED' && (doctor.big_number?.trim() || '').length >= 8 ? 'PENDING' : doctor.verification_status
+            verification_status: doctor.verification_status === 'UNVERIFIED' && (doctor.profession_type === 'POB' || doctor.profession_type === 'CASEMANAGER_VERZUIM') ? doctor.verification_status : (doctor.verification_status === 'UNVERIFIED' && (doctor.big_number?.trim() || '').length === 11 ? 'PENDING' : doctor.verification_status)
           })
           .eq('id', doctor.id);
       } else {
@@ -132,7 +133,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
             hourly_rate: doctor.hourly_rate,
             availability_text: doctor.availability_text,
             cv_url: doctor.cv_url,
-            verification_status: (doctor.big_number?.trim() || '').length >= 8 ? 'PENDING' : 'UNVERIFIED',
+            verification_status: (doctor.big_number?.trim() || '').length === 11 ? 'PENDING' : 'UNVERIFIED',
             doctor_plan: 'GRATIS'
           });
       }
@@ -261,10 +262,10 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
                 />
               </div>
             )}
-            {(!doctor.profession_type || doctor.profession_type !== 'CASEMANAGER_VERZUIM') && (
+            {(!doctor.profession_type || (doctor.profession_type !== 'CASEMANAGER_VERZUIM' && doctor.profession_type !== 'POB')) && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  BIG-nummer * (min. 8 cijfers) {doctor.verification_status && doctor.profession_type !== 'CASEMANAGER_VERZUIM' && (
+                  BIG-nummer * (11 cijfers) {doctor.verification_status && doctor.profession_type !== 'CASEMANAGER_VERZUIM' && doctor.profession_type !== 'POB' && (
                     <span className={`ml-2 text-sm ${
                       doctor.verification_status === 'VERIFIED' ? 'text-green-600' :
                       doctor.verification_status === 'PENDING' ? 'text-yellow-600' :
@@ -285,7 +286,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
                   value={doctor.big_number || ''}
                   onChange={(e) => setDoctor({ ...doctor, big_number: e.target.value.replace(/\D/g, '').slice(0, 11) })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
-                  placeholder="Alleen cijfers, min. 8"
+                  placeholder="11 cijfers"
                 />
               </div>
             )}

@@ -46,7 +46,7 @@ export default function Privacy() {
           <h2 id="section_gegevens" className="text-2xl font-bold text-[#0F172A] mt-10 mb-4 scroll-mt-24">2. Welke gegevens wij verwerken</h2>
           <p className="mb-3">Wij verwerken in ieder geval de volgende categorieën persoonsgegevens:</p>
           <ul className="list-disc list-inside mb-4 space-y-1">
-            <li><strong>Account- en registratiegegevens:</strong> e-mailadres, wachtwoord (gehashed), naam, telefoonnummer, rol (professional, opdrachtgever, intermediair).</li>
+            <li><strong>Account- en registratiegegevens:</strong> e-mailadres, wachtwoord (gehashed), naam, telefoonnummer, rol (professional, opdrachtgever).</li>
             <li><strong>Profielgegevens:</strong> door u ingevulde gegevens op uw profielpagina, zoals specialismen, regio, beschikbaarheid, korte omschrijving, en – voor professionals – BIG-nummer, RCM-nummer, beroepstype en eventueel geüpload cv.</li>
             <li><strong>Gegevens in het kader van opdrachten en reacties:</strong> door u geplaatste opdrachten, reacties op opdrachten, uitnodigingen en berichten die u via het platform verstuurt of ontvangt.</li>
             <li><strong>Technische en gebruikersgegevens:</strong> IP-adres, type browser, apparaat, loggegevens en – indien u daarvoor toestemming geeft – gegevens over het gebruik van de website (analytics).</li>

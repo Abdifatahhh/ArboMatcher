@@ -20,26 +20,12 @@ export default function OpdrachtgeverDashboard() {
   const fetchStats = async () => {
     if (!user) return;
 
-    let { data: employer } = await supabase
+    const { data: employer } = await supabase
       .from('employers')
       .select('id')
       .eq('user_id', user.id)
       .maybeSingle();
 
-    if (!employer) {
-      const { data: org } = await supabase.from('organizations').select('*').eq('profile_id', user.id).maybeSingle();
-      if (org) {
-        const { data: created } = await supabase.from('employers').upsert({
-          user_id: user.id,
-          company_name: org.company_name,
-          kvk: org.kvk_number ?? null,
-          website: org.website ?? null,
-          billing_email: org.business_email ?? null,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'user_id' }).select('id').single();
-        if (created) employer = created;
-      }
-    }
     if (!employer) {
       setLoading(false);
       return;

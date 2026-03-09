@@ -52,7 +52,7 @@ function PreviewStep1() {
         ))}
       </div>
       <p className="text-sm text-gray-500 mt-4">
-        Opdrachten van opdrachtgevers, intermediairs en detacheerders verzameld in één overzicht.
+        Opdrachten van opdrachtgevers in één overzicht.
       </p>
     </div>
   );

@@ -42,7 +42,6 @@ const ArtsFavorieten = lazy(() => import('./pages/Arts/Favorieten'));
 
 const OpdrachtgeverDashboard = lazy(() => import('./pages/Opdrachtgever/Dashboard'));
 const OpdrachtgeverProfiel = lazy(() => import('./pages/Opdrachtgever/Profiel'));
-const IntermediairDashboard = lazy(() => import('./pages/Intermediair/Dashboard'));
 const OpdrachtgeverOpdrachten = lazy(() => import('./pages/Opdrachtgever/Opdrachten'));
 const OpdrachtgeverKandidaten = lazy(() => import('./pages/Opdrachtgever/Kandidaten'));
 const OpdrachtgeverFavorieten = lazy(() => import('./pages/Opdrachtgever/Favorieten'));
@@ -61,7 +60,6 @@ const AdminArtsDetail = lazy(() => import('./pages/Admin/ArtsDetail'));
 const AdminReacties = lazy(() => import('./pages/Admin/Reacties'));
 const AdminOpdrachtgevers = lazy(() => import('./pages/Admin/Opdrachtgevers'));
 const AdminOpdrachtgeverDetail = lazy(() => import('./pages/Admin/OpdrachtgeverDetail'));
-const AdminIntermediairs = lazy(() => import('./pages/Admin/Intermediairs'));
 const AdminCommunityBeheer = lazy(() => import('./pages/Admin/CommunityBeheer'));
 
 function PageLoader() {
@@ -242,7 +240,7 @@ function App() {
             }
           />
 
-            <Route path="/arts" element={<ProtectedRoute allowedRoles={['ARTS', 'professional']}><ArtsDashboardLayout /></ProtectedRoute>}>
+            <Route path="/arts" element={<ProtectedRoute allowedRoles={['professional']}><ArtsDashboardLayout /></ProtectedRoute>}>
               <Route index element={<Navigate to="/arts/dashboard" replace />} />
               <Route path="dashboard" element={<ArtsDashboard />} />
               <Route path="profiel" element={<ArtsProfiel />} />
@@ -260,7 +258,7 @@ function App() {
             <Route
             path="/opdrachtgever/dashboard"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
                 <DashboardLayout>
                   <OpdrachtgeverDashboard />
                 </DashboardLayout>
@@ -270,7 +268,7 @@ function App() {
             <Route
             path="/opdrachtgever/profiel"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
                 <DashboardLayout>
                   <OpdrachtgeverProfiel />
                 </DashboardLayout>
@@ -280,7 +278,7 @@ function App() {
             <Route
             path="/opdrachtgever/opdrachten"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
                 <DashboardLayout>
                   <OpdrachtgeverOpdrachten />
                 </DashboardLayout>
@@ -290,7 +288,7 @@ function App() {
             <Route
             path="/opdrachtgever/kandidaten"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
                 <DashboardLayout>
                   <OpdrachtgeverKandidaten />
                 </DashboardLayout>
@@ -300,7 +298,7 @@ function App() {
             <Route
             path="/opdrachtgever/favorieten"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
                 <DashboardLayout>
                   <OpdrachtgeverFavorieten />
                 </DashboardLayout>
@@ -310,7 +308,7 @@ function App() {
             <Route
             path="/opdrachtgever/inbox"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
                 <DashboardLayout>
                   <OpdrachtgeverInbox />
                 </DashboardLayout>
@@ -320,20 +318,9 @@ function App() {
             <Route
             path="/opdrachtgever/abonnement"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER', 'company', 'intermediary']}>
+              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
                 <DashboardLayout>
                   <OpdrachtgeverAbonnement />
-                </DashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-
-            <Route
-            path="/intermediair/dashboard"
-            element={
-              <ProtectedRoute allowedRoles={['intermediary']}>
-                <DashboardLayout>
-                  <IntermediairDashboard />
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -425,16 +412,6 @@ function App() {
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <DashboardLayout>
                   <AdminOpdrachtgeverDetail />
-                </DashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-            <Route
-            path="/admin/intermediairs"
-            element={
-              <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
-                  <AdminIntermediairs />
                 </DashboardLayout>
               </ProtectedRoute>
             }

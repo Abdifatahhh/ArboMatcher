@@ -10,7 +10,7 @@ const STEPS: StepItem[] = [
   {
     id: 1,
     title: 'Alle opdrachten verzameld',
-    description: 'Bekijk alle openstaande opdrachten van opdrachtgevers, intermediairs en detacheerders op één centrale plek.',
+    description: 'Bekijk alle openstaande opdrachten van opdrachtgevers op één centrale plek.',
   },
   {
     id: 2,
