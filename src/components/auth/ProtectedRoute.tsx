@@ -11,20 +11,12 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
   const { user, profile, loading } = useAuth();
   const location = useLocation();
 
-  if (loading) {
+  if (!loading && !user) return <Navigate to="/login" replace />;
+  if (loading || !profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]"></div>
-      </div>
-    );
-  }
-
-  if (!user) return <Navigate to="/login" replace />;
-  if (!profile) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#F4FAF4] px-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#4FA151] border-t-transparent" />
-        <p className="text-gray-600">Profiel laden...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#F1F5F9]">
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#0F172A]/20 border-t-[#4FA151]" />
+        <p className="text-[#0F172A] font-medium">Laden...</p>
       </div>
     );
   }

@@ -14,6 +14,8 @@ import {
   Calendar,
 } from 'lucide-react';
 import { getCommunityTopics, getCommunityArticles } from '../services/communityContentService';
+import { COMMUNITY_TOPICS } from '../data/communityTopics';
+import { COMMUNITY_ARTICLES } from '../data/communityArticles';
 import type { CommunityTopic } from '../data/communityTopics';
 import type { CommunityArticle } from '../data/communityArticles';
 
@@ -33,37 +35,23 @@ const ICON_BY_SLUG: Record<string, typeof Stethoscope> = {
 
 export default function Community() {
   const [activeTab, setActiveTab] = useState<TabId>('artsen');
-  const [topics, setTopics] = useState<CommunityTopic[]>([]);
-  const [articles, setArticles] = useState<CommunityArticle[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [topics, setTopics] = useState<CommunityTopic[]>(COMMUNITY_TOPICS);
+  const [articles, setArticles] = useState<CommunityArticle[]>(COMMUNITY_ARTICLES);
 
   useEffect(() => {
     let cancelled = false;
-    (async () => {
-      try {
-        const [t, a] = await Promise.all([getCommunityTopics(), getCommunityArticles()]);
-        if (!cancelled) {
-          setTopics(t);
-          setArticles(a);
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
+    Promise.all([getCommunityTopics(), getCommunityArticles()]).then(([t, a]) => {
+      if (!cancelled) {
+        if (Array.isArray(t)) setTopics(t);
+        if (Array.isArray(a)) setArticles(a);
       }
-    })();
+    });
     return () => { cancelled = true; };
   }, []);
 
   const categories = topics.filter(
     (t) => t.category === (activeTab === 'artsen' ? 'Voor artsen' : 'Voor opdrachtgevers')
   );
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#4FA151] border-t-transparent" />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">

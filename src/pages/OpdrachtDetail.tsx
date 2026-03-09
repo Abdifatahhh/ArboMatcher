@@ -193,6 +193,24 @@ export default function OpdrachtDetail() {
     }
   };
 
+  const getProfessionalLabel = (title: string) => {
+    if (!title) return '';
+    const voor = title.indexOf(' voor ');
+    if (voor > 0) return title.slice(0, voor).trim();
+    const dash = title.indexOf(' - ');
+    if (dash > 0) return title.slice(0, dash).trim();
+    const words = title.split(/\s+/);
+    if (words.length >= 2 && (words[1].toLowerCase() === 'adviseur' || words[1].toLowerCase() === 'arts')) return words.slice(0, 2).join(' ');
+    return words[0] || title;
+  };
+
+  const descriptionWithoutClient = (text: string) => {
+    if (!text) return '';
+    const firstEnd = text.search(/[.\n]/);
+    if (firstEnd === -1) return text;
+    return text.slice(firstEnd + 1).replace(/^\s+/, '') || text;
+  };
+
   const getApplicationsCount = (jobData: JobData): number => {
     if ('applications_count' in jobData) {
       return jobData.applications_count;
@@ -202,22 +220,22 @@ export default function OpdrachtDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-16 bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]"></div>
+      <div className="min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]" />
       </div>
     );
   }
 
   if (!job) {
     return (
-      <div className="pt-16 min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+      <div className="min-h-[60vh] bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-700 mb-4">Opdracht niet gevonden</h2>
           {fetchError && (
             <p className="text-gray-500 mb-4 max-w-md mx-auto">{fetchError}</p>
           )}
-          <Link to="/opdrachten" className="text-[#4FA151] hover:underline">
+          <Link to="/opdrachten" className="text-[#4FA151] hover:underline font-medium">
             Terug naar opdrachten
           </Link>
         </div>
@@ -247,9 +265,9 @@ export default function OpdrachtDetail() {
   }
 
   return (
-    <div className="pt-16 min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
-      <div className="bg-white border-b border-gray-200 py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+      <section className="border-b border-gray-200/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
             onClick={() => navigate('/opdrachten')}
             className="flex items-center gap-2 text-gray-500 hover:text-[#0F172A] transition mb-4"
@@ -260,7 +278,7 @@ export default function OpdrachtDetail() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <div className="flex flex-wrap items-center gap-3 mb-1">
-                <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A]">{job.title}</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A]">{getProfessionalLabel(job.title)}</h1>
                 {!isFakeJob && jobTier === 'PRO' && (
                   <span className="px-2.5 py-1 bg-[#4FA151]/15 text-[#4FA151] text-xs font-semibold rounded-full border border-[#4FA151]/30">
                     PRO
@@ -290,34 +308,32 @@ export default function OpdrachtDetail() {
             </div>
             {!user && (
               <Link
-                to="/register"
+                to="/login"
                 className="inline-flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition whitespace-nowrap"
               >
-                Direct reageren
+                Direct solliciteren
               </Link>
             )}
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="w-full relative">
+        <>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-[16px] p-6 border border-gray-100">
               <h2 className="text-lg font-bold text-[#0F172A] mb-4">Omschrijving</h2>
-              <div className="text-gray-600 leading-relaxed whitespace-pre-wrap">
-                {!user ? (
-                  <>
-                    {description ? description.substring(0, 400) + '...' : 'Geen omschrijving beschikbaar.'}
-                    <div className="mt-4 p-4 bg-[#F3F4F6] rounded-[12px] border border-gray-200">
-                      <p className="text-[#0F172A] font-medium mb-2">Volledige omschrijving bekijken?</p>
-                      <p className="text-sm text-gray-500">Registreer gratis om alle details te zien en direct te reageren.</p>
-                    </div>
-                  </>
-                ) : (
-                  description || 'Geen omschrijving beschikbaar.'
-                )}
-              </div>
+              {!user ? (
+                <div className="text-gray-600 leading-relaxed whitespace-pre-wrap max-h-[320px] overflow-hidden">
+                  {description ? descriptionWithoutClient(description) || 'Geen omschrijving beschikbaar.' : 'Geen omschrijving beschikbaar.'}
+                </div>
+              ) : (
+                <div className="text-gray-600 leading-relaxed whitespace-pre-wrap">
+                  {description || 'Geen omschrijving beschikbaar.'}
+                </div>
+              )}
             </div>
 
             {user && profile?.role === 'professional' && !isFakeJob && (
@@ -413,7 +429,7 @@ export default function OpdrachtDetail() {
                   </div>
                 )}
 
-                {job.hours_per_week && (
+                {user && job.hours_per_week && (
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 bg-[#4FA151]/10 rounded-[12px] flex items-center justify-center flex-shrink-0">
                       <Clock className="w-5 h-5 text-[#4FA151]" />
@@ -425,7 +441,7 @@ export default function OpdrachtDetail() {
                   </div>
                 )}
 
-                {durationWeeks && durationWeeks > 0 && (
+                {user && durationWeeks && durationWeeks > 0 && (
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 bg-[#4FA151]/10 rounded-[12px] flex items-center justify-center flex-shrink-0">
                       <Clock className="w-5 h-5 text-[#4FA151]" />
@@ -437,7 +453,7 @@ export default function OpdrachtDetail() {
                   </div>
                 )}
 
-                {remoteType && (
+                {user && remoteType && (
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 bg-[#4FA151]/10 rounded-[12px] flex items-center justify-center flex-shrink-0">
                       <Building2 className="w-5 h-5 text-[#4FA151]" />
@@ -449,6 +465,7 @@ export default function OpdrachtDetail() {
                   </div>
                 )}
 
+                {user && (
                 <div className="pt-4 border-t border-gray-100 space-y-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="flex items-center gap-2 text-gray-500">
@@ -465,26 +482,12 @@ export default function OpdrachtDetail() {
                     <span className="font-medium text-[#0F172A]">{applicationsCount}</span>
                   </div>
                 </div>
+                )}
               </div>
 
+              {user && (
               <div className="mt-6 pt-6 border-t border-gray-100">
-                {!user ? (
-                  <>
-                    <Link
-                      to="/register"
-                      className="w-full inline-flex items-center justify-center gap-2 bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
-                    >
-                      Direct reageren
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                    <p className="text-center text-sm text-gray-500 mt-3">
-                      Al een account?{' '}
-                      <Link to="/login" className="text-[#4FA151] hover:underline font-medium">
-                        Inloggen
-                      </Link>
-                    </p>
-                  </>
-                ) : profile?.role === 'professional' && !isFakeJob ? (
+                {profile?.role === 'professional' && !isFakeJob ? (
                   hasApplied ? (
                     <div className="bg-[#4FA151]/10 border border-[#4FA151]/30 text-[#4FA151] p-4 rounded-xl text-center flex items-center justify-center gap-2">
                       <CheckCircle className="w-5 h-5 shrink-0" />
@@ -523,57 +526,89 @@ export default function OpdrachtDetail() {
                   </>
                 )}
               </div>
+              )}
             </div>
           </div>
         </div>
+        </div>
 
-        {(!user || profile?.role !== 'professional') && (
-          <div className="mt-12 bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-[16px] p-8 sm:p-12 text-white">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-                {user && profile?.role !== 'professional'
-                  ? 'Arts worden en reageren op opdrachten?'
-                  : 'Volledige opdracht bekijken en reageren?'}
-              </h2>
-              <p className="text-gray-300 mb-8">
-                {user && profile?.role !== 'professional'
-                  ? 'Registreer als arts (met BIG-nummer) om te solliciteren op opdrachten en in contact te komen met opdrachtgevers.'
-                  : 'Maak gratis een account aan om de volledige omschrijving te bekijken, direct te reageren op opdrachten en toegang te krijgen tot alle functies van ArboMatcher.'}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                {!user && (
-                  <Link
-                    to="/login"
-                    className="px-8 py-3 border border-white/20 rounded-[12px] font-semibold hover:bg-white/10 transition"
-                  >
-                    Inloggen
-                  </Link>
-                )}
-                <Link
-                  to="/register"
-                  className="px-8 py-3 bg-[#4FA151] rounded-xl font-semibold hover:bg-[#3E8E45] transition flex items-center justify-center gap-2 shadow-lg shadow-[#4FA151]/25"
-                >
-                  {user && profile?.role !== 'professional' ? 'Registreren als arts' : 'Gratis registreren'}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-              <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8 text-sm text-gray-400">
-                <span className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#4FA151]" />
-                  Gratis account
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#4FA151]" />
-                  Direct reageren
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#4FA151]" />
-                  Alle opdrachten zien
-                </span>
-              </div>
-            </div>
+        {!user && (
+          <div
+            className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-end min-h-[200px] pt-16 pb-8"
+            style={{
+              width: '100vw',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.95) 40%, white 60%)',
+            }}
+          >
+            <h2 className="text-xl font-bold text-[#0F172A] mb-3 text-center">Volledige opdracht bekijken?</h2>
+            <Link
+              to="/login"
+              className="inline-flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition mb-3"
+            >
+              Heb je al een account? Log hier in
+            </Link>
+            <p className="text-gray-500 text-sm">
+              Nog geen account?{' '}
+              <Link to="/register" className="text-[#4FA151] font-medium hover:underline">
+                Registreer gratis
+              </Link>
+            </p>
           </div>
         )}
+
+        {user && profile?.role !== 'professional' && (
+          <section className="mt-12 sm:mt-16">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-[#F4FAF4] rounded-2xl border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 p-8 sm:p-10 hover:shadow-[#4FA151]/10 hover:border-[#4FA151]/25 transition-all duration-300">
+                <CheckCircle className="w-12 h-12 text-[#4FA151] mb-4" />
+                <h2 className="text-2xl font-bold text-[#0F172A] mb-2">
+                  {user && profile?.role !== 'professional'
+                    ? 'Arts worden en reageren op opdrachten?'
+                    : 'Volledige opdracht bekijken en reageren?'}
+                </h2>
+                <p className="text-slate-600 mb-6">
+                  {user && profile?.role !== 'professional'
+                    ? 'Registreer als arts (met BIG-nummer) om te solliciteren op opdrachten en in contact te komen met opdrachtgevers.'
+                    : 'Maak gratis een account aan om de volledige omschrijving te bekijken, direct te reageren en toegang te krijgen tot alle functies van ArboMatcher.'}
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  {!user && (
+                    <Link
+                      to="/login"
+                      className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                    >
+                      Inloggen
+                    </Link>
+                  )}
+                  <Link
+                    to="/register"
+                    className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+                  >
+                    {user && profile?.role !== 'professional' ? 'Registreren als arts' : 'Gratis registreren'}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+                <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8 text-sm text-slate-500">
+                  <span className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#4FA151]" />
+                    Gratis account
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#4FA151]" />
+                    Direct reageren
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#4FA151]" />
+                    Alle opdrachten zien
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+        </>
       </div>
     </div>
   );
