@@ -35,8 +35,9 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-emerald-200 border-t-[#4FA151]" />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F1F5F9] gap-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#0F172A]/20 border-t-[#4FA151]" />
+        <p className="text-[#0F172A] font-medium">Laden...</p>
       </div>
     );
   }

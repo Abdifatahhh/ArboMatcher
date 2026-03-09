@@ -4,7 +4,7 @@
 
 import { AuthError } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
-import type { Profile, UserRole } from '../lib/types';
+import type { Profile, UserRole, ConsentPreferences } from '../lib/types';
 
 export type AuthErrorCategory =
   | 'invalid_credentials'
@@ -160,10 +160,12 @@ export async function getOrCreateProfile(
     if (existingProfile) {
       const needName = (existingProfile.full_name == null || existingProfile.full_name === '') && userMetadata?.full_name;
       const needPhone = (existingProfile.phone == null || existingProfile.phone === '') && userMetadata?.phone;
-      if (needName || needPhone) {
-        const updates: { full_name?: string; phone?: string } = {};
+      const needConsent = userMetadata?.consent_preferences != null;
+      if (needName || needPhone || needConsent) {
+        const updates: { full_name?: string; phone?: string; consent_preferences?: ConsentPreferences } = {};
         if (needName) updates.full_name = String(userMetadata.full_name);
         if (needPhone) updates.phone = String(userMetadata.phone);
+        if (needConsent) updates.consent_preferences = userMetadata.consent_preferences as ConsentPreferences;
         const { data: updated, error: updateErr } = await supabase
           .from('profiles')
           .update(updates)
@@ -175,16 +177,22 @@ export async function getOrCreateProfile(
       return { profile: existingProfile, error: null };
     }
 
+    const fullName = userMetadata?.full_name ?? (userMetadata?.first_name && userMetadata?.last_name
+      ? `${userMetadata.first_name} ${userMetadata.last_name}`.trim()
+      : null);
+    const consent = (userMetadata?.consent_preferences as ConsentPreferences | undefined) ?? null;
+
     const { data: newProfile, error: insertError } = await supabase
       .from('profiles')
       .insert({
         id: userId,
         email,
         role: defaultRole,
-        full_name: null,
+        full_name: fullName || null,
         avatar_url: null,
-        phone: null,
+        phone: (userMetadata?.phone as string) || null,
         status: 'ACTIVE',
+        consent_preferences: consent,
       })
       .select()
       .single();

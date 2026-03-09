@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User } from '@supabase/supabase-js';
 import { supabase, validateSupabaseEnv, checkDatabaseHealth, type HealthCheckResult } from '../lib/supabase';
 import { getOrCreateProfile, categorizeAuthError, type CategorizedError } from '../utils/auth';
-import type { Profile, UserRole } from '../lib/types';
+import type { Profile, UserRole, ConsentPreferences } from '../lib/types';
 
 interface AuthContextType {
   user: User | null;
@@ -174,7 +174,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     email: string,
     password: string,
     role: Profile['role'],
-    meta?: { first_name?: string; last_name?: string; full_name?: string; phone?: string; profession_type?: string; big_number?: string; rcm_number?: string }
+    meta?: { first_name?: string; last_name?: string; full_name?: string; phone?: string; profession_type?: string; big_number?: string; rcm_number?: string; consent_preferences?: ConsentPreferences }
   ): Promise<{ error: CategorizedError | null; hasSession?: boolean }> => {
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -191,6 +191,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             profession_type: meta?.profession_type,
             big_number: meta?.big_number,
             rcm_number: meta?.rcm_number,
+            consent_preferences: meta?.consent_preferences,
           },
         },
       });

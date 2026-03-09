@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
+import { PrivacyConsent, CONSENT_KEYS } from '../components/PrivacyConsent';
+import type { ConsentPreferences } from '../lib/types';
 
 export default function Register() {
   const [firstName, setFirstName] = useState('');
@@ -13,6 +15,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [acceptPrivacy, setAcceptPrivacy] = useState(false);
+  const [consentToggles, setConsentToggles] = useState<boolean[]>(CONSENT_KEYS.map(() => false));
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -81,10 +84,24 @@ export default function Register() {
     submittingRef.current = true;
     setLoading(true);
 
+    const fullName = [firstName.trim(), lastName.trim()].filter(Boolean).join(' ') || undefined;
+    const consent_preferences: ConsentPreferences = {
+      main: acceptPrivacy,
+      inform_candidate: consentToggles[0] ?? false,
+      share_profile_cv: consentToggles[1] ?? false,
+      products_services: consentToggles[2] ?? false,
+      share_sister_companies: consentToggles[3] ?? false,
+      newsletter: consentToggles[4] ?? false,
+      feedback_reviews: consentToggles[5] ?? false,
+      relevant_content: consentToggles[6] ?? false,
+    };
+
     const { error: signUpError, hasSession } = await signUp(emailTrim, password, 'onboarding', {
       first_name: firstName.trim() || undefined,
       last_name: lastName.trim() || undefined,
+      full_name: fullName,
       phone: phone.trim() || undefined,
+      consent_preferences,
     });
 
     if (signUpError) {
@@ -203,19 +220,13 @@ export default function Register() {
             />
           </div>
 
-          <div className="space-y-3">
-            <label className="flex items-start gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={acceptPrivacy}
-                onChange={(e) => setAcceptPrivacy(e.target.checked)}
-                className="mt-1 w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
-              />
-              <span className="text-sm text-gray-700">
-                Ik ga akkoord met de verwerking van mijn persoonsgegevens.{' '}
-                <Link to="/privacy" className="text-[#4FA151] hover:underline">Privacy & cookies</Link>
-              </span>
-            </label>
+          <div className="space-y-4">
+            <PrivacyConsent
+              checked={acceptPrivacy}
+              onChange={setAcceptPrivacy}
+              toggles={consentToggles}
+              onTogglesChange={setConsentToggles}
+            />
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"

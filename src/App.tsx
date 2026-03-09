@@ -5,6 +5,7 @@ import { ToastProvider } from './context/ToastContext';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { RedirectToDashboard, RedirectToProfiel } from './components/auth/RedirectByRole';
 import { MaintenanceGate } from './components/MaintenanceGate';
+import { EnvBanner } from './components/EnvBanner';
 import { CookieBanner } from './components/CookieBanner';
 import { PublicLayout } from './components/Layout/PublicLayout';
 import { DashboardLayout } from './components/Layout/DashboardLayout';
@@ -64,8 +65,9 @@ const AdminCommunityBeheer = lazy(() => import('./pages/Admin/CommunityBeheer'))
 
 function PageLoader() {
   return (
-    <div className="min-h-[60vh] flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]" />
+    <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 bg-[#F1F5F9]">
+      <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#0F172A]/20 border-t-[#4FA151]" />
+      <p className="text-[#0F172A] font-medium">Pagina laden...</p>
     </div>
   );
 }
@@ -79,6 +81,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
+        <EnvBanner />
         <ToastProvider>
           <MaintenanceGate>
           <Suspense fallback={<PageLoader />}>

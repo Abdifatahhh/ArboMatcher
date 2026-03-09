@@ -13,6 +13,17 @@ export type JobTier = 'PRO' | 'STANDARD';
 export type RemoteType = 'REMOTE' | 'HYBRID' | 'ONSITE';
 export type PosterType = 'DIRECT' | 'INTERMEDIARY';
 
+export interface ConsentPreferences {
+  main: boolean;
+  inform_candidate: boolean;
+  share_profile_cv: boolean;
+  products_services: boolean;
+  share_sister_companies: boolean;
+  newsletter: boolean;
+  feedback_reviews: boolean;
+  relevant_content: boolean;
+}
+
 export interface Profile {
   id: string;
   role: UserRole;
@@ -25,6 +36,7 @@ export interface Profile {
   status: string;
   onboarding_completed?: boolean;
   account_bevestigd_email_sent?: boolean;
+  consent_preferences?: ConsentPreferences | null;
   created_at: string;
   updated_at: string;
 }
