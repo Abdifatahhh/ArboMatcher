@@ -90,6 +90,9 @@ Na de deploy krijg je een URL. Noteer je **project reference** (staat in de URL,
      `npx supabase secrets set SEND_EMAIL_HOOK_SECRET="v1,whsec_..."`  
      en opnieuw deployen: `npm run supabase:deploy-auth-email`.
 
-3. **Overig**
+4. **Laptop detecteert verificatie niet (na link op telefoon)**  
+   De pagina "Registratie gelukt" pollt of je e-mail inmiddels bevestigd is. Daarvoor moet er op de laptop een **sessie** bestaan (van bij het aanmaken). In Supabase: **Authentication** → **Providers** → **Email**. Zorg dat er een sessie wordt aangemaakt bij sign-up (vaak standaard zo). Als "Confirm email" aan staat en er geen sessie is vóór bevestiging, dan kan de laptop de verificatie niet zien; in dat geval moet de gebruiker na het klikken op de link handmatig naar de inlogpagina.
+
+5. **Overig**
    - **RESEND_API_KEY:** Geldige key; bij eigen domein (bijv. `noreply@arbomatcher.nl`) domein in Resend verifiëren.
    - Resend → **Logs**: zie je daar wel een mail na een geslaagde hook-aanroep?
