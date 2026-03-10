@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getLoginPath } from '../config/portal';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { AlertCircle, Loader2 } from 'lucide-react';
@@ -256,7 +257,7 @@ export default function Register() {
         <div className="mt-6 text-center">
           <p className="text-gray-600">
             Heb je al een account?{' '}
-            <Link to="/login" className="text-[#4FA151] hover:underline font-medium">Inloggen</Link>
+            <Link to={getLoginPath()} className="text-[#4FA151] hover:underline font-medium">Inloggen</Link>
           </p>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { getLoginPath } from '../config/portal';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
 
@@ -49,7 +50,7 @@ export default function WachtwoordVergeten() {
               </p>
             </div>
             <Link
-              to="/login"
+              to={getLoginPath()}
               className="block w-full text-center text-[#4FA151] hover:underline font-medium"
             >
               Terug naar inloggen
@@ -94,7 +95,7 @@ export default function WachtwoordVergeten() {
             </form>
 
             <div className="mt-6 text-center">
-              <Link to="/login" className="text-[#4FA151] hover:underline font-medium">
+              <Link to={getLoginPath()} className="text-[#4FA151] hover:underline font-medium">
                 Terug naar inloggen
               </Link>
             </div>

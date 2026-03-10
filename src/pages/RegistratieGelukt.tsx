@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { getLoginPath } from '../config/portal';
 import { Check } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
 
@@ -20,7 +21,7 @@ export default function RegistratieGelukt() {
         </p>
         <div className="flex flex-col gap-3">
           <Link
-            to="/login"
+            to={getLoginPath()}
             className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition text-center"
           >
             Naar inloggen

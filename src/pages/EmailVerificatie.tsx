@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { getLoginPath } from '../config/portal';
 import { Mail, CheckCircle, AlertCircle } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
 
@@ -47,7 +48,7 @@ export default function EmailVerificatie() {
 
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
-            to="/login"
+            to={getLoginPath()}
             className="flex-1 text-center bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
           >
             Naar inloggen

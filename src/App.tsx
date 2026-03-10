@@ -9,6 +9,9 @@ import { CookieBanner } from './components/CookieBanner';
 import { PublicLayout } from './components/Layout/PublicLayout';
 import { DashboardLayout } from './components/Layout/DashboardLayout';
 import { ArtsDashboardLayout } from './components/Layout/ArtsDashboardLayout';
+import { PortalRoot } from './components/PortalRoot';
+import { RequireMarketingSite } from './components/RequireMarketingSite';
+import { isPortal } from './config/portal';
 
 import Home from './pages/Home';
 import Over from './pages/Over';
@@ -77,51 +80,51 @@ function App() {
             <Routes>
             <Route
             path="/"
-            element={
+            element={isPortal() ? <PortalRoot /> : (
               <PublicLayout>
                 <Home />
               </PublicLayout>
-            }
+            )}
           />
             <Route
             path="/over"
             element={
-              <PublicLayout>
-                <Over />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><Over /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/opdrachten"
             element={
-              <PublicLayout>
-                <Opdrachten />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><Opdrachten /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/opdrachten/:id"
             element={
-              <PublicLayout>
-                <OpdrachtDetail />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><OpdrachtDetail /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/opdracht/:id"
-            element={<OpdrachtRedirect />}
+            element={<RequireMarketingSite><OpdrachtRedirect /></RequireMarketingSite>}
           />
             <Route
             path="/prijzen"
             element={
-              <PublicLayout>
-                <Prijzen />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><Prijzen /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/login"
-            element={<Login />}
+            element={isPortal() ? <Navigate to="/" replace /> : <Login />}
           />
             <Route
             path="/register"
@@ -170,65 +173,65 @@ function App() {
             <Route
             path="/privacy"
             element={
-              <PublicLayout>
-                <Privacy />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><Privacy /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/terms"
             element={
-              <PublicLayout>
-                <Terms />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><Terms /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/contact"
             element={
-              <PublicLayout>
-                <Contact />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><Contact /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/faq"
             element={
-              <PublicLayout>
-                <FAQ />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><FAQ /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/oplossingen"
             element={
-              <PublicLayout>
-                <Oplossingen />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><Oplossingen /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/community"
             element={
-              <PublicLayout>
-                <Community />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><Community /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/community/artikel/:slug"
             element={
-              <PublicLayout>
-                <CommunityArticle />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><CommunityArticle /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
             <Route
             path="/community/onderwerp/:slug"
             element={
-              <PublicLayout>
-                <CommunityTopic />
-              </PublicLayout>
+              <RequireMarketingSite>
+                <PublicLayout><CommunityTopic /></PublicLayout>
+              </RequireMarketingSite>
             }
           />
 

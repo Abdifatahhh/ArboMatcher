@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getLoginPath } from '../config/portal';
 import { triggerAccountBevestigdEmail } from '../services/emailService';
 import { CheckCircle } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
@@ -47,7 +48,7 @@ export default function VerificatieGelukt() {
           Bedankt voor het verifiëren van je e-mailadres. Log opnieuw in om je profiel af te maken.
         </p>
         <Link
-          to="/login"
+          to={getLoginPath()}
           className="inline-block w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition text-center"
         >
           Inloggen

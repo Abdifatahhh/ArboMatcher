@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { getAuthBaseUrl } from '../../config/portal';
+import { getAuthBaseUrl, getLoginPath } from '../../config/portal';
 import type { UserRole } from '../../lib/types';
 
 interface ProtectedRouteProps {
@@ -18,7 +18,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
       window.location.href = authBase + '/login';
       return null;
     }
-    return <Navigate to="/login" replace />;
+    return <Navigate to={getLoginPath()} replace />;
   }
   if (loading || !profile) {
     return (
