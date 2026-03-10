@@ -285,7 +285,6 @@ export default function Onboarding() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#F4FAF4] px-4">
         <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#4FA151] border-t-transparent" />
-        <p className="text-gray-600">Profiel laden...</p>
       </div>
     );
   }
@@ -351,7 +350,6 @@ export default function Onboarding() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#F4FAF4] px-4">
         <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#4FA151] border-t-transparent" />
-        <p className="text-gray-600">Laden...</p>
       </div>
     );
   }

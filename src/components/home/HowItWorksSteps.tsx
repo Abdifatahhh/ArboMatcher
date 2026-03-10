@@ -58,7 +58,7 @@ export function HowItWorksSteps({ activeStep, onStepChange }: HowItWorksStepsPro
               onClick={() => onStepChange(step.id)}
               className={`w-full text-left rounded-xl px-4 py-4 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4FA151] focus-visible:ring-offset-2 ${
                 isActive
-                  ? 'bg-white border border-gray-200 shadow-sm'
+                  ? 'bg-[#F4FAF4]/80 border-2 border-[#4FA151] shadow-sm'
                   : 'border border-transparent hover:bg-white hover:border-gray-100'
               }`}
               aria-pressed={isActive}
@@ -67,7 +67,7 @@ export function HowItWorksSteps({ activeStep, onStepChange }: HowItWorksStepsPro
             >
               <span className="flex items-center gap-3">
                 <span
-                  className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-colors ${
+                  className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
                     isActive ? 'bg-[#4FA151] text-white' : 'bg-gray-200 text-gray-600'
                   }`}
                 >

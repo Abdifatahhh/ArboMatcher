@@ -104,7 +104,6 @@ export default function Home() {
       <section className="py-24 bg-gradient-to-b from-[#F4FAF4] to-[#FAFDFA] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <span className="inline-block text-[#4FA151] font-semibold text-sm uppercase tracking-widest mb-3">Proces</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Hoe ArboMatcher werkt</h2>
             <p className="text-slate-600 text-lg max-w-xl mx-auto">
               Van registratie tot samenwerking in drie eenvoudige stappen

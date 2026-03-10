@@ -6,6 +6,8 @@ import { useToast } from '../context/ToastContext';
 import type { Job } from '../lib/types';
 import { ArrowLeft, MapPin, Clock, Briefcase, Calendar, Building2, Users, Eye, ArrowRight, CheckCircle } from 'lucide-react';
 import { getFakeJobById, type FakeJob } from '../data/fakeJobs';
+import { HowItWorksPreview } from '../components/home/HowItWorksPreview';
+import { HowItWorksSteps } from '../components/home/HowItWorksSteps';
 
 type JobData = Job | FakeJob;
 
@@ -24,6 +26,7 @@ export default function OpdrachtDetail() {
   const [isFakeJob, setIsFakeJob] = useState(false);
   const [viewsCount, setViewsCount] = useState(0);
   const [doctorPlan, setDoctorPlan] = useState<'GRATIS' | 'PRO' | null>(null);
+  const [processStep, setProcessStep] = useState(1);
 
   useEffect(() => {
     fetchJob();
@@ -539,7 +542,7 @@ export default function OpdrachtDetail() {
               width: '100vw',
               left: '50%',
               transform: 'translateX(-50%)',
-              background: 'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.95) 40%, white 60%)',
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(244,250,244,0.95) 40%, #F4FAF4 60%)',
             }}
           >
             <h2 className="text-xl font-bold text-[#0F172A] mb-3 text-center">Volledige opdracht bekijken?</h2>
@@ -557,8 +560,31 @@ export default function OpdrachtDetail() {
             </p>
           </div>
         )}
+        </>
+      </div>
 
-        {user && profile?.role !== 'professional' && (
+      <section className="py-24 bg-gradient-to-b from-[#F4FAF4] to-[#FAFDFA] relative overflow-hidden" aria-labelledby="process-title">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-12 sm:mb-14">
+            <h2 id="process-title" className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Hoe ArboMatcher werkt</h2>
+            <p className="text-slate-600 text-lg max-w-xl mx-auto">
+              Van registratie tot je eerste opdracht. Ontvang een e-mail wanneer er nieuwe opdrachten bijpassen.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
+            <div className="lg:col-span-3 order-2 lg:order-1">
+              <HowItWorksPreview activeStep={processStep} />
+            </div>
+            <div className="lg:col-span-2 order-1 lg:order-2">
+              <HowItWorksSteps activeStep={processStep} onStepChange={setProcessStep} />
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {user && profile?.role !== 'professional' && (
           <section className="mt-12 sm:mt-16">
             <div className="max-w-4xl mx-auto">
               <div className="bg-[#F4FAF4] rounded-2xl border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 p-8 sm:p-10 hover:shadow-[#4FA151]/10 hover:border-[#4FA151]/25 transition-all duration-300">
@@ -608,8 +634,6 @@ export default function OpdrachtDetail() {
             </div>
           </section>
         )}
-        </>
-      </div>
     </div>
   );
 }
