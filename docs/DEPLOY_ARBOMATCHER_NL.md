@@ -21,18 +21,22 @@ Zet bij je hosting de volgende **build-time** variabelen:
 
 Geen andere env vars nodig voor de frontend.
 
-## 3. Supabase: redirect-URL’s voor www.arbomatcher.nl
+## 3. Supabase: redirect-URL’s voor www en portal
 
 In **Supabase Dashboard** → jouw project → **Authentication** → **URL Configuration**:
 
-- **Site URL:** `https://www.arbomatcher.nl`
+- **Site URL:** `https://portal.arbomatcher.nl` (of `https://www.arbomatcher.nl` als alles op één domein draait)
 - **Redirect URLs** (één per regel, alle toestaan):
   - `https://www.arbomatcher.nl/**`
   - `https://arbomatcher.nl/**`
+  - `https://portal.arbomatcher.nl/**`
   - `https://www.arbomatcher.nl`
   - `https://arbomatcher.nl`
+  - `https://portal.arbomatcher.nl`
 
-Opslaan. Anders werken inloggen, registratie en e-mailverificatie niet op het domein.
+Opslaan. Anders werken inloggen, registratie en e-mailverificatie niet.
+
+**Portal (portal.arbomatcher.nl):** Zelfde build als www; stel op de portal-site dezelfde env vars in (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`). Zonder deze vars toont de app een duidelijke fout i.p.v. een wit scherm. Zet ook SPA-rewrite: `/*` → `/index.html` (status 200).
 
 ## 4. Deploy op Netlify
 

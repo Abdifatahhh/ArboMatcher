@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { AuthLink } from '../AuthLink';
 import { ArrowRight } from 'lucide-react';
 import { HowItWorksPreviewOpdrachtgevers } from './HowItWorksPreviewOpdrachtgevers';
 import { HowItWorksStepsOpdrachtgevers } from './HowItWorksStepsOpdrachtgevers';
@@ -44,13 +44,13 @@ export function HowItWorksSectionOpdrachtgevers() {
           <p className="text-lg font-medium text-[#0F172A]">
             Kandidaat of opdracht vinden?
           </p>
-          <Link
+          <AuthLink
             to="/register"
             className="inline-flex items-center justify-center gap-2 bg-[#4FA151] text-white px-6 py-3.5 rounded-xl font-semibold hover:bg-[#3E8E45] transition-all duration-200 shadow-lg shadow-[#4FA151]/20 hover:shadow-[#4FA151]/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4FA151] focus-visible:ring-offset-2"
           >
             Registreer je gratis
             <ArrowRight className="w-4 h-4" aria-hidden />
-          </Link>
+          </AuthLink>
         </div>
       </div>
     </section>

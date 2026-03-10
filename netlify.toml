@@ -1,6 +1,9 @@
-# Build command en publish directory per site in Netlify UI zetten:
-# - Marketing: npm run build:marketing, dist-marketing
-# - Portal: npm run build:portal, dist-portal
+# Eén build voor beide sites (zelfde output; gedrag via hostnaam).
+[build]
+  command = "npm run build"
+  publish = "dist"
+  [build.environment]
+    SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL"
 
 [[redirects]]
   from = "/*"

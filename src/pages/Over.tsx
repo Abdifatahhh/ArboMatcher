@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { AuthLink } from '../components/AuthLink';
 import { Shield, Zap, Eye, Lock, ArrowRight, Building2 } from 'lucide-react';
 
 export default function Over() {
@@ -166,13 +167,13 @@ export default function Over() {
           <p className="text-slate-600 mb-6">
             Het platform voor bedrijfsartsen & arbo-professionals.
           </p>
-          <Link
+          <AuthLink
             to="/register"
             className="inline-flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
           >
             Gratis registreren
             <ArrowRight className="w-4 h-4 ml-2" />
-          </Link>
+          </AuthLink>
         </section>
       </div>
     </div>

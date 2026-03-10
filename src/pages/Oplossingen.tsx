@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { AuthLink } from '../components/AuthLink';
 import { Building2, UserCheck, ArrowRight, CheckCircle, Clock, Shield, Users, Lightbulb } from 'lucide-react';
 
 export default function Oplossingen() {
@@ -151,12 +152,12 @@ export default function Oplossingen() {
               >
                 Bekijk opdrachten
               </Link>
-              <Link
+              <AuthLink
                 to="/register"
                 className="inline-flex items-center justify-center bg-[#4FA151] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Gratis registreren
-              </Link>
+              </AuthLink>
             </div>
           </div>
         </div>

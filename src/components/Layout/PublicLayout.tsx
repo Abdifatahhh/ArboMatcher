@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { LogoText } from '../ui/Logo.tsx';
+import { AuthLink } from '../AuthLink';
 import { Menu, X, User, LogOut, Phone } from 'lucide-react';
 import { useState } from 'react';
 
@@ -85,8 +86,8 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                   </>
                 ) : (
                   <>
-                    <Link to="/login" className="transition text-gray-200 hover:text-white">Inloggen</Link>
-                    <Link to="/register" className="bg-[#4FA151] text-white px-5 py-2.5 rounded-xl font-medium hover:bg-[#3E8E45] transition">Gratis registreren</Link>
+                    <AuthLink to="/login" className="transition text-gray-200 hover:text-white">Inloggen</AuthLink>
+                    <AuthLink to="/register" className="bg-[#4FA151] text-white px-5 py-2.5 rounded-xl font-medium hover:bg-[#3E8E45] transition">Gratis registreren</AuthLink>
                   </>
                 )}
               </div>
@@ -113,9 +114,9 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                   </>
                 ) : (
                   <>
-                    <Link to="/login" className="block px-4 text-gray-700 hover:text-[#0F172A] transition" onClick={() => setMobileMenuOpen(false)}>Inloggen</Link>
+                    <AuthLink to="/login" className="block px-4 text-gray-700 hover:text-[#0F172A] transition" onClick={() => setMobileMenuOpen(false)}>Inloggen</AuthLink>
                     <div className="px-4">
-                      <Link to="/register" className="block bg-[#4FA151] text-white px-4 py-2 rounded-xl hover:bg-[#3E8E45] transition text-center" onClick={() => setMobileMenuOpen(false)}>Gratis registreren</Link>
+                      <AuthLink to="/register" className="block bg-[#4FA151] text-white px-4 py-2 rounded-xl hover:bg-[#3E8E45] transition text-center" onClick={() => setMobileMenuOpen(false)}>Gratis registreren</AuthLink>
                     </div>
                   </>
                 )}

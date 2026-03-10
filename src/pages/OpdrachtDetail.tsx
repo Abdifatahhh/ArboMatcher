@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
+import { getAuthBaseUrl } from '../config/portal';
+import { AuthLink } from '../components/AuthLink';
 import { useToast } from '../context/ToastContext';
 import type { Job } from '../lib/types';
 import { ArrowLeft, MapPin, Clock, Briefcase, Calendar, Building2, Users, Eye, ArrowRight, CheckCircle } from 'lucide-react';
@@ -109,11 +111,15 @@ export default function OpdrachtDetail() {
 
   const handleApply = async () => {
     if (!user || !job) {
+      const base = getAuthBaseUrl();
+      if (base) { window.location.href = base + '/login'; return; }
       navigate('/login');
       return;
     }
 
     if (isFakeJob) {
+      const base = getAuthBaseUrl();
+      if (base) { window.location.href = base + '/register'; return; }
       navigate('/register');
       return;
     }
@@ -292,12 +298,12 @@ export default function OpdrachtDetail() {
               </div>
             </div>
             {!user && (
-              <Link
+              <AuthLink
                 to="/login"
                 className="inline-flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition whitespace-nowrap"
               >
                 Direct solliciteren
-              </Link>
+              </AuthLink>
             )}
           </div>
         </div>
@@ -501,13 +507,13 @@ export default function OpdrachtDetail() {
                 ) : (
                   <>
                     <p className="text-sm text-gray-600 mb-3">Alleen artsen kunnen reageren op opdrachten.</p>
-                    <Link
+                    <AuthLink
                       to="/register"
                       className="w-full inline-flex items-center justify-center gap-2 bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition text-sm"
                     >
                       Registreren als arts
                       <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    </AuthLink>
                   </>
                 )}
               </div>
@@ -528,17 +534,17 @@ export default function OpdrachtDetail() {
             }}
           >
             <h2 className="text-xl font-bold text-[#0F172A] mb-3 text-center">Volledige opdracht bekijken?</h2>
-            <Link
+            <AuthLink
               to="/login"
               className="inline-flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition mb-3"
             >
               Heb je al een account? Log hier in
-            </Link>
+            </AuthLink>
             <p className="text-gray-500 text-sm">
               Nog geen account?{' '}
-              <Link to="/register" className="text-[#4FA151] font-medium hover:underline">
+              <AuthLink to="/register" className="text-[#4FA151] font-medium hover:underline">
                 Registreer gratis
-              </Link>
+              </AuthLink>
             </p>
           </div>
         )}
@@ -583,20 +589,20 @@ export default function OpdrachtDetail() {
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   {!user && (
-                    <Link
+                    <AuthLink
                       to="/login"
                       className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
                     >
                       Inloggen
-                    </Link>
+                    </AuthLink>
                   )}
-                  <Link
+                  <AuthLink
                     to="/register"
                     className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
                   >
                     {user && profile?.role !== 'professional' ? 'Registreren als arts' : 'Gratis registreren'}
                     <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  </AuthLink>
                 </div>
                 <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8 text-sm text-slate-500">
                   <span className="flex items-center gap-2">

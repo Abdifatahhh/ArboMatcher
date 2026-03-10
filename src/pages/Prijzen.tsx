@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { AuthLink } from '../components/AuthLink';
 import { Check, X } from 'lucide-react';
 
 export default function Prijzen() {
@@ -43,12 +44,12 @@ export default function Prijzen() {
                   <span className="text-gray-500">Artsen uitnodigen</span>
                 </li>
               </ul>
-              <Link
+              <AuthLink
                 to="/register"
                 className="block w-full bg-gray-200 text-[#0F172A] text-center py-3 rounded-lg font-semibold hover:bg-gray-300 transition"
               >
                 Start met Basic
-              </Link>
+              </AuthLink>
             </div>
 
             <div className="bg-white rounded-lg shadow-xl border-2 border-[#4FA151] p-8 relative">
@@ -82,12 +83,12 @@ export default function Prijzen() {
                   <span className="text-gray-700">Artsen uitnodigen</span>
                 </li>
               </ul>
-              <Link
+              <AuthLink
                 to="/register"
                 className="block w-full bg-[#4FA151] text-white text-center py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Start met Pro
-              </Link>
+              </AuthLink>
             </div>
 
             <div className="bg-white rounded-lg shadow-lg border-2 border-gray-200 p-8">
@@ -148,12 +149,12 @@ export default function Prijzen() {
                   <span className="text-gray-700">Beperkt aantal reacties per week</span>
                 </li>
               </ul>
-              <Link
+              <AuthLink
                 to="/register"
                 className="block w-full border border-gray-300 text-[#0F172A] text-center py-3 rounded-lg font-semibold hover:bg-gray-50 transition"
               >
                 Start gratis
-              </Link>
+              </AuthLink>
             </div>
 
             <div className="bg-white rounded-lg shadow-xl border-2 border-[#4FA151] p-8 relative">
@@ -188,12 +189,12 @@ export default function Prijzen() {
                   <span className="text-gray-700">Bespaar 42% t.o.v. een Flex abonnement</span>
                 </li>
               </ul>
-              <Link
+              <AuthLink
                 to="/register"
                 className="block w-full bg-[#4FA151] text-white text-center py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Ga verder
-              </Link>
+              </AuthLink>
             </div>
 
             <div className="bg-white rounded-lg shadow-lg border-2 border-gray-200 p-8">
@@ -219,12 +220,12 @@ export default function Prijzen() {
                   <span className="text-gray-700">Onbeperkt zoekopdrachten opslaan</span>
                 </li>
               </ul>
-              <Link
+              <AuthLink
                 to="/register"
                 className="block w-full bg-[#4FA151] text-white text-center py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Ga verder
-              </Link>
+              </AuthLink>
             </div>
           </div>
         </div>

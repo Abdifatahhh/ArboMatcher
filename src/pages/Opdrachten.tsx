@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { AuthLink } from '../components/AuthLink';
 import { supabase } from '../lib/supabase';
 import type { Job } from '../lib/types';
 import { Search, MapPin, Briefcase, Calendar, ChevronDown, ChevronLeft, ChevronRight, X, CheckCircle, ArrowRight, Home, Users } from 'lucide-react';
@@ -174,13 +175,13 @@ export default function Opdrachten() {
                 <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0" />
                 <span className="text-slate-600">Geheel <span className="font-semibold text-[#0F172A]">onafhankelijk</span></span>
               </div>
-              <Link
+              <AuthLink
                 to="/register"
                 className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition ml-auto"
               >
                 Plaats je eerste opdracht gratis
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </AuthLink>
             </div>
           </div>
         </div>
@@ -297,18 +298,18 @@ export default function Opdrachten() {
                     Registreer gratis om te reageren op opdrachten.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <Link
+                    <AuthLink
                       to="/login"
                       className="px-6 py-3 bg-[#0F172A] text-white rounded-xl font-semibold hover:bg-[#1E293B] transition"
                     >
                       Inloggen
-                    </Link>
-                    <Link
+                    </AuthLink>
+                    <AuthLink
                       to="/register"
                       className="px-6 py-3 bg-[#4FA151] text-white rounded-xl font-semibold hover:bg-[#3E8E45] transition"
                     >
                       Gratis registreren
-                    </Link>
+                    </AuthLink>
                   </div>
                 </div>
               </div>

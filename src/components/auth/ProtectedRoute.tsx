@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { getAuthBaseUrl } from '../../config/portal';
 import type { UserRole } from '../../lib/types';
 
 interface ProtectedRouteProps {
@@ -10,8 +11,15 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
   const { user, profile, loading } = useAuth();
   const location = useLocation();
+  const authBase = getAuthBaseUrl();
 
-  if (!loading && !user) return <Navigate to="/login" replace />;
+  if (!loading && !user) {
+    if (authBase) {
+      window.location.href = authBase + '/login';
+      return null;
+    }
+    return <Navigate to="/login" replace />;
+  }
   if (loading || !profile) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#F1F5F9]">

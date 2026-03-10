@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthLink } from '../components/AuthLink';
 import {
   Search,
   CheckCircle,
@@ -250,12 +251,12 @@ export default function Home() {
                 >
                   Bekijk opdrachten
                 </Link>
-                <Link
+                <AuthLink
                   to="/register"
                   className="inline-flex items-center justify-center bg-[#4FA151] text-white px-6 py-3.5 rounded-xl font-semibold hover:bg-[#3E8E45] transition shadow-lg shadow-[#4FA151]/25"
                 >
                   Gratis registreren
-                </Link>
+                </AuthLink>
               </div>
             </div>
           </div>
