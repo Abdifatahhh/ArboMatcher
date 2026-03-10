@@ -1,4 +1,5 @@
 import type { Profile, Doctor, Job, Employer, Application, Subscription } from '../lib/types';
+import { getRoleLabel } from '../lib/roleLabels';
 
 const now = new Date().toISOString();
 const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -405,7 +406,7 @@ function toActivityItems(): ActivityItem[] {
       id: `user-${p.id}`,
       type: 'user',
       title: p.full_name || p.email,
-      subtitle: `Nieuwe gebruiker · ${p.role}`,
+      subtitle: `Nieuwe gebruiker · ${getRoleLabel(p.role)}`,
       link: `/admin/gebruikers/${p.id}`,
       created_at: p.created_at,
     });

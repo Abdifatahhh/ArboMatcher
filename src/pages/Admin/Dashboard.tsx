@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
+import { getRoleLabel } from '../../lib/roleLabels';
 import { demoStats, demoActivity, type ActivityItem } from '../../data/adminDemoData';
 import {
   CheckCircle,
@@ -172,7 +173,7 @@ export default function AdminDashboard() {
           id: `user-${p.id}`,
           type: 'user',
           title: p.full_name || p.email,
-          subtitle: `Nieuwe gebruiker · ${p.role}`,
+          subtitle: `Nieuwe gebruiker · ${getRoleLabel(p.role)}`,
           link: `/admin/gebruikers/${p.id}`,
           created_at: p.created_at,
         });

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Profile } from '../../lib/types';
+import { getRoleLabel } from '../../lib/roleLabels';
 import { Pencil, Ban, CheckCircle, Trash2 } from 'lucide-react';
 
 interface UsersTableProps {
@@ -62,7 +63,7 @@ export function UsersTable({ rows, selectedIds, onToggleBlock, onToggleSelect, o
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{profile.email}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2.5 py-1 text-xs font-semibold rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-800">{profile.role}</span>
+                  <span className="px-2.5 py-1 text-xs font-semibold rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-800">{getRoleLabel(profile.role)}</span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-lg ${isBlocked ? 'bg-red-100 text-red-800 border border-red-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200'}`}>

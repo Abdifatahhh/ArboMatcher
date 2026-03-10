@@ -2,12 +2,18 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import type { Profile, Doctor, Employer, UserRole } from '../../lib/types';
+import { getRoleLabel } from '../../lib/roleLabels';
 import { demoProfiles, demoDoctors, demoEmployers } from '../../data/adminDemoData';
 import { Save, ArrowLeft, AlertCircle, User, Briefcase, Stethoscope, Info, Trash2 } from 'lucide-react';
 import { deleteUserPermanently } from '../../services/adminUsersService';
 import { CheckCircle } from 'lucide-react';
 
-const ROLE_OPTIONS: UserRole[] = ['professional', 'OPDRACHTGEVER', 'ADMIN'];
+const ROLE_OPTIONS: { value: UserRole; label: string }[] = [
+  { value: 'professional', label: 'Professional' },
+  { value: 'OPDRACHTGEVER', label: 'Opdrachtgever' },
+  { value: 'ADMIN', label: 'Admin' },
+  { value: 'onboarding', label: 'Onboarding' },
+];
 const STATUS_OPTIONS = ['ACTIVE', 'BLOCKED'];
 
 export default function AdminGebruikerDetail() {
@@ -182,7 +188,7 @@ export default function AdminGebruikerDetail() {
             <div>
               <label className="block text-sm font-medium text-emerald-800/80 mb-2">Rol</label>
               <select value={profile.role ?? ''} onChange={(e) => setProfile((p) => (p ? { ...p, role: e.target.value as UserRole } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition">
-                {ROLE_OPTIONS.map((r) => <option key={r} value={r}>{r}</option>)}
+                {ROLE_OPTIONS.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
               </select>
             </div>
             <div>
