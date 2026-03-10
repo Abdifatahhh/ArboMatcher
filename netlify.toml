@@ -1,6 +1,6 @@
-[build]
-  command = "npm run build"
-  publish = "dist"
+# Build command en publish directory per site in Netlify UI zetten:
+# - Marketing: npm run build:marketing, dist-marketing
+# - Portal: npm run build:portal, dist-portal
 
 [[redirects]]
   from = "/*"
