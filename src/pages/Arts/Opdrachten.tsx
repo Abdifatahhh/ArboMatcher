@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { Job } from '../../lib/types';
+import { CONTRACT_FORM_OPTIONS, REMOTE_TYPE_OPTIONS, getContractFormLabel } from '../../lib/opdrachtConstants';
 import {
   Search,
   ChevronDown,
@@ -38,24 +39,14 @@ const hoursOptions: FilterOption[] = [
   { value: '40+', label: '40+ uur' },
 ];
 
-const locationOptions: FilterOption[] = [
-  { value: 'REMOTE', label: 'Remote' },
-  { value: 'HYBRID', label: 'Hybride' },
-  { value: 'ONSITE', label: 'Op locatie' },
-];
+const locationOptions: FilterOption[] = REMOTE_TYPE_OPTIONS;
 
 const postedByOptions: FilterOption[] = [
   { value: 'direct', label: 'Direct door opdrachtgever' },
   { value: 'bureau', label: 'Via bureau' },
 ];
 
-const contractOptions: FilterOption[] = [
-  { value: 'TIJDELIJK', label: 'Tijdelijk' },
-  { value: 'INTERIM', label: 'Interim' },
-  { value: 'VAST', label: 'Vast' },
-  { value: 'PROJECT', label: 'Project' },
-  { value: 'ZZP', label: 'ZZP / Freelance' },
-];
+const contractOptions: FilterOption[] = CONTRACT_FORM_OPTIONS;
 
 interface FilterDropdownProps {
   label: string;
@@ -462,7 +453,7 @@ export default function ArtsOpdrachten() {
                   )}
                   <div className="flex items-center gap-2">
                     <FileText className="w-4 h-4 text-gray-400" />
-                    <span>{job.job_type || 'Freelance'}</span>
+                    <span>{getContractFormLabel(job.job_type) || '—'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Eye className="w-4 h-4 text-gray-400" />
@@ -521,7 +512,7 @@ export default function ArtsOpdrachten() {
                       )}
                       <span className="flex items-center gap-1">
                         <FileText className="w-3.5 h-3.5" />
-                        {job.job_type || 'Freelance'}
+                        {getContractFormLabel(job.job_type) || '—'}
                       </span>
                       <span className="flex items-center gap-1">
                         <Eye className="w-3.5 h-3.5" />

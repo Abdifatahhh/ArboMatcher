@@ -4,19 +4,17 @@ import { supabase } from '../lib/supabase';
 import type { Job } from '../lib/types';
 import { Search, MapPin, Briefcase, Calendar, ChevronDown, ChevronLeft, ChevronRight, X, CheckCircle, ArrowRight, Home, Users } from 'lucide-react';
 import { fakeJobs, type FakeJob } from '../data/fakeJobs';
+import { CONTRACT_FORM_OPTIONS, REMOTE_TYPE_OPTIONS } from '../lib/opdrachtConstants';
 
 const expertiseOptions = [
   { value: 'bedrijfsarts', label: 'Bedrijfsarts' },
+  { value: 'arbo-arts', label: 'Arbo-arts' },
   { value: 'verzekeringsarts', label: 'Verzekeringsarts' },
-  { value: 'medisch-adviseur', label: 'Medisch adviseur' },
-  { value: 'arbeid-gezondheid', label: 'Arbeid & gezondheid' },
+  { value: 'pob', label: 'POB' },
+  { value: 'casemanager-verzuim', label: 'Casemanager verzuim' },
 ];
 
-const locationOptions = [
-  { value: 'ONSITE', label: 'Op locatie' },
-  { value: 'HYBRID', label: 'Hybride' },
-  { value: 'REMOTE', label: 'Remote consult' },
-];
+const locationOptions = REMOTE_TYPE_OPTIONS;
 
 type CombinedJob = Job | FakeJob;
 
@@ -30,6 +28,7 @@ export default function Opdrachten() {
   const [filters, setFilters] = useState({
     expertise: [] as string[],
     location: [] as string[],
+    contractvorm: [] as string[],
   });
   const [page, setPage] = useState(1);
 
@@ -57,6 +56,12 @@ export default function Opdrachten() {
     if (filters.location.length > 0) {
       query = query.in('remote_type', filters.location);
     }
+    if (filters.contractvorm.length > 0) {
+      query = query.in('job_type', filters.contractvorm);
+    }
+    if (filters.expertise.length > 0) {
+      query = query.or(filters.expertise.map(e => `title.ilike.%${e}%,description.ilike.%${e}%`).join(','));
+    }
     if (searchTerm) {
       query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%`);
     }
@@ -73,6 +78,15 @@ export default function Opdrachten() {
         job.description?.toLowerCase().includes(term) ||
         job.region?.toLowerCase().includes(term)
       );
+    }
+    if (filters.location.length > 0) {
+      filteredFakeJobs = filteredFakeJobs.filter(job => filters.location.includes(job.remote_type));
+    }
+    if (filters.contractvorm.length > 0) {
+      filteredFakeJobs = filteredFakeJobs.filter(job => filters.contractvorm.includes(job.job_type));
+    }
+    if (filters.expertise.length > 0) {
+      filteredFakeJobs = filteredFakeJobs.filter(job => filters.expertise.includes(job.expertise));
     }
 
     allJobs = [...allJobs, ...filteredFakeJobs];
@@ -95,11 +109,12 @@ export default function Opdrachten() {
     setFilters({
       expertise: [],
       location: [],
+      contractvorm: [],
     });
     setSearchTerm('');
   };
 
-  const toggleFilter = (category: 'expertise' | 'location', value: string) => {
+  const toggleFilter = (category: 'expertise' | 'location' | 'contractvorm', value: string) => {
     setFilters(prev => ({
       ...prev,
       [category]: prev[category].includes(value)
@@ -111,6 +126,7 @@ export default function Opdrachten() {
   const hasActiveFilters =
     filters.expertise.length > 0 ||
     filters.location.length > 0 ||
+    filters.contractvorm.length > 0 ||
     searchTerm !== '';
 
   const formatDate = (date: string) => {
@@ -135,7 +151,7 @@ export default function Opdrachten() {
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Opdrachten</h1>
           <p className="text-xl text-gray-300 max-w-2xl">
             Bekijk alle beschikbare opdrachten voor bedrijfsartsen en arbo-professionals.
-            Of het nu gaat om freelance, interim of detachering – zoek in onze actuele opdrachten en ga aan de slag.
+            Of het nu gaat om ZZP, detachering of loondienst – zoek in onze actuele opdrachten en ga aan de slag.
           </p>
         </div>
       </div>
@@ -362,6 +378,23 @@ export default function Opdrachten() {
                           type="checkbox"
                           checked={filters.location.includes(option.value)}
                           onChange={() => toggleFilter('location', option.value)}
+                          className="w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
+                        />
+                        <span className="text-sm text-gray-700">{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Contractvorm</label>
+                  <div className="space-y-2">
+                    {CONTRACT_FORM_OPTIONS.map((option) => (
+                      <label key={option.value} className="flex items-center gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={filters.contractvorm.includes(option.value)}
+                          onChange={() => toggleFilter('contractvorm', option.value)}
                           className="w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
                         />
                         <span className="text-sm text-gray-700">{option.label}</span>

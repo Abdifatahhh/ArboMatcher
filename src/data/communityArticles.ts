@@ -65,7 +65,7 @@ Zonder geldige BIG-registratie kun je op ArboMatcher geen opdrachten accepteren.
 
 ## Geef een duidelijke titel
 
-Gebruik een korte, herkenbare titel die het type inzet weergeeft. Voorbeelden: "Bedrijfsarts verzuimbegeleiding", "Arbo-arts preventief medisch onderzoek" of "Verzuimspecialist interim 6 maanden". Zo vinden artsen die bij je vraag passen je opdracht snel in hun zoekresultaten.
+Gebruik een korte, herkenbare titel die het type inzet weergeeft. Voorbeelden: "Bedrijfsarts verzuimbegeleiding", "Arbo-arts preventief medisch onderzoek" of "Verzuimspecialist 6 maanden". Zo vinden artsen die bij je vraag passen je opdracht snel in hun zoekresultaten.
 
 - Vermijd vage omschrijvingen zoals "Arts gezocht"
 - Noem het specialisme of de taak in de titel
@@ -73,10 +73,10 @@ Gebruik een korte, herkenbare titel die het type inzet weergeeft. Voorbeelden: "
 
 ## Beschrijf de context en het doel
 
-Wat doet je organisatie? Waarom zoek je deze inzet? Hoeveel uur of dagen per week gaat het om, en voor welke periode? Noem ook of het om een vaste plek, interim of project gaat. Hoe concreter je bent, hoe beter de match en hoe gerichter de reacties.
+Wat doet je organisatie? Waarom zoek je deze inzet? Hoeveel uur of dagen per week gaat het om, en voor welke periode? Noem ook of het om ZZP, detachering of loondienst gaat. Hoe concreter je bent, hoe beter de match en hoe gerichter de reacties.
 
 - Omvang: uren per week, duur, startdatum
-- Type: structureel, interim, project, vervanging
+- Contractvorm: ZZP, detachering, loondienst
 - Doel: verzuimbegeleiding, PMO, advies, re-integratie
 
 ## Noem duidelijke eisen
@@ -157,7 +157,7 @@ Het wetsvoorstel VBAR richt zich op verduidelijking van arbeidsrelaties en het t
 
 ## Voor opdrachtgevers
 
-Heeft je organisatie structureel of voor een project behoefte aan een bedrijfsarts of arbo-arts? Via ArboMatcher vind je BIG-geregistreerde professionals voor verzuimbegeleiding, preventief medisch onderzoek of advies. Je plaatst een opdracht, ontvangt reacties van gekwalificeerde artsen en kiest op basis van profiel en beschikbaarheid. Zo voldoe je aan de eisen voor verzuimbegeleiding en werk je met betrouwbare partners.
+Heeft je organisatie behoefte aan een bedrijfsarts of arbo-arts (in loondienst, als ZZP of via detachering)? Via ArboMatcher vind je BIG-geregistreerde professionals voor verzuimbegeleiding, preventief medisch onderzoek of advies. Je plaatst een opdracht, ontvangt reacties van gekwalificeerde artsen en kiest op basis van profiel en beschikbaarheid. Zo voldoe je aan de eisen voor verzuimbegeleiding en werk je met betrouwbare partners.
 
 - Alle artsen op het platform zijn BIG-geregistreerd
 - Duidelijke afspraken over inzet en contractvorm

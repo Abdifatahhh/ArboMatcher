@@ -8,9 +8,8 @@ export type SubscriptionPlan = 'GRATIS' | 'PRO';
 export type SubscriptionStatus = 'ACTIVE' | 'CANCELLED' | 'EXPIRED';
 export type InvoiceStatus = 'DRAFT' | 'PAID' | 'FAILED';
 export type FavoriteType = 'JOB' | 'DOCTOR';
-export type JobType = 'TIJDELIJK' | 'INTERIM' | 'VAST' | 'PROJECT';
+export type { ContractForm, RemoteType } from './opdrachtConstants';
 export type JobTier = 'PRO' | 'STANDARD';
-export type RemoteType = 'REMOTE' | 'HYBRID' | 'ONSITE';
 export type PosterType = 'DIRECT' | 'INTERMEDIARY';
 
 export interface ConsentPreferences {
@@ -86,7 +85,7 @@ export interface Job {
   description: string;
   region: string | null;
   remote_type: RemoteType;
-  job_type: JobType;
+  job_type: string;
   job_tier: JobTier;
   start_date: string | null;
   duration_weeks: number | null;

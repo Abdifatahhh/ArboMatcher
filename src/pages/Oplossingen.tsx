@@ -34,7 +34,7 @@ export default function Oplossingen() {
                   'Ontvang reacties van BIG-geregistreerde professionals',
                   'Direct contact via het platform',
                   'Geen verborgen kosten of commissies',
-                  'Alle contractvormen: freelance, interim of detachering',
+                  'Alle contractvormen: ZZP, detachering of loondienst',
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0 mt-0.5" />
@@ -51,9 +51,9 @@ export default function Oplossingen() {
               </Link>
             </div>
             <div className="bg-[#F4FAF4] rounded-[16px] p-8 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30">
-              <h3 className="font-bold text-[#0F172A] mb-4">Veelgevraagde profielen</h3>
+              <h3 className="font-bold text-[#0F172A] mb-4">Onze 5 professionals</h3>
               <div className="space-y-3">
-                {['Bedrijfsarts', 'Arbo-arts', 'Verzuimspecialist', 'Arbeidshygienist', 'Veiligheidskundige'].map((profile) => (
+                {['Bedrijfsarts', 'Arbo-arts', 'Verzekeringsarts', 'Praktijkondersteuner bedrijfsarts (POB)', 'Casemanager verzuim'].map((profile) => (
                   <div key={profile} className="bg-[#FFFFFF] rounded-[12px] px-4 py-3 text-[#0F172A] font-medium border border-[#4FA151]/15 shadow-lg shadow-slate-200/30">
                     {profile}
                   </div>
@@ -74,7 +74,7 @@ export default function Oplossingen() {
               <div className="space-y-4 mb-8">
                 {[
                   'Reageer op opdrachten van opdrachtgevers',
-                  'Flexibele inzetvormen: freelance, interim of detachering',
+                  'Flexibele inzetvormen: ZZP, detachering of loondienst',
                   'Transparante communicatie via het platform',
                   'BIG-verificatie voor extra zichtbaarheid',
                   'Bepaal zelf uw beschikbaarheid',
@@ -95,13 +95,12 @@ export default function Oplossingen() {
               </Link>
             </div>
             <div className="bg-[#F4FAF4] rounded-[16px] p-8 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30">
-              <h3 className="font-bold text-[#0F172A] mb-4">Type inzet</h3>
+              <h3 className="font-bold text-[#0F172A] mb-4">Contractvorm</h3>
               <div className="grid grid-cols-2 gap-3 mb-6">
                 {[
-                  { label: 'Freelance', desc: 'Flexibele opdrachten' },
-                  { label: 'Interim', desc: 'Tijdelijke vervanging' },
+                  { label: 'ZZP / Freelance', desc: 'Flexibele opdrachten' },
                   { label: 'Detachering', desc: 'Langere projecten' },
-                  { label: 'Structureel', desc: 'Vaste inzet' },
+                  { label: 'Loondienst', desc: 'Vaste inzet' },
                 ].map((type) => (
                   <div
                     key={type.label}

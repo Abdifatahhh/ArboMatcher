@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { Application, Job } from '../../lib/types';
+import { getRemoteTypeLabel } from '../../lib/opdrachtConstants';
 import { Send, Clock, MapPin, Building2 } from 'lucide-react';
 
 interface ApplicationWithJob extends Application {
@@ -117,7 +118,7 @@ export default function ArtsReacties() {
                           )}
                           <span className="flex items-center space-x-1">
                             <Building2 className="w-4 h-4" />
-                            <span>{application.jobs.remote_type || 'Onsite'}</span>
+                            <span>{getRemoteTypeLabel(application.jobs.remote_type) || '—'}</span>
                           </span>
                           <span className="flex items-center space-x-1">
                             <Clock className="w-4 h-4" />

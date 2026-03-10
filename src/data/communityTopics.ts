@@ -97,7 +97,7 @@ In je profiel zie je of je status "Geverifieerd" is. Zonder deze status kun je n
 
 ## Opdrachten bekijken
 
-Op de Community- en opdrachtenpagina's zie je welke vacatures openstaan. Filter op regio, type (verzuim, PMO, interim, etc.) en beschikbaarheid. Lees de opdrachtbeschrijving goed door zodat je reactie aansluit op wat de opdrachtgever zoekt.
+Op de Community- en opdrachtenpagina's zie je welke vacatures openstaan. Filter op regio, type (verzuim, PMO, re-integratie) en contractvorm (ZZP, detachering, loondienst). Lees de opdrachtbeschrijving goed door zodat je reactie aansluit op wat de opdrachtgever zoekt.
 
 - Filter op regio en type opdracht
 - Let op eisen (BIG, ervaring, locatie)
@@ -188,7 +188,7 @@ Reageer tijdig op opdrachten en op berichten van opdrachtgevers. Een professione
 Log in als opdrachtgever en kies "Opdracht plaatsen". Geef een duidelijke titel (bijv. "Bedrijfsarts verzuimbegeleiding") en beschrijf de context: wat doet je organisatie, wat is het doel, hoeveel uur of dagen per week, voor welke periode? Hoe concreter, hoe beter de reacties.
 
 - Duidelijke titel en beschrijving
-- Context, omvang en type (interim, project, structureel)
+- Context, omvang en contractvorm (ZZP, detachering, loondienst)
 - Eisen (BIG, ervaring, locatie) vermelden
 
 ## Profiel beschrijven
@@ -270,19 +270,17 @@ Bij problemen of geschillen rond een opdracht raden we aan eerst onderling tot e
     slug: 'inzet-contractvormen',
     title: 'Inzet en contractvormen',
     category: 'Voor opdrachtgevers',
-    description: 'Freelance, interim, detachering of structureel – kies de vorm die bij je organisatie past.',
+    description: 'ZZP, detachering of loondienst – kies de vorm die bij je organisatie past.',
     imageUrl: IMG.calendar,
-    content: `De inzet van een arts kan in verschillende vormen: freelance, interim, detachering of structureel. Op ArboMatcher vindt u de professional; de contractvorm spreekt u onderling af. Hier een overzicht.
+    content: `De inzet van een arts kan in verschillende contractvormen: ZZP, detachering of loondienst. Op ArboMatcher vindt u de professional; de precieze afspraken spreekt u onderling af. Hier een overzicht.
 
 ## Contractvormen
 
-**Freelance:** De arts werkt als zzp'er voor u, vaak per opdracht of voor een bepaalde periode. U maakt afspraken over uren, tarief en reikwijdte.
-
-**Interim:** Tijdelijk invullen van een vacature of vervanging. Duur en omvang spreekt u vooraf af.
+**ZZP:** De arts werkt als zzp'er voor u, vaak per opdracht of voor een bepaalde periode. U maakt afspraken over uren, tarief en reikwijdte.
 
 **Detachering:** De arts wordt via een detacheringsbureau of eigen onderneming bij u ingezet. Afspraken over verantwoordelijkheid en facturatie met de betreffende partij.
 
-**Structureel:** Langere of vaste inzet, bijvoorbeeld een vaste dag per week. Vaak in overeenkomst met uw arbodienst of interne structuur.
+**Loondienst:** Vaste inzet in dienstverband bij uw organisatie of arbodienst, bijvoorbeeld een vaste dag per week of fulltime.
 
 - Keuze afhankelijk van uw behoefte en beleid
 - Afspraken helder vastleggen

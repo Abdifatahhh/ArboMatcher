@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { Job } from '../../lib/types';
+import { getContractFormLabel, getRemoteTypeLabel } from '../../lib/opdrachtConstants';
 import { Heart, MapPin, Clock, Building2, FileText } from 'lucide-react';
 
 export default function ArtsFavorieten() {
@@ -117,7 +118,7 @@ export default function ArtsFavorieten() {
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex items-center space-x-2">
                   <FileText className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <span className="truncate">{job.job_type || 'Freelance'}</span>
+                  <span className="truncate">{getContractFormLabel(job.job_type) || '—'}</span>
                 </div>
                 {job.region && (
                   <div className="flex items-center space-x-2">
@@ -127,7 +128,7 @@ export default function ArtsFavorieten() {
                 )}
                 <div className="flex items-center space-x-2">
                   <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <span className="truncate">{job.remote_type || 'Onsite'}</span>
+                  <span className="truncate">{getRemoteTypeLabel(job.remote_type) || '—'}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Clock className="w-4 h-4 text-gray-400 flex-shrink-0" />

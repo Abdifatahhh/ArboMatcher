@@ -196,7 +196,7 @@ export default function AdminCommunityBeheer() {
   return (
     <div className="p-6 max-w-5xl">
       <h1 className="text-3xl font-bold text-[#0F172A] mb-2">Community & Artikelen</h1>
-      <p className="text-gray-600 text-sm mb-6">Beheer onderwerpen en artikelen op de Community-pagina.</p>
+      <p className="text-gray-600 text-sm mb-6">Beheer onderwerpen en artikelen. Nieuw of bewerkt wordt direct in de database opgeslagen.</p>
 
       <div className="flex flex-wrap gap-2 mb-6">
         <button

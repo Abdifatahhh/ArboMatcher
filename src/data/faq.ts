@@ -2,7 +2,7 @@ export const faqGroups = [
   {
     title: 'Platform',
     items: [
-      { q: 'Wat is ArboMatcher?', a: 'ArboMatcher is het platform dat opdrachtgevers verbindt met bedrijfsartsen en arbo-professionals. U plaatst opdrachten of reageert op opdrachten voor freelance, interim of detachering.' },
+      { q: 'Wat is ArboMatcher?', a: 'ArboMatcher is het platform dat opdrachtgevers verbindt met bedrijfsartsen en arbo-professionals. U plaatst opdrachten of reageert op opdrachten voor ZZP, detachering of loondienst.' },
       { q: 'Hoe werkt de matching?', a: 'Opdrachtgevers plaatsen een opdracht; professionals kunnen reageren. U kunt ook actief zoeken in ons netwerk. Na matching maakt u rechtstreeks afspraken. Binnen 48 uur ontvangt u doorgaans meerdere reacties.' },
       { q: 'Is BIG-verificatie verplicht?', a: 'Ja, voor artsen. Alle professionals worden gecontroleerd op hun BIG-registratie, zodat u alleen met gecertificeerde professionals werkt.' },
     ],
@@ -10,7 +10,7 @@ export const faqGroups = [
   {
     title: 'Voor opdrachtgevers',
     items: [
-      { q: 'Hoe plaats ik een opdracht?', a: 'Registreer als opdrachtgever, kies een abonnement en maak een opdracht aan via Mijn opdrachten. Vul titel, beschrijving, regio en type inzet in. Na publicatie kunnen professionals reageren.' },
+      { q: 'Hoe plaats ik een opdracht?', a: 'Registreer als opdrachtgever, kies een abonnement en maak een opdracht aan via Mijn opdrachten. Vul titel, beschrijving, regio en contractvorm in. Na publicatie kunnen professionals reageren.' },
       { q: 'Wanneer zien artsen mijn opdracht?', a: 'Artsen met een betaald abonnement zien nieuwe opdrachten direct. Artsen zonder betaald abonnement zien uw opdracht pas na 48 uur. Met een Pro-abonnement bereikt u daardoor eerder de actieve professionals.' },
       { q: 'Hoeveel reacties kan ik verwachten?', a: 'Afhankelijk van uw abonnement ontvangt u een bepaald aantal reacties per maand. Meestal binnen 48 uur meerdere reacties van BIG-geregistreerde artsen.' },
     ],

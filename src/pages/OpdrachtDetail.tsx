@@ -6,6 +6,7 @@ import { useToast } from '../context/ToastContext';
 import type { Job } from '../lib/types';
 import { ArrowLeft, MapPin, Clock, Briefcase, Calendar, Building2, Users, Eye, ArrowRight, CheckCircle } from 'lucide-react';
 import { getFakeJobById, type FakeJob } from '../data/fakeJobs';
+import { getContractFormLabel, getRemoteTypeLabel } from '../lib/opdrachtConstants';
 import { HowItWorksPreview } from '../components/home/HowItWorksPreview';
 import { HowItWorksSteps } from '../components/home/HowItWorksSteps';
 
@@ -177,25 +178,6 @@ export default function OpdrachtDetail() {
     return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
-  const getJobTypeLabel = (type: string) => {
-    switch (type) {
-      case 'ZZP': return 'Freelance';
-      case 'INTERIM': return 'Interim';
-      case 'DETACHERING': return 'Detachering';
-      case 'VAST': return 'Structureel';
-      default: return type;
-    }
-  };
-
-  const getRemoteTypeLabel = (type: string) => {
-    switch (type) {
-      case 'REMOTE': return 'Remote';
-      case 'HYBRID': return 'Hybride';
-      case 'ONSITE': return 'Op locatie';
-      default: return type;
-    }
-  };
-
   const getProfessionalLabel = (title: string) => {
     if (!title) return '';
     const voor = title.indexOf(' voor ');
@@ -298,7 +280,7 @@ export default function OpdrachtDetail() {
                 {job.job_type && (
                   <span className="flex items-center gap-1">
                     <Briefcase className="w-4 h-4" />
-                    {getJobTypeLabel(job.job_type)}
+                    {getContractFormLabel(job.job_type)}
                   </span>
                 )}
                 {job.hours_per_week && (
@@ -426,8 +408,8 @@ export default function OpdrachtDetail() {
                       <Briefcase className="w-5 h-5 text-[#4FA151]" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Type inzet</p>
-                      <p className="text-[#0F172A] font-medium">{getJobTypeLabel(job.job_type)}</p>
+                      <p className="text-sm text-gray-500">Contractvorm</p>
+                      <p className="text-[#0F172A] font-medium">{getContractFormLabel(job.job_type)}</p>
                     </div>
                   </div>
                 )}

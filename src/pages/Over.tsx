@@ -26,7 +26,7 @@ export default function Over() {
           </p>
           <p className="text-[#111827] leading-relaxed text-lg">
             Ons platform maakt het eenvoudig voor arbodiensten, werkgevers en overheidsorganisaties
-            om snel gekwalificeerde professionals te vinden voor freelance, interim, detachering of structurele inzet.
+            om snel gekwalificeerde professionals te vinden voor ZZP, detachering of loondienst.
           </p>
         </section>
 
@@ -80,7 +80,7 @@ export default function Over() {
           <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Voor opdrachtgevers</h2>
           <p className="text-[#111827] leading-relaxed mb-6 text-lg">
             Of u nu een arbodienst, werkgever of overheidsorganisatie bent, ArboMatcher helpt u
-            snel de juiste professional te vinden voor freelance, interim, detachering of structurele inzet.
+            snel de juiste professional te vinden voor ZZP, detachering of loondienst.
           </p>
           <ul className="space-y-3 text-[#111827] mb-6">
             <li className="flex items-start gap-3">
@@ -105,7 +105,7 @@ export default function Over() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <span>Freelance, interim, detachering en structurele inzet via een platform</span>
+              <span>ZZP, detachering en loondienst via één platform</span>
             </li>
             <li className="flex items-start gap-3">
               <div className="w-6 h-6 bg-[#4FA151] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">

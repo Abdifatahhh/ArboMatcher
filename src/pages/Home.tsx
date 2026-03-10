@@ -55,7 +55,7 @@ export default function Home() {
               Opdrachtgevers en arbo-professionals efficiënt verbonden.
             </h1>
             <p className="text-xl text-gray-300 mb-10 leading-relaxed">
-              ArboMatcher verbindt opdrachtgevers met gekwalificeerde bedrijfsartsen en arbo-professionals voor freelance, interim en detachering.
+              ArboMatcher verbindt opdrachtgevers met gekwalificeerde bedrijfsartsen en arbo-professionals voor ZZP, detachering en loondienst.
             </p>
           </div>
 
@@ -65,7 +65,7 @@ export default function Home() {
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Zoek op specialisatie, regio of type inzet"
+                  placeholder="Zoek op specialisatie, regio of contractvorm"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-4 border-0 rounded-[12px] focus:ring-2 focus:ring-[#4FA151] text-[#111827] placeholder:text-gray-400 text-lg"
@@ -153,7 +153,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-[#0F172A] mb-3">Start samenwerking</h3>
                 <p className="text-slate-600 leading-relaxed flex-1">
-                  Maak direct afspraken en start de samenwerking. Freelance, interim of detachering.
+                  Maak direct afspraken en start de samenwerking. ZZP, detachering of loondienst.
                 </p>
               </div>
             </div>

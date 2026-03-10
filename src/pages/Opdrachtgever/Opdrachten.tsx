@@ -4,6 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import type { Job } from '../../lib/types';
+import { CONTRACT_FORM_OPTIONS, REMOTE_TYPE_OPTIONS, normalizeContractForm } from '../../lib/opdrachtConstants';
 import { Plus, Briefcase, Eye, Trash2, X, Save, Building2 } from 'lucide-react';
 
 export default function OpdrachtgeverOpdrachten() {
@@ -17,7 +18,7 @@ export default function OpdrachtgeverOpdrachten() {
     description: '',
     region: '',
     remote_type: 'ONSITE',
-    job_type: 'TIJDELIJK',
+    job_type: 'ZZP',
     status: 'PUBLISHED',
     poster_type: 'DIRECT',
     on_behalf_of: '',
@@ -84,7 +85,7 @@ export default function OpdrachtgeverOpdrachten() {
       description: formData.description,
       region: formData.region,
       remote_type: formData.remote_type as any,
-      job_type: formData.job_type as any,
+      job_type: normalizeContractForm(formData.job_type),
       job_tier: (formData as { job_tier?: string }).job_tier ?? 'STANDARD',
       start_date: formData.start_date || null,
       duration_weeks: formData.duration_weeks || null,
@@ -107,7 +108,7 @@ export default function OpdrachtgeverOpdrachten() {
         description: '',
         region: '',
         remote_type: 'ONSITE',
-        job_type: 'TIJDELIJK',
+        job_type: 'ZZP',
         status: 'PUBLISHED',
         poster_type: 'DIRECT',
         on_behalf_of: '',
@@ -189,29 +190,28 @@ export default function OpdrachtgeverOpdrachten() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Type opdracht</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Contractvorm</label>
                 <select
-                  value={formData.job_type}
-                  onChange={(e) => setFormData({ ...formData, job_type: e.target.value as any })}
+                  value={normalizeContractForm(formData.job_type)}
+                  onChange={(e) => setFormData({ ...formData, job_type: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
                 >
-                  <option value="TIJDELIJK">Tijdelijk</option>
-                  <option value="INTERIM">Interim</option>
-                  <option value="VAST">Vast</option>
-                  <option value="PROJECT">Project</option>
+                  {CONTRACT_FORM_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Werkwijze</label>
                 <select
-                  value={formData.remote_type}
-                  onChange={(e) => setFormData({ ...formData, remote_type: e.target.value as any })}
+                  value={formData.remote_type || 'ONSITE'}
+                  onChange={(e) => setFormData({ ...formData, remote_type: e.target.value as 'ONSITE' | 'HYBRID' | 'REMOTE' })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
                 >
-                  <option value="ONSITE">On-site</option>
-                  <option value="HYBRID">Hybrid</option>
-                  <option value="REMOTE">Remote</option>
+                  {REMOTE_TYPE_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
                 </select>
               </div>
 

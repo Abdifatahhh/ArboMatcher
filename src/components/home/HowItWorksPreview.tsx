@@ -2,7 +2,7 @@ import { Search, Mail, User, Send, Briefcase, MapPin, Clock } from 'lucide-react
 
 const DUMMY_JOBS = [
   { id: 1, title: 'Bedrijfsarts verzuimbegeleiding', location: 'Amsterdam', time: '5 minuten geleden', tag: 'Marktconform' },
-  { id: 2, title: 'Arbo-arts interim (0,5 fte)', location: 'Utrecht', time: '20 minuten geleden', tag: 'BIG' },
+  { id: 2, title: 'Arbo-arts (0,5 fte)', location: 'Utrecht', time: '20 minuten geleden', tag: 'BIG' },
   { id: 3, title: 'Bedrijfsarts PMO en re-integratie', location: 'Rotterdam', time: '1 uur geleden', tag: 'Flexibel' },
   { id: 4, title: 'Arbo-professional detachering', location: 'Den Haag', time: '2 uur geleden', tag: 'Langere inzet' },
 ];
@@ -39,7 +39,7 @@ function PreviewStep1() {
         <span className="font-semibold text-[#0F172A]">Alle opdrachten op één plek</span>
       </div>
       <div className="space-y-3">
-        {['Verzuimbegeleiding', 'PMO & preventie', 'Re-integratie', 'Interim & detachering'].map((label, i) => (
+        {['Verzuimbegeleiding', 'PMO & preventie', 'Re-integratie', 'Verzekeringsgeneeskunde'].map((label, i) => (
           <div
             key={i}
             className="flex items-center gap-3 py-3 px-4 bg-gray-50 rounded-xl border border-gray-100"
@@ -65,7 +65,7 @@ function PreviewStep2() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
         <input
           type="text"
-          placeholder="Zoek op specialisatie, regio of type"
+          placeholder="Zoek op specialisatie, regio of contractvorm"
           readOnly
           className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-[#0F172A] placeholder:text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#4FA151]/30"
           aria-label="Zoekopdrachten"
