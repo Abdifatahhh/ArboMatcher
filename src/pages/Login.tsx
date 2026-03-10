@@ -84,9 +84,7 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-6 pb-8 md:pt-24 md:pb-12 px-4">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8 md:mb-10">
-          <Link to="/">
-            <LogoText theme="light" className="text-5xl min-[768px]:text-2xl" />
-          </Link>
+          <LogoText theme="light" className="text-5xl min-[768px]:text-2xl" />
         </div>
 
         {healthStatus && !healthStatus.healthy && (
