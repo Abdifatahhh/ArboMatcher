@@ -1,18 +1,36 @@
 import { Link } from 'react-router-dom';
 import type { Profile } from '../../lib/types';
-import { Pencil, Ban, CheckCircle } from 'lucide-react';
+import { Pencil, Ban, CheckCircle, Trash2 } from 'lucide-react';
 
 interface UsersTableProps {
   rows: Profile[];
+  selectedIds: string[];
   onToggleBlock: (profileId: string) => void;
+  onToggleSelect: (id: string, checked: boolean) => void;
+  onSelectAll: (checked: boolean) => void;
+  onDelete: (id: string) => void;
+  canDelete?: boolean;
 }
 
-export function UsersTable({ rows, onToggleBlock }: UsersTableProps) {
+export function UsersTable({ rows, selectedIds, onToggleBlock, onToggleSelect, onSelectAll, onDelete, canDelete = true }: UsersTableProps) {
+  const allSelected = rows.length > 0 && rows.every((p) => selectedIds.includes(p.id));
+  const someSelected = selectedIds.length > 0;
+
   return (
     <div className="rounded-xl border border-emerald-100 overflow-hidden shadow-md bg-white">
       <table className="min-w-full">
         <thead>
           <tr className="bg-[#4FA151] border-b border-[#3E8E45]">
+            <th className="px-4 py-3.5 text-left">
+              <input
+                type="checkbox"
+                checked={allSelected}
+                ref={(el) => { if (el) el.indeterminate = someSelected && !allSelected; }}
+                onChange={(e) => onSelectAll(e.target.checked)}
+                className="rounded border-emerald-300 text-[#4FA151] focus:ring-[#4FA151]"
+                aria-label="Alles selecteren"
+              />
+            </th>
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Naam</th>
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">E-mail</th>
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Rol</th>
@@ -25,8 +43,18 @@ export function UsersTable({ rows, onToggleBlock }: UsersTableProps) {
           {rows.map((profile, idx) => {
             const isBlocked = profile.status === 'BLOCKED';
             const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-emerald-50/30';
+            const selected = selectedIds.includes(profile.id);
             return (
               <tr key={profile.id} className={`${rowBg} hover:bg-emerald-50/50 transition-colors`}>
+                <td className="px-4 py-4">
+                  <input
+                    type="checkbox"
+                    checked={selected}
+                    onChange={(e) => onToggleSelect(profile.id, e.target.checked)}
+                    className="rounded border-emerald-300 text-[#4FA151] focus:ring-[#4FA151]"
+                    aria-label={`Selecteer ${profile.full_name || profile.email}`}
+                  />
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <Link to={`/admin/gebruikers/${profile.id}`} className="text-sm font-semibold text-[#0F172A] hover:text-[#4FA151] hover:underline transition">
                     {profile.full_name || 'Geen naam'}
@@ -48,6 +76,11 @@ export function UsersTable({ rows, onToggleBlock }: UsersTableProps) {
                     <button type="button" onClick={() => onToggleBlock(profile.id)} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-emerald-100 transition" title={isBlocked ? 'Deblokkeren' : 'Blokkeren'}>
                       {isBlocked ? <CheckCircle className="w-4 h-4 text-green-600" /> : <Ban className="w-4 h-4 text-red-600" />}
                     </button>
+                    {canDelete && (
+                      <button type="button" onClick={() => onDelete(profile.id)} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition" title="Definitief verwijderen">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>

@@ -61,14 +61,31 @@ export async function toggleUserBlocked(profileId: string): Promise<{ error: Err
   return { error: error ?? null };
 }
 
+/** Verwijdert gebruiker uit applicatiedata én uit Supabase Auth (via Edge Function). */
 export async function deleteUserPermanently(userId: string): Promise<{ error: string | null }> {
-  const { data, error } = await supabase.rpc('admin_delete_user_by_admin', {
-    p_target_user_id: userId,
-  });
-  if (error) {
-    return { error: error.message ?? 'Verwijderen mislukt.' };
+  const { data: session } = await supabase.auth.getSession();
+  const accessToken = session?.session?.access_token;
+  if (!accessToken) {
+    return { error: 'Niet ingelogd. Log opnieuw in en probeer opnieuw.' };
   }
-  if (!data || (typeof data === 'object' && (data as { ok?: boolean }).ok !== true)) {
+  const url = `${import.meta.env.VITE_SUPABASE_URL?.replace(/\/$/, '')}/functions/v1/admin-delete-user`;
+  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY ?? '';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${anonKey}`,
+      apikey: anonKey,
+    },
+    body: JSON.stringify({ userId, accessToken }),
+  });
+  const body = await res.json().catch(() => ({})) as { error?: string; success?: boolean };
+  if (!res.ok) {
+    const msg = body.error ?? (res.status === 401 ? 'Niet geautoriseerd. Log opnieuw in en probeer opnieuw.' : `Verwijderen mislukt (${res.status}).`);
+    return { error: msg };
+  }
+  if (body.error) return { error: body.error };
+  if (body.success !== true) {
     return { error: 'Verwijderen gaf geen succes terug.' };
   }
   return { error: null };

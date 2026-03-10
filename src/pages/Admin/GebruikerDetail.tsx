@@ -89,7 +89,7 @@ export default function AdminGebruikerDetail() {
 
   const handleDelete = async () => {
     if (!id || isDemo) return;
-    const msg = 'Weet u het zeker? De gebruiker wordt definitief verwijderd uit de database, inclusief profiel, opdrachten, sollicitaties en aanmelding. Dit kan niet ongedaan worden gemaakt.';
+    const msg = 'Weet u het zeker? De gebruiker wordt definitief verwijderd uit de database én uit het inlogsysteem (Authentication). Inclusief profiel, opdrachten, sollicitaties en aanmelding. Dit kan niet ongedaan worden gemaakt.';
     if (!window.confirm(msg)) return;
     setDeleting(true);
     setMessage(null);

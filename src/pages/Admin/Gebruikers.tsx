@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { listUsers, toggleUserBlocked } from '../../services/adminUsersService';
+import { listUsers, toggleUserBlocked, deleteUserPermanently } from '../../services/adminUsersService';
 import type { RoleFilter, StatusFilter } from '../../services/adminUsersService';
 import { UsersFilters } from '../../components/Admin/UsersFilters';
 import { UsersTable } from '../../components/Admin/UsersTable';
 import type { Profile } from '../../lib/types';
 import { demoProfiles } from '../../data/adminDemoData';
-import { Users, Info } from 'lucide-react';
+import { Users, Info, Trash2 } from 'lucide-react';
 
 const PAGE_SIZE = 20;
 
@@ -18,6 +18,8 @@ export default function AdminGebruikers() {
   const [role, setRole] = useState<RoleFilter>('');
   const [status, setStatus] = useState<StatusFilter>('');
   const [search, setSearch] = useState('');
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [deleting, setDeleting] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -69,6 +71,49 @@ export default function AdminGebruikers() {
     if (!error) load();
   };
 
+  const handleToggleSelect = (id: string, checked: boolean) => {
+    setSelectedIds((prev) => (checked ? [...prev, id] : prev.filter((x) => x !== id)));
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    setSelectedIds(checked ? data.map((p) => p.id) : []);
+  };
+
+  const handleDeleteOne = async (id: string) => {
+    if (isDemo) return;
+    if (!window.confirm('Deze gebruiker definitief verwijderen? Dit verwijdert het profiel en bijbehorende data uit de database.')) return;
+    setDeleting(true);
+    const { error } = await deleteUserPermanently(id);
+    setDeleting(false);
+    if (!error) {
+      setSelectedIds((prev) => prev.filter((x) => x !== id));
+      load();
+    } else {
+      alert(error);
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (isDemo || selectedIds.length === 0) return;
+    if (!window.confirm(`${selectedIds.length} gebruiker(s) definitief verwijderen? Dit verwijdert ze uit de database.`)) return;
+    setDeleting(true);
+    let failed = 0;
+    let firstError: string | null = null;
+    for (const id of selectedIds) {
+      const { error } = await deleteUserPermanently(id);
+      if (error) {
+        failed += 1;
+        if (!firstError) firstError = error;
+      }
+    }
+    setDeleting(false);
+    setSelectedIds([]);
+    load();
+    if (failed > 0) {
+      alert(firstError ? `${failed} van ${selectedIds.length} mislukt: ${firstError}` : `${failed} van ${selectedIds.length} verwijderen mislukt.`);
+    }
+  };
+
   const from = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
   const to = Math.min(page * PAGE_SIZE, total);
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -103,7 +148,31 @@ export default function AdminGebruikers() {
         </div>
       ) : (
         <>
-          <UsersTable rows={data} onToggleBlock={handleToggleBlock} />
+          {selectedIds.length > 0 && (
+            <div className="mb-4 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleDeleteSelected}
+                disabled={deleting || isDemo}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 text-white text-sm font-medium hover:bg-red-700 disabled:opacity-50"
+              >
+                <Trash2 className="w-4 h-4" />
+                Verwijder geselecteerde ({selectedIds.length})
+              </button>
+              <button type="button" onClick={() => setSelectedIds([])} className="text-sm text-gray-600 hover:underline">
+                Selectie opheffen
+              </button>
+            </div>
+          )}
+          <UsersTable
+            rows={data}
+            selectedIds={selectedIds}
+            onToggleBlock={handleToggleBlock}
+            onToggleSelect={handleToggleSelect}
+            onSelectAll={handleSelectAll}
+            onDelete={handleDeleteOne}
+            canDelete={!isDemo}
+          />
           <div className="mt-4 flex items-center justify-between px-1">
             <p className="text-sm text-emerald-800/80 font-medium">{from}–{to} van {total}</p>
             <div className="flex gap-2">

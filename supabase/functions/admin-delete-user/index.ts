@@ -75,11 +75,15 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const { data: deleteResult, error: deleteDataError } = await adminClient
-      .rpc("admin_delete_user_data", { p_target_user_id: userId });
+    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { persistSession: false },
+      global: { headers: { Authorization: `Bearer ${token}` } },
+    });
+    const { data: deleteResult, error: deleteDataError } = await userClient
+      .rpc("admin_delete_user_by_admin", { p_target_user_id: userId });
 
     if (deleteDataError) {
-      console.error("admin_delete_user_data error:", deleteDataError.message, deleteDataError.code);
+      console.error("admin_delete_user_by_admin error:", deleteDataError.message, deleteDataError.code);
       const msg = deleteDataError.message ?? "Verwijderen van profiel en data mislukt.";
       return new Response(
         JSON.stringify({ error: msg }),
@@ -89,14 +93,14 @@ Deno.serve(async (req: Request) => {
 
     const result = deleteResult as DeleteResult | null;
     if (!result || result.ok !== true) {
-      console.error("admin_delete_user_data gaf geen ok=true:", deleteResult);
+      console.error("admin_delete_user_by_admin gaf geen ok=true:", deleteResult);
       return new Response(
         JSON.stringify({ error: "Verwijderen mislukt: RPC gaf geen succes terug." }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    console.log("admin_delete_user_data ok:", {
+    console.log("admin_delete_user_by_admin ok:", {
       target_user_id: result.target_user_id,
       conversations_deleted: result.conversations_deleted,
       messages_in_deleted_conversations: result.messages_in_deleted_conversations,
