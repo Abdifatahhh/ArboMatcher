@@ -112,7 +112,7 @@ export default function OpdrachtDetail() {
   const handleApply = async () => {
     if (!user || !job) {
       const base = getAuthBaseUrl();
-      if (base) { window.location.href = base + '/login'; return; }
+      if (base) { window.location.href = base + '/'; return; }
       navigate('/login');
       return;
     }

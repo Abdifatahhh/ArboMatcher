@@ -11,6 +11,7 @@ import { DashboardLayout } from './components/Layout/DashboardLayout';
 import { ArtsDashboardLayout } from './components/Layout/ArtsDashboardLayout';
 import { PortalRoot } from './components/PortalRoot';
 import { RequireMarketingSite } from './components/RequireMarketingSite';
+import { PortalPrefetch } from './components/PortalPrefetch';
 import { isPortal } from './config/portal';
 
 import Home from './pages/Home';
@@ -73,6 +74,7 @@ function OpdrachtRedirect() {
 function App() {
   return (
     <Router>
+      <PortalPrefetch />
       <AuthProvider>
         <EnvBanner />
         <ToastProvider>

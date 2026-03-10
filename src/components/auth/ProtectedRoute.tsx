@@ -15,7 +15,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
 
   if (!loading && !user) {
     if (authBase) {
-      window.location.href = authBase + '/login';
+      window.location.href = authBase + '/';
       return null;
     }
     return <Navigate to={getLoginPath()} replace />;
