@@ -26,7 +26,7 @@ export function AuthLink({ to, className, children, onClick }: AuthLinkProps) {
   const base = getAuthBaseUrl();
   const hovered = useRef(false);
   if (base) {
-    const path = (to === '/login' || to === '/register') ? '/' : to;
+    const path = to === '/login' ? '/' : to;
     return (
       <a
         href={base + path}
