@@ -16,4 +16,5 @@ a, button {
 
 @media (max-width: 767px) {
   html { font-size: 15px; }
+  .cookie-banner-reserved { padding-bottom: 280px; }
 }

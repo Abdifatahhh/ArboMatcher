@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { getMaintenanceSettings, hasMaintenanceBypass } from '../lib/maintenance';
 import MaintenancePage from '../pages/MaintenancePage';
 
-const MIN_SHOW_DELAY_MS = 400;
+const MIN_SHOW_DELAY_MS = 200;
 
 interface MaintenanceGateProps {
   children: React.ReactNode;
@@ -36,7 +36,8 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
 
   const isAdmin = profile?.role === 'ADMIN';
   const showApp = !settings.enabled || isAdmin || bypass;
-  const ready = minDelayPassed && !authLoading;
+  const mustWaitForAuth = settings.enabled && !bypass;
+  const ready = minDelayPassed && (!mustWaitForAuth || !authLoading);
 
   const handleBypass = useCallback(() => {
     setBypass(true);
