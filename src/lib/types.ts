@@ -50,6 +50,11 @@ export interface Employer {
   sector: string | null;
   billing_address: string | null;
   billing_email: string | null;
+  vestigingsnummer: string | null;
+  kvk_type: string | null;
+  kvk_actief: boolean | null;
+  rechtsvorm: string | null;
+  statutaire_naam: string | null;
   created_at: string;
   updated_at: string;
 }

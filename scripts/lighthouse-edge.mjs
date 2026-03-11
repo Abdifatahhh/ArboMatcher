@@ -1,5 +1,10 @@
 import { spawn } from 'child_process';
 import { existsSync } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(__dirname, '..');
 
 const edgePaths = [
   process.env.CHROME_PATH,
@@ -19,8 +24,11 @@ if (!edgePath || !existsSync(edgePath)) {
 }
 
 const args = process.argv.slice(2);
-const child = spawn('npx', ['lighthouse', ...args], {
+const cliPath = path.join(root, 'node_modules', 'lighthouse', 'cli', 'index.js');
+const nodeBin = process.execPath;
+const child = spawn(nodeBin, [cliPath, ...args], {
   stdio: 'inherit',
   env: { ...process.env, CHROME_PATH: edgePath },
+  cwd: root,
 });
 child.on('exit', (code) => process.exit(code ?? 0));

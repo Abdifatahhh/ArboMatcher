@@ -100,8 +100,18 @@ export default function Onboarding() {
 
   const showRoleStep = profile?.role === 'onboarding';
 
+  const [companySearchQuery, setCompanySearchQuery] = useState('');
+  const [kvkSearchResults, setKvkSearchResults] = useState<KvkSearchItem[]>([]);
   const [companyName, setCompanyName] = useState('');
   const [kvk, setKvk] = useState('');
+  const [billingAddress, setBillingAddress] = useState('');
+  const [website, setWebsite] = useState('');
+  const [sector, setSector] = useState('');
+  const [vestigingsnummer, setVestigingsnummer] = useState('');
+  const [kvkType, setKvkType] = useState('');
+  const [kvkActief, setKvkActief] = useState('');
+  const [rechtsvorm, setRechtsvorm] = useState('');
+  const [statutaireNaam, setStatutaireNaam] = useState('');
   const [opdrachtgeverSaving, setOpdrachtgeverSaving] = useState(false);
   const [kvkLoading, setKvkLoading] = useState(false);
 
@@ -154,31 +164,79 @@ export default function Onboarding() {
     setProfession(null);
     setBigNumber('');
     setRcmNumber('');
+    setCompanySearchQuery('');
+    setKvkSearchResults([]);
     setCompanyName('');
     setKvk('');
+    setBillingAddress('');
+    setWebsite('');
+    setSector('');
+    setVestigingsnummer('');
+    setKvkType('');
+    setKvkActief('');
+    setRechtsvorm('');
+    setStatutaireNaam('');
     await refreshProfile();
     setBackToRoleLoading(false);
   };
 
-  const fetchBedrijfsnaamByKvk = async () => {
-    const kvkDigits = kvk.replace(/\D/g, '');
-    if (kvkDigits.length !== 8) return;
+  type KvkSearchItem = {
+    kvkNummer?: string;
+    vestigingsnummer?: string;
+    naam?: string;
+    straatnaam?: string;
+    huisnummer?: string;
+    huisletter?: string;
+    postcode?: string;
+    plaats?: string;
+    actief?: string;
+    type?: string;
+    websites?: string[];
+    sector?: string;
+    statutaireNaam?: string;
+    handelsnamen?: string[];
+    rechtsvorm?: string;
+  };
+
+  const searchKvk = async () => {
+    const trimmed = companySearchQuery.trim();
+    const kvkDigits = trimmed.replace(/\D/g, '');
+    if (!trimmed) return;
     setError('');
     setKvkLoading(true);
+    setKvkSearchResults([]);
     try {
-      const { data, error: fnError } = await supabase.functions.invoke('kvk-search', {
-        body: { kvkNummer: kvkDigits },
-      });
+      const body = kvkDigits.length === 8 ? { kvkNummer: kvkDigits } : { q: trimmed };
+      const { data, error: fnError } = await supabase.functions.invoke('kvk-search', { body });
       if (fnError) throw fnError;
-      const resultaten = (data as { resultaten?: { naam: string }[] })?.resultaten;
-      const naam = resultaten?.[0]?.naam?.trim();
-      if (naam) setCompanyName(naam);
-      else setError('Geen bedrijf gevonden voor dit KvK-nummer. De testomgeving van KVK heeft beperkte gegevens; voor echte nummers is een productie API-key nodig. Vul de bedrijfsnaam handmatig in.');
+      const resultaten = (data as { resultaten?: KvkSearchItem[] })?.resultaten ?? [];
+      setKvkSearchResults(resultaten);
+      if (resultaten.length === 0) setError('Geen bedrijven gevonden. Probeer een andere zoekterm of KvK-nummer.');
     } catch {
-      setError('Bedrijfsnaam ophalen mislukt. Vul de bedrijfsnaam handmatig in.');
+      setError('Zoeken mislukt. Probeer het later opnieuw.');
     } finally {
       setKvkLoading(false);
     }
+  };
+
+  const applyKvkResult = (item: KvkSearchItem) => {
+    const naam = item.naam?.trim() ?? '';
+    setCompanyName(naam);
+    setKvk(item.kvkNummer ?? '');
+    const adresParts = [
+      [item.straatnaam, item.huisnummer, item.huisletter].filter(Boolean).join(' '),
+      [item.postcode, item.plaats].filter(Boolean).join(' '),
+    ].filter(Boolean);
+    setBillingAddress(adresParts.join(', '));
+    setVestigingsnummer(item.vestigingsnummer ?? '');
+    setKvkType(item.type ?? '');
+    setKvkActief(item.actief ?? '');
+    setRechtsvorm(item.rechtsvorm ?? '');
+    setStatutaireNaam(item.statutaireNaam ?? '');
+    setWebsite(Array.isArray(item.websites) && item.websites[0] ? item.websites[0] : '');
+    setSector(item.sector ?? '');
+    setKvkSearchResults([]);
+    setCompanySearchQuery('');
   };
 
   const saveOpdrachtgeverAndComplete = async () => {
@@ -196,8 +254,20 @@ export default function Onboarding() {
     setError('');
     setOpdrachtgeverSaving(true);
     const { data: existing } = await supabase.from('employers').select('id').eq('user_id', user.id).maybeSingle();
+    const employerPayload = {
+      company_name: name,
+      kvk: kvkDigits,
+      billing_address: billingAddress.trim() || null,
+      website: website.trim() || null,
+      sector: sector.trim() || null,
+      vestigingsnummer: vestigingsnummer.trim() || null,
+      kvk_type: kvkType.trim() || null,
+      kvk_actief: kvkActief === 'Ja' ? true : kvkActief === 'Nee' ? false : null,
+      rechtsvorm: rechtsvorm.trim() || null,
+      statutaire_naam: statutaireNaam.trim() || null,
+    };
     if (existing) {
-      const { error: upErr } = await supabase.from('employers').update({ company_name: name, kvk: kvkDigits }).eq('id', existing.id);
+      const { error: upErr } = await supabase.from('employers').update(employerPayload).eq('id', existing.id);
       if (upErr) {
         setError(upErr.message);
         setOpdrachtgeverSaving(false);
@@ -206,8 +276,7 @@ export default function Onboarding() {
     } else {
       const { error: inErr } = await supabase.from('employers').insert({
         user_id: user.id,
-        company_name: name,
-        kvk: kvkDigits,
+        ...employerPayload,
       });
       if (inErr) {
         setError(inErr.message);
@@ -622,38 +691,57 @@ export default function Onboarding() {
           <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
             {backToRoleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}← Terug naar rolkeuze
           </button>
-          <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Bedrijfsgegevens</h1>
-          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Vul je KvK-nummer in; de bedrijfsnaam wordt automatisch opgehaald.</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Registreer je bedrijf</h1>
+          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Zoek je bedrijf op naam of KvK-nummer. Na het kiezen worden de gegevens automatisch ingevuld en opgeslagen.</p>
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
               <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
               <p className="text-sm text-red-800">{error}</p>
             </div>
           )}
-          <div className="space-y-4 mb-8">
-            <div>
-              <label htmlFor="kvk" className="block text-sm font-medium text-gray-700 mb-2">KvK-nummer * (8 cijfers)</label>
-              <div className="flex gap-2">
+          <div className="mb-6">
+            <label htmlFor="companySearch" className="block text-sm font-medium text-gray-700 mb-2">Zoek bedrijf op naam of KvK-nummer</label>
+            <div className="flex gap-2">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                 <input
-                  id="kvk"
+                  id="companySearch"
                   type="text"
-                  inputMode="numeric"
-                  value={kvk}
-                  onChange={(e) => { setKvk(e.target.value.replace(/\D/g, '').slice(0, 8)); setError(''); }}
-                  onBlur={() => kvk.replace(/\D/g, '').length === 8 && fetchBedrijfsnaamByKvk()}
-                  className="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                  placeholder="12345678"
+                  value={companySearchQuery}
+                  onChange={(e) => { setCompanySearchQuery(e.target.value); setError(''); }}
+                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), searchKvk())}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                  placeholder="Bedrijf"
                 />
-                <button
-                  type="button"
-                  disabled={kvk.replace(/\D/g, '').length !== 8 || kvkLoading}
-                  onClick={fetchBedrijfsnaamByKvk}
-                  className="px-4 py-3 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
-                >
-                  {kvkLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Ophalen'}
-                </button>
               </div>
+              <button
+                type="button"
+                disabled={!companySearchQuery.trim() || kvkLoading}
+                onClick={searchKvk}
+                className="px-4 py-3 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              >
+                {kvkLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
+              </button>
             </div>
+          </div>
+          {kvkSearchResults.length > 0 && (
+            <div className="mb-6 max-h-56 overflow-y-auto space-y-1.5 rounded-xl border border-gray-200 bg-gray-50/50 p-2">
+              <p className="text-xs font-medium text-gray-500 mb-2 px-2">Klik op je bedrijf om gegevens in te vullen</p>
+              {kvkSearchResults.map((item) => (
+                <button
+                  key={`${item.kvkNummer ?? ''}-${item.vestigingsnummer ?? ''}-${item.naam ?? ''}`}
+                  type="button"
+                  onClick={() => applyKvkResult(item)}
+                  className="w-full text-left px-4 py-3 bg-white border border-gray-200 rounded-lg hover:bg-emerald-50 hover:border-[#4FA151] transition text-sm"
+                >
+                  <span className="font-medium text-[#0F172A]">{item.naam || 'Onbekend'}</span>
+                  {item.kvkNummer && <span className="text-gray-500 ml-2">KvK {item.kvkNummer}</span>}
+                  {item.plaats && <span className="text-gray-400 ml-2">• {item.plaats}</span>}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="space-y-4 mb-8">
             <div>
               <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">Bedrijfsnaam *</label>
               <input
@@ -662,9 +750,54 @@ export default function Onboarding() {
                 value={companyName}
                 onChange={(e) => { setCompanyName(e.target.value); setError(''); }}
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                placeholder="Wordt opgehaald via KvK of vul handmatig in"
+                placeholder="Kies een bedrijf uit de zoekresultaten of vul handmatig in"
               />
             </div>
+            <div>
+              <label htmlFor="billingAddress" className="block text-sm font-medium text-gray-700 mb-2">Adres (facturatie)</label>
+              <input
+                id="billingAddress"
+                type="text"
+                value={billingAddress}
+                onChange={(e) => setBillingAddress(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                placeholder="Wordt ingevuld na keuze uit zoekresultaat"
+              />
+            </div>
+            <div>
+              <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-2">Website</label>
+              <input
+                id="website"
+                type="url"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                placeholder="Optioneel"
+              />
+            </div>
+            <div>
+              <label htmlFor="sector" className="block text-sm font-medium text-gray-700 mb-2">Sector (SBI)</label>
+              <input
+                id="sector"
+                type="text"
+                value={sector}
+                onChange={(e) => setSector(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                placeholder="Optioneel"
+              />
+            </div>
+            {(vestigingsnummer || kvkType || kvkActief || rechtsvorm || statutaireNaam) && (
+              <div className="pt-2 border-t border-gray-100">
+                <p className="text-xs font-medium text-gray-500 mb-2">Extra KvK-gegevens</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600">
+                  {vestigingsnummer && <span>Vestigingsnr: {vestigingsnummer}</span>}
+                  {kvkType && <span>Type: {kvkType}</span>}
+                  {kvkActief && <span>Actief: {kvkActief}</span>}
+                  {rechtsvorm && <span>Rechtsvorm: {rechtsvorm}</span>}
+                  {statutaireNaam && <span className="sm:col-span-2">Statutair: {statutaireNaam}</span>}
+                </div>
+              </div>
+            )}
           </div>
           <button
             type="button"

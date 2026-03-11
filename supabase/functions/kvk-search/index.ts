@@ -7,116 +7,189 @@ const corsHeaders = {
 };
 
 const KVK_TEST_API_KEY = "l7xx1f2691f2520d487b902f4e0b57a0b197";
-const KVK_API_BASE_DEFAULT = "https://api.kvk.nl/test/api/v2";
-const KVK_API_BASE_PRODUCTION = "https://api.kvk.nl/api/v2";
+const ZOEKEN_V2_BASE_TEST = "https://api.kvk.nl/test/api/v2";
+const ZOEKEN_V2_BASE_PROD = "https://api.kvk.nl/api/v2";
+const BASEPROFIEL_V1_BASE_TEST = "https://api.kvk.nl/test/api/v1";
+const BASEPROFIEL_V1_BASE_PROD = "https://api.kvk.nl/api/v1";
 
-interface KvkSearchResult {
+interface BinnenlandsAdres {
+  type?: string;
+  straatnaam?: string;
+  huisnummer?: number;
+  huisletter?: string;
+  postcode?: string;
+  plaats?: string;
+}
+
+interface KvkZoekenResult {
   kvkNummer: string;
   vestigingsnummer?: string;
   naam: string;
-  adres?: {
-    binnenlandsAdres?: {
-      type: string;
-      straatnaam?: string;
-      huisnummer?: number;
-      postcode?: string;
-      plaats?: string;
-    };
-  };
-  type: string;
+  adres?: { binnenlandsAdres?: BinnenlandsAdres };
+  type?: string;
+  actief?: string;
 }
 
-interface KvkSearchResponse {
-  pagina: number;
-  resultatenPerPagina: number;
+interface KvkZoekenResponse {
+  resultaten: KvkZoekenResult[];
   totaal: number;
-  resultaten: KvkSearchResult[];
+}
+
+interface SbiItem {
+  sbiCode?: string;
+  sbiOmschrijving?: string;
+  indHoofdactiviteit?: string;
+}
+
+interface KvkBasisprofielHoofdvestiging {
+  vestigingsnummer?: string;
+  eersteHandelsnaam?: string;
+  websites?: string[];
+  sbiActiviteiten?: SbiItem[];
+  adressen?: Array<{ volledigAdres?: string; straatnaam?: string; huisnummer?: string; huisletter?: string; postcode?: string; plaats?: string }>;
+}
+
+interface KvkBasisprofielEigenaar {
+  rechtsvorm?: string;
+  uitgebreideRechtsvorm?: string;
+}
+
+interface KvkBasisprofielResponse {
+  kvkNummer?: string;
+  naam?: string;
+  statutaireNaam?: string;
+  handelsnamen?: string[];
+  hoofdvestiging?: KvkBasisprofielHoofdvestiging;
+  eigenaar?: KvkBasisprofielEigenaar;
+}
+
+function formatZoekenResult(r: KvkZoekenResult) {
+  const adres = r.adres?.binnenlandsAdres;
+  return {
+    kvkNummer: r.kvkNummer,
+    vestigingsnummer: r.vestigingsnummer ?? "",
+    naam: r.naam ?? "",
+    straatnaam: adres?.straatnaam ?? "",
+    huisnummer: adres?.huisnummer != null ? String(adres.huisnummer) : "",
+    huisletter: adres?.huisletter ?? "",
+    postcode: adres?.postcode ?? "",
+    plaats: adres?.plaats ?? "",
+    actief: r.actief ?? "",
+    type: r.type ?? "",
+  };
+}
+
+async function fetchBasisprofiel(
+  kvkNummer: string,
+  baseUrl: string,
+  apiKey: string
+): Promise<Partial<{
+  websites: string[];
+  sbiActiviteiten: SbiItem[];
+  statutaireNaam: string;
+  handelsnamen: string[];
+  rechtsvorm: string;
+  sector: string;
+}>> {
+  const url = `${baseUrl}/basisprofielen?kvkNummer=${encodeURIComponent(kvkNummer)}`;
+  const res = await fetch(url, {
+    headers: { apikey: apiKey, Accept: "application/json" },
+  });
+  if (!res.ok) return {};
+  const data: KvkBasisprofielResponse = await res.json();
+  const hoofd = data.hoofdvestiging;
+  const eigenaar = data.eigenaar;
+  const sbiList = hoofd?.sbiActiviteiten ?? data.sbiActiviteiten ?? [];
+  const hoofdsbi = sbiList.find((s) => s.indHoofdactiviteit === "Ja") ?? sbiList[0];
+  return {
+    websites: hoofd?.websites ?? [],
+    sbiActiviteiten: sbiList,
+    statutaireNaam: data.statutaireNaam ?? "",
+    handelsnamen: data.handelsnamen ?? [],
+    rechtsvorm: eigenaar?.rechtsvorm ?? eigenaar?.uitgebreideRechtsvorm ?? "",
+    sector: hoofdsbi?.sbiOmschrijving ?? hoofdsbi?.sbiCode ?? "",
+  };
 }
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, {
-      status: 200,
-      headers: corsHeaders,
-    });
+    return new Response(null, { status: 200, headers: corsHeaders });
   }
 
   try {
-    const url = new URL(req.url);
-    let query = url.searchParams.get("q") || "";
-    let kvkNummer = url.searchParams.get("kvkNummer") || "";
+    let query = "";
+    let kvkNummer = "";
     if (req.method === "POST") {
-      const body = await req.json().catch(() => ({})) as { q?: string; kvkNummer?: string };
-      query = body.q ?? query;
-      kvkNummer = body.kvkNummer ?? kvkNummer;
+      const body = (await req.json().catch(() => ({}))) as { q?: string; kvkNummer?: string };
+      query = body.q ?? "";
+      kvkNummer = String(body.kvkNummer ?? "").replace(/\D/g, "");
+    } else {
+      const url = new URL(req.url);
+      query = url.searchParams.get("q") ?? "";
+      kvkNummer = (url.searchParams.get("kvkNummer") ?? "").replace(/\D/g, "");
     }
 
-    if (!query && !kvkNummer) {
+    if (!query && kvkNummer.length !== 8) {
       return new Response(
-        JSON.stringify({ error: "Voer een zoekterm of KVK-nummer in" }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
+        JSON.stringify({ error: "Voer een zoekterm of geldig KvK-nummer (8 cijfers) in" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const apiKey = Deno.env.get("KVK_API_KEY") || KVK_TEST_API_KEY;
+    const apiKey = Deno.env.get("KVK_API_KEY") ?? KVK_TEST_API_KEY;
     const useProduction = Deno.env.get("KVK_API_BASE") === "production" || !!Deno.env.get("KVK_API_KEY");
-    const base = useProduction ? KVK_API_BASE_PRODUCTION : KVK_API_BASE_DEFAULT;
-    let searchUrl = `${base}/zoeken?`;
+    const zoekenBase = useProduction ? ZOEKEN_V2_BASE_PROD : ZOEKEN_V2_BASE_TEST;
+    const basisprofielBase = useProduction ? BASEPROFIEL_V1_BASE_PROD : BASEPROFIEL_V1_BASE_TEST;
 
-    if (kvkNummer) {
-      searchUrl += `kvkNummer=${encodeURIComponent(kvkNummer)}`;
-    } else if (query) {
-      searchUrl += `naam=${encodeURIComponent(query)}`;
-    }
+    const searchUrl =
+      kvkNummer.length === 8
+        ? `${zoekenBase}/zoeken?kvkNummer=${encodeURIComponent(kvkNummer)}`
+        : `${zoekenBase}/zoeken?naam=${encodeURIComponent(query)}`;
 
-    const response = await fetch(searchUrl, {
-      headers: {
-        "apikey": apiKey,
-        "Accept": "application/json",
-      },
+    const searchRes = await fetch(searchUrl, {
+      headers: { apikey: apiKey, Accept: "application/json" },
     });
 
-    if (!response.ok) {
-      const empty = { resultaten: [], totaal: 0 };
-      return new Response(JSON.stringify(empty), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (!searchRes.ok) {
+      return new Response(
+        JSON.stringify({ resultaten: [], totaal: 0 }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
-    const data: KvkSearchResponse = await response.json();
+    const searchData: KvkZoekenResponse = await searchRes.json();
+    const resultaten = searchData.resultaten ?? [];
 
-    const formattedResults = data.resultaten.map((result) => ({
-      kvkNummer: result.kvkNummer,
-      vestigingsnummer: result.vestigingsnummer,
-      naam: result.naam,
-      straatnaam: result.adres?.binnenlandsAdres?.straatnaam || "",
-      huisnummer: result.adres?.binnenlandsAdres?.huisnummer || "",
-      postcode: result.adres?.binnenlandsAdres?.postcode || "",
-      plaats: result.adres?.binnenlandsAdres?.plaats || "",
-      type: result.type,
-    }));
+    const withBasisprofiel = kvkNummer.length === 8 && resultaten.length > 0;
+
+    const out = await Promise.all(
+      resultaten.slice(0, 5).map(async (r) => {
+        const zoeken = formatZoekenResult(r);
+        if (!withBasisprofiel) {
+          return zoeken;
+        }
+        const extra = await fetchBasisprofiel(r.kvkNummer, basisprofielBase, apiKey);
+        return {
+          ...zoeken,
+          websites: extra.websites ?? [],
+          sbiActiviteiten: extra.sbiActiviteiten ?? [],
+          statutaireNaam: extra.statutaireNaam ?? "",
+          handelsnamen: extra.handelsnamen ?? [],
+          rechtsvorm: extra.rechtsvorm ?? "",
+          sector: extra.sector ?? "",
+        };
+      })
+    );
 
     return new Response(
-      JSON.stringify({
-        resultaten: formattedResults,
-        totaal: data.totaal,
-      }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      JSON.stringify({ resultaten: out, totaal: searchData.totaal ?? 0 }),
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
-  } catch (error) {
-    console.error("KVK search error:", error);
+  } catch (err) {
+    console.error("KVK search error:", err);
     return new Response(
       JSON.stringify({ resultaten: [], totaal: 0 }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
