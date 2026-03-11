@@ -17,9 +17,15 @@ export function CookieBanner() {
 
   const save = (value: Consent) => {
     localStorage.setItem(STORAGE_KEY, value ?? 'necessary');
+    document.body.classList.remove('cookie-banner-reserved');
     setVisible(false);
     setShowDetails(false);
   };
+
+  useEffect(() => {
+    if (!visible) document.body.classList.remove('cookie-banner-reserved');
+    else document.body.classList.add('cookie-banner-reserved');
+  }, [visible]);
 
   if (!visible) return null;
 

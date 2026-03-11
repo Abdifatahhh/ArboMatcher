@@ -105,12 +105,14 @@ export default function Home() {
         </div>
       </section>
 
-      {showBelowFold && (
-        <Suspense fallback={null}>
-          <HowItWorksSectionOpdrachtgevers />
-          <HowItWorksSection />
-        </Suspense>
-      )}
+      <div className="min-h-[720px]" aria-hidden={!showBelowFold}>
+        {showBelowFold && (
+          <Suspense fallback={null}>
+            <HowItWorksSectionOpdrachtgevers />
+            <HowItWorksSection />
+          </Suspense>
+        )}
+      </div>
 
       <section className="py-24 bg-gradient-to-b from-[#F4FAF4] to-[#FAFDFA] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
