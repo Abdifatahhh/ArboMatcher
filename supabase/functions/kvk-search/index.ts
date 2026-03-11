@@ -151,8 +151,9 @@ Deno.serve(async (req: Request) => {
     });
 
     if (!searchRes.ok) {
+      const errMsg = searchRes.status === 401 ? "KVK API-key ongeldig of niet gezet. Zet KVK_API_KEY in Supabase secrets." : "KVK API gaf geen resultaat. Probeer later opnieuw.";
       return new Response(
-        JSON.stringify({ resultaten: [], totaal: 0 }),
+        JSON.stringify({ resultaten: [], totaal: 0, error: errMsg }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -187,8 +188,9 @@ Deno.serve(async (req: Request) => {
     );
   } catch (err) {
     console.error("KVK search error:", err);
+    const errMsg = err instanceof Error ? err.message : "KVK-service tijdelijk niet bereikbaar.";
     return new Response(
-      JSON.stringify({ resultaten: [], totaal: 0 }),
+      JSON.stringify({ resultaten: [], totaal: 0, error: errMsg }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

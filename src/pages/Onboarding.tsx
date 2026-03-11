@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -198,8 +198,10 @@ export default function Onboarding() {
     rechtsvorm?: string;
   };
 
-  const searchKvk = async () => {
-    const trimmed = companySearchQuery.trim();
+  const kvkSearchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const searchKvk = async (queryOverride?: string) => {
+    const trimmed = (queryOverride !== undefined ? queryOverride : companySearchQuery).trim();
     const kvkDigits = trimmed.replace(/\D/g, '');
     if (!trimmed) return;
     setError('');
@@ -208,16 +210,46 @@ export default function Onboarding() {
     try {
       const body = kvkDigits.length === 8 ? { kvkNummer: kvkDigits } : { q: trimmed };
       const { data, error: fnError } = await supabase.functions.invoke('kvk-search', { body });
-      if (fnError) throw fnError;
-      const resultaten = (data as { resultaten?: KvkSearchItem[] })?.resultaten ?? [];
+      const payload = data as { resultaten?: KvkSearchItem[]; error?: string } | null;
+      if (fnError) {
+        const msg = typeof fnError.message === 'string' ? fnError.message : 'Zoeken mislukt.';
+        if (msg.includes('fetch') || msg.includes('Failed') || msg.includes('404') || msg.includes('500')) {
+          setError('KvK-zoekfunctie niet bereikbaar. Controleer of de Edge Function "kvk-search" is gedeployed (supabase functions deploy kvk-search).');
+        } else {
+          setError(msg);
+        }
+        return;
+      }
+      if (payload?.error) {
+        setError(payload.error);
+        return;
+      }
+      const resultaten = payload?.resultaten ?? [];
       setKvkSearchResults(resultaten);
-      if (resultaten.length === 0) setError('Geen bedrijven gevonden. Probeer een andere zoekterm of KvK-nummer.');
-    } catch {
-      setError('Zoeken mislukt. Probeer het later opnieuw.');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Zoeken mislukt. Probeer het later opnieuw.';
+      setError(msg);
     } finally {
       setKvkLoading(false);
     }
   };
+
+  useEffect(() => {
+    const trimmed = companySearchQuery.trim();
+    if (trimmed.length < 3) {
+      setKvkSearchResults([]);
+      setError((e) => (e && e.includes('Geen bedrijven gevonden') ? '' : e));
+      return;
+    }
+    if (kvkSearchDebounceRef.current) clearTimeout(kvkSearchDebounceRef.current);
+    kvkSearchDebounceRef.current = setTimeout(() => {
+      kvkSearchDebounceRef.current = null;
+      searchKvk(trimmed);
+    }, 350);
+    return () => {
+      if (kvkSearchDebounceRef.current) clearTimeout(kvkSearchDebounceRef.current);
+    };
+  }, [companySearchQuery]);
 
   const applyKvkResult = (item: KvkSearchItem) => {
     const naam = item.naam?.trim() ?? '';
@@ -692,7 +724,7 @@ export default function Onboarding() {
             {backToRoleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}← Terug naar rolkeuze
           </button>
           <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Registreer je bedrijf</h1>
-          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Zoek je bedrijf op naam of KvK-nummer. Na het kiezen worden de gegevens automatisch ingevuld en opgeslagen.</p>
+          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Zoek je bedrijf op naam of KvK-nummer, kies je bedrijf en voltooi de registratie. Adres en overige gegevens kun je later op je dashboard invullen.</p>
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
               <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
@@ -726,7 +758,7 @@ export default function Onboarding() {
           </div>
           {kvkSearchResults.length > 0 && (
             <div className="mb-6 max-h-56 overflow-y-auto space-y-1.5 rounded-xl border border-gray-200 bg-gray-50/50 p-2">
-              <p className="text-xs font-medium text-gray-500 mb-2 px-2">Klik op je bedrijf om gegevens in te vullen</p>
+              <p className="text-xs font-medium text-gray-500 mb-2 px-2">Klik op je bedrijf</p>
               {kvkSearchResults.map((item) => (
                 <button
                   key={`${item.kvkNummer ?? ''}-${item.vestigingsnummer ?? ''}-${item.naam ?? ''}`}
@@ -741,64 +773,11 @@ export default function Onboarding() {
               ))}
             </div>
           )}
-          <div className="space-y-4 mb-8">
-            <div>
-              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">Bedrijfsnaam *</label>
-              <input
-                id="companyName"
-                type="text"
-                value={companyName}
-                onChange={(e) => { setCompanyName(e.target.value); setError(''); }}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                placeholder="Kies een bedrijf uit de zoekresultaten of vul handmatig in"
-              />
-            </div>
-            <div>
-              <label htmlFor="billingAddress" className="block text-sm font-medium text-gray-700 mb-2">Adres (facturatie)</label>
-              <input
-                id="billingAddress"
-                type="text"
-                value={billingAddress}
-                onChange={(e) => setBillingAddress(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                placeholder="Wordt ingevuld na keuze uit zoekresultaat"
-              />
-            </div>
-            <div>
-              <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-2">Website</label>
-              <input
-                id="website"
-                type="url"
-                value={website}
-                onChange={(e) => setWebsite(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                placeholder="Optioneel"
-              />
-            </div>
-            <div>
-              <label htmlFor="sector" className="block text-sm font-medium text-gray-700 mb-2">Sector (SBI)</label>
-              <input
-                id="sector"
-                type="text"
-                value={sector}
-                onChange={(e) => setSector(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                placeholder="Optioneel"
-              />
-            </div>
-            {(vestigingsnummer || kvkType || kvkActief || rechtsvorm || statutaireNaam) && (
-              <div className="pt-2 border-t border-gray-100">
-                <p className="text-xs font-medium text-gray-500 mb-2">Extra KvK-gegevens</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600">
-                  {vestigingsnummer && <span>Vestigingsnr: {vestigingsnummer}</span>}
-                  {kvkType && <span>Type: {kvkType}</span>}
-                  {kvkActief && <span>Actief: {kvkActief}</span>}
-                  {rechtsvorm && <span>Rechtsvorm: {rechtsvorm}</span>}
-                  {statutaireNaam && <span className="sm:col-span-2">Statutair: {statutaireNaam}</span>}
-                </div>
-              </div>
-            )}
-          </div>
+          {companyName && kvk.replace(/\D/g, '').length === 8 && (
+            <p className="mb-6 text-sm text-gray-600">
+              Gekozen: <strong>{companyName}</strong> (KvK {kvk}). Je kunt adres en overige gegevens later op je dashboard invullen.
+            </p>
+          )}
           <button
             type="button"
             disabled={opdrachtgeverSaving || !companyName.trim() || kvk.replace(/\D/g, '').length !== 8}
