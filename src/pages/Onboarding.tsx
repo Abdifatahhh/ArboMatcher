@@ -213,8 +213,11 @@ export default function Onboarding() {
       const payload = data as { resultaten?: KvkSearchItem[]; error?: string } | null;
       if (fnError) {
         const msg = typeof fnError.message === 'string' ? fnError.message : 'Zoeken mislukt.';
-        if (msg.includes('fetch') || msg.includes('Failed') || msg.includes('404') || msg.includes('500')) {
-          setError('KvK-zoekfunctie niet bereikbaar. Controleer of de Edge Function "kvk-search" is gedeployed (supabase functions deploy kvk-search).');
+        const bodyError = payload?.error;
+        if (bodyError) {
+          setError(bodyError);
+        } else if (msg.includes('fetch') || msg.includes('Failed') || msg.includes('404') || msg.includes('500') || msg.includes('non-2xx') || msg.includes('Edge Function')) {
+          setError('KvK-zoekfunctie niet bereikbaar. Zet de Edge Function "kvk-search" live (supabase functions deploy kvk-search) en controleer KVK_API_KEY in Supabase secrets.');
         } else {
           setError(msg);
         }
