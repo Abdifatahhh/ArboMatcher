@@ -196,7 +196,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               </Link>
               <Link to={getProfilePath()} className="p-1.5 rounded-full hover:bg-gray-100 text-[#0F172A] flex items-center justify-center w-9 h-9 bg-[#F4FAF4] border border-[#4FA151]/20">
                 {profile?.avatar_url ? (
-                  <img src={profile.avatar_url} alt="" className="w-6 h-6 rounded-full object-cover" />
+                  <img src={profile.avatar_url} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover" />
                 ) : (
                   <User className="w-5 h-5 text-[#4FA151]" />
                 )}

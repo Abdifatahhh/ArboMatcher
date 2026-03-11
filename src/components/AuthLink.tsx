@@ -17,6 +17,7 @@ interface AuthLinkProps {
 
 function prefetchPortal() {
   if (document.querySelector('link[data-portal-prefetch]')) return;
+  if (document.readyState !== 'complete') return;
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = PORTAL_URL;

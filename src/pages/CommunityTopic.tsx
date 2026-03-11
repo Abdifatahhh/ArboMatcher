@@ -68,6 +68,8 @@ export default function CommunityTopic() {
             <img
               src={topic.imageUrl}
               alt={topic.imageAlt || topic.title}
+              width={1200}
+              height={630}
               className="w-full h-auto object-cover max-h-[420px]"
             />
           </figure>

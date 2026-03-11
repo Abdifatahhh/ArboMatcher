@@ -39,3 +39,7 @@ coverage
 .bolt
 supabase/.temp
 vite.config.ts.timestamp*
+
+# Lighthouse reports (lokaal)
+lighthouse-*.html
+lighthouse-*.json

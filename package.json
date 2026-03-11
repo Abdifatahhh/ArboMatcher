@@ -11,6 +11,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "lighthouse:mobile": "lighthouse https://arbomatcher.nl --preset=perf --form-factor=mobile --throttling.cpuSlowdownMultiplier=4 --output=html --output-path=./lighthouse-mobile.html",
+    "lighthouse:desktop": "lighthouse https://arbomatcher.nl --preset=perf --form-factor=desktop --output=html --output-path=./lighthouse-desktop.html",
+    "lighthouse:mobile:json": "lighthouse https://arbomatcher.nl --preset=perf --form-factor=mobile --throttling.cpuSlowdownMultiplier=4 --output=json --output-path=./lighthouse-mobile.json --quiet",
+    "lighthouse:desktop:json": "lighthouse https://arbomatcher.nl --preset=perf --form-factor=desktop --output=json --output-path=./lighthouse-desktop.json --quiet",
+    "lighthouse:mobile:edge": "node scripts/lighthouse-edge.mjs https://arbomatcher.nl --preset=perf --form-factor=mobile --throttling.cpuSlowdownMultiplier=4 --output=html --output-path=./lighthouse-mobile.html",
+    "lighthouse:desktop:edge": "node scripts/lighthouse-edge.mjs https://arbomatcher.nl --preset=perf --form-factor=desktop --output=html --output-path=./lighthouse-desktop.html",
     "supabase:login": "supabase login",
     "supabase:link": "supabase link --project-ref apizxgqpdledjutgitpw",
     "supabase:deploy": "supabase functions deploy big-check",
@@ -24,6 +30,7 @@
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
+    "lighthouse": "^13.0.0",
     "supabase": "^2.19.0",
     "@eslint/js": "^9.9.1",
     "@types/react": "^18.3.5",

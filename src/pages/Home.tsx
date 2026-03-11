@@ -41,7 +41,7 @@ export default function Home() {
 
   return (
     <div className="font-['Inter']">
-      <section className="relative bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white pt-32 pb-32 sm:pt-40 sm:pb-40 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white pt-32 pb-32 sm:pt-40 sm:pb-40 overflow-hidden [contain:layout]">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 right-10 w-72 h-72 bg-[#4FA151]/10 rounded-full blur-3xl" />
           <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#1E293B]/50 rounded-full blur-3xl" />

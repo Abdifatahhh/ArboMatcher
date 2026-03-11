@@ -1,0 +1,76 @@
+name: Lighthouse
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser 2>/dev/null || sudo apt-get install -y chromium
+          echo "CHROME_PATH=$(which chromium-browser 2>/dev/null || which chromium)" >> $GITHUB_ENV
+
+      - name: Wait for deploy
+        run: sleep 90
+
+      - name: Run Lighthouse (mobile)
+        run: |
+          npx lighthouse https://arbomatcher.nl \
+            --preset=perf \
+            --form-factor=mobile \
+            --throttling.cpuSlowdownMultiplier=4 \
+            --output=json \
+            --output=html \
+            --output-path=./lighthouse-mobile \
+            --chrome-flags="--headless --no-sandbox --disable-gpu" \
+            --quiet
+        continue-on-error: true
+
+      - name: Run Lighthouse (desktop)
+        run: |
+          npx lighthouse https://arbomatcher.nl \
+            --preset=perf \
+            --form-factor=desktop \
+            --output=json \
+            --output=html \
+            --output-path=./lighthouse-desktop \
+            --chrome-flags="--headless --no-sandbox --disable-gpu" \
+            --quiet
+        continue-on-error: true
+
+      - name: Extract scores
+        run: |
+          if [ -f lighthouse-mobile.report.json ]; then
+            echo "Mobile performance: $(node -e "const r=require('./lighthouse-mobile.report.json'); console.log(Math.round((r.categories?.performance?.score ?? 0)*100))")"
+          fi
+          if [ -f lighthouse-desktop.report.json ]; then
+            echo "Desktop performance: $(node -e "const r=require('./lighthouse-desktop.report.json'); console.log(Math.round((r.categories?.performance?.score ?? 0)*100))")"
+          fi
+
+      - name: Upload Lighthouse reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: |
+            lighthouse-mobile.report.html
+            lighthouse-mobile.report.json
+            lighthouse-desktop.report.html
+            lighthouse-desktop.report.json
+          if-no-files-found: ignore

@@ -68,6 +68,8 @@ export default function CommunityArticle() {
             <img
               src={article.imageUrl}
               alt={article.imageAlt || article.title}
+              width={1200}
+              height={630}
               className="w-full h-auto object-cover max-h-[420px]"
             />
           </figure>
