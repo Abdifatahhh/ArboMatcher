@@ -1,31 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import type { Job } from '../../lib/types';
+import type { Job, Employer } from '../../lib/types';
 import { CONTRACT_FORM_OPTIONS, REMOTE_TYPE_OPTIONS, normalizeContractForm } from '../../lib/opdrachtConstants';
-import { Plus, Briefcase, Eye, Trash2, X, Save, Building2 } from 'lucide-react';
+import { TARGET_PROFESSION_OPTIONS } from '../../lib/jobReviewTypes';
+import { buildChecklist } from '../../services/jobScoringService';
+import { submitJobForReview } from '../../services/jobReviewService';
+import { runJobAIReview } from '../../services/jobAIReviewService';
+import { JobQualityScoreCard } from '../../components/jobReview/JobQualityScoreCard';
+import { JobReviewStatusBadge } from '../../components/jobReview/JobReviewStatusBadge';
+import { Plus, Briefcase, Eye, Trash2, X, Save, Send, Sparkles } from 'lucide-react';
+
+const defaultForm: Partial<Job> & { target_profession?: string } = {
+  title: '',
+  description: '',
+  region: '',
+  remote_type: 'ONSITE',
+  job_type: 'ZZP',
+  status: 'DRAFT',
+  poster_type: 'DIRECT',
+  on_behalf_of: '',
+  contact_person: '',
+  is_anonymous: false,
+  target_profession: '',
+};
 
 export default function OpdrachtgeverOpdrachten() {
   const { user } = useAuth();
   const toast = useToast();
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [employer, setEmployer] = useState<Employer | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState<Partial<Job>>({
-    title: '',
-    description: '',
-    region: '',
-    remote_type: 'ONSITE',
-    job_type: 'ZZP',
-    status: 'PUBLISHED',
-    poster_type: 'DIRECT',
-    on_behalf_of: '',
-    contact_person: '',
-    is_anonymous: false
-  });
+  const [formData, setFormData] = useState<Partial<Job> & { target_profession?: string }>(defaultForm);
   const [submitting, setSubmitting] = useState(false);
+  const [showAIPanel, setShowAIPanel] = useState(false);
+  const [aiSuggestions, setAISuggestions] = useState<string[]>([]);
 
   useEffect(() => {
     fetchJobs();
@@ -34,56 +46,52 @@ export default function OpdrachtgeverOpdrachten() {
   const fetchJobs = async () => {
     if (!user) return;
 
-    const { data: employer } = await supabase
+    const { data: emp } = await supabase
       .from('employers')
-      .select('id')
+      .select('*')
       .eq('user_id', user.id)
       .maybeSingle();
 
-    if (!employer) {
+    if (!emp) {
       setLoading(false);
       return;
     }
+    setEmployer(emp as Employer);
 
     const { data } = await supabase
       .from('jobs')
       .select('*')
-      .eq('employer_id', employer.id)
+      .eq('employer_id', emp.id)
       .order('created_at', { ascending: false });
 
-    if (data) {
-      setJobs(data);
-    }
-
+    if (data) setJobs(data as Job[]);
     setLoading(false);
   };
 
-  const handleSubmit = async () => {
-    if (!user) return;
+  const checklist = useMemo(
+    () => buildChecklist(
+      { ...formData, company_name: employer?.company_name },
+      employer
+    ),
+    [formData, employer]
+  );
 
-    const { data: employer } = await supabase
-      .from('employers')
-      .select('id')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (!employer) {
+  const handleSaveDraft = async () => {
+    if (!user || !employer) {
       toast.error('Vul eerst uw bedrijfsprofiel in');
       return;
     }
-
-    if (!formData.title || !formData.description) {
+    if (!formData.title?.trim() || !formData.description?.trim()) {
       toast.error('Titel en beschrijving zijn verplicht');
       return;
     }
 
     setSubmitting(true);
-
     const { error } = await supabase.from('jobs').insert({
       employer_id: employer.id,
       title: formData.title,
       description: formData.description,
-      region: formData.region,
+      region: formData.region || null,
       remote_type: formData.remote_type as any,
       job_type: normalizeContractForm(formData.job_type),
       job_tier: (formData as { job_tier?: string }).job_tier ?? 'STANDARD',
@@ -92,34 +100,96 @@ export default function OpdrachtgeverOpdrachten() {
       hours_per_week: formData.hours_per_week || null,
       rate_min: formData.rate_min || null,
       rate_max: formData.rate_max || null,
-      status: formData.status as any,
+      status: 'DRAFT',
+      review_status: 'draft',
       poster_type: 'DIRECT',
       on_behalf_of: null,
       contact_person: null,
-      is_anonymous: false
+      is_anonymous: false,
+      company_name: employer.company_name,
+      target_profession: (formData as { target_profession?: string }).target_profession || null,
     });
 
     if (error) {
-      toast.error('Er is een fout opgetreden');
+      toast.error('Opslaan mislukt');
     } else {
-      toast.success('Opdracht aangemaakt.');
-      setFormData({
-        title: '',
-        description: '',
-        region: '',
-        remote_type: 'ONSITE',
-        job_type: 'ZZP',
-        status: 'PUBLISHED',
-        poster_type: 'DIRECT',
-        on_behalf_of: '',
-        contact_person: '',
-        is_anonymous: false
-      });
+      toast.success('Opgeslagen als concept.');
+      setFormData(defaultForm);
       setShowForm(false);
       fetchJobs();
     }
-
     setSubmitting(false);
+  };
+
+  const handleSubmitForReview = async () => {
+    if (!user || !employer) {
+      toast.error('Vul eerst uw bedrijfsprofiel in');
+      return;
+    }
+    if (!formData.title?.trim() || !formData.description?.trim()) {
+      toast.error('Titel en beschrijving zijn verplicht');
+      return;
+    }
+
+    setSubmitting(true);
+    let jobId: string | null = null;
+
+    const { data: inserted } = await supabase.from('jobs').insert({
+      employer_id: employer.id,
+      title: formData.title,
+      description: formData.description,
+      region: formData.region || null,
+      remote_type: formData.remote_type as any,
+      job_type: normalizeContractForm(formData.job_type),
+      job_tier: (formData as { job_tier?: string }).job_tier ?? 'STANDARD',
+      start_date: formData.start_date || null,
+      duration_weeks: formData.duration_weeks || null,
+      hours_per_week: formData.hours_per_week || null,
+      rate_min: formData.rate_min || null,
+      rate_max: formData.rate_max || null,
+      status: 'DRAFT',
+      review_status: 'draft',
+      poster_type: 'DIRECT',
+      company_name: employer.company_name,
+      target_profession: (formData as { target_profession?: string }).target_profession || null,
+    }).select('id').single();
+
+    if (inserted) jobId = (inserted as { id: string }).id;
+    if (!jobId) {
+      toast.error('Aanmaken mislukt');
+      setSubmitting(false);
+      return;
+    }
+
+    const result = await submitJobForReview(jobId);
+    if (result.error) {
+      toast.error(result.error);
+    } else {
+      toast.success('Opdracht ingediend voor beoordeling.');
+      setFormData(defaultForm);
+      setShowForm(false);
+      fetchJobs();
+    }
+    setSubmitting(false);
+  };
+
+  const handleImproveClick = async () => {
+    const input = {
+      title: formData.title ?? '',
+      description: formData.description ?? '',
+      region: formData.region ?? null,
+      remote_type: formData.remote_type ?? null,
+      job_type: formData.job_type ?? null,
+      start_date: formData.start_date ?? null,
+      duration_weeks: formData.duration_weeks ?? null,
+      hours_per_week: formData.hours_per_week ?? null,
+      rate_min: formData.rate_min ?? null,
+      rate_max: formData.rate_max ?? null,
+      target_profession: (formData as { target_profession?: string }).target_profession ?? null,
+    };
+    const res = await runJobAIReview(input);
+    setAISuggestions(res.ai_improvements ?? []);
+    setShowAIPanel(true);
   };
 
   const handleDelete = async (jobId: string) => {
@@ -268,16 +338,62 @@ export default function OpdrachtgeverOpdrachten() {
                   placeholder="32"
                 />
               </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Type professional / doelgroep</label>
+                <select
+                  value={(formData as { target_profession?: string }).target_profession || ''}
+                  onChange={(e) => setFormData({ ...formData, target_profession: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                >
+                  <option value="">Selecteer...</option>
+                  {TARGET_PROFESSION_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            <button
-              onClick={handleSubmit}
-              disabled={submitting}
-              className="w-full md:w-auto flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50"
-            >
-              <Save className="w-5 h-5 mr-2" />
-              {submitting ? 'Bezig...' : 'Opdracht plaatsen'}
-            </button>
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <JobQualityScoreCard
+                checklist={checklist}
+                reviewStatus={null}
+                onImproveClick={handleImproveClick}
+              />
+            </div>
+
+            {showAIPanel && aiSuggestions.length > 0 && (
+              <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                <p className="font-medium text-amber-900 mb-2 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" /> AI-advies om uw opdracht te verbeteren
+                </p>
+                <ul className="list-disc list-inside text-sm text-amber-800 space-y-1">
+                  {aiSuggestions.map((s, i) => (
+                    <li key={i}>{s}</li>
+                  ))}
+                </ul>
+                <button type="button" onClick={() => setShowAIPanel(false)} className="mt-2 text-sm text-amber-700 hover:underline">Sluiten</button>
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-3 mt-6">
+              <button
+                onClick={handleSaveDraft}
+                disabled={submitting}
+                className="flex items-center justify-center bg-gray-100 text-gray-800 px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition disabled:opacity-50"
+              >
+                <Save className="w-5 h-5 mr-2" />
+                {submitting ? 'Bezig...' : 'Opslaan als concept'}
+              </button>
+              <button
+                onClick={handleSubmitForReview}
+                disabled={submitting}
+                className="flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50"
+              >
+                <Send className="w-5 h-5 mr-2" />
+                {submitting ? 'Bezig...' : 'Indienen voor beoordeling'}
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -304,13 +420,17 @@ export default function OpdrachtgeverOpdrachten() {
                   </div>
                   <p className="text-gray-600 line-clamp-2">{job.description}</p>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                  job.status === 'PUBLISHED' ? 'bg-green-100 text-green-800' :
-                  job.status === 'CLOSED' ? 'bg-gray-100 text-gray-800' :
-                  'bg-yellow-100 text-yellow-800'
-                }`}>
-                  {job.status}
-                </span>
+                {job.review_status ? (
+                  <JobReviewStatusBadge status={job.review_status} />
+                ) : (
+                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    job.status === 'PUBLISHED' ? 'bg-green-100 text-green-800' :
+                    job.status === 'CLOSED' ? 'bg-gray-100 text-gray-800' :
+                    'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {job.status}
+                  </span>
+                )}
               </div>
 
               <div className="flex gap-3">

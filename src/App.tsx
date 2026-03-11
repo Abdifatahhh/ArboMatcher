@@ -56,6 +56,7 @@ import AdminDashboard from './pages/Admin/Dashboard';
 import AdminVerificaties from './pages/Admin/Verificaties';
 import AdminGebruikers from './pages/Admin/Gebruikers';
 import AdminOpdrachten from './pages/Admin/Opdrachten';
+import AdminJobsReview from './pages/Admin/JobsReview';
 import AdminAbonnementen from './pages/Admin/Abonnementen';
 import AdminInstellingen from './pages/Admin/Instellingen';
 import AdminGebruikerDetail from './pages/Admin/GebruikerDetail';
@@ -420,6 +421,16 @@ function App() {
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <DashboardLayout>
                   <AdminOpdrachten />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+            <Route
+            path="/admin/jobs/review"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <DashboardLayout>
+                  <AdminJobsReview />
                 </DashboardLayout>
               </ProtectedRoute>
             }

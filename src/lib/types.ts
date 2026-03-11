@@ -1,6 +1,7 @@
 export type UserRole = 'OPDRACHTGEVER' | 'ADMIN' | 'professional' | 'onboarding';
 export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
 export type JobStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED';
+export type { JobReviewStatus } from './jobReviewTypes';
 export type ApplicationStatus = 'PENDING' | 'SHORTLISTED' | 'REJECTED' | 'ACCEPTED';
 export type InviteStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED';
 export type DoctorPlan = 'GRATIS' | 'PRO';
@@ -102,6 +103,30 @@ export interface Job {
   is_anonymous: boolean;
   created_at: string;
   updated_at: string;
+  review_status?: string;
+  submitted_at?: string | null;
+  approved_at?: string | null;
+  approved_by?: string | null;
+  published_at?: string | null;
+  published_by?: string | null;
+  rejected_at?: string | null;
+  rejected_by?: string | null;
+  rejection_reason?: string | null;
+  changes_requested_at?: string | null;
+  changes_requested_by?: string | null;
+  changes_requested_reason?: string | null;
+  review_notes?: string | null;
+  structure_score?: number | null;
+  ai_score?: number | null;
+  overall_score?: number | null;
+  ai_status?: string | null;
+  ai_feedback_summary?: string | null;
+  ai_strengths?: string[] | null;
+  ai_improvements?: string[] | null;
+  ai_warnings?: string[] | null;
+  ai_suggested_changes?: string[] | null;
+  ai_last_reviewed_at?: string | null;
+  target_profession?: string | null;
 }
 
 export interface Application {
@@ -189,6 +214,27 @@ export interface ContentStoreRow {
   updated_at: string;
 }
 
+export interface JobReviewHistoryRow {
+  id: string;
+  job_id: string;
+  action: string;
+  old_status: string | null;
+  new_status: string;
+  note: string | null;
+  metadata: Record<string, unknown>;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface JobAdminNoteRow {
+  id: string;
+  job_id: string;
+  note: string;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -268,6 +314,18 @@ export interface Database {
         Row: ContentStoreRow;
         Insert: { key: string; value: unknown; updated_at?: string };
         Update: { value?: unknown; updated_at?: string };
+        Relationships: [];
+      };
+      job_review_history: {
+        Row: JobReviewHistoryRow;
+        Insert: Omit<JobReviewHistoryRow, 'id' | 'created_at'>;
+        Update: Partial<Omit<JobReviewHistoryRow, 'id' | 'created_at'>>;
+        Relationships: [];
+      };
+      job_admin_notes: {
+        Row: JobAdminNoteRow;
+        Insert: Omit<JobAdminNoteRow, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<JobAdminNoteRow, 'id' | 'created_at'>>;
         Relationships: [];
       };
     };
