@@ -61,6 +61,14 @@ npm run preview   # preview van production build
 
 Zie `docs/DEPLOY-BIG-CHECK.md` voor het deployen van de `big-check` Edge Function.
 
+### KvK-zoekfunctie (opdrachtgever-onboarding)
+
+1. Zet in Supabase Dashboard → Edge Functions → Secrets: **KVK_API_KEY** (jouw KvK API-key).
+2. Deploy (of opnieuw deployen na toevoegen secret):  
+   `npm run supabase:deploy-kvk-search`  
+   Of: `supabase functions deploy kvk-search --no-verify-jwt`  
+   Na het toevoegen of wijzigen van het secret altijd opnieuw deployen.
+
 ## Rollen
 
 - **ARTS** – artsen/dashboard onder `/arts/*`

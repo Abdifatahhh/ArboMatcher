@@ -47,30 +47,23 @@ export default function OpdrachtgeverProfiel() {
         })
         .eq('id', user.id);
 
+      const employerPayload = {
+        company_name: employer.company_name,
+        kvk: employer.kvk,
+        website: employer.website,
+        sector: employer.sector,
+        billing_address: employer.billing_address,
+        billing_email: employer.billing_email,
+        vestigingsnummer: employer.vestigingsnummer ?? null,
+        kvk_type: employer.kvk_type ?? null,
+        kvk_actief: employer.kvk_actief ?? null,
+        rechtsvorm: employer.rechtsvorm ?? null,
+        statutaire_naam: employer.statutaire_naam ?? null,
+      };
       if (employer.id) {
-        await supabase
-          .from('employers')
-          .update({
-            company_name: employer.company_name,
-            kvk: employer.kvk,
-            website: employer.website,
-            sector: employer.sector,
-            billing_address: employer.billing_address,
-            billing_email: employer.billing_email
-          })
-          .eq('id', employer.id);
+        await supabase.from('employers').update(employerPayload).eq('id', employer.id);
       } else if (employer.company_name) {
-        await supabase
-          .from('employers')
-          .insert({
-            user_id: user.id,
-            company_name: employer.company_name,
-            kvk: employer.kvk,
-            website: employer.website,
-            sector: employer.sector,
-            billing_address: employer.billing_address,
-            billing_email: employer.billing_email
-          });
+        await supabase.from('employers').insert({ user_id: user.id, ...employerPayload });
       }
 
       await refreshProfile();
@@ -223,6 +216,54 @@ export default function OpdrachtgeverProfiel() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
                 placeholder="facturen@bedrijf.nl"
               />
+            </div>
+
+            <div className="border-t pt-4 mt-4">
+              <h3 className="text-sm font-semibold text-gray-600 mb-3">Extra KvK-gegevens</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Vestigingsnummer</label>
+                  <input
+                    type="text"
+                    value={employer.vestigingsnummer || ''}
+                    onChange={(e) => setEmployer({ ...employer, vestigingsnummer: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Type</label>
+                  <input
+                    type="text"
+                    value={employer.kvk_type || ''}
+                    onChange={(e) => setEmployer({ ...employer, kvk_type: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Rechtsvorm</label>
+                  <input
+                    type="text"
+                    value={employer.rechtsvorm || ''}
+                    onChange={(e) => setEmployer({ ...employer, rechtsvorm: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Statutaire naam</label>
+                  <input
+                    type="text"
+                    value={employer.statutaire_naam || ''}
+                    onChange={(e) => setEmployer({ ...employer, statutaire_naam: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent text-sm"
+                  />
+                </div>
+              </div>
+              {employer.kvk_actief != null && (
+                <div className="mt-3">
+                  <label className="block text-xs text-gray-500 mb-1">Actief (KvK)</label>
+                  <p className="text-sm text-gray-700">{employer.kvk_actief ? 'Ja' : 'Nee'}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
