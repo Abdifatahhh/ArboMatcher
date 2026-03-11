@@ -23,7 +23,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
     if (!profile) return '/';
     switch (profile.role) {
       case 'professional':
-        return '/arts/dashboard';
+        return '/professional/dashboard';
       case 'OPDRACHTGEVER':
         return '/opdrachtgever/dashboard';
       case 'ADMIN':

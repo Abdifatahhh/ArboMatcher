@@ -38,7 +38,7 @@ export default function Login() {
       return;
     }
     if (profile.role === 'professional') {
-      navigate('/arts/dashboard', { replace: true });
+      navigate('/professional/dashboard', { replace: true });
       return;
     }
     if (profile.role === 'OPDRACHTGEVER') {
@@ -66,7 +66,7 @@ export default function Login() {
     if (userProfile?.role !== 'ADMIN' && userProfile?.onboarding_completed !== true) {
       navigate('/onboarding');
     } else if (userProfile?.role === 'professional') {
-      navigate('/arts/dashboard');
+      navigate('/professional/dashboard');
     } else if (userProfile?.role === 'OPDRACHTGEVER') {
       navigate('/opdrachtgever/dashboard');
     } else if (userProfile?.role === 'ADMIN') {

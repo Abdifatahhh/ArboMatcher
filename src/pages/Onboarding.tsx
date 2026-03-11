@@ -76,7 +76,7 @@ export default function Onboarding() {
   }, [user, profile, navigate]);
 
   const redirectByRole = (role: string) => {
-    if (role === 'professional') navigate('/arts/dashboard', { replace: true });
+    if (role === 'professional') navigate('/professional/dashboard', { replace: true });
     else if (role === 'OPDRACHTGEVER') navigate('/opdrachtgever/dashboard', { replace: true });
     else navigate('/', { replace: true });
   };
@@ -278,7 +278,7 @@ export default function Onboarding() {
     }
     await refreshProfile();
     setLoading(false);
-    navigate('/arts/dashboard', { replace: true });
+    navigate('/professional/dashboard', { replace: true });
   };
 
   if (user && !profile) {

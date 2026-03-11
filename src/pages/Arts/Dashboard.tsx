@@ -97,7 +97,7 @@ export default function ArtsDashboard() {
           </div>
         </div>
         <Link
-          to="/arts/profiel"
+          to="/professional/profiel"
           className="shrink-0 inline-flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#4FA151] text-white rounded-xl text-sm md:text-base font-semibold hover:bg-[#3E8E45] transition shadow-md"
         >
           Profiel voltooien
@@ -136,7 +136,7 @@ export default function ArtsDashboard() {
                 'Uw verificatie is afgewezen. Controleer uw gegevens en neem contact op met support.'}
             </p>
             {stats.verificationStatus === 'UNVERIFIED' && (
-              <Link to="/arts/profiel" className="inline-flex items-center text-amber-900 font-semibold text-sm mt-2 hover:underline">
+              <Link to="/professional/profiel" className="inline-flex items-center text-amber-900 font-semibold text-sm mt-2 hover:underline">
                 Profiel voltooien <ArrowRight className="w-4 h-4 ml-1" />
               </Link>
             )}
@@ -154,7 +154,7 @@ export default function ArtsDashboard() {
             </div>
           </div>
           {!stats.isPremium && (
-            <Link to="/arts/abonnement" className="bg-[#4FA151] text-white px-3 py-2 md:px-4 md:py-2.5 rounded-xl text-xs md:text-sm font-semibold hover:bg-[#3E8E45] transition shadow-md shadow-[#4FA151]/20">
+            <Link to="/professional/abonnement" className="bg-[#4FA151] text-white px-3 py-2 md:px-4 md:py-2.5 rounded-xl text-xs md:text-sm font-semibold hover:bg-[#3E8E45] transition shadow-md shadow-[#4FA151]/20">
               Upgrade naar PRO
             </Link>
           )}
@@ -163,7 +163,7 @@ export default function ArtsDashboard() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-4 md:mb-6">
         <Link
-          to="/arts/reacties"
+          to="/professional/reacties"
           className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2 md:mb-4">
@@ -174,7 +174,7 @@ export default function ArtsDashboard() {
           <p className="text-xs md:text-sm text-gray-600">Sollicitaties</p>
         </Link>
         <Link
-          to="/arts/uitnodigingen"
+          to="/professional/uitnodigingen"
           className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2 md:mb-4">
@@ -185,7 +185,7 @@ export default function ArtsDashboard() {
           <p className="text-xs md:text-sm text-gray-600">Openstaande uitnodigingen</p>
         </Link>
         <Link
-          to="/arts/inbox"
+          to="/professional/inbox"
           className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2 md:mb-4">
@@ -207,21 +207,21 @@ export default function ArtsDashboard() {
 
       <div className="mb-4 md:mb-6 flex flex-wrap gap-2 md:gap-3">
         <Link
-          to="/arts/opdrachten"
+          to="/professional/opdrachten"
           className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#4FA151] text-white rounded-xl text-xs md:text-sm font-medium hover:bg-[#3E8E45] shadow-md shadow-[#4FA151]/20 transition"
         >
           <Briefcase className="w-3.5 h-3.5 md:w-4 md:h-4" />
           Zoek opdrachten
         </Link>
         <Link
-          to="/arts/profiel"
+          to="/professional/profiel"
           className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-xs md:text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
         >
           <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
           Bewerk profiel
         </Link>
         <Link
-          to="/arts/abonnement"
+          to="/professional/abonnement"
           className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-xs md:text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
         >
           <Star className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -233,7 +233,7 @@ export default function ArtsDashboard() {
         <div className="lg:col-span-2 bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
           <h2 className="text-lg md:text-xl font-bold text-[#0F172A] mb-3 md:mb-4 flex items-center justify-between">
             Nieuwe opdrachten
-            <Link to="/arts/opdrachten" className="text-xs md:text-sm text-[#4FA151] hover:underline font-medium">Bekijk alle</Link>
+            <Link to="/professional/opdrachten" className="text-xs md:text-sm text-[#4FA151] hover:underline font-medium">Bekijk alle</Link>
           </h2>
           <div className="divide-y divide-slate-100">
             {recentJobs.length === 0 ? (
@@ -266,15 +266,15 @@ export default function ArtsDashboard() {
           <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
             <h2 className="text-base md:text-xl font-bold text-[#0F172A] mb-3 md:mb-4">Snelle acties</h2>
             <div className="space-y-1.5 md:space-y-2">
-              <Link to="/arts/opdrachten" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
+              <Link to="/professional/opdrachten" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
                 <span className="font-medium text-gray-800">Zoek opdrachten</span>
                 <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
               </Link>
-              <Link to="/arts/profiel" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
+              <Link to="/professional/profiel" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
                 <span className="font-medium text-gray-800">Bewerk profiel</span>
                 <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
               </Link>
-              <Link to="/arts/abonnement" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
+              <Link to="/professional/abonnement" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
                 <span className="font-medium text-gray-800">Bekijk abonnement</span>
                 <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
               </Link>
@@ -285,7 +285,7 @@ export default function ArtsDashboard() {
               <Star className="w-6 h-6 md:w-8 md:h-8 text-[#FCD34D] mb-2 md:mb-3" />
               <h3 className="font-bold text-base md:text-lg mb-1.5 md:mb-2">Upgrade naar PRO</h3>
               <p className="text-gray-300 text-xs md:text-sm mb-3 md:mb-4">Word sneller gevonden door opdrachtgevers met premium zichtbaarheid.</p>
-              <Link to="/arts/abonnement" className="block text-center bg-[#4FA151] text-white py-2 md:py-2.5 rounded-xl text-sm md:text-base font-semibold hover:bg-[#3E8E45] transition">
+              <Link to="/professional/abonnement" className="block text-center bg-[#4FA151] text-white py-2 md:py-2.5 rounded-xl text-sm md:text-base font-semibold hover:bg-[#3E8E45] transition">
                 Bekijk voordelen
               </Link>
             </div>

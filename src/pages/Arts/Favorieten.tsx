@@ -77,7 +77,7 @@ export default function ArtsFavorieten() {
             Klik op het hartje bij een opdracht om deze op te slaan
           </p>
           <Link
-            to="/arts/opdrachten"
+            to="/professional/opdrachten"
             className="inline-block bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
           >
             Bekijk opdrachten

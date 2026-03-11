@@ -9,7 +9,7 @@ export function PortalRoot() {
   if (profile.role !== 'ADMIN' && profile.onboarding_completed !== true) return <Navigate to="/onboarding" replace />;
   switch (profile.role) {
     case 'professional':
-      return <Navigate to="/arts/dashboard" replace />;
+      return <Navigate to="/professional/dashboard" replace />;
     case 'OPDRACHTGEVER':
       return <Navigate to="/opdrachtgever/dashboard" replace />;
     case 'ADMIN':

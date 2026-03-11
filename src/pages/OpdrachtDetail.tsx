@@ -137,7 +137,7 @@ export default function OpdrachtDetail() {
 
     if (!doctor) {
       toast.error('Eerst uw profiel aanmaken');
-      navigate('/arts/profiel');
+      navigate('/professional/profiel');
       return;
     }
 

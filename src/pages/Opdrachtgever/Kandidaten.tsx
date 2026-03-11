@@ -98,7 +98,7 @@ export default function OpdrachtgeverKandidaten() {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <Link
-                    to={`/artsen/${application.professionals.id}`}
+                    to={`/professional/${application.professionals.id}`}
                     className="text-xl font-bold text-[#0F172A] hover:underline"
                   >
                     {application.professionals.profiles.full_name || 'Naam onbekend'}
@@ -148,7 +148,7 @@ export default function OpdrachtgeverKandidaten() {
                     </>
                   )}
                   <Link
-                    to={`/artsen/${application.professionals.id}`}
+                    to={`/professional/${application.professionals.id}`}
                     className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                   >
                     Bekijk profiel

@@ -7,7 +7,7 @@ export function RedirectToDashboard() {
   if (profile.role !== 'ADMIN' && profile.onboarding_completed !== true) return <Navigate to="/onboarding" replace />;
   switch (profile.role) {
     case 'professional':
-      return <Navigate to="/arts/dashboard" replace />;
+      return <Navigate to="/professional/dashboard" replace />;
     case 'OPDRACHTGEVER':
       return <Navigate to="/opdrachtgever/dashboard" replace />;
     case 'ADMIN':
@@ -25,7 +25,7 @@ export function RedirectToProfiel() {
   if (profile.role !== 'ADMIN' && profile.onboarding_completed !== true) return <Navigate to="/onboarding" replace />;
   switch (profile.role) {
     case 'professional':
-      return <Navigate to="/arts/profiel" replace />;
+      return <Navigate to="/professional/profiel" replace />;
     case 'OPDRACHTGEVER':
       return <Navigate to="/opdrachtgever/profiel" replace />;
     case 'ADMIN':

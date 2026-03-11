@@ -22,17 +22,17 @@ import {
 } from 'lucide-react';
 
 const ARTS_NAV: { path: string; label: string; icon: React.ElementType; badge?: 'invites' | 'messages' }[] = [
-  { path: '/arts/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/professional/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   ...[
-    { path: '/arts/opdrachten', label: 'Zoeken', icon: Search },
-    { path: '/arts/zoekopdrachten', label: 'Mijn zoekopdrachten', icon: Bookmark },
-    { path: '/arts/favorieten', label: 'Favorieten', icon: Heart },
-    { path: '/arts/profiel', label: 'Mijn profiel', icon: FileText },
-    { path: '/arts/reacties', label: 'Verstuurde reacties', icon: Send },
-    { path: '/arts/beoordelingen', label: 'Gegeven beoordelingen', icon: Star },
-    { path: '/arts/abonnement', label: 'Upgrade naar PRO', icon: Crown },
-    { path: '/arts/uitnodigingen', label: 'Uitnodigingen', icon: Bell, badge: 'invites' as const },
-    { path: '/arts/inbox', label: 'Berichten', icon: MessageSquare, badge: 'messages' as const },
+    { path: '/professional/opdrachten', label: 'Zoeken', icon: Search },
+    { path: '/professional/zoekopdrachten', label: 'Mijn zoekopdrachten', icon: Bookmark },
+    { path: '/professional/favorieten', label: 'Favorieten', icon: Heart },
+    { path: '/professional/profiel', label: 'Mijn profiel', icon: FileText },
+    { path: '/professional/reacties', label: 'Verstuurde reacties', icon: Send },
+    { path: '/professional/beoordelingen', label: 'Gegeven beoordelingen', icon: Star },
+    { path: '/professional/abonnement', label: 'Upgrade naar PRO', icon: Crown },
+    { path: '/professional/uitnodigingen', label: 'Uitnodigingen', icon: Bell, badge: 'invites' as const },
+    { path: '/professional/inbox', label: 'Berichten', icon: MessageSquare, badge: 'messages' as const },
   ].sort((a, b) => a.label.localeCompare(b.label, 'nl')),
 ];
 
@@ -112,7 +112,7 @@ export function ArtsDashboardLayout() {
       </nav>
       <div className={`p-3 lg:p-4 ${footerStyle}`}>
         <Link
-          to="/arts/instellingen"
+          to="/professional/instellingen"
           className={`flex items-center space-x-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition mb-1.5 lg:mb-2 text-sm lg:text-base ${footerLink}`}
         >
           <Settings className="w-4 h-4 lg:w-5 lg:h-5" />
@@ -137,9 +137,9 @@ export function ArtsDashboardLayout() {
       <div className="flex-1 flex flex-col min-w-0">
         <header className={`bg-white border-b lg:hidden ${headerBorder}`}>
           <div className="flex items-center justify-between px-3 py-2.5 md:px-4 md:py-4">
-            <Link to="/arts/dashboard" className="inline-block"><LogoText theme="light" className="text-lg" /></Link>
+            <Link to="/professional/dashboard" className="inline-block"><LogoText theme="light" className="text-lg" /></Link>
             <div className="flex items-center gap-1">
-              <Link to="/arts/inbox" className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A] relative">
+              <Link to="/professional/inbox" className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A] relative">
                 <MessageSquare className="w-5 h-5" />
                 {unreadMessages > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-[#4FA151] text-white rounded-full px-1">
@@ -147,7 +147,7 @@ export function ArtsDashboardLayout() {
                   </span>
                 )}
               </Link>
-              <Link to="/arts/uitnodigingen" className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A] relative">
+              <Link to="/professional/uitnodigingen" className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A] relative">
                 <Bell className="w-5 h-5" />
                 {pendingInvites > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-[#4FA151] text-white rounded-full px-1">
@@ -155,7 +155,7 @@ export function ArtsDashboardLayout() {
                   </span>
                 )}
               </Link>
-              <Link to="/arts/profiel" className="p-1.5 rounded-full hover:bg-gray-100 text-[#0F172A] flex items-center justify-center w-9 h-9 bg-[#F4FAF4] border border-[#4FA151]/20">
+              <Link to="/professional/profiel" className="p-1.5 rounded-full hover:bg-gray-100 text-[#0F172A] flex items-center justify-center w-9 h-9 bg-[#F4FAF4] border border-[#4FA151]/20">
                 {profile?.avatar_url ? (
                   <img src={profile.avatar_url} alt="" className="w-6 h-6 rounded-full object-cover" />
                 ) : (
@@ -169,7 +169,7 @@ export function ArtsDashboardLayout() {
 
         <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#4FA151]/15 z-40 lg:hidden safe-area-pb">
           <div className="grid grid-cols-3 h-14">
-            <Link to="/arts/opdrachten" className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition">
+            <Link to="/professional/opdrachten" className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition">
               <Search className="w-5 h-5 text-[#4FA151]" />
               <span className="text-[10px] font-medium">Zoeken</span>
             </Link>
@@ -181,7 +181,7 @@ export function ArtsDashboardLayout() {
               <List className="w-5 h-5 text-[#4FA151]" />
               <span className="text-[10px] font-medium">Menu</span>
             </button>
-            <Link to="/arts/abonnement" className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition">
+            <Link to="/professional/abonnement" className="flex flex-col items-center justify-center gap-0.5 text-[#0F172A] hover:bg-[#F4FAF4] transition">
               <Crown className="w-5 h-5 text-[#4FA151]" />
               <span className="text-[10px] font-medium">Upgrade PRO</span>
             </Link>
@@ -224,7 +224,7 @@ export function ArtsDashboardLayout() {
                 })}
               </nav>
               <div className="p-3 border-t border-[#4FA151]/15 space-y-1">
-                <Link to="/arts/instellingen" onClick={() => setBottomSheetOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#0F172A]/90 hover:bg-[#F4FAF4] text-sm">
+                <Link to="/professional/instellingen" onClick={() => setBottomSheetOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#0F172A]/90 hover:bg-[#F4FAF4] text-sm">
                   <Settings className="w-5 h-5" />
                   <span>Instellingen</span>
                 </Link>
@@ -234,15 +234,15 @@ export function ArtsDashboardLayout() {
                 </button>
               </div>
               <div className="p-3 grid grid-cols-3 gap-2 bg-[#F4FAF4] border-t border-[#4FA151]/15">
-                <Link to="/arts/opdrachten" onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
+                <Link to="/professional/opdrachten" onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
                   <Search className="w-5 h-5 text-[#4FA151] mb-1" />
                   <span className="text-[10px] text-[#0F172A] font-medium">Zoeken</span>
                 </Link>
-                <Link to="/arts/reacties" onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
+                <Link to="/professional/reacties" onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
                   <Send className="w-5 h-5 text-[#4FA151] mb-1" />
                   <span className="text-[10px] text-[#0F172A] font-medium">Reacties</span>
                 </Link>
-                <Link to="/arts/abonnement" onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
+                <Link to="/professional/abonnement" onClick={() => setBottomSheetOpen(false)} className="flex flex-col items-center justify-center py-2.5 rounded-lg hover:bg-[#4FA151]/10 transition">
                   <Crown className="w-5 h-5 text-[#4FA151] mb-1" />
                   <span className="text-[10px] text-[#0F172A] font-medium">Upgrade PRO</span>
                 </Link>

@@ -78,7 +78,7 @@ export default function ArtsReacties() {
           <h3 className="text-lg font-semibold text-gray-700 mb-2">Nog geen reacties verstuurd</h3>
           <p className="text-gray-600 mb-6">Begin met reageren op opdrachten om hier uw reacties te zien</p>
           <Link
-            to="/arts/opdrachten"
+            to="/professional/opdrachten"
             className="inline-block bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
           >
             Bekijk opdrachten

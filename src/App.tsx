@@ -237,8 +237,8 @@ function App() {
             }
           />
 
-            <Route path="/arts" element={<ProtectedRoute allowedRoles={['professional']}><ArtsDashboardLayout /></ProtectedRoute>}>
-              <Route index element={<Navigate to="/arts/dashboard" replace />} />
+            <Route path="/professional" element={<ProtectedRoute allowedRoles={['professional']}><ArtsDashboardLayout /></ProtectedRoute>}>
+              <Route index element={<Navigate to="/professional/dashboard" replace />} />
               <Route path="dashboard" element={<ArtsDashboard />} />
               <Route path="profiel" element={<ArtsProfiel />} />
               <Route path="opdrachten" element={<ArtsOpdrachten />} />
@@ -250,6 +250,7 @@ function App() {
               <Route path="zoekopdrachten" element={<ArtsOpdrachten />} />
               <Route path="beoordelingen" element={<ArtsReacties />} />
               <Route path="instellingen" element={<ArtsProfiel />} />
+              <Route path=":id" element={<Navigate to="/professional/dashboard" replace />} />
             </Route>
 
             <Route

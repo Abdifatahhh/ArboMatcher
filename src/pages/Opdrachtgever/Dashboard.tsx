@@ -140,7 +140,7 @@ export default function OpdrachtgeverDashboard() {
           Bedrijfsprofiel
         </Link>
         <Link
-          to="/artsen"
+          to="/professional"
           className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-xs md:text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
         >
           <User className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -163,7 +163,7 @@ export default function OpdrachtgeverDashboard() {
               <span className="font-medium text-gray-800">Bedrijfsprofiel bewerken</span>
               <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
             </Link>
-            <Link to="/artsen" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
+            <Link to="/professional" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
               <span className="font-medium text-gray-800">Zoek artsen</span>
               <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
             </Link>
