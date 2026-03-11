@@ -4,6 +4,11 @@ import { LogoText } from '../ui/Logo.tsx';
 import { AuthLink } from '../AuthLink';
 import { Menu, X, User, LogOut, Phone } from 'lucide-react';
 import { useState } from 'react';
+import { preloadRoute } from '../../routes/lazyPages';
+
+function prefetch(to: string) {
+  return () => preloadRoute(to);
+}
 
 interface PublicLayoutProps {
   children: React.ReactNode;
@@ -65,10 +70,10 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                 </Link>
 
                 <div className="hidden lg:flex items-center space-x-8">
-                  <Link to="/opdrachten" className="transition text-gray-200 hover:text-white">Opdrachten</Link>
-                  <Link to="/oplossingen" className="transition text-gray-200 hover:text-white">Oplossingen</Link>
-                  <Link to="/community" className="transition text-gray-200 hover:text-white">Community</Link>
-                  <Link to="/over" className="transition text-gray-200 hover:text-white">Over ArboMatcher</Link>
+                  <Link to="/opdrachten" className="transition text-gray-200 hover:text-white" onMouseEnter={prefetch('/opdrachten')} onTouchStart={prefetch('/opdrachten')}>Opdrachten</Link>
+                  <Link to="/oplossingen" className="transition text-gray-200 hover:text-white" onMouseEnter={prefetch('/oplossingen')} onTouchStart={prefetch('/oplossingen')}>Oplossingen</Link>
+                  <Link to="/community" className="transition text-gray-200 hover:text-white" onMouseEnter={prefetch('/community')} onTouchStart={prefetch('/community')}>Community</Link>
+                  <Link to="/over" className="transition text-gray-200 hover:text-white" onMouseEnter={prefetch('/over')} onTouchStart={prefetch('/over')}>Over ArboMatcher</Link>
                 </div>
               </div>
 
@@ -86,8 +91,8 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                   </>
                 ) : (
                   <>
-                    <AuthLink to="/login" className="transition text-gray-200 hover:text-white">Inloggen</AuthLink>
-                    <AuthLink to="/register" className="bg-[#4FA151] text-white px-5 py-2.5 rounded-xl font-medium hover:bg-[#3E8E45] transition">Gratis registreren</AuthLink>
+                    <AuthLink to="/login" className="transition text-gray-200 hover:text-white" onMouseEnter={prefetch('/login')} onTouchStart={prefetch('/login')}>Inloggen</AuthLink>
+                    <AuthLink to="/register" className="bg-[#4FA151] text-white px-5 py-2.5 rounded-xl font-medium hover:bg-[#3E8E45] transition" onMouseEnter={prefetch('/register')} onTouchStart={prefetch('/register')}>Gratis registreren</AuthLink>
                   </>
                 )}
               </div>

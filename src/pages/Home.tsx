@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthLink } from '../components/AuthLink';
 import {
@@ -7,7 +7,6 @@ import {
   Shield,
   ArrowRight,
   Building2,
-  Briefcase,
   UserCheck,
   Lock,
   Zap,
@@ -18,12 +17,20 @@ import {
   PenLine,
   Handshake
 } from 'lucide-react';
-import { HowItWorksSection } from '../components/home/HowItWorksSection';
-import { HowItWorksSectionOpdrachtgevers } from '../components/home/HowItWorksSectionOpdrachtgevers';
+
+const HowItWorksSectionOpdrachtgevers = lazy(() => import('../components/home/HowItWorksSectionOpdrachtgevers').then(m => ({ default: m.HowItWorksSectionOpdrachtgevers })));
+const HowItWorksSection = lazy(() => import('../components/home/HowItWorksSection').then(m => ({ default: m.HowItWorksSection })));
 
 export default function Home() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const [showBelowFold, setShowBelowFold] = useState(false);
+  useEffect(() => {
+    const id = typeof requestIdleCallback !== 'undefined'
+      ? requestIdleCallback(() => setShowBelowFold(true), { timeout: 400 })
+      : setTimeout(() => setShowBelowFold(true), 100);
+    return () => (typeof cancelIdleCallback !== 'undefined' ? cancelIdleCallback(id) : clearTimeout(id));
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,9 +105,12 @@ export default function Home() {
         </div>
       </section>
 
-      <HowItWorksSectionOpdrachtgevers />
-
-      <HowItWorksSection />
+      {showBelowFold && (
+        <Suspense fallback={null}>
+          <HowItWorksSectionOpdrachtgevers />
+          <HowItWorksSection />
+        </Suspense>
+      )}
 
       <section className="py-24 bg-gradient-to-b from-[#F4FAF4] to-[#FAFDFA] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">

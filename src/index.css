@@ -8,6 +8,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a, button {
+  touch-action: manipulation;
+}
+
 @media (max-width: 767px) {
   html { font-size: 15px; }
 }

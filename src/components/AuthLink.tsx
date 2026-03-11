@@ -11,6 +11,8 @@ interface AuthLinkProps {
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
+  onMouseEnter?: () => void;
+  onTouchStart?: () => void;
 }
 
 function prefetchPortal() {
@@ -22,7 +24,7 @@ function prefetchPortal() {
   document.head.appendChild(link);
 }
 
-export function AuthLink({ to, className, children, onClick }: AuthLinkProps) {
+export function AuthLink({ to, className, children, onClick, onMouseEnter, onTouchStart }: AuthLinkProps) {
   const base = getAuthBaseUrl();
   const hovered = useRef(false);
   if (base) {
@@ -32,14 +34,15 @@ export function AuthLink({ to, className, children, onClick }: AuthLinkProps) {
         href={base + path}
         className={className}
         onClick={onClick}
-        onMouseEnter={() => { if (!hovered.current) { hovered.current = true; prefetchPortal(); } }}
+        onMouseEnter={() => { onMouseEnter?.(); if (!hovered.current) { hovered.current = true; prefetchPortal(); } }}
+        onTouchStart={onTouchStart}
       >
         {children}
       </a>
     );
   }
   return (
-    <Link to={to} className={className} onClick={onClick}>
+    <Link to={to} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onTouchStart={onTouchStart}>
       {children}
     </Link>
   );
