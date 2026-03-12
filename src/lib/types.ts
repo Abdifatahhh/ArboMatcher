@@ -66,6 +66,8 @@ export type ProfessionType = 'BEDRIJFSARTS' | 'ARBO_ARTS' | 'VERZEKERINGSARTS' |
 
 export type ProfessionValue = 'bedrijfsarts' | 'arbo_arts' | 'verzekeringsarts' | 'casemanager_verzuim' | 'pob';
 
+export type EmploymentType = 'FREELANCE_ZZP' | 'LOONDIENST';
+
 export interface Doctor {
   id: string;
   user_id: string;
@@ -83,6 +85,16 @@ export interface Doctor {
   availability_calendar: any;
   cv_url: string | null;
   doctor_plan: DoctorPlan;
+  employment_type: string | null;
+  kvk: string | null;
+  company_name: string | null;
+  billing_address: string | null;
+  website: string | null;
+  sector: string | null;
+  vestigingsnummer: string | null;
+  kvk_type: string | null;
+  rechtsvorm: string | null;
+  statutaire_naam: string | null;
   created_at: string;
   updated_at: string;
 }

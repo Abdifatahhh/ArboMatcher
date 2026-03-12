@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
-import { AlertCircle, Loader2, Briefcase, Stethoscope, Search } from 'lucide-react';
+import { AlertCircle, Loader2, Briefcase, Stethoscope, Search, User, LogOut, ChevronDown } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
-import type { ProfessionValue, OrganisationType } from '../lib/types';
+import type { ProfessionValue, OrganisationType, EmploymentType } from '../lib/types';
 import { searchBigByName } from '../services/bigCheckService';
 import type { BigSearchResultItem, BigSearchGender } from '../services/bigCheckService';
 
@@ -39,14 +39,73 @@ const PROFESSION_TO_TYPE: Record<ProfessionValue, string> = {
   pob: 'POB',
 };
 
+function OnboardingHeader({
+  profile,
+  user,
+  onSignOut,
+}: { profile: { full_name?: string | null; email?: string | null } | null; user: { email?: string } | null; onSignOut: () => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const fn = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    document.addEventListener('click', fn);
+    return () => document.removeEventListener('click', fn);
+  }, []);
+  const displayName = profile?.full_name?.trim() || user?.email || 'Account';
+  return (
+    <header className="w-full flex items-center justify-between px-4 md:px-6 py-3 md:py-4">
+      <Link to="/" className="flex items-center shrink-0" aria-label="ArboMatcher">
+        <LogoText theme="light" className="text-xl md:text-2xl" />
+      </Link>
+      <div className="relative" ref={ref}>
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[#0F172A]/10 hover:bg-[#0F172A]/5 transition text-[#0F172A]"
+          aria-expanded={open}
+          aria-haspopup="true"
+        >
+          <User className="w-5 h-5 text-[#4FA151]" />
+          <span className="max-w-[140px] truncate text-sm font-medium hidden sm:inline">{displayName}</span>
+          <ChevronDown className={`w-4 h-4 text-gray-500 transition ${open ? 'rotate-180' : ''}`} />
+        </button>
+        {open && (
+          <div className="absolute right-0 top-full mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+            <div className="px-4 py-2 border-b border-gray-100">
+              <p className="font-semibold text-[#0F172A] truncate">{displayName}</p>
+              {user?.email && <p className="text-xs text-gray-500 truncate mt-0.5">{user.email}</p>}
+            </div>
+            <Link
+              to="/contact"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#0F172A] hover:bg-gray-50"
+            >
+              Contact
+            </Link>
+            <button
+              type="button"
+              onClick={() => { setOpen(false); onSignOut(); }}
+              className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 font-medium"
+            >
+              <LogOut className="w-4 h-4" />
+              Uitloggen
+            </button>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+}
+
 export default function Onboarding() {
-  const { profile, user, refreshProfile } = useAuth();
+  const { profile, user, refreshProfile, signOut } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   const [professionStep, setProfessionStep] = useState(2);
   const [profession, setProfession] = useState<ProfessionValue | null>(null);
+  const [employmentType, setEmploymentType] = useState<EmploymentType | null>(null);
   const [bigNumber, setBigNumber] = useState('');
   const [rcmNumber, setRcmNumber] = useState('');
   const [bigSearchGeslacht, setBigSearchGeslacht] = useState<BigSearchGender | ''>('');
@@ -121,7 +180,10 @@ export default function Onboarding() {
   const [organisatieSaving, setOrganisatieSaving] = useState(false);
   const [organisationType, setOrganisationType] = useState<OrganisationType | null>(null);
   const [kvkLoading, setKvkLoading] = useState(false);
+  const [kvkSearchMessage, setKvkSearchMessage] = useState<'idle' | 'no_results' | 'api_error'>('idle');
+  const [kvkSearchErrorDetail, setKvkSearchErrorDetail] = useState('');
   const [kvkConfirmPending, setKvkConfirmPending] = useState<KvkSearchItem | null>(null);
+  const kvkRequestIdRef = useRef(0);
 
   const handleRoleChoose = async (role: OnboardingRole) => {
     if (!user?.id || roleChoosing) return;
@@ -170,6 +232,7 @@ export default function Onboarding() {
     }
     setProfessionStep(2);
     setProfession(null);
+    setEmploymentType(null);
     setBigNumber('');
     setRcmNumber('');
     setCompanySearchQuery('');
@@ -209,62 +272,83 @@ export default function Onboarding() {
 
   const kvkSearchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const runKvkRequest = async (trimmed: string, isRetry: boolean, requestId: number): Promise<boolean> => {
+    const body = trimmed.replace(/\D/g, '').length === 8 ? { kvkNummer: trimmed.replace(/\D/g, '') } : { q: trimmed };
+    const { data, error: fnError } = await supabase.functions.invoke('kvk-search', { body });
+    if (requestId !== kvkRequestIdRef.current) return true;
+    const payload = data as { resultaten?: KvkSearchItem[]; error?: string } | null;
+    if (fnError || payload?.error) {
+      if (!isRetry) return false;
+      const raw = payload?.error?.trim() || (typeof fnError?.message === 'string' ? fnError.message : '');
+      const detail = /non-2xx|failed|fetch/i.test(raw) ? 'Zoekfunctie tijdelijk niet bereikbaar. Probeer het later opnieuw.' : (raw || 'Zoekfunctie niet bereikbaar.');
+      const isNoResult = /geen resultaat|geen bedrijven/i.test(detail);
+      if (isNoResult) {
+        setKvkSearchResults([]);
+        setKvkSearchMessage('no_results');
+      } else {
+        setKvkSearchErrorDetail(import.meta.env.DEV && raw ? `${detail} — ${raw}` : detail);
+        setKvkSearchMessage('api_error');
+        setKvkSearchResults([]);
+      }
+      return true;
+    }
+    const resultaten = payload?.resultaten ?? [];
+    const seenKvk = new Set<string>();
+    const uniek = resultaten.filter((r) => {
+      const key = (r.kvkNummer ?? '').trim() || (r.naam ?? '').trim();
+      if (!key || seenKvk.has(key)) return false;
+      seenKvk.add(key);
+      return true;
+    });
+    setKvkSearchResults(uniek);
+    setKvkSearchMessage(uniek.length === 0 ? 'no_results' : 'idle');
+    return true;
+  };
+
   const searchKvk = async (queryOverride?: string) => {
     const trimmed = (queryOverride !== undefined ? queryOverride : companySearchQuery).trim();
-    const kvkDigits = trimmed.replace(/\D/g, '');
-    if (!trimmed) return;
-    setError('');
-    setKvkLoading(true);
+    if (trimmed.length < 3) return;
+    setKvkSearchMessage('idle');
+    setKvkSearchErrorDetail('');
     setKvkSearchResults([]);
+    setKvkLoading(true);
+    const requestId = ++kvkRequestIdRef.current;
     try {
-      const body = kvkDigits.length === 8 ? { kvkNummer: kvkDigits } : { q: trimmed };
-      const { data, error: fnError } = await supabase.functions.invoke('kvk-search', { body });
-      const payload = data as { resultaten?: KvkSearchItem[]; error?: string } | null;
-      if (fnError) {
-        const msg = typeof fnError.message === 'string' ? fnError.message : 'Zoeken mislukt.';
-        const bodyError = payload?.error;
-        if (bodyError) {
-          setError(bodyError);
-        } else if (msg.includes('fetch') || msg.includes('Failed') || msg.includes('404') || msg.includes('500') || msg.includes('non-2xx') || msg.includes('Edge Function')) {
-          setError('KvK-zoekfunctie niet bereikbaar. Zet de Edge Function "kvk-search" live (supabase functions deploy kvk-search) en controleer KVK_API_KEY in Supabase secrets.');
-        } else {
-          setError(msg);
-        }
-        return;
+      let done = await runKvkRequest(trimmed, false, requestId);
+      if (requestId !== kvkRequestIdRef.current) return;
+      if (!done) {
+        done = await runKvkRequest(trimmed, true, requestId);
+        if (requestId !== kvkRequestIdRef.current) return;
+        if (!done) setKvkSearchErrorDetail('De zoekfunctie reageerde niet. Probeer het later opnieuw.');
       }
-      if (payload?.error) {
-        setError(payload.error);
-        return;
-      }
-      const resultaten = payload?.resultaten ?? [];
-      const seenKvk = new Set<string>();
-      const uniek = resultaten.filter((r) => {
-        const key = (r.kvkNummer ?? '').trim() || (r.naam ?? '').trim();
-        if (!key || seenKvk.has(key)) return false;
-        seenKvk.add(key);
-        return true;
-      });
-      setKvkSearchResults(uniek);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Zoeken mislukt. Probeer het later opnieuw.';
-      setError(msg);
+      if (kvkRequestIdRef.current !== requestId) return;
+      setKvkSearchErrorDetail(err instanceof Error ? err.message : 'Zoekfunctie niet bereikbaar.');
+      setKvkSearchMessage('api_error');
+      setKvkSearchResults([]);
     } finally {
-      setKvkLoading(false);
+      if (kvkRequestIdRef.current === requestId) setKvkLoading(false);
     }
   };
 
   useEffect(() => {
     const trimmed = companySearchQuery.trim();
     if (trimmed.length < 3) {
+      kvkRequestIdRef.current += 1;
       setKvkSearchResults([]);
-      setError((e) => (e && e.includes('Geen bedrijven gevonden') ? '' : e));
+      setKvkSearchMessage('idle');
+      setKvkSearchErrorDetail('');
+      if (kvkSearchDebounceRef.current) {
+        clearTimeout(kvkSearchDebounceRef.current);
+        kvkSearchDebounceRef.current = null;
+      }
       return;
     }
     if (kvkSearchDebounceRef.current) clearTimeout(kvkSearchDebounceRef.current);
     kvkSearchDebounceRef.current = setTimeout(() => {
       kvkSearchDebounceRef.current = null;
       searchKvk(trimmed);
-    }, 350);
+    }, 600);
     return () => {
       if (kvkSearchDebounceRef.current) clearTimeout(kvkSearchDebounceRef.current);
     };
@@ -287,6 +371,8 @@ export default function Onboarding() {
     setWebsite(Array.isArray(item.websites) && item.websites[0] ? item.websites[0] : '');
     setSector(item.sector ?? '');
     setKvkSearchResults([]);
+    setKvkSearchMessage('idle');
+    setKvkSearchErrorDetail('');
     setCompanySearchQuery('');
     setKvkConfirmPending(null);
   };
@@ -357,9 +443,20 @@ export default function Onboarding() {
     setProfessionStep(3);
   };
 
+  const EMPLOYMENT_OPTIONS: { value: EmploymentType; label: string }[] = [
+    { value: 'FREELANCE_ZZP', label: 'Freelance / ZZP' },
+    { value: 'LOONDIENST', label: 'In loondienst' },
+  ];
+
   const saveProfessionalAndComplete = async () => {
     if (!user?.id) return;
     setError('');
+    if (employmentType === 'FREELANCE_ZZP') {
+      if (!companyName.trim() || kvk.replace(/\D/g, '').length !== 8) {
+        setError('Vul bij Freelance/ZZP je bedrijfsgegevens in (KvK-zoeken op de vorige stap).');
+        return;
+      }
+    }
     if (profession && NEEDS_BIG.includes(profession)) {
       const digits = bigNumber.replace(/\D/g, '');
       if (digits.length !== 11) {
@@ -372,20 +469,31 @@ export default function Onboarding() {
     const bigVal = profession && NEEDS_BIG.includes(profession) ? bigNumber.replace(/\D/g, '').trim() || null : null;
     const rcmVal = rcmNumber.trim() || null;
     const professionType = profession ? PROFESSION_TO_TYPE[profession] : null;
+    const kvkDigits = employmentType === 'FREELANCE_ZZP' ? (kvk.replace(/\D/g, '') || null) : null;
+    const payload: Record<string, unknown> = {
+      profession: profession || undefined,
+      profession_type: professionType,
+      big_number: bigVal,
+      rcm_number: rcmVal,
+      employment_type: employmentType ?? null,
+    };
+    if (employmentType === 'FREELANCE_ZZP' && kvkDigits && kvkDigits.length === 8) {
+      payload.kvk = kvkDigits;
+      payload.company_name = companyName.trim() || null;
+      payload.billing_address = billingAddress.trim() || null;
+      payload.website = website.trim() || null;
+      payload.sector = sector.trim() || null;
+      payload.vestigingsnummer = vestigingsnummer.trim() || null;
+      payload.kvk_type = kvkType.trim() || null;
+      payload.rechtsvorm = rechtsvorm.trim() || null;
+      payload.statutaire_naam = statutaireNaam.trim() || null;
+    }
     if (proRow) {
-      await supabase.from('professionals').update({
-        profession: profession || undefined,
-        profession_type: professionType,
-        big_number: bigVal,
-        rcm_number: rcmVal,
-      }).eq('id', proRow.id);
+      await supabase.from('professionals').update(payload).eq('id', proRow.id);
     } else {
       await supabase.from('professionals').insert({
         user_id: user.id,
-        profession: profession || undefined,
-        profession_type: professionType,
-        big_number: bigVal,
-        rcm_number: rcmVal,
+        ...payload,
         verification_status: 'UNVERIFIED',
         doctor_plan: 'GRATIS',
         specialties: [],
@@ -416,13 +524,19 @@ export default function Onboarding() {
   const isProfessional = role === 'professional';
   const isOrganisatie = role === 'ORGANISATIE';
 
+  const handleSignOut = () => {
+    signOut();
+    navigate('/login', { replace: true });
+  };
+
   if (showRoleStep) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-emerald-50/80 via-[#F4FAF4] to-white flex flex-col items-center justify-center pt-8 pb-10 md:pt-12 md:pb-16 px-4 md:px-6">
-        <div className="mb-6 md:mb-10">
-          <LogoText theme="light" className="text-2xl md:text-3xl" />
-        </div>
-        <div className="w-full max-w-3xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
+      <div className="min-h-screen bg-gradient-to-b from-emerald-50/80 via-[#F4FAF4] to-white flex flex-col">
+        <OnboardingHeader profile={profile} user={user} onSignOut={handleSignOut} />
+        <div className="flex-1 flex flex-col items-center justify-center pt-4 pb-10 md:pt-6 md:pb-16 px-4 md:px-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-1 text-center">Welkom, voltooi onderstaande stappen</h1>
+          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8 text-center max-w-xl">Voordat je ArboMatcher kunt gebruiken, kies je rol: professional (opdrachten zoeken) of organisatie (opdrachten plaatsen).</p>
+          <div className="w-full max-w-3xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
           <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Hoe wil je ArboMatcher gebruiken?</h1>
           <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Kies je rol om verder te gaan.</p>
           {error && (
@@ -454,6 +568,8 @@ export default function Onboarding() {
           <p className="mt-8 md:mt-10 pt-6 border-t border-gray-100 text-center text-sm text-gray-500">
             Alle medische professionals worden gecontroleerd via het BIG-register.
           </p>
+          </div>
+          <p className="mt-6 text-center text-sm text-gray-500">Kom je er niet uit? <Link to="/contact" className="text-[#4FA151] hover:underline">Neem contact op</Link> met onze klantenservice.</p>
         </div>
       </div>
     );
@@ -477,10 +593,11 @@ export default function Onboarding() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50/80 via-[#F4FAF4] to-white flex flex-col items-center justify-center pt-8 pb-10 md:pt-12 md:pb-16 px-4 md:px-6">
-      <div className="mb-6 md:mb-10">
-        <LogoText theme="light" className="text-2xl md:text-3xl" />
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-emerald-50/80 via-[#F4FAF4] to-white flex flex-col">
+      <OnboardingHeader profile={profile} user={user} onSignOut={handleSignOut} />
+      <div className="flex-1 flex flex-col items-center pt-4 pb-10 md:pt-6 md:pb-16 px-4 md:px-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-1 text-center">Welkom, voltooi onderstaande stappen</h1>
+        <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8 text-center max-w-2xl">Voordat je ArboMatcher kunt gebruiken, vul je de stappen hieronder in.</p>
 
       {isProfessional && (
         <div className="w-full max-w-2xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
@@ -532,6 +649,128 @@ export default function Onboarding() {
             <>
               <button type="button" onClick={() => setProfessionStep(2)} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 text-sm md:text-base">
                 ← Terug naar beroep
+              </button>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Hoe werk je?</h1>
+              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Kies of je als freelancer/ZZP werkt of in loondienst.</p>
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
+                  <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
+                  <p className="text-sm text-red-800">{error}</p>
+                </div>
+              )}
+              <div className="space-y-3 md:space-y-4 mb-8 md:mb-10">
+                {EMPLOYMENT_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => {
+                      setError('');
+                      setEmploymentType(opt.value);
+                      if (opt.value === 'LOONDIENST') setProfessionStep(5);
+                      else setProfessionStep(4);
+                    }}
+                    className="w-full flex items-center gap-4 p-5 md:p-6 rounded-2xl border-2 transition-all duration-200 text-left border-gray-200 hover:border-[#4FA151] hover:bg-emerald-50/50"
+                  >
+                    <span className="font-semibold text-[#0F172A] text-base md:text-lg">{opt.label}</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {professionStep === 4 && (
+            <>
+              <button type="button" onClick={() => { setProfessionStep(3); setCompanyName(''); setKvk(''); setBillingAddress(''); setKvkSearchResults([]); setKvkConfirmPending(null); setCompanySearchQuery(''); }} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 text-sm md:text-base">
+                ← Terug naar hoe werk je
+              </button>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Je bedrijf (ZZP)</h1>
+              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Zoek je eenmanszaak of bedrijf op naam of KvK-nummer en bevestig dat dit jouw bedrijf is.</p>
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
+                  <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
+                  <p className="text-sm text-red-800">{error}</p>
+                </div>
+              )}
+              {kvkConfirmPending && (
+                <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                  <p className="font-semibold text-[#0F172A] mb-2">Weet je zeker dat dit jouw bedrijf is?</p>
+                  <p className="text-sm text-gray-700 mb-4">
+                    <strong>{kvkConfirmPending.naam || 'Onbekend'}</strong>
+                    {kvkConfirmPending.kvkNummer && <> (KvK {kvkConfirmPending.kvkNummer})</>}
+                    {kvkConfirmPending.plaats && <> · {kvkConfirmPending.plaats}</>}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <button type="button" onClick={() => { applyKvkResult(kvkConfirmPending); setKvkConfirmPending(null); }} className="px-4 py-2.5 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] transition">Ja, dit is mijn bedrijf</button>
+                    <button type="button" onClick={() => setKvkConfirmPending(null)} className="px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition">Nee, ander bedrijf kiezen</button>
+                  </div>
+                </div>
+              )}
+              {!kvkConfirmPending && (
+                <>
+                  <div className="mb-6">
+                    <label htmlFor="proCompanySearch" className="block text-sm font-medium text-gray-700 mb-2">Zoek bedrijf op naam of KvK-nummer</label>
+                    <div className="flex gap-2">
+                      <div className="flex-1 relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                        <input
+                          id="proCompanySearch"
+                          type="text"
+                          value={companySearchQuery}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            setCompanySearchQuery(v);
+                            setError('');
+                            kvkRequestIdRef.current += 1;
+                            setKvkSearchMessage('idle');
+                            setKvkSearchErrorDetail('');
+                            if (v.trim().length < 3) setKvkSearchResults([]);
+                          }}
+                          onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), companySearchQuery.trim().length >= 3 && searchKvk())}
+                          className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                          placeholder="Bedrijf (min. 3 tekens)"
+                        />
+                      </div>
+                      <button type="button" disabled={companySearchQuery.trim().length < 3 || kvkLoading} onClick={() => searchKvk()} className="px-4 py-3 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] disabled:opacity-50 whitespace-nowrap">
+                        {kvkLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
+                      </button>
+                    </div>
+                    {kvkLoading && <p className="mt-2 text-sm text-gray-500">Bedrijven zoeken...</p>}
+                    {kvkSearchMessage === 'api_error' && !kvkLoading && <p className="mt-2 text-sm text-red-600">{kvkSearchErrorDetail || 'De zoekfunctie is tijdelijk niet beschikbaar. Probeer het later opnieuw.'}</p>}
+                  </div>
+                  {kvkSearchResults.length > 0 && (
+                    <div className="mb-6 max-h-72 overflow-y-auto space-y-3 rounded-xl border border-gray-200 bg-gray-50/50 p-4">
+                      <p className="text-sm font-medium text-gray-600 mb-3">Klik op je bedrijf</p>
+                      {kvkSearchResults.map((item) => (
+                        <button
+                          key={`${item.kvkNummer ?? ''}-${item.vestigingsnummer ?? ''}-${item.naam ?? ''}`}
+                          type="button"
+                          onClick={() => setKvkConfirmPending(item)}
+                          className="w-full text-left px-5 py-4 bg-white border border-gray-200 rounded-xl hover:bg-emerald-50 hover:border-[#4FA151] transition text-base"
+                        >
+                          <span className="font-semibold text-[#0F172A]">{item.naam || 'Onbekend'}</span>
+                          {item.kvkNummer && <span className="text-gray-500 ml-2">KvK {item.kvkNummer}</span>}
+                          {item.plaats && <span className="text-gray-400 ml-2">• {item.plaats}</span>}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {companyName && kvk.replace(/\D/g, '').length === 8 && (
+                    <p className="mb-6 text-sm text-gray-600">Gekozen: <strong>{companyName}</strong> (KvK {kvk}).</p>
+                  )}
+                </>
+              )}
+              {companyName && kvk.replace(/\D/g, '').length === 8 && !kvkConfirmPending && (
+                <button type="button" onClick={() => setProfessionStep(5)} className="w-full bg-[#4FA151] text-white py-4 rounded-2xl font-semibold text-base hover:bg-[#3E8E45] transition shadow-md">
+                  Volgende
+                </button>
+              )}
+            </>
+          )}
+
+          {professionStep === 5 && (
+            <>
+              <button type="button" onClick={() => setProfessionStep(employmentType === 'FREELANCE_ZZP' ? 4 : 3)} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 text-sm md:text-base">
+                ← Terug
               </button>
               <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Validatie</h1>
               {profession && NEEDS_BIG.includes(profession) && (
@@ -787,21 +1026,31 @@ export default function Onboarding() {
                   id="companySearch"
                   type="text"
                   value={companySearchQuery}
-                  onChange={(e) => { setCompanySearchQuery(e.target.value); setError(''); }}
-                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), searchKvk())}
+                  onChange={(e) => {
+                  const v = e.target.value;
+                  setCompanySearchQuery(v);
+                  setError('');
+                  kvkRequestIdRef.current += 1;
+                  setKvkSearchMessage('idle');
+                  setKvkSearchErrorDetail('');
+                  if (v.trim().length < 3) setKvkSearchResults([]);
+                }}
+                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), companySearchQuery.trim().length >= 3 && searchKvk())}
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                  placeholder="Bedrijf"
+                  placeholder="Bedrijf (min. 3 tekens)"
                 />
               </div>
               <button
                 type="button"
-                disabled={!companySearchQuery.trim() || kvkLoading}
-                onClick={searchKvk}
+                disabled={companySearchQuery.trim().length < 3 || kvkLoading}
+                onClick={() => searchKvk()}
                 className="px-4 py-3 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
               >
                 {kvkLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
               </button>
             </div>
+            {kvkLoading && <p className="mt-2 text-sm text-gray-500">Bedrijven zoeken...</p>}
+            {kvkSearchMessage === 'api_error' && !kvkLoading && <p className="mt-2 text-sm text-red-600">{kvkSearchErrorDetail || 'De zoekfunctie is tijdelijk niet beschikbaar. Probeer het later opnieuw.'}</p>}
           </div>
           {kvkConfirmPending && (
             <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
@@ -864,6 +1113,8 @@ export default function Onboarding() {
         </div>
       )}
 
+        <p className="mt-8 text-center text-sm text-gray-500">Kom je er niet uit? <Link to="/contact" className="text-[#4FA151] hover:underline">Neem contact op</Link> met onze klantenservice.</p>
+      </div>
     </div>
   );
 }

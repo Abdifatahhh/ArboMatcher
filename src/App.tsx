@@ -44,7 +44,11 @@ function App() {
         <EnvBanner />
         <ToastProvider>
           <MaintenanceGate>
-            <Suspense fallback={null}>
+            <Suspense fallback={
+              <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex items-center justify-center">
+                <div className="animate-spin rounded-full h-10 w-10 border-2 border-[#4FA151] border-t-transparent" />
+              </div>
+            }>
             <Routes>
             <Route
             path="/"

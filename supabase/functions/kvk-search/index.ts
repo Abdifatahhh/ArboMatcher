@@ -131,8 +131,8 @@ Deno.serve(async (req: Request) => {
 
     if (!query && kvkNummer.length !== 8) {
       return new Response(
-        JSON.stringify({ error: "Voer een zoekterm of geldig KvK-nummer (8 cijfers) in" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ resultaten: [], totaal: 0, error: "Voer een zoekterm of geldig KvK-nummer (8 cijfers) in" }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -148,17 +148,43 @@ Deno.serve(async (req: Request) => {
 
     const searchRes = await fetch(searchUrl, {
       headers: { apikey: apiKey, Accept: "application/json" },
+      signal: AbortSignal.timeout(8000),
     });
 
     if (!searchRes.ok) {
-      const errMsg = searchRes.status === 401 ? "KVK API-key ongeldig of niet gezet. Zet KVK_API_KEY in Supabase secrets." : "KVK API gaf geen resultaat. Probeer later opnieuw.";
+      if (searchRes.status === 401) {
+        return new Response(
+          JSON.stringify({ resultaten: [], totaal: 0, error: "KVK API-key ongeldig of niet gezet. Zet KVK_API_KEY in Supabase secrets." }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      if (searchRes.status === 429) {
+        return new Response(
+          JSON.stringify({ resultaten: [], totaal: 0, error: "Te veel zoekopvragen. Wacht een minuut en probeer opnieuw." }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      if (searchRes.status >= 500) {
+        return new Response(
+          JSON.stringify({ resultaten: [], totaal: 0, error: "KVK API is tijdelijk niet bereikbaar. Probeer het later opnieuw." }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
       return new Response(
-        JSON.stringify({ resultaten: [], totaal: 0, error: errMsg }),
+        JSON.stringify({ resultaten: [], totaal: 0 }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const searchData: KvkZoekenResponse = await searchRes.json();
+    let searchData: KvkZoekenResponse;
+    try {
+      searchData = (await searchRes.json()) as KvkZoekenResponse;
+    } catch {
+      return new Response(
+        JSON.stringify({ resultaten: [], totaal: 0, error: "KVK API gaf geen geldig antwoord." }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
     const resultaten = searchData.resultaten ?? [];
 
     const withBasisprofiel = kvkNummer.length === 8 && resultaten.length > 0;
@@ -189,9 +215,16 @@ Deno.serve(async (req: Request) => {
   } catch (err) {
     console.error("KVK search error:", err);
     const errMsg = err instanceof Error ? err.message : "KVK-service tijdelijk niet bereikbaar.";
-    return new Response(
-      JSON.stringify({ resultaten: [], totaal: 0, error: errMsg }),
-      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    try {
+      return new Response(
+        JSON.stringify({ resultaten: [], totaal: 0, error: errMsg }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    } catch {
+      return new Response(
+        JSON.stringify({ resultaten: [], totaal: 0, error: "Zoekfunctie tijdelijk niet bereikbaar." }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
   }
 });
