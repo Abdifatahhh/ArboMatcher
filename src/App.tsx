@@ -119,6 +119,22 @@ function App() {
             }
           />
             <Route
+            path="/organisatie"
+            element={
+              <ProtectedRoute allowedRoles={['ORGANISATIE']}>
+                <Navigate to="/organisatie/dashboard" replace />
+              </ProtectedRoute>
+            }
+          />
+            <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <Navigate to="/admin/dashboard" replace />
+              </ProtectedRoute>
+            }
+          />
+            <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
@@ -140,19 +156,11 @@ function App() {
           />
             <Route
             path="/privacy"
-            element={
-              <RequireMarketingSite>
-                <PublicLayout><LazyPrivacy /></PublicLayout>
-              </RequireMarketingSite>
-            }
+            element={<PublicLayout><LazyPrivacy /></PublicLayout>}
           />
             <Route
             path="/terms"
-            element={
-              <RequireMarketingSite>
-                <PublicLayout><LazyTerms /></PublicLayout>
-              </RequireMarketingSite>
-            }
+            element={<PublicLayout><LazyTerms /></PublicLayout>}
           />
             <Route
             path="/contact"
@@ -220,9 +228,9 @@ function App() {
             </Route>
 
             <Route
-            path="/opdrachtgever/dashboard"
+            path="/organisatie/dashboard"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['ORGANISATIE']}>
                 <DashboardLayout>
                   <LazyOpdrachtgeverDashboard />
                 </DashboardLayout>
@@ -230,9 +238,9 @@ function App() {
             }
           />
             <Route
-            path="/opdrachtgever/profiel"
+            path="/organisatie/profiel"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['ORGANISATIE']}>
                 <DashboardLayout>
                   <LazyOpdrachtgeverProfiel />
                 </DashboardLayout>
@@ -240,9 +248,9 @@ function App() {
             }
           />
             <Route
-            path="/opdrachtgever/opdrachten"
+            path="/organisatie/opdrachten"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['ORGANISATIE']}>
                 <DashboardLayout>
                   <LazyOpdrachtgeverOpdrachten />
                 </DashboardLayout>
@@ -250,9 +258,9 @@ function App() {
             }
           />
             <Route
-            path="/opdrachtgever/kandidaten"
+            path="/organisatie/kandidaten"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['ORGANISATIE']}>
                 <DashboardLayout>
                   <LazyOpdrachtgeverKandidaten />
                 </DashboardLayout>
@@ -260,9 +268,9 @@ function App() {
             }
           />
             <Route
-            path="/opdrachtgever/favorieten"
+            path="/organisatie/favorieten"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['ORGANISATIE']}>
                 <DashboardLayout>
                   <LazyOpdrachtgeverFavorieten />
                 </DashboardLayout>
@@ -270,9 +278,9 @@ function App() {
             }
           />
             <Route
-            path="/opdrachtgever/inbox"
+            path="/organisatie/inbox"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['ORGANISATIE']}>
                 <DashboardLayout>
                   <LazyOpdrachtgeverInbox />
                 </DashboardLayout>
@@ -280,9 +288,9 @@ function App() {
             }
           />
             <Route
-            path="/opdrachtgever/abonnement"
+            path="/organisatie/abonnement"
             element={
-              <ProtectedRoute allowedRoles={['OPDRACHTGEVER']}>
+              <ProtectedRoute allowedRoles={['ORGANISATIE']}>
                 <DashboardLayout>
                   <LazyOpdrachtgeverAbonnement />
                 </DashboardLayout>
@@ -361,7 +369,7 @@ function App() {
             }
           />
             <Route
-            path="/admin/opdrachtgevers"
+            path="/admin/organisaties"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <DashboardLayout>
@@ -371,7 +379,7 @@ function App() {
             }
           />
             <Route
-            path="/admin/opdrachtgevers/:id"
+            path="/admin/organisaties/:id"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <DashboardLayout>
@@ -430,6 +438,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+            <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             </Suspense>
           <CookieBanner />

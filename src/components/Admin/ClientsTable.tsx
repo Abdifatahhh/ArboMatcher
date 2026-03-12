@@ -31,7 +31,7 @@ export function ClientsTable({ rows, onToggleBlock }: ClientsTableProps) {
               <tr key={employer.id} className={`${rowBg} hover:bg-emerald-50/50 transition-colors`}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <Link
-                    to={`/admin/opdrachtgevers/${employer.id}`}
+                    to={`/admin/organisaties/${employer.id}`}
                     className="text-sm font-semibold text-[#0F172A] hover:text-[#4FA151] hover:underline transition"
                   >
                     {employer.company_name || '—'}
@@ -56,14 +56,14 @@ export function ClientsTable({ rows, onToggleBlock }: ClientsTableProps) {
                 <td className="px-6 py-4 whitespace-nowrap text-right">
                   <div className="flex items-center justify-end gap-2">
                     <Link
-                      to={`/admin/opdrachtgevers/${employer.id}`}
+                      to={`/admin/organisaties/${employer.id}`}
                       className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-[#4FA151] hover:bg-emerald-100 transition"
                       title="Bekijken"
                     >
                       <Eye className="w-4 h-4" />
                     </Link>
                     <Link
-                      to={`/admin/opdrachtgevers/${employer.id}?edit=1`}
+                      to={`/admin/organisaties/${employer.id}?edit=1`}
                       className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-emerald-100 hover:text-emerald-800 transition"
                       title="Bewerken"
                     >

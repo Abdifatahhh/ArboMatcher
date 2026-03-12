@@ -7,11 +7,11 @@ import { AuthLink } from '../components/AuthLink';
 import { useToast } from '../context/ToastContext';
 import type { Job } from '../lib/types';
 import { ArrowLeft, MapPin, Clock, Briefcase, Calendar, Building2, Users, Eye, ArrowRight, CheckCircle } from 'lucide-react';
-import { getFakeJobById, type FakeJob } from '../data/fakeJobs';
 import { getContractFormLabel, getRemoteTypeLabel } from '../lib/opdrachtConstants';
 import { HowItWorksPreview } from '../components/home/HowItWorksPreview';
 import { HowItWorksSteps } from '../components/home/HowItWorksSteps';
 
+type FakeJob = import('../data/fakeJobs').FakeJob;
 type JobData = Job | FakeJob;
 
 export default function OpdrachtDetail() {
@@ -53,11 +53,20 @@ export default function OpdrachtDetail() {
     if (!id) return;
 
     if (id.startsWith('fake-')) {
+      if (!import.meta.env.DEV) {
+        setFetchError('Opdracht niet gevonden.');
+        setJob(null);
+        setLoading(false);
+        return;
+      }
+      const { getFakeJobById } = await import('../data/fakeJobs');
       const fakeJob = getFakeJobById(id);
       if (fakeJob) {
         setJob(fakeJob);
         setIsFakeJob(true);
         setViewsCount(Math.floor(Math.random() * 80) + 20);
+      } else {
+        setFetchError('Opdracht niet gevonden.');
       }
       setLoading(false);
       return;
@@ -584,7 +593,7 @@ export default function OpdrachtDetail() {
                 </h2>
                 <p className="text-slate-600 mb-6">
                   {user && profile?.role !== 'professional'
-                    ? 'Registreer als arts (met BIG-nummer) om te solliciteren op opdrachten en in contact te komen met opdrachtgevers.'
+                    ? 'Registreer als arts (met BIG-nummer) om te solliciteren op opdrachten en in contact te komen met organisaties.'
                     : 'Maak gratis een account aan om de volledige omschrijving te bekijken, direct te reageren en toegang te krijgen tot alle functies van ArboMatcher.'}
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">

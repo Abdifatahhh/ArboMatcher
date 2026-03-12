@@ -23,7 +23,7 @@ export function HowItWorksPreviewOpdrachtgevers({ activeStep }: HowItWorksPrevie
     <div
       role="region"
       aria-live="polite"
-      aria-label={`Preview stap opdrachtgevers ${activeStep}`}
+      aria-label={`Preview stap organisaties ${activeStep}`}
     >
       <div className="bg-white rounded-2xl shadow-lg shadow-gray-200/50 border border-gray-100 overflow-hidden">
         {activeStep === 1 && <PreviewStep1 />}

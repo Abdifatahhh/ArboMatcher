@@ -13,7 +13,7 @@ export default function Oplossingen() {
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Oplossingen</h1>
           <p className="text-xl text-gray-300 max-w-2xl">
-            Flexibele inzet in arbeid & gezondheid voor opdrachtgevers en professionals.
+            Flexibele inzet in arbeid & gezondheid voor organisaties en professionals.
           </p>
         </div>
       </section>
@@ -25,7 +25,7 @@ export default function Oplossingen() {
               <div className="w-16 h-16 bg-[#4FA151]/10 rounded-[16px] flex items-center justify-center mb-6">
                 <Building2 className="w-8 h-8 text-[#4FA151]" />
               </div>
-              <h2 className="text-3xl font-bold text-[#0F172A] mb-6">Voor opdrachtgevers</h2>
+              <h2 className="text-3xl font-bold text-[#0F172A] mb-6">Voor organisaties</h2>
               <p className="text-gray-600 mb-6 text-lg leading-relaxed">
                 Als arbodienst, werkgever of organisatie heeft u direct toegang tot een netwerk van ervaren bedrijfsartsen en arbo-professionals. Voor verzuimbegeleiding, preventie of re-integratie - wij hebben de juiste professional.
               </p>
@@ -44,7 +44,7 @@ export default function Oplossingen() {
                 ))}
               </div>
               <Link
-                to="/register?type=opdrachtgever"
+                to="/register?type=organisatie"
                 className="inline-flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
               >
                 Start als opdrachtgever
@@ -70,16 +70,16 @@ export default function Oplossingen() {
               </div>
               <h2 className="text-3xl font-bold text-[#0F172A] mb-6">Voor Professionals</h2>
               <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                Reageer op opdrachten van opdrachtgevers. Bepaal zelf waar, wanneer en hoeveel u werkt met flexibele inzetvormen.
+                Reageer op opdrachten van organisaties. Bepaal zelf waar, wanneer en hoeveel u werkt met flexibele inzetvormen.
               </p>
               <div className="space-y-4 mb-8">
                 {[
-                  'Reageer op opdrachten van opdrachtgevers',
+                  'Reageer op opdrachten van organisaties',
                   'Flexibele inzetvormen: ZZP, detachering of loondienst',
                   'Transparante communicatie via het platform',
                   'BIG-verificatie voor extra zichtbaarheid',
                   'Bepaal zelf uw beschikbaarheid',
-                  'Direct contact met opdrachtgevers',
+                  'Direct contact met organisaties',
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0 mt-0.5" />
@@ -116,7 +116,7 @@ export default function Oplossingen() {
               <div className="space-y-4">
                 {[
                   { icon: Clock, label: 'Flexibiliteit', desc: 'Bepaal zelf uw werktijden en locatie' },
-                  { icon: Shield, label: 'Zekerheid', desc: 'Geverifieerde opdrachtgevers' },
+                  { icon: Shield, label: 'Zekerheid', desc: 'Geverifieerde organisaties' },
                   { icon: Users, label: 'Netwerk', desc: 'Bouw aan uw professionele netwerk' },
                 ].map((item) => (
                   <div
@@ -143,7 +143,7 @@ export default function Oplossingen() {
               Ontdek de mogelijkheden
             </h2>
             <p className="text-xl text-slate-600 mb-8">
-              ArboMatcher - Het platform voor opdrachtgevers en arbo-professionals.
+              ArboMatcher - Het platform voor organisaties en arbo-professionals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

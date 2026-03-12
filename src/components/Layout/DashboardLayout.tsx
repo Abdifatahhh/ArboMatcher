@@ -40,7 +40,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const getInstellingenPath = () => {
     if (!profile) return '/';
     switch (profile.role) {
-      case 'OPDRACHTGEVER': return '/opdrachtgever/profiel';
+      case 'ORGANISATIE': return '/organisatie/profiel';
       case 'ADMIN': return '/admin/instellingen';
       default: return '/';
     }
@@ -48,13 +48,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const getInboxPath = () => {
     if (!profile) return '/';
-    return profile.role === 'OPDRACHTGEVER' ? '/opdrachtgever/inbox' : '#';
+    return profile.role === 'ORGANISATIE' ? '/organisatie/inbox' : '#';
   };
 
   const getProfilePath = () => {
     if (!profile) return '/';
     switch (profile.role) {
-      case 'OPDRACHTGEVER': return '/opdrachtgever/profiel';
+      case 'ORGANISATIE': return '/organisatie/profiel';
       case 'ADMIN': return '/admin/instellingen';
       default: return '/';
     }
@@ -70,32 +70,32 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       ];
     }
     return [
-      { path: '/opdrachtgever/opdrachten', label: 'Opdrachten', icon: Briefcase },
-      { path: '/opdrachtgever/kandidaten', label: 'Kandidaten', icon: Users },
-      { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard },
+      { path: '/organisatie/opdrachten', label: 'Opdrachten', icon: Briefcase },
+      { path: '/organisatie/kandidaten', label: 'Kandidaten', icon: Users },
+      { path: '/organisatie/abonnement', label: 'Abonnement', icon: CreditCard },
     ];
   };
 
   const getNavigationItems = () => {
     if (!profile) return [];
     switch (profile.role) {
-      case 'OPDRACHTGEVER': {
+      case 'ORGANISATIE': {
         const rest = [
-          { path: '/opdrachtgever/profiel', label: 'Profiel', icon: User },
-          { path: '/opdrachtgever/opdrachten', label: 'Mijn opdrachten', icon: Briefcase },
-          { path: '/opdrachtgever/kandidaten', label: 'Kandidaten', icon: Users },
-          { path: '/opdrachtgever/favorieten', label: 'Favorieten', icon: Heart },
-          { path: '/opdrachtgever/inbox', label: 'Berichten', icon: MessageSquare },
-          { path: '/opdrachtgever/abonnement', label: 'Abonnement', icon: CreditCard },
+          { path: '/organisatie/profiel', label: 'Profiel', icon: User },
+          { path: '/organisatie/opdrachten', label: 'Mijn opdrachten', icon: Briefcase },
+          { path: '/organisatie/kandidaten', label: 'Kandidaten', icon: Users },
+          { path: '/organisatie/favorieten', label: 'Favorieten', icon: Heart },
+          { path: '/organisatie/inbox', label: 'Berichten', icon: MessageSquare },
+          { path: '/organisatie/abonnement', label: 'Abonnement', icon: CreditCard },
         ].sort((a, b) => a.label.localeCompare(b.label, 'nl'));
-        return [{ path: '/opdrachtgever/dashboard', label: 'Dashboard', icon: LayoutDashboard }, ...rest];
+        return [{ path: '/organisatie/dashboard', label: 'Dashboard', icon: LayoutDashboard }, ...rest];
       }
       case 'ADMIN': {
         const rest = [
           { path: '/admin/verificaties', label: 'BIG Verificaties', icon: CheckCircle },
           { path: '/admin/artsen', label: 'Professionals', icon: User },
           { path: '/admin/gebruikers', label: 'Gebruikers', icon: Users },
-          { path: '/admin/opdrachtgevers', label: 'Opdrachtgevers', icon: Building2 },
+          { path: '/admin/organisaties', label: 'Organisaties', icon: Building2 },
           { path: '/admin/opdrachten', label: 'Opdrachten', icon: Briefcase },
           { path: '/admin/jobs/review', label: 'Opdrachten review', icon: FileCheck },
           { path: '/admin/reacties', label: 'Reacties', icon: FileText },
@@ -110,7 +110,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const navItems = getNavigationItems();
   const isAdmin = profile?.role === 'ADMIN';
-  const useGreenSidebar = isAdmin || profile?.role === 'OPDRACHTGEVER';
+  const useGreenSidebar = isAdmin || profile?.role === 'ORGANISATIE';
 
   const sidebarBg = useGreenSidebar
     ? 'bg-[#F4FAF4] border-r border-[#4FA151]/15 shadow-lg shadow-slate-200/20'
@@ -136,7 +136,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </Link>
         {profile && (
           <p className={`text-xs lg:text-sm mt-1.5 lg:mt-2 ${useGreenSidebar ? 'text-[#0F172A]/70 font-medium' : 'text-gray-600'}`}>
-            {profile.role === 'OPDRACHTGEVER' && 'Dashboard'}
+            {profile.role === 'ORGANISATIE' && 'Dashboard'}
             {profile.role === 'ADMIN' && 'Admin Dashboard'}
           </p>
         )}
@@ -184,7 +184,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="flex-1 flex flex-col min-w-0">
         <header className={`bg-white border-b lg:hidden ${headerBorder}`}>
           <div className="flex items-center justify-between px-3 py-2.5 md:px-4 md:py-4">
-            <Link to={profile?.role === 'ADMIN' ? '/admin/dashboard' : '/opdrachtgever/dashboard'} className="inline-block"><LogoText theme="light" className="text-lg" /></Link>
+            <Link to={profile?.role === 'ADMIN' ? '/admin/dashboard' : '/organisatie/dashboard'} className="inline-block"><LogoText theme="light" className="text-lg" /></Link>
             <div className="flex items-center gap-1">
               {getInboxPath() !== '#' && (
                 <Link to={getInboxPath()} className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A]">

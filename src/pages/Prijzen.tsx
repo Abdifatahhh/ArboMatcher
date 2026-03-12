@@ -14,7 +14,7 @@ export default function Prijzen() {
         </div>
 
         <div className="mb-16">
-          <h2 className="text-2xl font-bold text-[#0F172A] mb-8 text-center">Voor opdrachtgevers</h2>
+          <h2 className="text-2xl font-bold text-[#0F172A] mb-8 text-center">Voor organisaties</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg shadow-lg border-2 border-gray-200 p-8">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Basic</h3>

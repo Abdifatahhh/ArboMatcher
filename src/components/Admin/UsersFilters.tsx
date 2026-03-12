@@ -1,7 +1,7 @@
 import type { RoleFilter, StatusFilter } from '../../services/adminUsersService';
 import { getRoleLabel } from '../../lib/roleLabels';
 
-const ROLE_VALUES: Exclude<RoleFilter, ''>[] = ['professional', 'OPDRACHTGEVER', 'ADMIN', 'onboarding'];
+const ROLE_VALUES: Exclude<RoleFilter, ''>[] = ['professional', 'ORGANISATIE', 'ADMIN', 'onboarding'];
 
 interface UsersFiltersProps {
   role: RoleFilter;

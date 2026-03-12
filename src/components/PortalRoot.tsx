@@ -6,12 +6,12 @@ export function PortalRoot() {
   const { user, profile, loading } = useAuth();
   if (loading || !user) return <Login />;
   if (!profile) return <Login />;
-  if (profile.role !== 'ADMIN' && profile.onboarding_completed !== true) return <Navigate to="/onboarding" replace />;
+  if (profile.role !== 'ADMIN' && profile.onboarding_completed !== true) return <Login showAlreadyLoggedInBanner />;
   switch (profile.role) {
     case 'professional':
       return <Navigate to="/professional/dashboard" replace />;
-    case 'OPDRACHTGEVER':
-      return <Navigate to="/opdrachtgever/dashboard" replace />;
+    case 'ORGANISATIE':
+      return <Navigate to="/organisatie/dashboard" replace />;
     case 'ADMIN':
       return <Navigate to="/admin/dashboard" replace />;
     case 'onboarding':

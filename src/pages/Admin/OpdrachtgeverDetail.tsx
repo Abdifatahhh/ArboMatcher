@@ -118,8 +118,8 @@ export default function AdminOpdrachtgeverDetail() {
     return (
       <div className="p-6">
         <p className="text-red-600">Opdrachtgever niet gevonden.</p>
-        <Link to="/admin/opdrachtgevers" className="text-[#4FA151] hover:underline mt-2 inline-block">
-          Terug naar opdrachtgevers
+        <Link to="/admin/organisaties" className="text-[#4FA151] hover:underline mt-2 inline-block">
+          Terug naar organisaties
         </Link>
       </div>
     );
@@ -133,9 +133,9 @@ export default function AdminOpdrachtgeverDetail() {
 
   return (
     <div className="p-6 max-w-4xl">
-      <button onClick={() => navigate('/admin/opdrachtgevers')} className="flex items-center gap-2 text-emerald-700/80 hover:text-[#4FA151] mb-6 transition">
+      <button onClick={() => navigate('/admin/organisaties')} className="flex items-center gap-2 text-emerald-700/80 hover:text-[#4FA151] mb-6 transition">
         <ArrowLeft className="w-4 h-4" />
-        Terug naar opdrachtgevers
+        Terug naar organisaties
       </button>
 
       <h1 className="text-3xl font-bold text-[#0F172A] mb-2">{employer.company_name || 'Opdrachtgever'}</h1>
@@ -144,7 +144,7 @@ export default function AdminOpdrachtgeverDetail() {
       {isDemo && (
         <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-3 shadow-sm">
           <Info className="w-5 h-5 text-amber-600 flex-shrink-0" />
-          <p className="text-amber-900 text-sm">Dit is een demo-opdrachtgever. Wijzigingen worden niet opgeslagen.</p>
+          <p className="text-amber-900 text-sm">Dit is een demo-organisatie. Wijzigingen worden niet opgeslagen.</p>
         </div>
       )}
 
@@ -185,7 +185,7 @@ export default function AdminOpdrachtgeverDetail() {
                   <Save className="w-4 h-4" />
                   {saving ? 'Opslaan...' : 'Opslaan'}
                 </button>
-                <button type="button" onClick={() => navigate(`/admin/opdrachtgevers/${id}`, { replace: true })} className="px-6 py-2.5 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
+                <button type="button" onClick={() => navigate(`/admin/organisaties/${id}`, { replace: true })} className="px-6 py-2.5 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
                   Annuleren
                 </button>
               </div>
@@ -202,7 +202,7 @@ export default function AdminOpdrachtgeverDetail() {
                   {isBlocked ? <CheckCircle className="w-4 h-4" /> : <Ban className="w-4 h-4" />}
                   {isBlocked ? 'Deblokkeren' : 'Blokkeren'}
                 </button>
-                <Link to={`/admin/opdrachtgevers/${id}?edit=1`} className="inline-flex items-center gap-2 px-4 py-2 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
+                <Link to={`/admin/organisaties/${id}?edit=1`} className="inline-flex items-center gap-2 px-4 py-2 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
                   Bewerken
                 </Link>
               </div>

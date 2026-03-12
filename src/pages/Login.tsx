@@ -16,7 +16,11 @@ const errorIcons: Record<AuthErrorCategory, typeof AlertCircle> = {
   unknown: AlertCircle,
 };
 
-export default function Login() {
+interface LoginProps {
+  showAlreadyLoggedInBanner?: boolean;
+}
+
+export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
   const [searchParams] = useSearchParams();
   const verified = searchParams.get('verified') === '1';
   const [email, setEmail] = useState('');
@@ -24,11 +28,12 @@ export default function Login() {
   const [error, setError] = useState('');
   const [errorCategory, setErrorCategory] = useState<AuthErrorCategory | null>(null);
   const [loading, setLoading] = useState(false);
-  const { signIn, healthStatus, user, profile } = useAuth();
+  const { signIn, signOut, healthStatus, user, profile } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user || !profile) return;
+    if (showAlreadyLoggedInBanner) return;
     if (profile.role !== 'ADMIN' && profile.onboarding_completed !== true) {
       navigate('/onboarding', { replace: true });
       return;
@@ -41,12 +46,12 @@ export default function Login() {
       navigate('/professional/dashboard', { replace: true });
       return;
     }
-    if (profile.role === 'OPDRACHTGEVER') {
-      navigate('/opdrachtgever/dashboard', { replace: true });
+    if (profile.role === 'ORGANISATIE') {
+      navigate('/organisatie/dashboard', { replace: true });
       return;
     }
     navigate('/', { replace: true });
-  }, [user, profile, navigate]);
+  }, [user, profile, navigate, showAlreadyLoggedInBanner]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,8 +72,8 @@ export default function Login() {
       navigate('/onboarding');
     } else if (userProfile?.role === 'professional') {
       navigate('/professional/dashboard');
-    } else if (userProfile?.role === 'OPDRACHTGEVER') {
-      navigate('/opdrachtgever/dashboard');
+    } else if (userProfile?.role === 'ORGANISATIE') {
+      navigate('/organisatie/dashboard');
     } else if (userProfile?.role === 'ADMIN') {
       navigate('/admin/dashboard');
     } else {
@@ -83,6 +88,28 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-6 pb-8 md:pt-24 md:pb-12 px-4">
       <div className="w-full max-w-md">
+        {showAlreadyLoggedInBanner && user?.email && (
+          <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm">
+            <p className="font-medium text-emerald-900 mb-2">Je bent al ingelogd ({user.email})</p>
+            <p className="text-emerald-800 mb-3">Wil je doorgaan met registratie of met een ander account inloggen?</p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => navigate('/onboarding', { replace: true })}
+                className="px-4 py-2 bg-[#4FA151] text-white rounded-lg font-medium hover:bg-[#3E8E45]"
+              >
+                Doorgaan naar onboarding
+              </button>
+              <button
+                type="button"
+                onClick={async () => { await signOut(); }}
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+              >
+                Uitloggen
+              </button>
+            </div>
+          </div>
+        )}
         <div className="flex justify-center mb-8 md:mb-10">
           <LogoText theme="light" className="text-5xl min-[768px]:text-2xl" />
         </div>

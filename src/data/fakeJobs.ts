@@ -1,3 +1,8 @@
+/**
+ * Dev-only: fake opdrachten voor lokale ontwikkeling.
+ * Alleen geladen wanneer import.meta.env.DEV === true (Opdrachten.tsx, OpdrachtDetail.tsx).
+ * In productie worden deze niet geïmporteerd of getoond.
+ */
 export interface FakeJob {
   id: string;
   title: string;

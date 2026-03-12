@@ -10,7 +10,7 @@ import { CheckCircle } from 'lucide-react';
 
 const ROLE_OPTIONS: { value: UserRole; label: string }[] = [
   { value: 'professional', label: 'Professional' },
-  { value: 'OPDRACHTGEVER', label: 'Opdrachtgever' },
+  { value: 'ORGANISATIE', label: 'Organisatie' },
   { value: 'ADMIN', label: 'Admin' },
   { value: 'onboarding', label: 'Onboarding' },
 ];

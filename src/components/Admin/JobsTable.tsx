@@ -46,7 +46,7 @@ export function JobsTable({ rows, onStatusChange, isDemo }: JobsTableProps) {
                     {job.description && <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{job.description}</p>}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <Link to={employer ? `/admin/opdrachtgevers/${employer.id}` : '#'} className="text-sm text-gray-800 hover:text-[#4FA151] hover:underline transition">{job.company_name || employer?.company_name || '—'}</Link>
+                    <Link to={employer ? `/admin/organisaties/${employer.id}` : '#'} className="text-sm text-gray-800 hover:text-[#4FA151] hover:underline transition">{job.company_name || employer?.company_name || '—'}</Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <select

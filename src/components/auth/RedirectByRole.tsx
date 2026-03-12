@@ -8,8 +8,8 @@ export function RedirectToDashboard() {
   switch (profile.role) {
     case 'professional':
       return <Navigate to="/professional/dashboard" replace />;
-    case 'OPDRACHTGEVER':
-      return <Navigate to="/opdrachtgever/dashboard" replace />;
+    case 'ORGANISATIE':
+      return <Navigate to="/organisatie/dashboard" replace />;
     case 'ADMIN':
       return <Navigate to="/admin/dashboard" replace />;
     case 'onboarding':
@@ -26,8 +26,8 @@ export function RedirectToProfiel() {
   switch (profile.role) {
     case 'professional':
       return <Navigate to="/professional/profiel" replace />;
-    case 'OPDRACHTGEVER':
-      return <Navigate to="/opdrachtgever/profiel" replace />;
+    case 'ORGANISATIE':
+      return <Navigate to="/organisatie/profiel" replace />;
     case 'ADMIN':
       return <Navigate to="/admin/dashboard" replace />;
     case 'onboarding':

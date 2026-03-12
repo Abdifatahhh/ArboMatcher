@@ -4,15 +4,21 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { AlertCircle, Loader2, Briefcase, Stethoscope, Search } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
-import type { ProfessionValue } from '../lib/types';
+import type { ProfessionValue, OrganisationType } from '../lib/types';
 import { searchBigByName } from '../services/bigCheckService';
 import type { BigSearchResultItem, BigSearchGender } from '../services/bigCheckService';
 
-export type OnboardingRole = 'professional' | 'opdrachtgever';
+export type OnboardingRole = 'professional' | 'organisatie';
 
 const ROLE_OPTIONS: { value: OnboardingRole; label: string; sub: string; icon: typeof Briefcase }[] = [
   { value: 'professional', label: 'Professional', sub: 'Vind opdrachten als arts', icon: Stethoscope },
-  { value: 'opdrachtgever', label: 'Opdrachtgever', sub: 'Plaats opdrachten', icon: Briefcase },
+  { value: 'organisatie', label: 'Organisatie', sub: 'Plaats opdrachten', icon: Briefcase },
+];
+
+const ORGANISATION_TYPE_OPTIONS: { value: OrganisationType; label: string }[] = [
+  { value: 'ARBODIENST', label: 'Arbodienst' },
+  { value: 'BEDRIJF', label: 'Bedrijf' },
+  { value: 'INTERMEDIAIR', label: 'Intermediair' },
 ];
 
 const PROFESSION_OPTIONS: { value: ProfessionValue; label: string }[] = [
@@ -77,7 +83,7 @@ export default function Onboarding() {
 
   const redirectByRole = (role: string) => {
     if (role === 'professional') navigate('/professional/dashboard', { replace: true });
-    else if (role === 'OPDRACHTGEVER') navigate('/opdrachtgever/dashboard', { replace: true });
+    else if (role === 'ORGANISATIE') navigate('/organisatie/dashboard', { replace: true });
     else navigate('/', { replace: true });
   };
 
@@ -112,15 +118,17 @@ export default function Onboarding() {
   const [kvkActief, setKvkActief] = useState('');
   const [rechtsvorm, setRechtsvorm] = useState('');
   const [statutaireNaam, setStatutaireNaam] = useState('');
-  const [opdrachtgeverSaving, setOpdrachtgeverSaving] = useState(false);
+  const [organisatieSaving, setOrganisatieSaving] = useState(false);
+  const [organisationType, setOrganisationType] = useState<OrganisationType | null>(null);
   const [kvkLoading, setKvkLoading] = useState(false);
+  const [kvkConfirmPending, setKvkConfirmPending] = useState<KvkSearchItem | null>(null);
 
   const handleRoleChoose = async (role: OnboardingRole) => {
     if (!user?.id || roleChoosing) return;
     setError('');
     setRoleChoosing(true);
-    if (role === 'opdrachtgever') {
-      const { error: upErr } = await supabase.from('profiles').update({ role: 'OPDRACHTGEVER' }).eq('id', user.id);
+    if (role === 'organisatie') {
+      const { error: upErr } = await supabase.from('profiles').update({ role: 'ORGANISATIE' }).eq('id', user.id);
       if (upErr) {
         setError(upErr.message);
         setRoleChoosing(false);
@@ -176,6 +184,7 @@ export default function Onboarding() {
     setKvkActief('');
     setRechtsvorm('');
     setStatutaireNaam('');
+    setOrganisationType(null);
     await refreshProfile();
     setBackToRoleLoading(false);
   };
@@ -228,7 +237,14 @@ export default function Onboarding() {
         return;
       }
       const resultaten = payload?.resultaten ?? [];
-      setKvkSearchResults(resultaten);
+      const seenKvk = new Set<string>();
+      const uniek = resultaten.filter((r) => {
+        const key = (r.kvkNummer ?? '').trim() || (r.naam ?? '').trim();
+        if (!key || seenKvk.has(key)) return false;
+        seenKvk.add(key);
+        return true;
+      });
+      setKvkSearchResults(uniek);
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Zoeken mislukt. Probeer het later opnieuw.';
       setError(msg);
@@ -272,9 +288,10 @@ export default function Onboarding() {
     setSector(item.sector ?? '');
     setKvkSearchResults([]);
     setCompanySearchQuery('');
+    setKvkConfirmPending(null);
   };
 
-  const saveOpdrachtgeverAndComplete = async () => {
+  const saveOrganisatieAndComplete = async () => {
     if (!user?.id) return;
     const name = companyName.trim();
     const kvkDigits = kvk.replace(/\D/g, '');
@@ -287,7 +304,7 @@ export default function Onboarding() {
       return;
     }
     setError('');
-    setOpdrachtgeverSaving(true);
+    setOrganisatieSaving(true);
     const { data: existing } = await supabase.from('employers').select('id').eq('user_id', user.id).maybeSingle();
     const employerPayload = {
       company_name: name,
@@ -300,12 +317,13 @@ export default function Onboarding() {
       kvk_actief: kvkActief === 'Ja' ? true : kvkActief === 'Nee' ? false : null,
       rechtsvorm: rechtsvorm.trim() || null,
       statutaire_naam: statutaireNaam.trim() || null,
+      organization_type: organisationType ?? null,
     };
     if (existing) {
       const { error: upErr } = await supabase.from('employers').update(employerPayload).eq('id', existing.id);
       if (upErr) {
         setError(upErr.message);
-        setOpdrachtgeverSaving(false);
+        setOrganisatieSaving(false);
         return;
       }
     } else {
@@ -315,19 +333,19 @@ export default function Onboarding() {
       });
       if (inErr) {
         setError(inErr.message);
-        setOpdrachtgeverSaving(false);
+        setOrganisatieSaving(false);
         return;
       }
     }
     const { error: upErr } = await supabase.from('profiles').update({ onboarding_completed: true }).eq('id', user.id);
     if (upErr) {
       setError(upErr.message);
-      setOpdrachtgeverSaving(false);
+      setOrganisatieSaving(false);
       return;
     }
     await refreshProfile();
-    setOpdrachtgeverSaving(false);
-    navigate('/opdrachtgever/dashboard', { replace: true });
+    setOrganisatieSaving(false);
+    navigate('/organisatie/dashboard', { replace: true });
   };
 
   const handleProfessionalStep2Next = () => {
@@ -396,7 +414,7 @@ export default function Onboarding() {
 
   const role = profile?.role;
   const isProfessional = role === 'professional';
-  const isOpdrachtgever = role === 'OPDRACHTGEVER';
+  const isOrganisatie = role === 'ORGANISATIE';
 
   if (showRoleStep) {
     return (
@@ -441,7 +459,7 @@ export default function Onboarding() {
     );
   }
 
-  if (!profile || (!isProfessional && !isOpdrachtgever)) {
+  if (!profile || (!isProfessional && !isOrganisatie)) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F4FAF4] px-4">
         <p className="text-gray-600">Geen onboarding beschikbaar voor dit account.</p>
@@ -652,15 +670,15 @@ export default function Onboarding() {
                             </div>
                           </div>
                         ) : (
-                          <div className="max-h-48 overflow-y-auto space-y-1.5">
+                          <div className="max-h-72 overflow-y-auto space-y-3 rounded-xl border border-gray-200 bg-gray-50/50 p-4">
                             {bigSearchResults.map((item) => (
                               <button
                                 key={item.big_number}
                                 type="button"
                                 onClick={() => setBigSearchPendingSelection(item)}
-                                className="w-full text-left px-3 py-2.5 bg-white border border-emerald-200 rounded-lg hover:bg-emerald-50 hover:border-[#4FA151] transition text-sm"
+                                className="w-full text-left px-5 py-4 bg-white border border-gray-200 rounded-xl hover:bg-emerald-50 hover:border-[#4FA151] transition text-base"
                               >
-                                <span className="font-medium text-[#0F172A]">{item.name || 'Onbekende naam'}</span>
+                                <span className="font-semibold text-[#0F172A]">{item.name || 'Onbekende naam'}</span>
                                 <span className="text-gray-500 ml-2">BIG {item.big_number}</span>
                               </button>
                             ))}
@@ -721,20 +739,46 @@ export default function Onboarding() {
         </div>
       )}
 
-      {isOpdrachtgever && !profile?.onboarding_completed && (
+      {isOrganisatie && !profile?.onboarding_completed && (
         <div className="w-full max-w-2xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
           <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
             {backToRoleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}← Terug naar rolkeuze
           </button>
-          <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Registreer je bedrijf</h1>
-          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Zoek je bedrijf op naam of KvK-nummer, kies je bedrijf en voltooi de registratie. Adres en overige gegevens kun je later op je dashboard invullen.</p>
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
-              <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
-              <p className="text-sm text-red-800">{error}</p>
-            </div>
-          )}
-          <div className="mb-6">
+          {!organisationType ? (
+            <>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Kies type organisatie</h1>
+              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Selecteer het type organisatie dat bij je past.</p>
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
+                  <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
+                  <p className="text-sm text-red-800">{error}</p>
+                </div>
+              )}
+              <div className="space-y-4 md:space-y-5 mb-8">
+                {ORGANISATION_TYPE_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => { setOrganisationType(opt.value); setError(''); }}
+                    className="w-full flex items-center gap-5 p-6 md:p-8 rounded-2xl border-2 transition-all duration-200 text-left border-gray-200 hover:border-[#4FA151] hover:bg-emerald-50/50"
+                  >
+                    <span className="font-semibold text-[#0F172A] text-lg md:text-xl">{opt.label}</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <button type="button" onClick={() => setOrganisationType(null)} className="text-gray-500 hover:text-[#4FA151] font-medium mb-4 text-sm">← Terug naar type organisatie</button>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Registreer je bedrijf</h1>
+              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Zoek je bedrijf op naam of KvK-nummer, kies je bedrijf en voltooi de registratie. Adres en overige gegevens kun je later op je dashboard invullen.</p>
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
+                  <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
+                  <p className="text-sm text-red-800">{error}</p>
+                </div>
+              )}
+              <div className="mb-6">
             <label htmlFor="companySearch" className="block text-sm font-medium text-gray-700 mb-2">Zoek bedrijf op naam of KvK-nummer</label>
             <div className="flex gap-2">
               <div className="flex-1 relative">
@@ -759,17 +803,43 @@ export default function Onboarding() {
               </button>
             </div>
           </div>
-          {kvkSearchResults.length > 0 && (
-            <div className="mb-6 max-h-56 overflow-y-auto space-y-1.5 rounded-xl border border-gray-200 bg-gray-50/50 p-2">
-              <p className="text-xs font-medium text-gray-500 mb-2 px-2">Klik op je bedrijf</p>
+          {kvkConfirmPending && (
+            <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+              <p className="font-semibold text-[#0F172A] mb-2">Weet je zeker dat dit jouw bedrijf is?</p>
+              <p className="text-sm text-gray-700 mb-4">
+                <strong>{kvkConfirmPending.naam || 'Onbekend'}</strong>
+                {kvkConfirmPending.kvkNummer && <> (KvK {kvkConfirmPending.kvkNummer})</>}
+                {kvkConfirmPending.plaats && <> · {kvkConfirmPending.plaats}</>}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => { applyKvkResult(kvkConfirmPending); setKvkConfirmPending(null); }}
+                  className="px-4 py-2.5 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] transition"
+                >
+                  Ja, dit is mijn bedrijf
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setKvkConfirmPending(null)}
+                  className="px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition"
+                >
+                  Nee, ander bedrijf kiezen
+                </button>
+              </div>
+            </div>
+          )}
+          {kvkSearchResults.length > 0 && !kvkConfirmPending && (
+            <div className="mb-6 max-h-72 overflow-y-auto space-y-3 rounded-xl border border-gray-200 bg-gray-50/50 p-4">
+              <p className="text-sm font-medium text-gray-600 mb-3">Klik op je bedrijf</p>
               {kvkSearchResults.map((item) => (
                 <button
                   key={`${item.kvkNummer ?? ''}-${item.vestigingsnummer ?? ''}-${item.naam ?? ''}`}
                   type="button"
-                  onClick={() => applyKvkResult(item)}
-                  className="w-full text-left px-4 py-3 bg-white border border-gray-200 rounded-lg hover:bg-emerald-50 hover:border-[#4FA151] transition text-sm"
+                  onClick={() => setKvkConfirmPending(item)}
+                  className="w-full text-left px-5 py-4 bg-white border border-gray-200 rounded-xl hover:bg-emerald-50 hover:border-[#4FA151] transition text-base"
                 >
-                  <span className="font-medium text-[#0F172A]">{item.naam || 'Onbekend'}</span>
+                  <span className="font-semibold text-[#0F172A]">{item.naam || 'Onbekend'}</span>
                   {item.kvkNummer && <span className="text-gray-500 ml-2">KvK {item.kvkNummer}</span>}
                   {item.plaats && <span className="text-gray-400 ml-2">• {item.plaats}</span>}
                 </button>
@@ -783,12 +853,14 @@ export default function Onboarding() {
           )}
           <button
             type="button"
-            disabled={opdrachtgeverSaving || !companyName.trim() || kvk.replace(/\D/g, '').length !== 8}
-            onClick={saveOpdrachtgeverAndComplete}
+            disabled={organisatieSaving || !companyName.trim() || kvk.replace(/\D/g, '').length !== 8}
+            onClick={saveOrganisatieAndComplete}
             className="w-full bg-[#4FA151] text-white py-4 rounded-2xl font-semibold text-base hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {opdrachtgeverSaving ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span> : 'Registratie voltooien'}
+            {organisatieSaving ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span> : 'Registratie voltooien'}
           </button>
+            </>
+          )}
         </div>
       )}
 

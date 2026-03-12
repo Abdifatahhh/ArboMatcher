@@ -1,4 +1,4 @@
-export type UserRole = 'OPDRACHTGEVER' | 'ADMIN' | 'professional' | 'onboarding';
+export type UserRole = 'ORGANISATIE' | 'ADMIN' | 'professional' | 'onboarding';
 export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
 export type JobStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED';
 export type { JobReviewStatus } from './jobReviewTypes';
@@ -55,9 +55,12 @@ export interface Employer {
   kvk_actief: boolean | null;
   rechtsvorm: string | null;
   statutaire_naam: string | null;
+  organization_type: string | null;
   created_at: string;
   updated_at: string;
 }
+
+export type OrganisationType = 'ARBODIENST' | 'BEDRIJF' | 'INTERMEDIAIR';
 
 export type ProfessionType = 'BEDRIJFSARTS' | 'ARBO_ARTS' | 'VERZEKERINGSARTS' | 'CASEMANAGER_VERZUIM' | 'POB';
 

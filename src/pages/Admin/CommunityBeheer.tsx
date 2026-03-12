@@ -426,7 +426,7 @@ function TopicForm({
               className="w-full px-3 py-2 border border-gray-200 rounded-xl"
             >
               <option value="Voor artsen">Voor artsen</option>
-              <option value="Voor opdrachtgevers">Voor opdrachtgevers</option>
+              <option value="Voor organisaties">Voor organisaties</option>
             </select>
           </div>
           <div>
@@ -524,7 +524,7 @@ function ArticleForm({
                 className="w-full px-3 py-2 border border-gray-200 rounded-xl"
               >
                 <option value="Voor artsen">Voor artsen</option>
-                <option value="Voor opdrachtgevers">Voor opdrachtgevers</option>
+                <option value="Voor organisaties">Voor organisaties</option>
                 <option value="Algemeen">Algemeen</option>
               </select>
             </div>

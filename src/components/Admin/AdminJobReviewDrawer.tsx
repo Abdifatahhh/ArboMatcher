@@ -274,7 +274,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
                     </dl>
                   </section>
                   <section>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Opdrachtgever</h3>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Organisatie</h3>
                     <dl className="grid grid-cols-1 gap-2 text-sm">
                       <div><dt className="text-gray-500">Bedrijfsnaam</dt><dd className="font-medium">{employer?.company_name ?? job.company_name ?? '—'}</dd></div>
                       <div><dt className="text-gray-500">KvK</dt><dd>{employer?.kvk_number ?? '—'}</dd></div>
@@ -383,7 +383,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
               onChange={(e) => setChangesReason(e.target.value)}
               className="w-full px-3 py-2 border rounded-lg mb-4"
               rows={3}
-              placeholder="Reden (zichtbaar voor opdrachtgever)"
+              placeholder="Reden (zichtbaar voor organisatie)"
             />
             <div className="flex gap-2 justify-end">
               <button onClick={() => { setShowChangesModal(false); setChangesReason(''); }} className="px-4 py-2 border rounded-lg">Annuleren</button>
@@ -410,7 +410,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
               onChange={(e) => setRejectReason(e.target.value)}
               className="w-full px-3 py-2 border rounded-lg mb-4"
               rows={3}
-              placeholder="Reden (verplicht, zichtbaar voor opdrachtgever)"
+              placeholder="Reden (verplicht, zichtbaar voor organisatie)"
             />
             <div className="flex gap-2 justify-end">
               <button onClick={() => { setShowRejectModal(false); setRejectReason(''); }} className="px-4 py-2 border rounded-lg">Annuleren</button>

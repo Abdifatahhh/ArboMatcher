@@ -42,7 +42,7 @@ const hoursOptions: FilterOption[] = [
 const locationOptions: FilterOption[] = REMOTE_TYPE_OPTIONS;
 
 const postedByOptions: FilterOption[] = [
-  { value: 'direct', label: 'Direct door opdrachtgever' },
+  { value: 'direct', label: 'Direct door organisatie' },
   { value: 'bureau', label: 'Via bureau' },
 ];
 

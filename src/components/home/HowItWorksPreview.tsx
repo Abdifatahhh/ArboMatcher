@@ -52,7 +52,7 @@ function PreviewStep1() {
         ))}
       </div>
       <p className="text-sm text-gray-500 mt-4">
-        Opdrachten van opdrachtgevers in één overzicht.
+        Opdrachten van organisaties in één overzicht.
       </p>
     </div>
   );
@@ -173,7 +173,7 @@ function PreviewStep4() {
         </div>
       </div>
       <p className="text-sm text-gray-500 mt-4">
-        Een compleet profiel vergroot je zichtbaarheid bij opdrachtgevers.
+        Een compleet profiel vergroot je zichtbaarheid bij organisaties.
       </p>
     </div>
   );

@@ -2,7 +2,7 @@ import type { UserRole } from './types';
 
 const LABELS: Record<UserRole, string> = {
   ADMIN: 'Admin',
-  OPDRACHTGEVER: 'Opdrachtgever',
+  ORGANISATIE: 'Organisatie',
   professional: 'Professional',
   onboarding: 'Onboarding',
 };

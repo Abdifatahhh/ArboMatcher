@@ -19,7 +19,7 @@ import { COMMUNITY_ARTICLES } from '../data/communityArticles';
 import type { CommunityTopic } from '../data/communityTopics';
 import type { CommunityArticle } from '../data/communityArticles';
 
-type TabId = 'artsen' | 'opdrachtgevers';
+type TabId = 'artsen' | 'organisaties';
 
 const ICON_BY_SLUG: Record<string, typeof Stethoscope> = {
   'starten-als-arts': Stethoscope,
@@ -50,7 +50,7 @@ export default function Community() {
   }, []);
 
   const categories = topics.filter(
-    (t) => t.category === (activeTab === 'artsen' ? 'Voor artsen' : 'Voor opdrachtgevers')
+    (t) => t.category === (activeTab === 'artsen' ? 'Voor artsen' : 'Voor organisaties')
   );
 
   return (
@@ -64,7 +64,7 @@ export default function Community() {
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Community</h1>
           <p className="text-xl text-gray-300 max-w-2xl">
-            Handige informatie, tips en uitleg voor artsen en opdrachtgevers. Alles over het platform, BIG-verificatie en succesvol matchen.
+            Handige informatie, tips en uitleg voor artsen en organisaties. Alles over het platform, BIG-verificatie en succesvol matchen.
           </p>
         </div>
       </section>
@@ -87,15 +87,15 @@ export default function Community() {
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab('opdrachtgevers')}
+              onClick={() => setActiveTab('organisaties')}
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition flex items-center gap-2 ${
-                activeTab === 'opdrachtgevers'
+                activeTab === 'organisaties'
                   ? 'bg-[#4FA151] text-white shadow-lg shadow-[#4FA151]/20'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
               <Building2 className="w-4 h-4" />
-              Voor opdrachtgevers
+              Voor organisaties
             </button>
           </div>
 

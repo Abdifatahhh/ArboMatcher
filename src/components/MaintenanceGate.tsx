@@ -5,6 +5,12 @@ import MaintenancePage from '../pages/MaintenancePage';
 
 const MIN_SHOW_DELAY_MS = 200;
 
+function isEmailVerificationOrAuthCallback(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (window.location.pathname === '/verificatie-gelukt') return true;
+  return /[#&](access_token|refresh_token)=/.test(window.location.hash || '');
+}
+
 interface MaintenanceGateProps {
   children: React.ReactNode;
 }
@@ -14,6 +20,7 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
   const [settings, setSettings] = useState(() => getMaintenanceSettings());
   const [bypass, setBypass] = useState(() => hasMaintenanceBypass());
   const [minDelayPassed, setMinDelayPassed] = useState(false);
+  const allowForAuth = isEmailVerificationOrAuthCallback();
 
   useEffect(() => {
     const t = setTimeout(() => setMinDelayPassed(true), MIN_SHOW_DELAY_MS);
@@ -35,8 +42,8 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
   }, [refreshSettings]);
 
   const isAdmin = profile?.role === 'ADMIN';
-  const showApp = !settings.enabled || isAdmin || bypass;
-  const mustWaitForAuth = settings.enabled && !bypass;
+  const showApp = !settings.enabled || isAdmin || bypass || allowForAuth;
+  const mustWaitForAuth = settings.enabled && !bypass && !allowForAuth;
   const ready = minDelayPassed && (!mustWaitForAuth || !authLoading);
 
   const handleBypass = useCallback(() => {

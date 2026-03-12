@@ -34,8 +34,8 @@ export default function Terms() {
             <li><strong>Bezoeker:</strong> iedere natuurlijke persoon of rechtspersoon die het Platform bezoekt, al dan niet geregistreerd.</li>
             <li><strong>Gebruiker:</strong> iedere Bezoeker die zich op de Website heeft geregistreerd, zijn gegevens heeft bevestigd en deze Voorwaarden expliciet (opt-in) heeft geaccepteerd teneinde een overeenkomst met AM te sluiten, en die toegang heeft tot het Gebruikersgedeelte.</li>
             <li><strong>Professional:</strong> iedere natuurlijke persoon die als bedrijfsarts of anderszins als arbo-professional (arts, verpleegkundige of andere gekwalificeerde professional in de arboketen) zijn arbeid, kennis en/of kunde aanbiedt voor beperkte periodes of tijdelijk, en die als Gebruiker op het Platform actief is.</li>
-            <li><strong>Opdrachtgever:</strong> iedere onderneming of organisatie die op de arbeidsmarkt voor beperkte periodes of tijdelijk arbeid vraagt met als doel professionals tijdelijk aan zich te binden, bijvoorbeeld voor verzuimbegeleiding, PAGO, preventie of andere arbodiensten. Een Opdrachtgever kan afhankelijk van de aard van zijn onderneming tevens actief zijn als Intermediair.</li>
-            <li><strong>Intermediair:</strong> iedere Opdrachtgever die – ter beoordeling van AM – actief is in de arbeidsbemiddeling en/of de terbeschikkingstelling van arbeidskrachten in de arbosector, waaronder uitzendbureaus, detacheerders en werving- en selectiebureaus die professionals voor opdrachtgevers werven.</li>
+            <li><strong>Organisatie:</strong> iedere onderneming of organisatie die op de arbeidsmarkt voor beperkte periodes of tijdelijk arbeid vraagt met als doel professionals tijdelijk aan zich te binden, bijvoorbeeld voor verzuimbegeleiding, PAGO, preventie of andere arbodiensten. Een Organisatie kan afhankelijk van de aard van zijn onderneming tevens actief zijn als Intermediair.</li>
+            <li><strong>Intermediair:</strong> iedere Organisatie die – ter beoordeling van AM – actief is in de arbeidsbemiddeling en/of de terbeschikkingstelling van arbeidskrachten in de arbosector, waaronder uitzendbureaus, detacheerders en werving- en selectiebureaus die professionals voor organisaties werven.</li>
             <li><strong>Platform:</strong> alle websites en andere online toepassingen in eigendom of beheer van AM, waaronder de Website en het Gebruikersgedeelte.</li>
             <li><strong>Website:</strong> de webpagina’s op het internetdomein arbomatcher.nl en aanverwante domeinen die door AM worden beheerd.</li>
             <li><strong>Gebruikersgedeelte:</strong> het gedeelte van de Website dat uitsluitend toegankelijk is voor Gebruikers na inloggen, waaronder het plaatsen en bekijken van Opdrachten, het reageren op Opdrachten, het beheren van profielen, berichten en overige functionaliteit die AM voor Gebruikers beschikbaar stelt.</li>
@@ -50,9 +50,9 @@ export default function Terms() {
           <h2 id="section_algemeen" className="text-2xl font-bold text-[#0F172A] mt-10 mb-4 scroll-mt-24">2. Algemeen, toepasselijkheid</h2>
           <p className="mb-3">AM drijft een onderneming die als doel heeft:</p>
           <ul className="list-disc list-inside mb-4 space-y-1">
-            <li>de totstandkoming van overeenkomsten tussen Professionals en Opdrachtgevers door Opdrachten te publiceren op het Platform en contact tussen vragers en aanbieders van tijdelijke arbodiensten te faciliteren;</li>
-            <li>de belangen van Professionals en Opdrachtgevers waar zij kan optimaal te behartigen;</li>
-            <li>Professionals en Opdrachtgevers te ondersteunen met voor hen relevante producten en diensten.</li>
+            <li>de totstandkoming van overeenkomsten tussen Professionals en Organisaties door Opdrachten te publiceren op het Platform en contact tussen vragers en aanbieders van tijdelijke arbodiensten te faciliteren;</li>
+            <li>de belangen van Professionals en Organisaties waar zij kan optimaal te behartigen;</li>
+            <li>Professionals en Organisaties te ondersteunen met voor hen relevante producten en diensten.</li>
           </ul>
           <p className="mb-4">
             Deze Voorwaarden zijn van toepassing op alle overeenkomsten die AM in het kader van haar reguliere bedrijfsvoering sluit met Gebruikers en andere Wederpartijen. Een overeenkomst komt tot stand door aanbod en aanvaarding, hetgeen onder meer kan geschieden door registratie en expliciete acceptatie van de Voorwaarden op de Website.
@@ -66,7 +66,7 @@ export default function Terms() {
             AM kan – voor zover zij dit aanbiedt – BIG-registraties van Professionals verifiëren. Een dergelijke verificatie is een momentopname en vormt geen garantie omtrent de actuele bevoegdheid of inschrijving. Gebruikers worden geadviseerd de actualiteit bij het BIG-register of andere bronnen zelf te verifiëren waar nodig.
           </p>
           <p className="mb-4">
-            AM is geen partij in de overeenkomst die eventueel tussen een Opdrachtgever (of Intermediair) en een Professional tot stand komt naar aanleiding van een Opdracht of Reactie. AM faciliteert uitsluitend de kennismaking en het contact; alle verdere afspraken, aansprakelijkheid en nakoming zijn voor rekening en risico van die partijen onderling.
+            AM is geen partij in de overeenkomst die eventueel tussen een Organisatie (of Intermediair) en een Professional tot stand komt naar aanleiding van een Opdracht of Reactie. AM faciliteert uitsluitend de kennismaking en het contact; alle verdere afspraken, aansprakelijkheid en nakoming zijn voor rekening en risico van die partijen onderling.
           </p>
 
           <h2 id="section_verplichtingen_gebruikers" className="text-2xl font-bold text-[#0F172A] mt-10 mb-4 scroll-mt-24">4. Verplichtingen gebruikers</h2>
@@ -78,7 +78,7 @@ export default function Terms() {
             <li>het opzettelijk onjuist of misleidend invullen van profielgegevens, Opdrachten of Reacties, of het zich voordoen als andere persoon of partij;</li>
             <li>het gebruiken van het Platform voor doeleinden die strijdig zijn met de Voorwaarden of de wet;</li>
             <li>het zonder toestemming van AM verspreiden of herpubliceren van Content of Opdrachten buiten het Platform voor commerciële doeleinden;</li>
-            <li>het plaatsen van Opdrachten door een Intermediair zonder dat de eindopdrachtgever voorafgaand toestemming heeft gegeven voor die plaatsing;</li>
+            <li>het plaatsen van Opdrachten door een Intermediair zonder dat de eindorganisatie voorafgaand toestemming heeft gegeven voor die plaatsing;</li>
             <li>het op grote schaal verzamelen van gegevens van andere Gebruikers (scraping) of het automatisch benaderen van het Platform in strijd met instructies van AM;</li>
             <li>het plaatsen van directe contactgegevens (e-mail, telefoon, website, social media) in profielen, Reacties of Opdrachten met als doel het Platform te omzeilen, tenzij AM hiervoor schriftelijk toestemming heeft verleend.</li>
           </ul>

@@ -331,7 +331,7 @@ export default function AdminJobsReview() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
             <h3 className="font-semibold text-lg mb-2">Afwijzen</h3>
-            <p className="text-sm text-gray-600 mb-4">Reden verplicht (zichtbaar voor opdrachtgever):</p>
+            <p className="text-sm text-gray-600 mb-4">Reden verplicht (zichtbaar voor organisatie):</p>
             <textarea
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
@@ -360,7 +360,7 @@ export default function AdminJobsReview() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
             <h3 className="font-semibold text-lg mb-2">Aanvulling vragen</h3>
-            <p className="text-sm text-gray-600 mb-4">Reden (zichtbaar voor opdrachtgever):</p>
+            <p className="text-sm text-gray-600 mb-4">Reden (zichtbaar voor organisatie):</p>
             <textarea
               value={changesReason}
               onChange={(e) => setChangesReason(e.target.value)}

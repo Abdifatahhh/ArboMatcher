@@ -61,7 +61,7 @@ export default function Over() {
                 </div>
                 <h3 className="text-xl font-semibold text-[#0F172A] mb-3">Transparantie</h3>
                 <p className="text-slate-600">
-                  Duidelijke profielen en eerlijke reviews. Na matching rechtstreeks contact tussen opdrachtgever en professional.
+                  Duidelijke profielen en eerlijke reviews. Na matching rechtstreeks contact tussen organisatie en professional.
                 </p>
               </div>
               <div className="p-8 rounded-2xl bg-white shadow-lg shadow-gray-200/50 border border-gray-100">
@@ -78,7 +78,7 @@ export default function Over() {
         </section>
 
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Voor opdrachtgevers</h2>
+          <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Voor organisaties</h2>
           <p className="text-[#111827] leading-relaxed mb-6 text-lg">
             Of u nu een arbodienst, werkgever of overheidsorganisatie bent, ArboMatcher helpt u
             snel de juiste professional te vinden voor ZZP, detachering of loondienst.
@@ -141,7 +141,7 @@ export default function Over() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <span>BIG-verificatie geeft opdrachtgevers vertrouwen</span>
+              <span>BIG-verificatie geeft organisaties vertrouwen</span>
             </li>
             <li className="flex items-start gap-3">
               <div className="w-6 h-6 bg-[#4FA151] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">

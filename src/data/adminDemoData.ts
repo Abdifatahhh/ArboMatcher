@@ -29,7 +29,7 @@ export const demoProfiles: Profile[] = [
   },
   {
     id: 'demo-user-3',
-    role: 'OPDRACHTGEVER',
+    role: 'ORGANISATIE',
     full_name: 'Jan Jansen',
     avatar_url: null,
     phone: '06-11223344',
@@ -40,7 +40,7 @@ export const demoProfiles: Profile[] = [
   },
   {
     id: 'demo-user-4',
-    role: 'OPDRACHTGEVER',
+    role: 'ORGANISATIE',
     full_name: 'Marie van Dam',
     avatar_url: null,
     phone: '06-55443322',
@@ -51,7 +51,7 @@ export const demoProfiles: Profile[] = [
   },
   {
     id: 'demo-user-5',
-    role: 'OPDRACHTGEVER',
+    role: 'ORGANISATIE',
     full_name: 'Peter Bakker',
     avatar_url: null,
     phone: '06-99887766',
@@ -62,7 +62,7 @@ export const demoProfiles: Profile[] = [
   },
   {
     id: 'demo-user-6',
-    role: 'OPDRACHTGEVER',
+    role: 'ORGANISATIE',
     full_name: 'Sophie de Groot',
     avatar_url: null,
     phone: '06-44332211',
@@ -73,7 +73,7 @@ export const demoProfiles: Profile[] = [
   },
   {
     id: 'demo-user-7',
-    role: 'OPDRACHTGEVER',
+    role: 'ORGANISATIE',
     full_name: 'Thomas Intermediair',
     avatar_url: null,
     phone: '06-66778899',
@@ -84,7 +84,7 @@ export const demoProfiles: Profile[] = [
   },
   {
     id: 'demo-user-8',
-    role: 'OPDRACHTGEVER',
+    role: 'ORGANISATIE',
     full_name: 'Emma Bemiddeling',
     avatar_url: null,
     phone: '06-10101010',
@@ -293,11 +293,11 @@ export const demoJobs: (Job & { employers: Employer })[] = [
 ];
 
 
-/** Demo opdrachtgevers voor admin lijst (employer + profile + jobs_count). Gebruikt wanneer DB leeg is. */
+/** Demo organisaties voor admin lijst (employer + profile + jobs_count). Gebruikt wanneer DB leeg is. */
 export type DemoClientRow = { employer: Employer; profile: Profile; jobs_count: number };
 
 function buildDemoOpdrachtgevers(): DemoClientRow[] {
-  const profileById = Object.fromEntries(demoProfiles.filter((p) => p.role === 'OPDRACHTGEVER').map((p) => [p.id, p]));
+  const profileById = Object.fromEntries(demoProfiles.filter((p) => p.role === 'ORGANISATIE').map((p) => [p.id, p]));
   return demoEmployers.map((employer) => {
     const profile = profileById[employer.user_id];
     const jobs_count = demoJobs.filter((j) => j.employer_id === employer.id).length;

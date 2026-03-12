@@ -201,7 +201,7 @@ export default function ArtsDashboard() {
             <span className="text-xl md:text-3xl font-bold text-gray-700">{stats.profileViews}</span>
           </div>
           <h3 className="text-sm md:text-lg font-semibold text-gray-800">Profielweergaven</h3>
-          <p className="text-xs md:text-sm text-gray-600">Door opdrachtgevers</p>
+          <p className="text-xs md:text-sm text-gray-600">Door organisaties</p>
         </div>
       </div>
 
@@ -284,7 +284,7 @@ export default function ArtsDashboard() {
             <div className="bg-gradient-to-br from-[#0F172A] to-[#1e293b] rounded-xl md:rounded-2xl p-4 md:p-6 text-white shadow-lg">
               <Star className="w-6 h-6 md:w-8 md:h-8 text-[#FCD34D] mb-2 md:mb-3" />
               <h3 className="font-bold text-base md:text-lg mb-1.5 md:mb-2">Upgrade naar PRO</h3>
-              <p className="text-gray-300 text-xs md:text-sm mb-3 md:mb-4">Word sneller gevonden door opdrachtgevers met premium zichtbaarheid.</p>
+              <p className="text-gray-300 text-xs md:text-sm mb-3 md:mb-4">Word sneller gevonden door organisaties met premium zichtbaarheid.</p>
               <Link to="/professional/abonnement" className="block text-center bg-[#4FA151] text-white py-2 md:py-2.5 rounded-xl text-sm md:text-base font-semibold hover:bg-[#3E8E45] transition">
                 Bekijk voordelen
               </Link>

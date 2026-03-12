@@ -97,7 +97,7 @@ export default function ArtsUitnodigingen() {
 
               {invite.message && (
                 <div className="mb-4 p-4 bg-gray-50 rounded">
-                  <p className="text-sm text-gray-600 font-semibold mb-2">Bericht van opdrachtgever:</p>
+                  <p className="text-sm text-gray-600 font-semibold mb-2">Bericht van organisatie:</p>
                   <p className="text-gray-700">{invite.message}</p>
                 </div>
               )}

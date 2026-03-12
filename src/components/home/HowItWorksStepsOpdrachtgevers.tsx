@@ -46,7 +46,7 @@ export function HowItWorksStepsOpdrachtgevers({ activeStep, onStepChange }: HowI
     <ol
       className="space-y-2"
       role="list"
-      aria-label="Stappen voor opdrachtgevers"
+      aria-label="Stappen voor organisaties"
       id={listId}
     >
       {STEPS.map((step) => {

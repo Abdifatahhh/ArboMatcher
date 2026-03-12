@@ -4,8 +4,9 @@ import { AuthLink } from '../components/AuthLink';
 import { supabase } from '../lib/supabase';
 import type { Job } from '../lib/types';
 import { Search, MapPin, Briefcase, Calendar, ChevronDown, ChevronLeft, ChevronRight, X, CheckCircle, ArrowRight, Home, Users } from 'lucide-react';
-import { fakeJobs, type FakeJob } from '../data/fakeJobs';
 import { CONTRACT_FORM_OPTIONS, REMOTE_TYPE_OPTIONS } from '../lib/opdrachtConstants';
+
+const isDev = import.meta.env.DEV;
 
 const expertiseOptions = [
   { value: 'bedrijfsarts', label: 'Bedrijfsarts' },
@@ -17,11 +18,9 @@ const expertiseOptions = [
 
 const locationOptions = REMOTE_TYPE_OPTIONS;
 
-type CombinedJob = Job | FakeJob;
-
 export default function Opdrachten() {
   const [searchParams] = useSearchParams();
-  const [jobs, setJobs] = useState<CombinedJob[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
@@ -69,28 +68,30 @@ export default function Opdrachten() {
 
     const { data, error } = await query;
 
-    let allJobs: CombinedJob[] = [...(data || [])];
+    let allJobs: Job[] = [...(data || [])];
 
-    let filteredFakeJobs = [...fakeJobs];
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      filteredFakeJobs = filteredFakeJobs.filter(job =>
-        job.title?.toLowerCase().includes(term) ||
-        job.description?.toLowerCase().includes(term) ||
-        job.region?.toLowerCase().includes(term)
-      );
+    if (isDev) {
+      const { fakeJobs } = await import('../data/fakeJobs');
+      let filteredFakeJobs = [...fakeJobs];
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        filteredFakeJobs = filteredFakeJobs.filter(job =>
+          job.title?.toLowerCase().includes(term) ||
+          job.description?.toLowerCase().includes(term) ||
+          job.region?.toLowerCase().includes(term)
+        );
+      }
+      if (filters.location.length > 0) {
+        filteredFakeJobs = filteredFakeJobs.filter(job => filters.location.includes(job.remote_type));
+      }
+      if (filters.contractvorm.length > 0) {
+        filteredFakeJobs = filteredFakeJobs.filter(job => filters.contractvorm.includes(job.job_type));
+      }
+      if (filters.expertise.length > 0) {
+        filteredFakeJobs = filteredFakeJobs.filter(job => filters.expertise.includes(job.expertise));
+      }
+      allJobs = [...allJobs, ...filteredFakeJobs] as Job[];
     }
-    if (filters.location.length > 0) {
-      filteredFakeJobs = filteredFakeJobs.filter(job => filters.location.includes(job.remote_type));
-    }
-    if (filters.contractvorm.length > 0) {
-      filteredFakeJobs = filteredFakeJobs.filter(job => filters.contractvorm.includes(job.job_type));
-    }
-    if (filters.expertise.length > 0) {
-      filteredFakeJobs = filteredFakeJobs.filter(job => filters.expertise.includes(job.expertise));
-    }
-
-    allJobs = [...allJobs, ...filteredFakeJobs];
 
     if (sortOrder === 'newest') {
       allJobs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
@@ -240,7 +241,7 @@ export default function Opdrachten() {
                         </div>
                         <div className="flex items-center gap-2 min-w-[50px]">
                           <Users className="w-4 h-4 text-[#0F172A] flex-shrink-0" />
-                          <span>{(job as any).applicants_count || 0}</span>
+                          <span>{(job as { applicants_count?: number }).applicants_count ?? 0}</span>
                         </div>
                         <div className="flex items-center gap-2 min-w-[90px]">
                           <Calendar className="w-4 h-4 text-[#0F172A] flex-shrink-0" />

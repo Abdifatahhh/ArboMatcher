@@ -10,7 +10,7 @@ export function HowItWorksSectionOpdrachtgevers() {
   return (
     <section
       className="py-16 sm:py-20 bg-gradient-to-b from-[#E8F5E9] to-[#F1F8E9]"
-      aria-labelledby="how-it-works-opdrachtgevers-title"
+      aria-labelledby="how-it-works-organisaties-title"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="text-center mb-12 sm:mb-14">
@@ -18,13 +18,13 @@ export function HowItWorksSectionOpdrachtgevers() {
             Top talent om te groeien
           </p>
           <h2
-            id="how-it-works-opdrachtgevers-title"
+            id="how-it-works-organisaties-title"
             className="text-2xl sm:text-3xl font-bold text-[#0F172A] mb-2"
           >
             Eenvoudig de juiste arts vinden
           </h2>
           <p className="text-[#4FA151] font-semibold text-sm uppercase tracking-wider">
-            Voor Opdrachtgevers
+            Voor Organisaties
           </p>
         </header>
 

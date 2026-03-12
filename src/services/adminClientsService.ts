@@ -1,5 +1,5 @@
 /**
- * Admin Opdrachtgevers (clients) service.
+ * Admin Organisaties (clients) service.
  * Uses real table names: profiles, employers, jobs (see adminClientsSchema).
  */
 
@@ -28,7 +28,7 @@ export interface ListClientsResult {
 const PAGE_SIZE_DEFAULT = 20;
 
 /**
- * List opdrachtgevers: employers with profile (role OPDRACHTGEVER).
+ * List organisaties: employers with profile (role ORGANISATIE).
  * Server-side filters: status (profiles.status), search (company_name, email).
  * Job counts in one extra query (no N+1).
  */
@@ -38,7 +38,7 @@ export async function listClients(params: ListClientsParams): Promise<ListClient
   let query = supabase
     .from(EMPLOYERS_TABLE)
     .select('*, profiles!inner(*)', { count: 'exact' })
-    .eq('profiles.role', 'OPDRACHTGEVER');
+    .eq('profiles.role', 'ORGANISATIE');
 
   if (status && status !== '') {
     query = query.eq('profiles.status', status);
@@ -48,7 +48,7 @@ export async function listClients(params: ListClientsParams): Promise<ListClient
     const { data: profileRows } = await supabase
       .from(PROFILES_TABLE)
       .select('id')
-      .eq('role', 'OPDRACHTGEVER')
+      .eq('role', 'ORGANISATIE')
       .or(`email.ilike.%${term}%,full_name.ilike.%${term}%`);
     const profileIds = (profileRows ?? []).map((r) => r.id);
     const { data: employerByCompany } = await supabase
@@ -105,7 +105,7 @@ export async function listClients(params: ListClientsParams): Promise<ListClient
 }
 
 /**
- * Get one opdrachtgever by employer id (for detail page).
+ * Get one organisatie by employer id (for detail page).
  */
 export async function getClientById(id: string): Promise<AdminClientRow | null> {
   const { data: employer, error: eError } = await supabase
@@ -116,7 +116,7 @@ export async function getClientById(id: string): Promise<AdminClientRow | null> 
 
   if (eError || !employer) return null;
   const row = employer as Employer & { profiles: Profile | null };
-  if (!row.profiles || row.profiles.role !== 'OPDRACHTGEVER') return null;
+  if (!row.profiles || row.profiles.role !== 'ORGANISATIE') return null;
 
   const { count } = await supabase
     .from(JOBS_TABLE)
@@ -131,7 +131,7 @@ export async function getClientById(id: string): Promise<AdminClientRow | null> 
 }
 
 /**
- * Get opdrachtgever by profile id (user_id); for linking from Gebruikers.
+ * Get organisatie by profile id (user_id); for linking from Gebruikers.
  */
 export async function getClientByProfileId(profileId: string): Promise<AdminClientRow | null> {
   const { data: employer } = await supabase
@@ -155,7 +155,7 @@ export async function updateClient(
   }
 ): Promise<{ error: Error | null }> {
   const { profile, employer } = (await getClientById(employerId)) ?? {};
-  if (!profile || !employer) return { error: new Error('Opdrachtgever niet gevonden') };
+  if (!profile || !employer) return { error: new Error('Organisatie niet gevonden') };
 
   if (payload.company_name !== undefined) {
     const { error } = await supabase.from(EMPLOYERS_TABLE).update({ company_name: payload.company_name }).eq('id', employerId);
@@ -176,7 +176,7 @@ export async function updateClient(
  */
 export async function toggleClientBlocked(employerId: string): Promise<{ error: Error | null }> {
   const row = await getClientById(employerId);
-  if (!row) return { error: new Error('Opdrachtgever niet gevonden') };
+  if (!row) return { error: new Error('Organisatie niet gevonden') };
   const newStatus = row.profile.status === 'BLOCKED' ? 'ACTIVE' : 'BLOCKED';
   const { error } = await supabase.from(PROFILES_TABLE).update({ status: newStatus }).eq('id', row.profile.id);
   return { error: error ?? null };
@@ -197,7 +197,7 @@ export interface JobWithMeta extends Job {
 }
 
 /**
- * List jobs for one opdrachtgever (employer_id). For detail page.
+ * List jobs for one organisatie (employer_id). For detail page.
  */
 export async function listClientJobs(
   employerId: string,

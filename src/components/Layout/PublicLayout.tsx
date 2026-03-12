@@ -29,8 +29,8 @@ export function PublicLayout({ children }: PublicLayoutProps) {
     switch (profile.role) {
       case 'professional':
         return '/professional/dashboard';
-      case 'OPDRACHTGEVER':
-        return '/opdrachtgever/dashboard';
+      case 'ORGANISATIE':
+        return '/organisatie/dashboard';
       case 'ADMIN':
         return '/admin/dashboard';
       default:
@@ -138,7 +138,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div>
               <LogoText theme="dark" className="text-xl mb-4 block" />
-              <p className="text-gray-400 text-sm leading-relaxed">Het platform voor opdrachtgevers en arbo-professionals.</p>
+              <p className="text-gray-400 text-sm leading-relaxed">Het platform voor organisaties en arbo-professionals.</p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Platform</h4>

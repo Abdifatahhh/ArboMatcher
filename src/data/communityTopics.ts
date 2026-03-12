@@ -65,7 +65,7 @@ Blader door de open opdrachten, filter op regio of type, en reageer met een kort
     category: 'Voor artsen',
     description: 'Alle artsen op het platform zijn BIG-geregistreerd. Zo garanderen we betrouwbare matching.',
     imageUrl: IMG.shield,
-    content: `Op ArboMatcher werken alleen artsen met een geverifieerd BIG-nummer. Dat zorgt voor kwaliteit en vertrouwen voor opdrachtgevers en voor jou als professional.
+    content: `Op ArboMatcher werken alleen artsen met een geverifieerd BIG-nummer. Dat zorgt voor kwaliteit en vertrouwen voor organisaties en voor jou als professional.
 
 ## Wat is BIG-verificatie?
 
@@ -73,7 +73,7 @@ Het BIG-register (Beroepen in de Individuele Gezondheidszorg) bevat alle bevoegd
 
 - Landelijk register voor bevoegde zorgverleners
 - Controle op nummer en status
-- Zichtbaar voor opdrachtgevers dat je geverifieerd bent
+- Zichtbaar voor organisaties dat je geverifieerd bent
 
 ## Verificatie aanvragen
 
@@ -91,13 +91,13 @@ In je profiel zie je of je status "Geverifieerd" is. Zonder deze status kun je n
     slug: 'solliciteren-opdrachten',
     title: 'Solliciteren op opdrachten',
     category: 'Voor artsen',
-    description: 'Reageer op opdrachten, blijf op de hoogte van nieuwe vacatures en communiceer direct met opdrachtgevers.',
+    description: 'Reageer op opdrachten, blijf op de hoogte van nieuwe vacatures en communiceer direct met organisaties.',
     imageUrl: IMG.briefcase,
     content: `Solliciteren op ArboMatcher is eenvoudig: je bekijkt open opdrachten, filtert op wat bij je past en stuurt een reactie met een korte motivatie. Hier lees je hoe je dat effectief doet.
 
 ## Opdrachten bekijken
 
-Op de Community- en opdrachtenpagina's zie je welke vacatures openstaan. Filter op regio, type (verzuim, PMO, re-integratie) en contractvorm (ZZP, detachering, loondienst). Lees de opdrachtbeschrijving goed door zodat je reactie aansluit op wat de opdrachtgever zoekt.
+Op de Community- en opdrachtenpagina's zie je welke vacatures openstaan. Filter op regio, type (verzuim, PMO, re-integratie) en contractvorm (ZZP, detachering, loondienst). Lees de opdrachtbeschrijving goed door zodat je reactie aansluit op wat de organisatie zoekt.
 
 - Filter op regio en type opdracht
 - Let op eisen (BIG, ervaring, locatie)
@@ -113,7 +113,7 @@ Klik op "Reageren" of "Solliciteren" en schrijf een korte, duidelijke motivatie.
 
 ## Shortlist en selectie
 
-De opdrachtgever beoordeelt de reacties en kan kandidaten op de shortlist zetten of uitnodigen voor een gesprek. Je ontvangt bericht over de status van je sollicitatie. Reageer tijdig op uitnodigingen en wees duidelijk over je beschikbaarheid om de kans op een match te vergroten.`,
+De organisatie beoordeelt de reacties en kan kandidaten op de shortlist zetten of uitnodigen voor een gesprek. Je ontvangt bericht over de status van je sollicitatie. Reageer tijdig op uitnodigingen en wees duidelijk over je beschikbaarheid om de kans op een match te vergroten.`,
   },
   {
     slug: 'tarieven-administratie',
@@ -121,11 +121,11 @@ De opdrachtgever beoordeelt de reacties en kan kandidaten op de shortlist zetten
     category: 'Voor artsen',
     description: 'Stel je uurtarief in, beheer je beschikbaarheid en houd je declaraties overzichtelijk.',
     imageUrl: IMG.briefcase,
-    content: `Een helder uurtarief en overzichtelijke administratie helpen je om professioneel te werken en opdrachtgevers gerust te stellen. Hier een overzicht van wat er op het platform en in je eigen organisatie belangrijk is.
+    content: `Een helder uurtarief en overzichtelijke administratie helpen je om professioneel te werken en organisaties gerust te stellen. Hier een overzicht van wat er op het platform en in je eigen organisatie belangrijk is.
 
 ## Uurtarief bepalen
 
-Bepaal je tarief op basis van de markt, je ervaring en je kosten. Een richtlijn voor ervaren bedrijfsartsen ligt vaak tussen € 120 en € 180 per uur; de bandbreedte hangt af van regio en type opdracht. Op ArboMatcher kun je een indicatie of bandbreedte in je profiel zetten zodat opdrachtgevers weten wat ze kunnen verwachten.
+Bepaal je tarief op basis van de markt, je ervaring en je kosten. Een richtlijn voor ervaren bedrijfsartsen ligt vaak tussen € 120 en € 180 per uur; de bandbreedte hangt af van regio en type opdracht. Op ArboMatcher kun je een indicatie of bandbreedte in je profiel zetten zodat organisaties weten wat ze kunnen verwachten.
 
 - Markt en ervaring meewegen
 - Kosten (verzekering, pensioen, vakantie) meerekenen
@@ -141,7 +141,7 @@ Geef in je profiel aan hoeveel uur per week je beschikbaar bent en vanaf wanneer
 
 ## Declareren en factureren
 
-De afspraken over declaratie en facturatie maak je met de opdrachtgever. Het platform ondersteunt de match; de contractuele en administratieve afhandeling doe je onderling. Houd je administratie overzichtelijk (uren, facturen, overeenkomsten) voor je eigen administratie en eventuele controle.`,
+De afspraken over declaratie en facturatie maak je met de organisatie. Het platform ondersteunt de match; de contractuele en administratieve afhandeling doe je onderling. Houd je administratie overzichtelijk (uren, facturen, overeenkomsten) voor je eigen administratie en eventuele controle.`,
   },
   {
     slug: 'tips-voor-artsen',
@@ -161,7 +161,7 @@ Zorg dat je profiel volledig is: BIG geverifieerd, specialismen en regio's ingev
 
 ## Netwerken op het platform
 
-Reageer tijdig op opdrachten en op berichten van opdrachtgevers. Een professionele, duidelijke communicatie bouwt vertrouwen op. Als je eenmaal een opdracht hebt gedaan, kan een tevreden opdrachtgever je opnieuw benaderen of je profiel doorverwijzen.
+Reageer tijdig op opdrachten en op berichten van organisaties. Een professionele, duidelijke communicatie bouwt vertrouwen op. Als je eenmaal een opdracht hebt gedaan, kan een tevreden organisatie je opnieuw benaderen of je profiel doorverwijzen.
 
 - Snel en helder reageren
 - Afspraken nakomen en communiceren bij wijzigingen
@@ -169,23 +169,23 @@ Reageer tijdig op opdrachten en op berichten van opdrachtgevers. Een professione
 
 ## Veelgestelde vragen
 
-**Kan ik meerdere opdrachten tegelijk hebben?** Ja, zolang je beschikbaarheid het toelaat en je met opdrachtgevers afspreekt hoe je uren verdeelt.
+**Kan ik meerdere opdrachten tegelijk hebben?** Ja, zolang je beschikbaarheid het toelaat en je met organisaties afspreekt hoe je uren verdeelt.
 
-**Moet ik via ArboMatcher factureren?** Nee; facturatie en betaling regel je met de opdrachtgever. Het platform brengt jullie bij elkaar.
+**Moet ik via ArboMatcher factureren?** Nee; facturatie en betaling regel je met de organisatie. Het platform brengt jullie bij elkaar.
 
 **Hoe word ik zichtbaarder?** Een compleet profiel, duidelijke specialismen en tijdig reageren helpen. Je kunt ook in je bio aangeven dat je openstaat voor nieuwe opdrachten.`,
   },
   {
     slug: 'opdrachten-plaatsen',
     title: 'Opdrachten plaatsen',
-    category: 'Voor opdrachtgevers',
+    category: 'Voor organisaties',
     description: 'Plaats een opdracht, ontvang reacties van gekwalificeerde artsen en kies de juiste kandidaat.',
     imageUrl: IMG.office,
     content: `Via ArboMatcher plaats je een opdracht en ontvang je reacties van BIG-geregistreerde artsen. Hier lees je hoe je dat van begin tot eind aanpakt.
 
 ## Opdracht aanmaken
 
-Log in als opdrachtgever en kies "Opdracht plaatsen". Geef een duidelijke titel (bijv. "Bedrijfsarts verzuimbegeleiding") en beschrijf de context: wat doet je organisatie, wat is het doel, hoeveel uur of dagen per week, voor welke periode? Hoe concreter, hoe beter de reacties.
+Log in als organisatie en kies "Opdracht plaatsen". Geef een duidelijke titel (bijv. "Bedrijfsarts verzuimbegeleiding") en beschrijf de context: wat doet je organisatie, wat is het doel, hoeveel uur of dagen per week, voor welke periode? Hoe concreter, hoe beter de reacties.
 
 - Duidelijke titel en beschrijving
 - Context, omvang en contractvorm (ZZP, detachering, loondienst)
@@ -214,14 +214,14 @@ Kies de kandidaat die het beste past en maak afspraken over startdatum, uren, ta
   {
     slug: 'artsen-vinden-matchen',
     title: 'Artsen vinden en matchen',
-    category: 'Voor opdrachtgevers',
+    category: 'Voor organisaties',
     description: 'Zoek op specialisme, regio en beschikbaarheid. Direct contact zonder tussenpartij.',
     imageUrl: IMG.users,
     content: `Op ArboMatcher vind je artsen op basis van specialisme, regio en beschikbaarheid. Je werkt direct met de professional, zonder tussenpartij. Hier hoe je zoekt en matcht.
 
 ## Zoeken en filteren
 
-Gebruik de filters om opdrachten of profielen te doorzoeken op regio, type (verzuim, PMO, etc.) en beschikbaarheid. Als opdrachtgever zie je wie er gereageerd heeft op je opdracht; je kunt ook zoeken in het aanbod van artsen als je eerst wilt oriënteren.
+Gebruik de filters om opdrachten of profielen te doorzoeken op regio, type (verzuim, PMO, etc.) en beschikbaarheid. Als organisatie zie je wie er gereageerd heeft op je opdracht; je kunt ook zoeken in het aanbod van artsen als je eerst wilt oriënteren.
 
 - Filter op regio en type opdracht
 - Bekijk reacties op je geplaatste opdrachten
@@ -242,7 +242,7 @@ Na het selecteren van een kandidaat neem je contact op via het platform of zoals
   {
     slug: 'verificatie-kwaliteitsborging',
     title: 'Verificatie en kwaliteitsborging',
-    category: 'Voor opdrachtgevers',
+    category: 'Voor organisaties',
     description: 'Al onze artsen zijn BIG-geregistreerd. Wij controleren dit voor je.',
     imageUrl: IMG.shield,
     content: `Op ArboMatcher werken alleen artsen met een geverifieerd BIG-nummer. Dat vermindert uw zoekwerk en verhoogt de betrouwbaarheid van de matching.
@@ -269,7 +269,7 @@ Bij problemen of geschillen rond een opdracht raden we aan eerst onderling tot e
   {
     slug: 'inzet-contractvormen',
     title: 'Inzet en contractvormen',
-    category: 'Voor opdrachtgevers',
+    category: 'Voor organisaties',
     description: 'ZZP, detachering of loondienst – kies de vorm die bij je organisatie past.',
     imageUrl: IMG.calendar,
     content: `De inzet van een arts kan in verschillende contractvormen: ZZP, detachering of loondienst. Op ArboMatcher vindt u de professional; de precieze afspraken spreekt u onderling af. Hier een overzicht.

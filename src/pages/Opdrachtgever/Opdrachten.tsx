@@ -442,7 +442,7 @@ export default function OpdrachtgeverOpdrachten() {
                   Bekijk
                 </Link>
                 <Link
-                  to={`/opdrachtgever/kandidaten?job=${job.id}`}
+                  to={`/organisatie/kandidaten?job=${job.id}`}
                   className="flex items-center text-[#4FA151] hover:underline"
                 >
                   Kandidaten

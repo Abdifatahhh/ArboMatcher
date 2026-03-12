@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:marketing": "vite --port 5174 --mode marketing",
     "build": "vite build",
     "build:portal": "vite build --outDir dist-portal",
     "build:marketing": "vite build --outDir dist-marketing",
