@@ -84,13 +84,13 @@ function FilterDropdown({ label, options, selected, onChange }: FilterDropdownPr
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition text-sm font-medium ${
           selected.length > 0
-            ? 'bg-[#F0FDF4] border-[#4FA151] text-[#4FA151]'
-            : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
+            ? 'bg-slate-50 border-[#0F172A] text-[#0F172A]'
+            : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
         }`}
       >
         <span>{label}</span>
         <span className={`flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full text-xs ${
-          selected.length > 0 ? 'bg-[#4FA151] text-white' : 'bg-gray-100 text-gray-600'
+          selected.length > 0 ? 'bg-[#0F172A] text-white' : 'bg-slate-100 text-slate-600'
         }`}>
           {selected.length}
         </span>
@@ -98,19 +98,19 @@ function FilterDropdown({ label, options, selected, onChange }: FilterDropdownPr
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 z-50 py-2">
+        <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-slate-200 z-50 py-2">
           {options.map((option) => (
             <label
               key={option.value}
-              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer"
+              className="flex items-center gap-3 px-4 py-2 hover:bg-slate-50 cursor-pointer"
             >
               <input
                 type="checkbox"
                 checked={selected.includes(option.value)}
                 onChange={() => toggleOption(option.value)}
-                className="w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
+                className="w-4 h-4 rounded border-slate-200 text-[#0F172A] focus:ring-slate-900/20"
               />
-              <span className="text-sm text-gray-700">{option.label}</span>
+              <span className="text-sm text-slate-600">{option.label}</span>
             </label>
           ))}
         </div>
@@ -293,22 +293,22 @@ export default function ArtsOpdrachten() {
     <div className="p-4 lg:p-6">
       <div className="mb-6">
         <h1 className="text-xl font-bold text-[#0F172A]">Opdrachten</h1>
-        <p className="text-sm text-gray-500 mt-1">{totalCount} beschikbare opdrachten</p>
+        <p className="text-sm text-slate-500 mt-1">{totalCount} beschikbare opdrachten</p>
       </div>
 
       <div className="mb-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <div className="flex flex-wrap items-center gap-2 pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus-within:ring-2 focus-within:ring-[#4FA151] focus-within:border-transparent min-h-[44px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <div className="flex flex-wrap items-center gap-2 pl-10 pr-4 py-2.5 bg-white border border-slate-200 shadow-sm rounded-lg focus-within:ring-2 focus-within:ring-slate-900/20 focus-within:border-transparent min-h-[44px]">
             {searchTags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#F0FDF4] text-[#4FA151] rounded-full text-sm font-medium"
+                className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-slate-50 text-[#0F172A] rounded-full text-sm font-medium"
               >
                 {tag}
                 <button
                   onClick={() => removeSearchTag(tag)}
-                  className="hover:bg-[#4FA151] hover:text-white rounded-full p-0.5 transition"
+                  className="hover:bg-[#0F172A] hover:text-white rounded-full p-0.5 transition"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -320,7 +320,7 @@ export default function ArtsOpdrachten() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={handleSearchKeyDown}
-              className="flex-1 min-w-[200px] outline-none text-sm text-gray-700 placeholder:text-gray-400"
+              className="flex-1 min-w-[200px] outline-none text-sm text-slate-700 placeholder:text-slate-400"
             />
           </div>
         </div>
@@ -361,7 +361,7 @@ export default function ArtsOpdrachten() {
         {hasActiveFilters && (
           <button
             onClick={clearAllFilters}
-            className="flex items-center gap-1 px-3 py-2 text-sm text-gray-500 hover:text-gray-700"
+            className="flex items-center gap-1 px-3 py-2 text-sm text-slate-400 hover:text-slate-600"
           >
             <X className="w-3 h-3" />
             <span>Wis alle filters</span>
@@ -375,21 +375,21 @@ export default function ArtsOpdrachten() {
             type="checkbox"
             checked={showFavoritesOnly}
             onChange={(e) => setShowFavoritesOnly(e.target.checked)}
-            className="w-4 h-4 rounded border-gray-300 text-[#0F172A] focus:ring-[#0F172A]"
+            className="w-4 h-4 rounded border-slate-200 text-[#0F172A] focus:ring-slate-900/20"
           />
-          <span className="text-gray-600">Favorieten</span>
+          <span className="text-slate-600">Favorieten</span>
         </label>
 
-        <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+        <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden">
           <button
             onClick={() => setViewMode('grid')}
-            className={`p-2 transition ${viewMode === 'grid' ? 'bg-[#0F172A] text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+            className={`p-2 transition ${viewMode === 'grid' ? 'bg-[#0F172A] text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
           >
             <LayoutGrid className="w-4 h-4" />
           </button>
           <button
             onClick={() => setViewMode('list')}
-            className={`p-2 transition ${viewMode === 'list' ? 'bg-[#0F172A] text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+            className={`p-2 transition ${viewMode === 'list' ? 'bg-[#0F172A] text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
           >
             <List className="w-4 h-4" />
           </button>
@@ -401,9 +401,9 @@ export default function ArtsOpdrachten() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0F172A]"></div>
         </div>
       ) : filteredJobs.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-          <FileText className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-500">Geen opdrachten gevonden</p>
+        <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-200">
+          <FileText className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+          <p className="text-slate-500">Geen opdrachten gevonden</p>
         </div>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
@@ -414,11 +414,11 @@ export default function ArtsOpdrachten() {
               <div
                 key={job.id}
                 onClick={() => handleJobClick(job)}
-                className="bg-white rounded-xl border border-gray-100 p-5 cursor-pointer transition-all hover:shadow-md hover:border-gray-200"
+                className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 cursor-pointer transition-all hover:border-slate-300 hover:shadow-md"
               >
                 <div className="flex items-start justify-between mb-4">
                   {(job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro ? (
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#4FA151] to-[#3E8E45] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
                       PRO
                     </div>
                   ) : (
@@ -428,9 +428,9 @@ export default function ArtsOpdrachten() {
                   )}
                   <button
                     onClick={(e) => toggleFavorite(e, job.id)}
-                    className="p-1 transition text-gray-300 hover:text-[#4FA151]"
+                    className="p-1 transition text-slate-300 hover:text-[#0F172A]"
                   >
-                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#4FA151] text-[#4FA151]' : ''}`} />
+                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#0F172A] text-[#0F172A]' : ''}`} />
                   </button>
                 </div>
 
@@ -438,33 +438,33 @@ export default function ArtsOpdrachten() {
                   {job.title}
                 </h3>
 
-                <div className="space-y-2 text-sm text-gray-500">
+                <div className="space-y-2 text-sm text-slate-500">
                   {((job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro) && (
                     <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-gray-400" />
-                      <span className="text-[#4FA151] font-medium">PRO opdracht</span>
+                      <FileText className="w-4 h-4 text-slate-400" />
+                      <span className="text-[#0F172A] font-medium">PRO opdracht</span>
                     </div>
                   )}
                   {job.region && (
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-gray-400" />
+                      <MapPin className="w-4 h-4 text-slate-400" />
                       <span>{job.region}</span>
                     </div>
                   )}
                   <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-gray-400" />
+                    <FileText className="w-4 h-4 text-slate-400" />
                     <span>{getContractFormLabel(job.job_type) || '—'}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Eye className="w-4 h-4 text-gray-400" />
+                    <Eye className="w-4 h-4 text-slate-400" />
                     <span>{job.views_count || 0} keer bekeken</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4 text-gray-400" />
+                    <MessageSquare className="w-4 h-4 text-slate-400" />
                     <span>{job.applications_count || 0} reacties ontvangen</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-gray-400" />
+                    <Clock className="w-4 h-4 text-slate-400" />
                     <span>{formatDate(job.created_at)}</span>
                   </div>
                 </div>
@@ -481,12 +481,12 @@ export default function ArtsOpdrachten() {
               <div
                 key={job.id}
                 onClick={() => handleJobClick(job)}
-                className="bg-white rounded-xl border border-gray-100 p-4 cursor-pointer transition-all hover:shadow-md hover:border-gray-200"
+                className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 cursor-pointer transition-all hover:border-slate-300 hover:shadow-md"
               >
                 <div className="flex items-center gap-4">
                   <div className="flex-shrink-0">
                     {(job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro ? (
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#4FA151] to-[#3E8E45] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
                         PRO
                       </div>
                     ) : (
@@ -500,9 +500,9 @@ export default function ArtsOpdrachten() {
                     <h3 className="font-semibold text-[#0F172A] truncate">
                       {job.title}
                     </h3>
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-sm text-gray-500">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-sm text-slate-500">
                       {((job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro) && (
-                        <span className="text-[#4FA151] font-medium">PRO opdracht</span>
+                        <span className="text-[#0F172A] font-medium">PRO opdracht</span>
                       )}
                       {job.region && (
                         <span className="flex items-center gap-1">
@@ -527,9 +527,9 @@ export default function ArtsOpdrachten() {
 
                   <button
                     onClick={(e) => toggleFavorite(e, job.id)}
-                    className="p-2 transition flex-shrink-0 text-gray-300 hover:text-[#4FA151]"
+                    className="p-2 transition flex-shrink-0 text-slate-300 hover:text-[#0F172A]"
                   >
-                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#4FA151] text-[#4FA151]' : ''}`} />
+                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#0F172A] text-[#0F172A]' : ''}`} />
                   </button>
                 </div>
               </div>

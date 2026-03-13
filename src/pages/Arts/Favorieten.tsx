@@ -66,19 +66,19 @@ export default function ArtsFavorieten() {
         <h1 className="text-2xl lg:text-3xl font-bold text-[#0F172A]">
           Favoriete opdrachten ({favorites.length})
         </h1>
-        <p className="text-gray-600 mt-1">Opdrachten die u heeft opgeslagen</p>
+        <p className="text-slate-500 mt-1">Opdrachten die u heeft opgeslagen</p>
       </div>
 
       {favorites.length === 0 ? (
-        <div className="bg-white p-12 rounded-lg border border-gray-200 text-center">
-          <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">Geen favorieten</h3>
-          <p className="text-gray-600 mb-6">
+        <div className="bg-slate-50 p-12 rounded-2xl border border-slate-200 text-center">
+          <Heart className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-slate-600 mb-2">Geen favorieten</h3>
+          <p className="text-slate-500 mb-6">
             Klik op het hartje bij een opdracht om deze op te slaan
           </p>
           <Link
             to="/professional/opdrachten"
-            className="inline-block bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+            className="inline-block bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
           >
             Bekijk opdrachten
           </Link>
@@ -88,7 +88,7 @@ export default function ArtsFavorieten() {
           {favorites.map((job) => (
             <div
               key={job.id}
-              className="bg-white rounded-lg border border-gray-200 p-5 hover:shadow-lg transition relative"
+              className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 hover:shadow-md hover:border-slate-300 transition relative"
             >
               <button
                 onClick={() => removeFavorite(job.id)}
@@ -100,7 +100,7 @@ export default function ArtsFavorieten() {
 
               <div className="mb-4">
                 {(job as { job_tier?: string }).job_tier === 'PRO' ? (
-                  <div className="w-12 h-12 bg-[#4FA151] rounded-lg flex items-center justify-center text-white font-bold text-xs mb-3">
+                  <div className="w-12 h-12 bg-[#0F172A] rounded-lg flex items-center justify-center text-white font-bold text-xs mb-3">
                     PRO
                   </div>
                 ) : (
@@ -109,29 +109,29 @@ export default function ArtsFavorieten() {
                   </div>
                 )}
                 <Link to={`/opdrachten/${job.id}`}>
-                  <h3 className="font-bold text-[#0F172A] hover:text-[#4FA151] transition line-clamp-2 pr-6">
+                  <h3 className="font-bold text-[#0F172A] hover:text-[#0F172A] transition line-clamp-2 pr-6">
                     {job.title}
                   </h3>
                 </Link>
               </div>
 
-              <div className="space-y-2 text-sm text-gray-600">
+              <div className="space-y-2 text-sm text-slate-500">
                 <div className="flex items-center space-x-2">
-                  <FileText className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <FileText className="w-4 h-4 text-slate-300 flex-shrink-0" />
                   <span className="truncate">{getContractFormLabel(job.job_type) || '—'}</span>
                 </div>
                 {job.region && (
                   <div className="flex items-center space-x-2">
-                    <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <MapPin className="w-4 h-4 text-slate-300 flex-shrink-0" />
                     <span className="truncate">{job.region}</span>
                   </div>
                 )}
                 <div className="flex items-center space-x-2">
-                  <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <Building2 className="w-4 h-4 text-slate-300 flex-shrink-0" />
                   <span className="truncate">{getRemoteTypeLabel(job.remote_type) || '—'}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Clock className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <Clock className="w-4 h-4 text-slate-300 flex-shrink-0" />
                   <span>{new Date(job.created_at).toLocaleDateString('nl-NL')}</span>
                 </div>
               </div>

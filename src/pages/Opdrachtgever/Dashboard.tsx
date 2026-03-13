@@ -70,7 +70,7 @@ export default function OpdrachtgeverDashboard() {
         </div>
         <Link
           to="/organisatie/opdrachten"
-          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#4FA151] text-white rounded-xl text-xs md:text-sm font-medium hover:bg-[#3E8E45] shadow-md shadow-[#4FA151]/20 transition"
+          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#0F172A] text-white rounded-xl text-xs md:text-sm font-medium hover:bg-[#1E293B] shadow-md shadow-slate-900/10 transition"
         >
           <Plus className="w-4 h-4 md:w-5 md:h-5" />
           Nieuwe opdracht
@@ -80,7 +80,7 @@ export default function OpdrachtgeverDashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-4 md:mb-6">
         <Link
           to="/organisatie/opdrachten"
-          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
+          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-slate-300 hover:shadow-slate-200/50 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2 md:mb-4">
             <Briefcase className="w-6 h-6 md:w-8 md:h-8 text-[#0F172A]" />
@@ -91,18 +91,18 @@ export default function OpdrachtgeverDashboard() {
         </Link>
         <Link
           to="/organisatie/kandidaten"
-          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
+          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-slate-300 hover:shadow-slate-200/50 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2 md:mb-4">
-            <Users className="w-6 h-6 md:w-8 md:h-8 text-[#4FA151]" />
-            <span className="text-xl md:text-3xl font-bold text-[#4FA151]">{stats.applications}</span>
+            <Users className="w-6 h-6 md:w-8 md:h-8 text-slate-700" />
+            <span className="text-xl md:text-3xl font-bold text-[#0F172A]">{stats.applications}</span>
           </div>
           <h3 className="text-sm md:text-lg font-semibold text-gray-800">Kandidaten</h3>
           <p className="text-xs md:text-sm text-gray-600">Totaal aantal reacties</p>
         </Link>
         <Link
           to="/organisatie/inbox"
-          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
+          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-slate-300 hover:shadow-slate-200/50 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2 md:mb-4">
             <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-[#0F172A]" />
@@ -113,7 +113,7 @@ export default function OpdrachtgeverDashboard() {
         </Link>
         <Link
           to="/organisatie/profiel"
-          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
+          className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-slate-300 hover:shadow-slate-200/50 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2 md:mb-4">
             <User className="w-6 h-6 md:w-8 md:h-8 text-gray-500" />
@@ -127,21 +127,21 @@ export default function OpdrachtgeverDashboard() {
       <div className="mb-4 md:mb-6 flex flex-wrap gap-2 md:gap-3">
         <Link
           to="/organisatie/opdrachten"
-          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#4FA151] text-white rounded-xl text-xs md:text-sm font-medium hover:bg-[#3E8E45] shadow-md shadow-[#4FA151]/20 transition"
+          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#0F172A] text-white rounded-xl text-xs md:text-sm font-medium hover:bg-[#1E293B] shadow-md shadow-slate-900/10 transition"
         >
           <Briefcase className="w-3.5 h-3.5 md:w-4 md:h-4" />
           Nieuwe opdracht
         </Link>
         <Link
           to="/organisatie/profiel"
-          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-xs md:text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
+          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-xs md:text-sm font-medium hover:bg-slate-50 hover:border-slate-300 transition"
         >
           <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
           Bedrijfsprofiel
         </Link>
         <Link
           to="/professional"
-          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-xs md:text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
+          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-xs md:text-sm font-medium hover:bg-slate-50 hover:border-slate-300 transition"
         >
           <User className="w-3.5 h-3.5 md:w-4 md:h-4" />
           Zoek professionals
@@ -152,7 +152,7 @@ export default function OpdrachtgeverDashboard() {
         <div className="lg:col-span-2 bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
           <h2 className="text-base md:text-xl font-bold text-[#0F172A] mb-3 md:mb-4 flex items-center justify-between">
             Snelle acties
-            <Link to="/organisatie/opdrachten" className="text-xs md:text-sm text-[#4FA151] hover:underline font-medium">Alle opdrachten</Link>
+            <Link to="/organisatie/opdrachten" className="text-xs md:text-sm text-[#0F172A] hover:underline font-medium">Alle opdrachten</Link>
           </h2>
           <div className="space-y-1.5 md:space-y-2">
             <Link to="/organisatie/opdrachten" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">

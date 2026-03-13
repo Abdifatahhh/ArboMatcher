@@ -22,13 +22,13 @@ export default function ArtsReacties() {
   const fetchApplications = async () => {
     if (!user) return;
 
-    const { data: doctor } = await supabase
+    const { data: professional } = await supabase
       .from('professionals')
       .select('id')
       .eq('user_id', user.id)
       .maybeSingle();
 
-    if (!doctor) {
+    if (!professional) {
       setLoading(false);
       return;
     }
@@ -36,7 +36,7 @@ export default function ArtsReacties() {
     const { data } = await supabase
       .from('applications')
       .select('*, jobs(*)')
-      .eq('doctor_id', doctor.id)
+      .eq('professional_id', professional.id)
       .order('created_at', { ascending: false });
 
     if (data) {
@@ -69,17 +69,17 @@ export default function ArtsReacties() {
         <h1 className="text-2xl lg:text-3xl font-bold text-[#0F172A]">
           Verstuurde reacties ({applications.length})
         </h1>
-        <p className="text-gray-600 mt-1">Overzicht van al uw reacties op opdrachten</p>
+        <p className="text-slate-500 mt-1">Overzicht van al uw reacties op opdrachten</p>
       </div>
 
       {applications.length === 0 ? (
-        <div className="bg-white p-12 rounded-lg border border-gray-200 text-center">
-          <Send className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">Nog geen reacties verstuurd</h3>
-          <p className="text-gray-600 mb-6">Begin met reageren op opdrachten om hier uw reacties te zien</p>
+        <div className="bg-slate-50 p-12 rounded-2xl border border-slate-200 text-center">
+          <Send className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-slate-600 mb-2">Nog geen reacties verstuurd</h3>
+          <p className="text-slate-500 mb-6">Begin met reageren op opdrachten om hier uw reacties te zien</p>
           <Link
             to="/professional/opdrachten"
-            className="inline-block bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+            className="inline-block bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
           >
             Bekijk opdrachten
           </Link>
@@ -89,12 +89,12 @@ export default function ArtsReacties() {
           {applications.map((application) => {
             const status = getStatusLabel(application.status);
             return (
-              <div key={application.id} className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition overflow-hidden">
+              <div key={application.id} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition overflow-hidden">
                 <div className="p-4 lg:p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start space-x-4 flex-1 min-w-0">
                       {(application.jobs as { job_tier?: string })?.job_tier === 'PRO' ? (
-                        <div className="w-12 h-12 bg-[#4FA151] rounded-xl flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+                        <div className="w-12 h-12 bg-[#0F172A] rounded-xl flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
                           PRO
                         </div>
                       ) : (
@@ -105,11 +105,11 @@ export default function ArtsReacties() {
                       <div className="flex-1 min-w-0">
                         <Link
                           to={`/opdrachten/${application.jobs.id}`}
-                          className="font-bold text-[#0F172A] hover:text-[#4FA151] transition block truncate"
+                          className="font-bold text-[#0F172A] hover:text-[#0F172A] transition block truncate"
                         >
                           {application.jobs.title}
                         </Link>
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm text-gray-600">
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm text-slate-500">
                           {application.jobs.region && (
                             <span className="flex items-center space-x-1">
                               <MapPin className="w-4 h-4" />
@@ -133,9 +133,9 @@ export default function ArtsReacties() {
                   </div>
 
                   {application.message && (
-                    <div className="mt-4 p-3 bg-gray-50 rounded-lg text-sm">
-                      <p className="text-gray-500 text-xs font-medium mb-1">Uw motivatie:</p>
-                      <p className="text-gray-700 line-clamp-2">{application.message}</p>
+                    <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 text-sm">
+                      <p className="text-slate-400 text-xs font-medium mb-1">Uw motivatie:</p>
+                      <p className="text-slate-600 line-clamp-2">{application.message}</p>
                     </div>
                   )}
                 </div>

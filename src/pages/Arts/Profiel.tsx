@@ -19,7 +19,7 @@ const CV_BUCKET = 'doctor-cvs';
 export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboarding' }) {
   const { user, refreshProfile } = useAuth();
   const [profile, setProfile] = useState<Partial<Profile>>({});
-  const [doctor, setDoctor] = useState<Partial<Doctor>>({});
+  const [professional, setProfessional] = useState<Partial<Doctor>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingCv, setUploadingCv] = useState(false);
@@ -78,7 +78,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
           profession_type: metaProfession || null,
           rcm_number: metaRcm || null,
           verification_status: metaBig && metaBig.length >= 8 ? 'PENDING' : 'UNVERIFIED',
-          doctor_plan: 'GRATIS',
+          plan: 'GRATIS',
           specialties: [],
           regions: [],
         })
@@ -88,7 +88,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
     }
 
     if (profileData) setProfile(profileData);
-    if (doctorData) setDoctor(doctorData);
+    if (doctorData) setProfessional(doctorData);
 
     setLoading(false);
   };
@@ -107,44 +107,44 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
         })
         .eq('id', user.id);
 
-      if (doctor.id) {
+      if (professional.id) {
         await supabase
           .from('professionals')
           .update({
-            big_number: doctor.big_number?.trim() || null,
-            profession_type: doctor.profession_type,
-            rcm_number: doctor.rcm_number?.trim() || null,
-            employment_type: doctor.employment_type ?? null,
-            kvk: doctor.kvk?.replace(/\D/g, '').slice(0, 8) || null,
-            company_name: doctor.company_name?.trim() || null,
-            bio: doctor.bio,
-            specialties: doctor.specialties,
-            regions: doctor.regions,
-            hourly_rate: doctor.hourly_rate,
-            availability_text: doctor.availability_text,
-            cv_url: doctor.cv_url,
-            verification_status: doctor.verification_status === 'UNVERIFIED' && (doctor.profession_type === 'POB' || doctor.profession_type === 'CASEMANAGER_VERZUIM') ? doctor.verification_status : (doctor.verification_status === 'UNVERIFIED' && (doctor.big_number?.trim() || '').length === 11 ? 'PENDING' : doctor.verification_status)
+            big_number: professional.big_number?.trim() || null,
+            profession_type: professional.profession_type,
+            rcm_number: professional.rcm_number?.trim() || null,
+            employment_type: professional.employment_type ?? null,
+            kvk: professional.kvk?.replace(/\D/g, '').slice(0, 8) || null,
+            company_name: professional.company_name?.trim() || null,
+            bio: professional.bio,
+            specialties: professional.specialties,
+            regions: professional.regions,
+            hourly_rate: professional.hourly_rate,
+            availability_text: professional.availability_text,
+            cv_url: professional.cv_url,
+            verification_status: professional.verification_status === 'UNVERIFIED' && (professional.profession_type === 'POB' || professional.profession_type === 'CASEMANAGER_VERZUIM') ? professional.verification_status : (professional.verification_status === 'UNVERIFIED' && (professional.big_number?.trim() || '').length === 11 ? 'PENDING' : professional.verification_status)
           })
-          .eq('id', doctor.id);
+          .eq('id', professional.id);
       } else {
         await supabase
           .from('professionals')
           .insert({
             user_id: user.id,
-            big_number: doctor.big_number?.trim() || null,
-            profession_type: doctor.profession_type,
-            rcm_number: doctor.rcm_number?.trim() || null,
-            employment_type: doctor.employment_type ?? null,
-            kvk: doctor.kvk?.replace(/\D/g, '').slice(0, 8) || null,
-            company_name: doctor.company_name?.trim() || null,
-            bio: doctor.bio,
-            specialties: doctor.specialties || [],
-            regions: doctor.regions || [],
-            hourly_rate: doctor.hourly_rate,
-            availability_text: doctor.availability_text,
-            cv_url: doctor.cv_url,
-            verification_status: (doctor.big_number?.trim() || '').length === 11 ? 'PENDING' : 'UNVERIFIED',
-            doctor_plan: 'GRATIS'
+            big_number: professional.big_number?.trim() || null,
+            profession_type: professional.profession_type,
+            rcm_number: professional.rcm_number?.trim() || null,
+            employment_type: professional.employment_type ?? null,
+            kvk: professional.kvk?.replace(/\D/g, '').slice(0, 8) || null,
+            company_name: professional.company_name?.trim() || null,
+            bio: professional.bio,
+            specialties: professional.specialties || [],
+            regions: professional.regions || [],
+            hourly_rate: professional.hourly_rate,
+            availability_text: professional.availability_text,
+            cv_url: professional.cv_url,
+            verification_status: (professional.big_number?.trim() || '').length === 11 ? 'PENDING' : 'UNVERIFIED',
+            plan: 'GRATIS'
           });
       }
 
@@ -205,7 +205,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
       const { error: uploadError } = await supabase.storage.from(CV_BUCKET).upload(path, file, { upsert: true });
       if (uploadError) throw uploadError;
       const { data: urlData } = supabase.storage.from(CV_BUCKET).getPublicUrl(path);
-      setDoctor({ ...doctor, cv_url: urlData.publicUrl });
+      setProfessional({ ...professional, cv_url: urlData.publicUrl });
       setMessage('CV geüpload. Klik Opslaan om te bevestigen.');
     } catch (err: any) {
       setMessage(err?.message || 'Upload mislukt. Controleer of de bucket bestaat.');
@@ -239,82 +239,82 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
         </div>
       )}
 
-      <div className="bg-white p-6 rounded-lg shadow-lg space-y-6">
-        <div>
+      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 md:p-7 space-y-6">
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
           <h2 className="text-xl font-bold text-[#0F172A] mb-4">Persoonlijke gegevens</h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 Volledige naam *
               </label>
               <input
                 type="text"
                 value={profile.full_name || ''}
                 onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 Telefoonnummer
               </label>
               <input
                 type="tel"
                 value={profile.phone || ''}
                 onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 E-mailadres
               </label>
               <input
                 type="email"
                 value={profile.email || ''}
                 disabled
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg bg-slate-100 cursor-not-allowed"
               />
             </div>
           </div>
         </div>
 
-        <div className="border-t pt-6">
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
           <h2 className="text-xl font-bold text-[#0F172A] mb-4">Professionele gegevens</h2>
           <div className="space-y-4">
-            {doctor.profession_type && (
+            {professional.profession_type && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Beroep</label>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Beroep</label>
                 <p className="text-[#0F172A] font-medium">
-                  {PROFESSION_TYPES.find((p) => p.value === doctor.profession_type)?.label ?? doctor.profession_type}
+                  {PROFESSION_TYPES.find((p) => p.value === professional.profession_type)?.label ?? professional.profession_type}
                 </p>
               </div>
             )}
-            {(doctor.profession_type === 'CASEMANAGER_VERZUIM' || doctor.rcm_number != null) && (
+            {(professional.profession_type === 'CASEMANAGER_VERZUIM' || professional.rcm_number != null) && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">RCM-nummer (optioneel)</label>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">RCM-nummer (optioneel)</label>
                 <input
                   type="text"
-                  value={doctor.rcm_number || ''}
-                  onChange={(e) => setDoctor({ ...doctor, rcm_number: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  value={professional.rcm_number || ''}
+                  onChange={(e) => setProfessional({ ...professional, rcm_number: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
                   placeholder="RCM-nummer"
                 />
               </div>
             )}
-            {(!doctor.profession_type || (doctor.profession_type !== 'CASEMANAGER_VERZUIM' && doctor.profession_type !== 'POB')) && (
+            {(!professional.profession_type || (professional.profession_type !== 'CASEMANAGER_VERZUIM' && professional.profession_type !== 'POB')) && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  BIG-nummer * (11 cijfers) {doctor.verification_status && doctor.profession_type !== 'CASEMANAGER_VERZUIM' && doctor.profession_type !== 'POB' && (
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                  BIG-nummer * (11 cijfers) {professional.verification_status && professional.profession_type !== 'CASEMANAGER_VERZUIM' && professional.profession_type !== 'POB' && (
                     <span className={`ml-2 text-sm ${
-                      doctor.verification_status === 'VERIFIED' ? 'text-green-600' :
-                      doctor.verification_status === 'PENDING' ? 'text-yellow-600' :
-                      doctor.verification_status === 'REJECTED' ? 'text-red-600' :
-                      'text-gray-600'
+                      professional.verification_status === 'VERIFIED' ? 'text-green-600' :
+                      professional.verification_status === 'PENDING' ? 'text-yellow-600' :
+                      professional.verification_status === 'REJECTED' ? 'text-red-600' :
+                      'text-slate-600'
                     }`}>
-                      ({doctor.verification_status === 'VERIFIED' ? 'Geverifieerd' :
-                        doctor.verification_status === 'PENDING' ? 'In behandeling' :
-                        doctor.verification_status === 'REJECTED' ? 'Afgewezen' :
+                      ({professional.verification_status === 'VERIFIED' ? 'Geverifieerd' :
+                        professional.verification_status === 'PENDING' ? 'In behandeling' :
+                        professional.verification_status === 'REJECTED' ? 'Afgewezen' :
                         'Niet geverifieerd'})
                     </span>
                   )}
@@ -324,120 +324,120 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
                     type="text"
                     inputMode="numeric"
                     maxLength={11}
-                    value={doctor.big_number || ''}
-                    onChange={(e) => setDoctor({ ...doctor, big_number: e.target.value.replace(/\D/g, '').slice(0, 11) })}
-                    disabled={(doctor.big_number || '').replace(/\D/g, '').length === 11}
-                    className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent disabled:bg-gray-100 disabled:text-gray-600 disabled:cursor-not-allowed"
+                    value={professional.big_number || ''}
+                    onChange={(e) => setProfessional({ ...professional, big_number: e.target.value.replace(/\D/g, '').slice(0, 11) })}
+                    disabled={(professional.big_number || '').replace(/\D/g, '').length === 11}
+                    className="w-full max-w-xs px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none disabled:bg-slate-100 disabled:text-slate-600 disabled:cursor-not-allowed"
                     placeholder="11 cijfers"
                   />
-                  {(doctor.big_number || '').replace(/\D/g, '').length === 11 && (
-                    <div className="text-sm text-gray-700">
+                  {(professional.big_number || '').replace(/\D/g, '').length === 11 && (
+                    <div className="text-sm text-slate-700">
                       <p>BIG-nummer wijzigen?</p>
-                      <p>Neem <Link to="/contact" className="text-[#4FA151] hover:underline">contact op</Link> met de klantenservice.</p>
+                      <p>Neem <Link to="/contact" className="text-[#0F172A] hover:underline">contact op</Link> met de klantenservice.</p>
                     </div>
                   )}
                 </div>
               </div>
             )}
 
-            {(doctor.employment_type === 'FREELANCE_ZZP' || (doctor.kvk || '').replace(/\D/g, '').length === 8) && (
+            {(professional.employment_type === 'FREELANCE_ZZP' || (professional.kvk || '').replace(/\D/g, '').length === 8) && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                   KvK-nummer (ZZP)
                 </label>
                 <div className="flex flex-wrap items-start gap-4">
                   <input
                     type="text"
-                    value={doctor.kvk || ''}
-                    onChange={(e) => setDoctor({ ...doctor, kvk: e.target.value.replace(/\D/g, '').slice(0, 8) })}
-                    disabled={(doctor.kvk || '').replace(/\D/g, '').length === 8}
-                    className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent disabled:bg-gray-100 disabled:text-gray-600 disabled:cursor-not-allowed"
+                    value={professional.kvk || ''}
+                    onChange={(e) => setProfessional({ ...professional, kvk: e.target.value.replace(/\D/g, '').slice(0, 8) })}
+                    disabled={(professional.kvk || '').replace(/\D/g, '').length === 8}
+                    className="w-full max-w-xs px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none disabled:bg-slate-100 disabled:text-slate-600 disabled:cursor-not-allowed"
                     placeholder="8 cijfers"
                   />
-                  {(doctor.kvk || '').replace(/\D/g, '').length === 8 && (
-                    <div className="text-sm text-gray-700">
+                  {(professional.kvk || '').replace(/\D/g, '').length === 8 && (
+                    <div className="text-sm text-slate-700">
                       <p>KvK-nummer wijzigen?</p>
-                      <p>Neem <Link to="/contact" className="text-[#4FA151] hover:underline">contact op</Link> met de klantenservice.</p>
+                      <p>Neem <Link to="/contact" className="text-[#0F172A] hover:underline">contact op</Link> met de klantenservice.</p>
                     </div>
                   )}
                 </div>
-                {doctor.company_name && (
-                  <p className="mt-1 text-sm text-gray-500">Bedrijfsnaam: {doctor.company_name}</p>
+                {professional.company_name && (
+                  <p className="mt-1 text-sm text-slate-500">Bedrijfsnaam: {professional.company_name}</p>
                 )}
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 Bio
               </label>
               <textarea
-                value={doctor.bio || ''}
-                onChange={(e) => setDoctor({ ...doctor, bio: e.target.value })}
+                value={professional.bio || ''}
+                onChange={(e) => setProfessional({ ...professional, bio: e.target.value })}
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
                 placeholder="Vertel iets over uzelf en uw ervaring..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 Specialisaties (kommagescheiden)
               </label>
               <input
                 type="text"
-                value={doctor.specialties?.join(', ') || ''}
-                onChange={(e) => setDoctor({ ...doctor, specialties: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                value={professional.specialties?.join(', ') || ''}
+                onChange={(e) => setProfessional({ ...professional, specialties: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
                 placeholder="Bedrijfsgeneeskunde, Verzekeringsgeneeskunde"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 Regio's (kommagescheiden)
               </label>
               <input
                 type="text"
-                value={doctor.regions?.join(', ') || ''}
-                onChange={(e) => setDoctor({ ...doctor, regions: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                value={professional.regions?.join(', ') || ''}
+                onChange={(e) => setProfessional({ ...professional, regions: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
                 placeholder="Amsterdam, Utrecht, Rotterdam"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 Uurtarief (€)
               </label>
               <input
                 type="number"
-                value={doctor.hourly_rate || ''}
-                onChange={(e) => setDoctor({ ...doctor, hourly_rate: parseFloat(e.target.value) })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                value={professional.hourly_rate || ''}
+                onChange={(e) => setProfessional({ ...professional, hourly_rate: parseFloat(e.target.value) })}
+                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
                 placeholder="125"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 Beschikbaarheid
               </label>
               <textarea
-                value={doctor.availability_text || ''}
-                onChange={(e) => setDoctor({ ...doctor, availability_text: e.target.value })}
+                value={professional.availability_text || ''}
+                onChange={(e) => setProfessional({ ...professional, availability_text: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
                 placeholder="Bijv: Beschikbaar vanaf 1 april, 3 dagen per week"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 CV (PDF of Word)
               </label>
               <div className="flex items-center gap-3 flex-wrap">
-                <label className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition text-sm">
+                <label className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition text-sm">
                   <Upload className="w-4 h-4" />
                   {uploadingCv ? 'Bezig...' : 'Kies bestand'}
                   <input
@@ -448,12 +448,12 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
                     disabled={uploadingCv}
                   />
                 </label>
-                {doctor.cv_url && (
+                {professional.cv_url && (
                   <a
-                    href={doctor.cv_url}
+                    href={professional.cv_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-[#4FA151] hover:underline"
+                    className="flex items-center gap-2 text-sm text-[#0F172A] hover:underline"
                   >
                     <FileText className="w-4 h-4" />
                     Huidige CV bekijken
@@ -465,13 +465,13 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
         </div>
 
         {!isOnboarding && (
-          <div className="border-t pt-6">
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
             <h2 className="text-xl font-bold text-[#0F172A] mb-2">Privacy & toestemming</h2>
-            <p className="text-sm text-gray-600 mb-3">Stel in of ArboMatcher jou als kandidaat mag tonen bij matches op opdrachten van organisaties (buiten je eigen reacties om).</p>
+            <p className="text-sm text-slate-600 mb-3">Stel in of ArboMatcher jou als kandidaat mag tonen bij matches op opdrachten van organisaties (buiten je eigen reacties om).</p>
             <button
               type="button"
               onClick={openConsentModal}
-              className="inline-flex items-center gap-2 px-4 py-2 border border-[#4FA151] text-[#4FA151] rounded-xl font-medium hover:bg-[#4FA151]/10 transition"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-[#0F172A] text-[#0F172A] rounded-xl font-medium hover:bg-slate-100 transition"
             >
               <Settings className="w-4 h-4" />
               Uitgebreide instellingen
@@ -481,11 +481,11 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
 
         {showConsentModal && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/40" onClick={() => setShowConsentModal(false)}>
-            <div className="bg-white rounded-xl border border-gray-200 shadow-xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
-              <div className="p-5 border-b border-gray-100">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+              <div className="p-5 border-b border-slate-100">
                 <h3 className="font-bold text-[#0F172A] text-lg">Uitgebreide instellingen</h3>
               </div>
-              <div className="p-5 overflow-y-auto flex-1 space-y-4 bg-[#F4FAF4]/50">
+              <div className="p-5 overflow-y-auto flex-1 space-y-4 bg-slate-50/50">
                 {EXTENDED_SETTINGS.map((text, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <button
@@ -493,17 +493,17 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
                       role="switch"
                       aria-checked={consentToggles[i]}
                       onClick={() => setConsentToggle(i, !consentToggles[i])}
-                      className={`flex-shrink-0 w-11 h-6 rounded-full transition-colors flex items-center ${consentToggles[i] ? 'bg-[#4FA151] justify-end' : 'bg-[#EDF2F7] justify-start'}`}
+                      className={`flex-shrink-0 w-11 h-6 rounded-full transition-colors flex items-center ${consentToggles[i] ? 'bg-[#0F172A] justify-end' : 'bg-slate-100 justify-start'}`}
                     >
                       <span className="w-5 h-5 bg-white rounded-full shadow mx-0.5" />
                     </button>
-                    <p className="text-sm text-[#0F172A] bg-[#EDF2F7] rounded-lg px-3 py-2 flex-1">{text}</p>
+                    <p className="text-sm text-[#0F172A] bg-slate-100 rounded-lg px-3 py-2 flex-1">{text}</p>
                   </div>
                 ))}
               </div>
-              <div className="p-5 border-t border-gray-100 flex justify-end gap-2">
-                <button type="button" onClick={() => setShowConsentModal(false)} className="px-5 py-2.5 border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition">Annuleren</button>
-                <button type="button" onClick={saveConsentPreferences} className="px-5 py-2.5 bg-[#4FA151] text-white font-medium rounded-xl hover:bg-[#3E8E45] transition">Instellingen opslaan</button>
+              <div className="p-5 border-t border-slate-100 flex justify-end gap-2">
+                <button type="button" onClick={() => setShowConsentModal(false)} className="px-5 py-2.5 border border-slate-200 rounded-xl font-medium text-slate-700 hover:bg-slate-50 transition">Annuleren</button>
+                <button type="button" onClick={saveConsentPreferences} className="px-5 py-2.5 bg-[#0F172A] text-white font-medium rounded-xl hover:bg-[#1E293B] transition">Instellingen opslaan</button>
               </div>
             </div>
           </div>
@@ -512,7 +512,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
         <button
           onClick={handleSave}
           disabled={saving}
-          className={`w-full flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 ${isOnboarding ? '' : 'md:w-auto'}`}
+          className={`w-full flex items-center justify-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50 shadow-lg shadow-slate-900/10 ${isOnboarding ? '' : 'md:w-auto'}`}
         >
           <Save className="w-5 h-5 mr-2" />
           {saving ? 'Bezig met opslaan...' : 'Opslaan'}

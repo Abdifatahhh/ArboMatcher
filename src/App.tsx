@@ -21,12 +21,12 @@ import {
   LazyOnboarding, LazyWachtwoordVergeten, LazyEmailVerificatie, LazyRegistratieGelukt, LazyVerificatieGelukt,
   LazyPrivacy, LazyTerms, LazyContact, LazyCommunity, LazyCommunityArticle, LazyCommunityTopic,
   LazyOplossingen, LazyFAQ,
-  LazyArtsDashboard, LazyArtsProfiel, LazyArtsOpdrachten, LazyArtsReacties, LazyArtsUitnodigingen,
-  LazyArtsInbox, LazyArtsAbonnement, LazyArtsFavorieten,
+  LazyProfessionalDashboard, LazyProfessionalProfiel, LazyProfessionalOpdrachten, LazyProfessionalReacties, LazyProfessionalUitnodigingen,
+  LazyProfessionalInbox, LazyProfessionalAbonnement, LazyProfessionalFavorieten,
   LazyOpdrachtgeverDashboard, LazyOpdrachtgeverProfiel, LazyOpdrachtgeverOpdrachten, LazyOpdrachtgeverKandidaten,
   LazyOpdrachtgeverFavorieten, LazyOpdrachtgeverInbox, LazyOpdrachtgeverAbonnement,
   LazyAdminDashboard, LazyAdminVerificaties, LazyAdminGebruikers, LazyAdminOpdrachten, LazyAdminJobsReview,
-  LazyAdminAbonnementen, LazyAdminInstellingen, LazyAdminGebruikerDetail, LazyAdminArtsen, LazyAdminArtsDetail,
+  LazyAdminAbonnementen, LazyAdminInstellingen, LazyAdminGebruikerDetail, LazyAdminProfessionals, LazyAdminArtsDetail,
   LazyAdminReacties, LazyAdminOpdrachtgevers, LazyAdminOpdrachtgeverDetail, LazyAdminCommunityBeheer, LazyAdminMatches,
 } from './routes/lazyPages';
 
@@ -45,8 +45,8 @@ function App() {
         <ToastProvider>
           <MaintenanceGate>
             <Suspense fallback={
-              <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex items-center justify-center">
-                <div className="animate-spin rounded-full h-10 w-10 border-2 border-[#4FA151] border-t-transparent" />
+              <div className="min-h-screen bg-white flex items-center justify-center">
+                <div className="animate-spin rounded-full h-10 w-10 border-2 border-slate-900 border-t-transparent" />
               </div>
             }>
             <Routes>
@@ -217,17 +217,17 @@ function App() {
 
             <Route path="/professional" element={<ProtectedRoute allowedRoles={['professional']}><ArtsDashboardLayout /></ProtectedRoute>}>
               <Route index element={<Navigate to="/professional/dashboard" replace />} />
-              <Route path="dashboard" element={<LazyArtsDashboard />} />
-              <Route path="profiel" element={<LazyArtsProfiel />} />
-              <Route path="opdrachten" element={<LazyArtsOpdrachten />} />
-              <Route path="reacties" element={<LazyArtsReacties />} />
-              <Route path="uitnodigingen" element={<LazyArtsUitnodigingen />} />
-              <Route path="inbox" element={<LazyArtsInbox />} />
-              <Route path="abonnement" element={<LazyArtsAbonnement />} />
-              <Route path="favorieten" element={<LazyArtsFavorieten />} />
-              <Route path="zoekopdrachten" element={<LazyArtsOpdrachten />} />
-              <Route path="beoordelingen" element={<LazyArtsReacties />} />
-              <Route path="instellingen" element={<LazyArtsProfiel />} />
+              <Route path="dashboard" element={<LazyProfessionalDashboard />} />
+              <Route path="profiel" element={<LazyProfessionalProfiel />} />
+              <Route path="opdrachten" element={<LazyProfessionalOpdrachten />} />
+              <Route path="reacties" element={<LazyProfessionalReacties />} />
+              <Route path="uitnodigingen" element={<LazyProfessionalUitnodigingen />} />
+              <Route path="inbox" element={<LazyProfessionalInbox />} />
+              <Route path="abonnement" element={<LazyProfessionalAbonnement />} />
+              <Route path="favorieten" element={<LazyProfessionalFavorieten />} />
+              <Route path="zoekopdrachten" element={<LazyProfessionalOpdrachten />} />
+              <Route path="beoordelingen" element={<LazyProfessionalReacties />} />
+              <Route path="instellingen" element={<LazyProfessionalProfiel />} />
               <Route path=":id" element={<Navigate to="/professional/dashboard" replace />} />
             </Route>
 
@@ -347,7 +347,7 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <DashboardLayout>
-                  <LazyAdminArtsen />
+                  <LazyAdminProfessionals />
                 </DashboardLayout>
               </ProtectedRoute>
             }

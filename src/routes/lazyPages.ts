@@ -20,14 +20,14 @@ export const LazyCommunityTopic = lazy(() => import('../pages/CommunityTopic'));
 export const LazyOplossingen = lazy(() => import('../pages/Oplossingen'));
 export const LazyFAQ = lazy(() => import('../pages/FAQ'));
 
-export const LazyArtsDashboard = lazy(() => import('../pages/Arts/Dashboard'));
-export const LazyArtsProfiel = lazy(() => import('../pages/Arts/Profiel'));
-export const LazyArtsOpdrachten = lazy(() => import('../pages/Arts/Opdrachten'));
-export const LazyArtsReacties = lazy(() => import('../pages/Arts/Reacties'));
-export const LazyArtsUitnodigingen = lazy(() => import('../pages/Arts/Uitnodigingen'));
-export const LazyArtsInbox = lazy(() => import('../pages/Arts/Inbox'));
-export const LazyArtsAbonnement = lazy(() => import('../pages/Arts/Abonnement'));
-export const LazyArtsFavorieten = lazy(() => import('../pages/Arts/Favorieten'));
+export const LazyProfessionalDashboard = lazy(() => import('../pages/Arts/Dashboard'));
+export const LazyProfessionalProfiel = lazy(() => import('../pages/Arts/Profiel'));
+export const LazyProfessionalOpdrachten = lazy(() => import('../pages/Arts/Opdrachten'));
+export const LazyProfessionalReacties = lazy(() => import('../pages/Arts/Reacties'));
+export const LazyProfessionalUitnodigingen = lazy(() => import('../pages/Arts/Uitnodigingen'));
+export const LazyProfessionalInbox = lazy(() => import('../pages/Arts/Inbox'));
+export const LazyProfessionalAbonnement = lazy(() => import('../pages/Arts/Abonnement'));
+export const LazyProfessionalFavorieten = lazy(() => import('../pages/Arts/Favorieten'));
 
 export const LazyOpdrachtgeverDashboard = lazy(() => import('../pages/Opdrachtgever/Dashboard'));
 export const LazyOpdrachtgeverProfiel = lazy(() => import('../pages/Opdrachtgever/Profiel'));
@@ -45,7 +45,7 @@ export const LazyAdminJobsReview = lazy(() => import('../pages/Admin/JobsReview'
 export const LazyAdminAbonnementen = lazy(() => import('../pages/Admin/Abonnementen'));
 export const LazyAdminInstellingen = lazy(() => import('../pages/Admin/Instellingen'));
 export const LazyAdminGebruikerDetail = lazy(() => import('../pages/Admin/GebruikerDetail'));
-export const LazyAdminArtsen = lazy(() => import('../pages/Admin/Artsen'));
+export const LazyAdminProfessionals = lazy(() => import('../pages/Admin/Artsen'));
 export const LazyAdminArtsDetail = lazy(() => import('../pages/Admin/ArtsDetail'));
 export const LazyAdminReacties = lazy(() => import('../pages/Admin/Reacties'));
 export const LazyAdminOpdrachtgevers = lazy(() => import('../pages/Admin/Opdrachtgevers'));

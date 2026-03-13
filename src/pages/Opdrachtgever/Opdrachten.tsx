@@ -213,7 +213,7 @@ export default function OpdrachtgeverOpdrachten() {
         <h1 className="text-3xl font-bold text-[#0F172A]">Mijn Opdrachten</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+          className="flex items-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
         >
           {showForm ? <X className="w-5 h-5 mr-2" /> : <Plus className="w-5 h-5 mr-2" />}
           {showForm ? 'Annuleren' : 'Nieuwe opdracht'}
@@ -388,7 +388,7 @@ export default function OpdrachtgeverOpdrachten() {
               <button
                 onClick={handleSubmitForReview}
                 disabled={submitting}
-                className="flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50"
+                className="flex items-center justify-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50"
               >
                 <Send className="w-5 h-5 mr-2" />
                 {submitting ? 'Bezig...' : 'Indienen voor beoordeling'}
@@ -443,7 +443,7 @@ export default function OpdrachtgeverOpdrachten() {
                 </Link>
                 <Link
                   to={`/organisatie/kandidaten?job=${job.id}`}
-                  className="flex items-center text-[#4FA151] hover:underline"
+                  className="flex items-center text-[#0F172A] hover:underline"
                 >
                   Kandidaten
                 </Link>

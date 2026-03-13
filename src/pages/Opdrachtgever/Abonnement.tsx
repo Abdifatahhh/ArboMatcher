@@ -20,23 +20,23 @@ export default function OpdrachtgeverAbonnement() {
 
         <ul className="space-y-3 mb-8">
           <li className="flex items-start">
-            <CheckCircle className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
+            <CheckCircle className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
             <span className="text-gray-700">5 actieve opdrachten</span>
           </li>
           <li className="flex items-start">
-            <CheckCircle className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
+            <CheckCircle className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
             <span className="text-gray-700">Onbeperkt reacties</span>
           </li>
           <li className="flex items-start">
-            <CheckCircle className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
+            <CheckCircle className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
             <span className="text-gray-700">Volledige professionalslijst</span>
           </li>
           <li className="flex items-start">
-            <CheckCircle className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
+            <CheckCircle className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
             <span className="text-gray-700">Direct messaging</span>
           </li>
           <li className="flex items-start">
-            <CheckCircle className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
+            <CheckCircle className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
             <span className="text-gray-700">Professionals uitnodigen</span>
           </li>
         </ul>
