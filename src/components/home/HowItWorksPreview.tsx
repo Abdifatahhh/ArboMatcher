@@ -20,7 +20,8 @@ export function HowItWorksPreview({ activeStep }: HowItWorksPreviewProps) {
       aria-live="polite"
       aria-label={`Preview stap ${activeStep}`}
     >
-      <div className="bg-white rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
+        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-400" />
         {activeStep === 1 && <PreviewStep1 />}
         {activeStep === 2 && <PreviewStep2 />}
         {activeStep === 3 && <PreviewStep3 />}

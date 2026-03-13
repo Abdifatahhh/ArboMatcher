@@ -58,8 +58,8 @@ export function HowItWorksStepsOpdrachtgevers({ activeStep, onStepChange }: HowI
               onClick={() => onStepChange(step.id)}
               className={`w-full text-left rounded-xl px-4 py-4 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 ${
                 isActive
-                  ? 'bg-white border border-slate-200 shadow-sm'
-                  : 'border border-transparent hover:bg-white hover:border-slate-100'
+                  ? 'bg-white border border-slate-200 shadow-md shadow-slate-100 border-l-[3px] border-l-blue-500'
+                  : 'border border-transparent hover:bg-white/60 hover:border-slate-100'
               }`}
               aria-pressed={isActive}
               aria-current={isActive ? 'step' : undefined}
@@ -68,7 +68,7 @@ export function HowItWorksStepsOpdrachtgevers({ activeStep, onStepChange }: HowI
               <span className="flex items-center gap-3">
                 <span
                   className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-colors ${
-                    isActive ? 'bg-[#0F172A] text-white' : 'bg-slate-200 text-slate-600'
+                    isActive ? 'bg-gradient-to-br from-blue-500 to-cyan-400 text-white shadow-sm' : 'bg-slate-200 text-slate-600'
                   }`}
                 >
                   {step.id}
