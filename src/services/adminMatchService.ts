@@ -117,9 +117,9 @@ export async function getMatchesForJob(jobId: string): Promise<MatchResult | nul
 
   const { data: applicants } = await supabase
     .from('applications')
-    .select('doctor_id')
+    .select('professional_id')
     .eq('job_id', jobId);
-  const applicantIds = new Set((applicants ?? []).map((a: { doctor_id: string }) => a.doctor_id));
+  const applicantIds = new Set((applicants ?? []).map((a: { professional_id: string }) => a.professional_id));
 
   const { data: pros, error: prosErr } = await supabase
     .from('professionals')

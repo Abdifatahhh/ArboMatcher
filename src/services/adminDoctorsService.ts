@@ -33,7 +33,7 @@ export interface ListDoctorsResult {
 const PAGE_SIZE_DEFAULT = 20;
 
 /**
- * List artsen: professionals (profile role professional).
+ * List professionals (profile role professional).
  * Filters: verification_status, profiles.status, search (full_name, email, big_number).
  * Application counts in one extra query (no N+1).
  */
@@ -75,10 +75,10 @@ export async function listDoctors(params: ListDoctorsParams): Promise<ListDoctor
   if (doctorIds.length > 0) {
     const { data: appRows } = await supabase
       .from('applications')
-      .select('doctor_id')
-      .in('doctor_id', doctorIds);
-    (appRows || []).forEach((r: { doctor_id: string }) => {
-      appCounts[r.doctor_id] = (appCounts[r.doctor_id] ?? 0) + 1;
+      .select('professional_id')
+      .in('professional_id', doctorIds);
+    (appRows || []).forEach((r: { professional_id: string }) => {
+      appCounts[r.professional_id] = (appCounts[r.professional_id] ?? 0) + 1;
     });
   }
 
@@ -108,7 +108,7 @@ export async function getDoctorById(id: string): Promise<AdminDoctorRow | null> 
   const { count } = await supabase
     .from('applications')
     .select('id', { count: 'exact', head: true })
-    .eq('doctor_id', id);
+    .eq('professional_id', id);
 
   return {
     doctor: row,
@@ -148,7 +148,7 @@ export async function listDoctorApplications(
   const { data: apps, count, error } = await supabase
     .from('applications')
     .select('id, status, created_at, jobs(id, title)', { count: 'exact' })
-    .eq('doctor_id', doctorId)
+    .eq('professional_id', doctorId)
     .order('created_at', { ascending: false })
     .range(from, from + pageSize - 1);
 

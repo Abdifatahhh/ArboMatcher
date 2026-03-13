@@ -160,7 +160,7 @@ export const demoDoctors: (Doctor & { profiles: Profile | null })[] = [
     availability_text: 'Beschikbaar 3 dagen per week, start per direct.',
     availability_calendar: null,
     cv_url: null,
-    doctor_plan: 'PRO',
+    plan: 'PRO',
     created_at: lastWeek,
     updated_at: now,
     profiles: demoProfiles[0],
@@ -178,7 +178,7 @@ export const demoDoctors: (Doctor & { profiles: Profile | null })[] = [
     availability_text: 'Beschikbaar vanaf 1 april.',
     availability_calendar: null,
     cv_url: null,
-    doctor_plan: 'GRATIS',
+    plan: 'GRATIS',
     created_at: lastWeek,
     updated_at: now,
     profiles: demoProfiles[1],
@@ -311,7 +311,7 @@ export const demoApplications: (Application & { jobs: Job | null; professionals:
   {
     id: 'demo-app-1',
     job_id: 'demo-job-1',
-    doctor_id: 'demo-doctor-1',
+    professional_id: 'demo-doctor-1',
     message: 'Graag wil ik reageren op deze opdracht. Ik heb 10 jaar ervaring en ben per direct beschikbaar.',
     attachment_url: null,
     status: 'SHORTLISTED',
@@ -323,7 +323,7 @@ export const demoApplications: (Application & { jobs: Job | null; professionals:
   {
     id: 'demo-app-2',
     job_id: 'demo-job-1',
-    doctor_id: 'demo-doctor-2',
+    professional_id: 'demo-doctor-2',
     message: 'Interesse in deze functie. Beschikbaar vanaf april.',
     attachment_url: null,
     status: 'PENDING',
@@ -340,7 +340,7 @@ export type DemoDoctorRow = { doctor: Doctor & { profiles: Profile | null }; pro
 function buildDemoDoctorsList(): DemoDoctorRow[] {
   return demoDoctors.map((doctor) => {
     const profile = doctor.profiles ?? (demoProfiles.find((p) => p.id === doctor.user_id) as Profile);
-    const applications_count = demoApplications.filter((a) => a.doctor_id === doctor.id).length;
+    const applications_count = demoApplications.filter((a) => a.professional_id === doctor.id).length;
     return { doctor, profile, applications_count };
   });
 }

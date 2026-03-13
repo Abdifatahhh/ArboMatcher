@@ -5,6 +5,7 @@ export type { JobReviewStatus } from './jobReviewTypes';
 export type ApplicationStatus = 'PENDING' | 'SHORTLISTED' | 'REJECTED' | 'ACCEPTED';
 export type InviteStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED';
 export type DoctorPlan = 'GRATIS' | 'PRO';
+export type ProfessionalPlan = DoctorPlan;
 export type SubscriptionPlan = 'GRATIS' | 'PRO';
 export type SubscriptionStatus = 'ACTIVE' | 'CANCELLED' | 'EXPIRED';
 export type InvoiceStatus = 'DRAFT' | 'PAID' | 'FAILED';
@@ -84,7 +85,9 @@ export interface Doctor {
   availability_text: string | null;
   availability_calendar: any;
   cv_url: string | null;
-  doctor_plan: DoctorPlan;
+  plan: ProfessionalPlan;
+  /** @deprecated use plan */
+  doctor_plan?: DoctorPlan;
   employment_type: string | null;
   kvk: string | null;
   company_name: string | null;
@@ -152,7 +155,7 @@ export interface Job {
 export interface Application {
   id: string;
   job_id: string;
-  doctor_id: string;
+  professional_id: string;
   message: string | null;
   attachment_url: string | null;
   status: ApplicationStatus;
@@ -164,7 +167,7 @@ export interface Invite {
   id: string;
   job_id: string;
   employer_id: string;
-  doctor_id: string;
+  professional_id: string;
   message: string | null;
   status: InviteStatus;
   created_at: string;
@@ -200,7 +203,7 @@ export interface Review {
   id: string;
   job_id: string;
   employer_id: string;
-  doctor_id: string;
+  professional_id: string;
   rating: number;
   text: string | null;
   created_at: string;

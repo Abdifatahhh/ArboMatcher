@@ -59,7 +59,7 @@ export async function listApplications(params: ListApplicationsParams): Promise<
       (appByJob ?? []).forEach((r) => allAppIds.push(r.id));
     }
     if (doctorIds.length > 0) {
-      const { data: appByDoctor } = await supabase.from('applications').select('id').in('doctor_id', doctorIds);
+      const { data: appByDoctor } = await supabase.from('applications').select('id').in('professional_id', doctorIds);
       (appByDoctor ?? []).forEach((r) => allAppIds.push(r.id));
     }
     const unique = [...new Set(allAppIds)];
