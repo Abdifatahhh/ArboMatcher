@@ -6,7 +6,7 @@ interface LogoProps {
 
 export function Logo({ variant = 'full', theme = 'light', className = '' }: LogoProps) {
   const darkBlue = '#0F172A';
-  const green = '#4FA151';
+  const green = '#2563EB';
   const white = '#FFFFFF';
   const textColor = theme === 'light' ? darkBlue : white;
 
@@ -95,14 +95,14 @@ export function LogoText({ theme = 'light', className = '' }: { theme?: 'light' 
   return (
     <span className={`font-bold ${className}`}>
       <span className={textColor}>Arbo</span>
-      <span className="text-[#4FA151]">Matcher</span>
+      <span className="text-[#2563EB]">Matcher</span>
     </span>
   );
 }
 
 export function LogoIcon({ theme = 'light', className = '' }: { theme?: 'light' | 'dark'; className?: string }) {
   const darkBlue = '#0F172A';
-  const green = '#4FA151';
+  const green = '#2563EB';
   const white = '#FFFFFF';
 
   return (
