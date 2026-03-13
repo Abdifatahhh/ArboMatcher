@@ -27,7 +27,7 @@ import {
   LazyOpdrachtgeverFavorieten, LazyOpdrachtgeverInbox, LazyOpdrachtgeverAbonnement,
   LazyAdminDashboard, LazyAdminVerificaties, LazyAdminGebruikers, LazyAdminOpdrachten, LazyAdminJobsReview,
   LazyAdminAbonnementen, LazyAdminInstellingen, LazyAdminGebruikerDetail, LazyAdminArtsen, LazyAdminArtsDetail,
-  LazyAdminReacties, LazyAdminOpdrachtgevers, LazyAdminOpdrachtgeverDetail, LazyAdminCommunityBeheer,
+  LazyAdminReacties, LazyAdminOpdrachtgevers, LazyAdminOpdrachtgeverDetail, LazyAdminCommunityBeheer, LazyAdminMatches,
 } from './routes/lazyPages';
 
 function OpdrachtRedirect() {
@@ -398,6 +398,16 @@ function App() {
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <DashboardLayout>
                   <LazyAdminOpdrachten />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+            <Route
+            path="/admin/matches"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <DashboardLayout>
+                  <LazyAdminMatches />
                 </DashboardLayout>
               </ProtectedRoute>
             }

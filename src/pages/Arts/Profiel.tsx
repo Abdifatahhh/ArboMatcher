@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
-import type { Doctor, Profile, ProfessionType } from '../../lib/types';
-import { Save, AlertCircle, FileText, Upload } from 'lucide-react';
+import type { ConsentPreferences, Doctor, Profile, ProfessionType } from '../../lib/types';
+import { CONSENT_KEYS, EXTENDED_SETTINGS } from '../../components/PrivacyConsent';
+import { Save, AlertCircle, FileText, Upload, Settings } from 'lucide-react';
 
 const PROFESSION_TYPES: { value: ProfessionType; label: string }[] = [
   { value: 'BEDRIJFSARTS', label: 'Bedrijfsarts' },
@@ -23,6 +24,8 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
   const [saving, setSaving] = useState(false);
   const [uploadingCv, setUploadingCv] = useState(false);
   const [message, setMessage] = useState('');
+  const [showConsentModal, setShowConsentModal] = useState(false);
+  const [consentToggles, setConsentToggles] = useState<boolean[]>(CONSENT_KEYS.map(() => false));
   const isOnboarding = variant === 'onboarding';
 
   useEffect(() => {
@@ -157,6 +160,36 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
   };
 
   const CV_ACCEPT = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  const openConsentModal = () => {
+    setConsentToggles(CONSENT_KEYS.map((k) => profile.consent_preferences?.[k] === true));
+    setShowConsentModal(true);
+  };
+
+  const saveConsentPreferences = async () => {
+    if (!user) return;
+    const consent_preferences: ConsentPreferences = {
+      main: consentToggles.some(Boolean),
+      inform_candidate: consentToggles[0] ?? false,
+      share_profile_cv: consentToggles[1] ?? false,
+      products_services: consentToggles[2] ?? false,
+      share_sister_companies: consentToggles[3] ?? false,
+      newsletter: consentToggles[4] ?? false,
+      feedback_reviews: consentToggles[5] ?? false,
+      relevant_content: consentToggles[6] ?? false,
+    };
+    await supabase.from('profiles').update({ consent_preferences }).eq('id', user.id);
+    setProfile({ ...profile, consent_preferences });
+    await refreshProfile();
+    setShowConsentModal(false);
+    setMessage('Voorkeuren opgeslagen.');
+  };
+
+  const setConsentToggle = (index: number, value: boolean) => {
+    const next = [...consentToggles];
+    next[index] = value;
+    setConsentToggles(next);
+  };
+
   const handleCvUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
@@ -430,6 +463,51 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
             </div>
           </div>
         </div>
+
+        {!isOnboarding && (
+          <div className="border-t pt-6">
+            <h2 className="text-xl font-bold text-[#0F172A] mb-2">Privacy & toestemming</h2>
+            <p className="text-sm text-gray-600 mb-3">Stel in of ArboMatcher jou als kandidaat mag tonen bij matches op opdrachten van organisaties (buiten je eigen reacties om).</p>
+            <button
+              type="button"
+              onClick={openConsentModal}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-[#4FA151] text-[#4FA151] rounded-xl font-medium hover:bg-[#4FA151]/10 transition"
+            >
+              <Settings className="w-4 h-4" />
+              Uitgebreide instellingen
+            </button>
+          </div>
+        )}
+
+        {showConsentModal && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/40" onClick={() => setShowConsentModal(false)}>
+            <div className="bg-white rounded-xl border border-gray-200 shadow-xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+              <div className="p-5 border-b border-gray-100">
+                <h3 className="font-bold text-[#0F172A] text-lg">Uitgebreide instellingen</h3>
+              </div>
+              <div className="p-5 overflow-y-auto flex-1 space-y-4 bg-[#F4FAF4]/50">
+                {EXTENDED_SETTINGS.map((text, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={consentToggles[i]}
+                      onClick={() => setConsentToggle(i, !consentToggles[i])}
+                      className={`flex-shrink-0 w-11 h-6 rounded-full transition-colors flex items-center ${consentToggles[i] ? 'bg-[#4FA151] justify-end' : 'bg-[#EDF2F7] justify-start'}`}
+                    >
+                      <span className="w-5 h-5 bg-white rounded-full shadow mx-0.5" />
+                    </button>
+                    <p className="text-sm text-[#0F172A] bg-[#EDF2F7] rounded-lg px-3 py-2 flex-1">{text}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="p-5 border-t border-gray-100 flex justify-end gap-2">
+                <button type="button" onClick={() => setShowConsentModal(false)} className="px-5 py-2.5 border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition">Annuleren</button>
+                <button type="button" onClick={saveConsentPreferences} className="px-5 py-2.5 bg-[#4FA151] text-white font-medium rounded-xl hover:bg-[#3E8E45] transition">Instellingen opslaan</button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <button
           onClick={handleSave}

@@ -11,7 +11,7 @@ export const CONSENT_KEYS: (keyof Omit<ConsentPreferences, 'main'>)[] = [
   'relevant_content',
 ];
 
-const EXTENDED_SETTINGS = [
+export const EXTENDED_SETTINGS = [
   'Om organisaties over jou als mogelijke kandidaat te informeren wanneer je profiel matcht op een opdracht, zonder daarbij je voor- en achternaam te tonen.',
   'Om je profiel en cv te delen met organisaties wanneer je matcht op een opdracht.',
   'Om je te informeren over huidige en toekomstige producten of diensten van ArboMatcher of derden en om deelname mogelijk te maken aan eventuele acties.',
@@ -34,7 +34,7 @@ export function PrivacyConsent({ checked, onChange, toggles, onTogglesChange }: 
   useEffect(() => {
     if (checked) onTogglesChange(EXTENDED_SETTINGS.map(() => true));
     else onTogglesChange(EXTENDED_SETTINGS.map(() => false));
-  }, [checked, onTogglesChange]);
+  }, [checked, onTogglesChange]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setToggle = (index: number, value: boolean) => {
     const next = [...toggles];

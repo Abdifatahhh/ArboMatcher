@@ -51,6 +51,7 @@ export const LazyAdminReacties = lazy(() => import('../pages/Admin/Reacties'));
 export const LazyAdminOpdrachtgevers = lazy(() => import('../pages/Admin/Opdrachtgevers'));
 export const LazyAdminOpdrachtgeverDetail = lazy(() => import('../pages/Admin/OpdrachtgeverDetail'));
 export const LazyAdminCommunityBeheer = lazy(() => import('../pages/Admin/CommunityBeheer'));
+export const LazyAdminMatches = lazy(() => import('../pages/Admin/Matches'));
 
 const preload = (fn: () => Promise<{ default: unknown }>) => {
   fn().catch(() => {});

@@ -19,8 +19,9 @@ import {
   X,
   BookOpen,
   Bell,
+  ChevronDown,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -97,6 +98,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           { path: '/admin/gebruikers', label: 'Gebruikers', icon: Users },
           { path: '/admin/organisaties', label: 'Organisaties', icon: Building2 },
           { path: '/admin/opdrachten', label: 'Opdrachten', icon: Briefcase },
+          { path: '/admin/matches', label: 'Match professionals', icon: Users },
           { path: '/admin/jobs/review', label: 'Opdrachten review', icon: FileCheck },
           { path: '/admin/reacties', label: 'Reacties', icon: FileText },
           { path: '/admin/abonnementen', label: 'Abonnementen', icon: CreditCard },
@@ -122,26 +124,19 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const navInactive = useGreenSidebar
     ? 'text-[#0F172A]/80 hover:bg-white/80 hover:text-[#0F172A]'
     : 'text-gray-700 hover:bg-gray-100';
-  const footerStyle = useGreenSidebar ? 'border-t border-[#4FA151]/15' : 'border-t border-gray-200';
-  const footerLink = useGreenSidebar
-    ? 'text-[#0F172A]/80 hover:bg-white/80 hover:text-[#0F172A]'
-    : 'text-gray-700 hover:bg-gray-100';
   const mainBg = 'bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white';
 
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const fn = (e: MouseEvent) => { if (accountRef.current && !accountRef.current.contains(e.target as Node)) setAccountOpen(false); };
+    document.addEventListener('click', fn);
+    return () => document.removeEventListener('click', fn);
+  }, []);
+  const displayName = profile?.full_name?.trim() || profile?.email || 'Account';
+
   const SidebarContent = () => (
-    <>
-      <div className={`p-4 lg:p-6 border-b ${headerBorder}`}>
-        <Link to="/" className="inline-block">
-          <LogoText theme="light" className="text-lg lg:text-xl" />
-        </Link>
-        {profile && (
-          <p className={`text-xs lg:text-sm mt-1.5 lg:mt-2 ${useGreenSidebar ? 'text-[#0F172A]/70 font-medium' : 'text-gray-600'}`}>
-            {profile.role === 'ORGANISATIE' && 'Dashboard'}
-            {profile.role === 'ADMIN' && 'Admin Dashboard'}
-          </p>
-        )}
-      </div>
-      <nav className="flex-1 p-3 lg:p-4 space-y-0.5 lg:space-y-1">
+    <nav className="flex-1 p-3 lg:p-4 space-y-0.5 lg:space-y-1">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
@@ -157,44 +152,64 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           );
         })}
       </nav>
-      <div className={`p-3 lg:p-4 ${footerStyle}`}>
-        <Link
-          to={getInstellingenPath()}
-          className={`flex items-center space-x-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition mb-1.5 lg:mb-2 text-sm lg:text-base ${footerLink}`}
-        >
-          <Settings className="w-4 h-4 lg:w-5 lg:h-5" />
-          <span>Instellingen</span>
-        </Link>
-        <button
-          onClick={handleSignOut}
-          className={`flex items-center space-x-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition w-full text-sm lg:text-base ${footerLink}`}
-        >
-          <LogOut className="w-4 h-4 lg:w-5 lg:h-5" />
-          <span>Uitloggen</span>
-        </button>
-      </div>
-    </>
   );
 
   return (
-    <div className={`min-h-screen flex ${mainBg}`}>
-      <aside className={`hidden lg:flex lg:flex-col lg:w-64 flex-col ${sidebarBg}`}>
-        <SidebarContent />
-      </aside>
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className={`bg-white border-b lg:hidden ${headerBorder}`}>
-          <div className="flex items-center justify-between px-3 py-2.5 md:px-4 md:py-4">
-            <Link to={profile?.role === 'ADMIN' ? '/admin/dashboard' : '/organisatie/dashboard'} className="inline-block"><LogoText theme="light" className="text-lg" /></Link>
+    <div className={`min-h-screen flex flex-col ${mainBg}`}>
+      <header className={`flex items-center w-full bg-white border-b ${headerBorder} shrink-0`}>
+        <div className="flex px-4 lg:w-64 lg:px-6 items-center shrink-0">
+          <Link to="/" className="inline-block" aria-label="ArboMatcher">
+            <LogoText theme="light" className="text-lg lg:text-xl" />
+          </Link>
+        </div>
+        <div className="flex-1 flex items-center justify-end px-3 py-2.5 md:px-4 md:py-4 lg:px-6 min-w-0">
             <div className="flex items-center gap-1">
               {getInboxPath() !== '#' && (
-                <Link to={getInboxPath()} className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A]">
+                <Link to={getInboxPath()} className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A] lg:hidden">
                   <MessageSquare className="w-5 h-5" />
                 </Link>
               )}
-              <Link to={getInboxPath() !== '#' ? getInboxPath() : '#'} className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A]">
+              <Link to={getInboxPath() !== '#' ? getInboxPath() : '#'} className="p-2 rounded-lg hover:bg-gray-100 text-[#0F172A] lg:hidden">
                 <Bell className="w-5 h-5" />
               </Link>
-              <Link to={getProfilePath()} className="p-1.5 rounded-full hover:bg-gray-100 text-[#0F172A] flex items-center justify-center w-9 h-9 bg-[#F4FAF4] border border-[#4FA151]/20">
+              <div className="relative hidden lg:block" ref={accountRef}>
+                <button
+                  type="button"
+                  onClick={() => setAccountOpen((o) => !o)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[#0F172A]/10 hover:bg-[#0F172A]/5 transition text-[#0F172A]"
+                  aria-expanded={accountOpen}
+                  aria-haspopup="true"
+                >
+                  <User className="w-5 h-5 text-[#4FA151]" />
+                  <span className="max-w-[140px] truncate text-sm font-medium">{displayName}</span>
+                  <ChevronDown className={`w-4 h-4 text-gray-500 transition ${accountOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {accountOpen && (
+                  <div className="absolute right-0 top-full mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="font-semibold text-[#0F172A] truncate">{displayName}</p>
+                      {profile?.email && <p className="text-xs text-gray-500 truncate mt-0.5">{profile.email}</p>}
+                    </div>
+                    <Link
+                      to={getInstellingenPath()}
+                      onClick={() => setAccountOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#0F172A] hover:bg-gray-50"
+                    >
+                      <Settings className="w-4 h-4" />
+                      Instellingen
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => { setAccountOpen(false); handleSignOut(); }}
+                      className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 font-medium"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Uitloggen
+                    </button>
+                  </div>
+                )}
+              </div>
+              <Link to={getProfilePath()} className="p-1.5 rounded-full hover:bg-gray-100 text-[#0F172A] flex items-center justify-center w-9 h-9 bg-[#F4FAF4] border border-[#4FA151]/20 lg:hidden">
                 {profile?.avatar_url ? (
                   <img src={profile.avatar_url} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover" />
                 ) : (
@@ -202,9 +217,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 )}
               </Link>
             </div>
-          </div>
-        </header>
-        <main className="flex-1 overflow-auto pb-20 lg:pb-0">{children}</main>
+        </div>
+      </header>
+      <div className="flex flex-1 min-w-0">
+        <aside className={`hidden lg:flex lg:flex-col lg:w-64 flex-col ${sidebarBg}`}>
+          <SidebarContent />
+        </aside>
+        <div className="flex-1 flex flex-col min-w-0">
+          <main className="flex-1 overflow-auto pb-20 lg:pb-0">{children}</main>
 
         <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#4FA151]/15 z-40 lg:hidden safe-area-pb">
           <div className="grid grid-cols-3 h-14">
@@ -285,6 +305,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
