@@ -5,5 +5,6 @@ export { AdminEmptyState } from './AdminEmptyState';
 export { AdminLoadingState } from './AdminLoadingState';
 export { AdminAlert } from './AdminAlert';
 export { AdminBadge } from './AdminBadge';
-export { AdminFiltersBar } from './AdminFiltersBar';
-export { AdminTableWrapper } from './AdminTableWrapper';
+export { AdminFiltersBar, filterStyles } from './AdminFiltersBar';
+export { AdminTableWrapper, tableStyles } from './AdminTableWrapper';
+export { AdminPagination } from './AdminPagination';

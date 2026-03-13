@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import type { Profile } from '../../lib/types';
 import { getRoleLabel } from '../../lib/roleLabels';
-import { Pencil, Ban, CheckCircle, Trash2 } from 'lucide-react';
+import { Eye, Ban, CheckCircle, Trash2 } from 'lucide-react';
+import { AdminBadge } from './AdminBadge';
+import { tableStyles as t } from './AdminTableWrapper';
 
 interface UsersTableProps {
   rows: Profile[];
@@ -18,77 +20,70 @@ export function UsersTable({ rows, selectedIds, onToggleBlock, onToggleSelect, o
   const someSelected = selectedIds.length > 0;
 
   return (
-    <div className="rounded-xl border border-emerald-100 overflow-hidden shadow-md bg-white">
-      <table className="min-w-full">
-        <thead>
-          <tr className="bg-[#4FA151] border-b border-[#3E8E45]">
-            <th className="px-4 py-3.5 text-left">
-              <input
-                type="checkbox"
-                checked={allSelected}
-                ref={(el) => { if (el) el.indeterminate = someSelected && !allSelected; }}
-                onChange={(e) => onSelectAll(e.target.checked)}
-                className="rounded border-emerald-300 text-[#4FA151] focus:ring-[#4FA151]"
-                aria-label="Alles selecteren"
-              />
-            </th>
-            <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Naam</th>
-            <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">E-mail</th>
-            <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Rol</th>
-            <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Status</th>
-            <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Aangemaakt</th>
-            <th className="px-6 py-3.5 text-right text-xs font-semibold text-white uppercase tracking-wider">Acties</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-emerald-50">
-          {rows.map((profile, idx) => {
-            const isBlocked = profile.status === 'BLOCKED';
-            const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-emerald-50/30';
-            const selected = selectedIds.includes(profile.id);
-            return (
-              <tr key={profile.id} className={`${rowBg} hover:bg-emerald-50/50 transition-colors`}>
-                <td className="px-4 py-4">
-                  <input
-                    type="checkbox"
-                    checked={selected}
-                    onChange={(e) => onToggleSelect(profile.id, e.target.checked)}
-                    className="rounded border-emerald-300 text-[#4FA151] focus:ring-[#4FA151]"
-                    aria-label={`Selecteer ${profile.full_name || profile.email}`}
-                  />
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <Link to={`/admin/gebruikers/${profile.id}`} className="text-sm font-semibold text-[#0F172A] hover:text-[#4FA151] hover:underline transition">
-                    {profile.full_name || 'Geen naam'}
-                  </Link>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{profile.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2.5 py-1 text-xs font-semibold rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-800">{getRoleLabel(profile.role)}</span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-lg ${isBlocked ? 'bg-red-100 text-red-800 border border-red-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200'}`}>
-                    {isBlocked ? 'Geblokkeerd' : 'Actief'}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{new Date(profile.created_at).toLocaleDateString('nl-NL')}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    <Link to={`/admin/gebruikers/${profile.id}`} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-[#4FA151] hover:bg-emerald-100 transition"> <Pencil className="w-4 h-4" /> Bewerken </Link>
-                    <button type="button" onClick={() => onToggleBlock(profile.id)} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-emerald-100 transition" title={isBlocked ? 'Deblokkeren' : 'Blokkeren'}>
-                      {isBlocked ? <CheckCircle className="w-4 h-4 text-green-600" /> : <Ban className="w-4 h-4 text-red-600" />}
+    <table className={t.table}>
+      <thead className={t.thead}>
+        <tr>
+          <th className="w-10 px-4 py-3">
+            <input
+              type="checkbox"
+              checked={allSelected}
+              ref={(el) => { if (el) el.indeterminate = someSelected && !allSelected; }}
+              onChange={(e) => onSelectAll(e.target.checked)}
+              className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              aria-label="Alles selecteren"
+            />
+          </th>
+          <th className={t.th}>Naam</th>
+          <th className={t.th}>E-mail</th>
+          <th className={t.th}>Rol</th>
+          <th className={t.th}>Status</th>
+          <th className={t.th}>Aangemaakt</th>
+          <th className={t.thRight}>Acties</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((profile) => {
+          const isBlocked = profile.status === 'BLOCKED';
+          const selected = selectedIds.includes(profile.id);
+          return (
+            <tr key={profile.id} className={`${t.row} ${selected ? 'bg-blue-50/40' : ''}`}>
+              <td className="w-10 px-4 py-3.5">
+                <input
+                  type="checkbox"
+                  checked={selected}
+                  onChange={(e) => onToggleSelect(profile.id, e.target.checked)}
+                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  aria-label={`Selecteer ${profile.full_name || profile.email}`}
+                />
+              </td>
+              <td className={t.td}>
+                <Link to={`/admin/gebruikers/${profile.id}`} className={t.link}>{profile.full_name || 'Geen naam'}</Link>
+              </td>
+              <td className={t.td}>{profile.email}</td>
+              <td className={t.td}>
+                <AdminBadge variant="neutral">{getRoleLabel(profile.role)}</AdminBadge>
+              </td>
+              <td className={t.td}>
+                <AdminBadge variant={isBlocked ? 'danger' : 'success'} dot>{isBlocked ? 'Geblokkeerd' : 'Actief'}</AdminBadge>
+              </td>
+              <td className={t.td}>{new Date(profile.created_at).toLocaleDateString('nl-NL')}</td>
+              <td className={`${t.td} text-right`}>
+                <div className="flex items-center justify-end gap-1">
+                  <Link to={`/admin/gebruikers/${profile.id}`} className={t.actionBtn} title="Bekijken"><Eye className="w-4 h-4" /></Link>
+                  <button type="button" onClick={() => onToggleBlock(profile.id)} className={t.actionBtn} title={isBlocked ? 'Deblokkeren' : 'Blokkeren'}>
+                    {isBlocked ? <CheckCircle className="w-4 h-4 text-emerald-500" /> : <Ban className="w-4 h-4 text-red-400" />}
+                  </button>
+                  {canDelete && (
+                    <button type="button" onClick={() => onDelete(profile.id)} className={`${t.actionBtn} hover:!text-red-600 hover:!bg-red-50`} title="Verwijderen">
+                      <Trash2 className="w-4 h-4" />
                     </button>
-                    {canDelete && (
-                      <button type="button" onClick={() => onDelete(profile.id)} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition" title="Definitief verwijderen">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                  )}
+                </div>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }

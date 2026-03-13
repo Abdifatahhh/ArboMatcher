@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { listJobs, updateJobStatus } from '../../services/adminJobsService';
-import type { JobStatusFilter } from '../../services/adminJobsService';
+import type { JobStatusFilter, AdminJobRow } from '../../services/adminJobsService';
 import { JobsFilters } from '../../components/Admin/JobsFilters';
 import { JobsTable } from '../../components/Admin/JobsTable';
-import type { AdminJobRow } from '../../services/adminJobsService';
 import { demoJobs } from '../../data/adminDemoData';
-import { Briefcase, Info } from 'lucide-react';
+import { AdminPage, AdminPageHeader, AdminFiltersBar, AdminTableWrapper, AdminEmptyState, AdminLoadingState, AdminAlert, AdminPagination } from '../../components/Admin/adminUI';
+import { Briefcase, Download } from 'lucide-react';
+import { exportToCsv } from '../../lib/csvExport';
 
 const PAGE_SIZE = 20;
 
@@ -22,49 +23,24 @@ export default function AdminOpdrachten() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await listJobs({
-        status: status || undefined,
-        search: search.trim() || undefined,
-        page,
-        pageSize: PAGE_SIZE,
-      });
-      if (res.data.length > 0) {
-        setData(res.data);
-        setTotal(res.total);
-        setIsDemo(false);
-      } else {
+      const res = await listJobs({ status: status || undefined, search: search.trim() || undefined, page, pageSize: PAGE_SIZE });
+      if (res.data.length > 0) { setData(res.data); setTotal(res.total); setIsDemo(false); }
+      else {
         const term = search.trim().toLowerCase();
         const filtered = demoJobs.filter((j) => {
           if (status && j.status !== status) return false;
-          if (term) {
-            const matchTitle = j.title?.toLowerCase().includes(term);
-            const matchCompany = (j.company_name ?? j.employers?.company_name)?.toLowerCase().includes(term);
-            if (!matchTitle && !matchCompany) return false;
-          }
+          if (term) { if (!j.title?.toLowerCase().includes(term) && !(j.company_name ?? j.employers?.company_name)?.toLowerCase().includes(term)) return false; }
           return true;
         });
         setTotal(filtered.length);
         const from = (page - 1) * PAGE_SIZE;
-        setData(
-          filtered.slice(from, from + PAGE_SIZE).map((j) => ({
-            job: j,
-            employer: j.employers ?? null,
-          }))
-        );
+        setData(filtered.slice(from, from + PAGE_SIZE).map((j) => ({ job: j, employer: j.employers ?? null })));
         setIsDemo(true);
       }
-    } catch {
-      setData([]);
-      setTotal(0);
-      setIsDemo(false);
-    } finally {
-      setLoading(false);
-    }
+    } catch { setData([]); setTotal(0); setIsDemo(false); } finally { setLoading(false); }
   };
 
-  useEffect(() => {
-    load();
-  }, [page, status, search]);
+  useEffect(() => { load(); }, [page, status, search]);
 
   const handleStatusChange = async (jobId: string, newStatus: 'DRAFT' | 'PUBLISHED' | 'CLOSED') => {
     setStatusError(null);
@@ -72,11 +48,7 @@ export default function AdminOpdrachten() {
     setData(previousData.map((r) => (r.job.id === jobId ? { ...r, job: { ...r.job, status: newStatus } } : r)));
     if (isDemo) return;
     const { error } = await updateJobStatus(jobId, newStatus);
-    if (error) {
-      setData(previousData);
-      setStatusError('Status kon niet worden opgeslagen. Probeer opnieuw.');
-      return;
-    }
+    if (error) { setData(previousData); setStatusError('Status kon niet worden opgeslagen. Probeer opnieuw.'); return; }
     load();
   };
 
@@ -85,52 +57,31 @@ export default function AdminOpdrachten() {
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
-    <div className="p-6">
-      {isDemo && (
-        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-3 shadow-sm">
-          <Info className="w-5 h-5 text-amber-600 flex-shrink-0" />
-          <p className="text-amber-900 text-sm">Demo-data wordt getoond. Status wijzigen wordt niet opgeslagen.</p>
-        </div>
-      )}
-      {statusError && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3 shadow-sm">
-          <Info className="w-5 h-5 text-red-600 flex-shrink-0" />
-          <p className="text-red-900 text-sm">{statusError}</p>
-          <button type="button" onClick={() => setStatusError(null)} className="ml-auto text-red-700 hover:underline text-sm">Sluiten</button>
-        </div>
-      )}
-      <h1 className="text-3xl font-bold text-[#0F172A] mb-2 flex items-center gap-2">
-        <Briefcase className="w-8 h-8 text-[#4FA151]" />
-        Opdrachten
-      </h1>
-      <p className="text-emerald-700/80 text-sm mb-6">Beheer alle vacatures en hun status</p>
+    <AdminPage>
+      <AdminPageHeader icon={Briefcase} title="Opdrachten" description="Beheer alle vacatures en hun status" actions={
+        <button type="button" onClick={() => exportToCsv('opdrachten', ['Titel', 'Bedrijf', 'Status', 'Aangemaakt'], data.map((r) => [r.job.title || '', r.job.company_name || r.employer?.company_name || '', r.job.status || '', new Date(r.job.created_at).toLocaleDateString('nl-NL')]))} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition" disabled={data.length === 0}>
+          <Download className="w-4 h-4" /> Export CSV
+        </button>
+      } />
+      {isDemo && <AdminAlert variant="warning">Demo-data wordt getoond. Status wijzigen wordt niet opgeslagen.</AdminAlert>}
+      {statusError && <AdminAlert variant="error" onClose={() => setStatusError(null)}>{statusError}</AdminAlert>}
 
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-emerald-100 shadow-md p-4 mb-6">
+      <AdminFiltersBar>
         <JobsFilters status={status} search={search} onStatusChange={(v) => { setStatus(v); setPage(1); }} onSearchChange={(v) => { setSearch(v); setPage(1); }} />
-      </div>
+      </AdminFiltersBar>
 
-      {loading ? (
-        <div className="flex justify-center items-center py-16 rounded-xl bg-white/60 border border-emerald-100">
-          <div className="animate-spin rounded-full h-12 w-12 border-2 border-emerald-200 border-t-[#4FA151]" />
-        </div>
-      ) : data.length === 0 ? (
-        <div className="bg-white p-12 rounded-xl border border-emerald-100 shadow-md text-center">
-          <Briefcase className="w-16 h-16 text-emerald-300 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">Geen opdrachten gevonden</h3>
-          <p className="text-gray-500">Pas filters aan of zoek op een andere term.</p>
-        </div>
+      {loading ? <AdminLoadingState /> : data.length === 0 ? (
+        <AdminTableWrapper>
+          <AdminEmptyState icon={Briefcase} title="Geen opdrachten gevonden" description="Pas filters aan of zoek op een andere term." />
+        </AdminTableWrapper>
       ) : (
         <>
-          <JobsTable rows={data} onStatusChange={handleStatusChange} isDemo={isDemo} />
-          <div className="mt-4 flex items-center justify-between px-1">
-            <p className="text-sm text-emerald-800/80 font-medium">{from}–{to} van {total}</p>
-            <div className="flex gap-2">
-              <button type="button" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1} className="px-4 py-2 border border-emerald-200 rounded-xl text-sm font-medium text-emerald-800 bg-white hover:bg-emerald-50 disabled:opacity-50 disabled:cursor-not-allowed transition">Vorige</button>
-              <button type="button" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages} className="px-4 py-2 border border-emerald-200 rounded-xl text-sm font-medium text-emerald-800 bg-white hover:bg-emerald-50 disabled:opacity-50 disabled:cursor-not-allowed transition">Volgende</button>
-            </div>
-          </div>
+          <AdminTableWrapper>
+            <JobsTable rows={data} onStatusChange={handleStatusChange} isDemo={isDemo} />
+          </AdminTableWrapper>
+          <AdminPagination page={page} totalPages={totalPages} from={from} to={to} total={total} onPageChange={setPage} />
         </>
       )}
-    </div>
+    </AdminPage>
   );
 }

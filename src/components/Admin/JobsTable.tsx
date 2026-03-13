@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom';
 import type { AdminJobRow } from '../../services/adminJobsService';
-import { Briefcase, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
+import { AdminBadge } from './AdminBadge';
+import { tableStyles as t } from './AdminTableWrapper';
+import { filterStyles as f } from './AdminFiltersBar';
 
 const JOB_STATUSES = ['DRAFT', 'PUBLISHED', 'CLOSED'] as const;
-type JobStatusValue = typeof JOB_STATUSES[number];
+type JobStatusValue = (typeof JOB_STATUSES)[number];
 
-const STATUS_STYLE: Record<string, string> = {
-  PUBLISHED: 'bg-emerald-100 text-emerald-800 border border-emerald-200',
-  CLOSED: 'bg-gray-100 text-gray-800 border border-gray-200',
-  DRAFT: 'bg-amber-100 text-amber-800 border border-amber-200',
+const STATUS_BADGE: Record<string, { label: string; variant: 'success' | 'warning' | 'neutral' }> = {
+  PUBLISHED: { label: 'Gepubliceerd', variant: 'success' },
+  DRAFT: { label: 'Concept', variant: 'warning' },
+  CLOSED: { label: 'Gesloten', variant: 'neutral' },
 };
 
 function normalizeJobStatus(s: string | undefined | null): JobStatusValue {
@@ -22,59 +25,55 @@ interface JobsTableProps {
   isDemo?: boolean;
 }
 
-export function JobsTable({ rows, onStatusChange, isDemo }: JobsTableProps) {
+export function JobsTable({ rows, onStatusChange }: JobsTableProps) {
   return (
-    <div className="rounded-xl border border-emerald-100 overflow-hidden shadow-md bg-white">
-      <div className="overflow-x-auto">
-        <table className="min-w-full">
-          <thead>
-            <tr className="bg-[#4FA151] border-b border-[#3E8E45]">
-              <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Opdracht</th>
-              <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Opdrachtgever</th>
-              <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Datum</th>
-              <th className="px-6 py-3.5 text-right text-xs font-semibold text-white uppercase tracking-wider">Acties</th>
+    <table className={t.table}>
+      <thead className={t.thead}>
+        <tr>
+          <th className={t.th}>Opdracht</th>
+          <th className={t.th}>Opdrachtgever</th>
+          <th className={t.th}>Status</th>
+          <th className={t.th}>Datum</th>
+          <th className={t.thRight}>Acties</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(({ job, employer }) => {
+          const st = normalizeJobStatus(job.status);
+          const badge = STATUS_BADGE[st] ?? { label: st, variant: 'neutral' as const };
+          return (
+            <tr key={job.id} className={t.row}>
+              <td className={t.tdWrap}>
+                <Link to={`/opdrachten/${job.id}`} className={t.link}>{job.title}</Link>
+                {job.description && <p className="text-xs text-slate-400 mt-0.5 line-clamp-1 max-w-xs">{job.description}</p>}
+              </td>
+              <td className={t.td}>
+                <Link to={employer ? `/admin/opdrachtgevers/${employer.id}` : '#'} className="text-sm text-slate-600 hover:text-blue-600 transition-colors">
+                  {job.company_name || employer?.company_name || '—'}
+                </Link>
+              </td>
+              <td className={t.td}>
+                <div className="flex items-center gap-2">
+                  <select
+                    value={st}
+                    onChange={(e) => onStatusChange(job.id, e.target.value as JobStatusValue)}
+                    className={`${f.select} !h-8 text-xs`}
+                  >
+                    <option value="DRAFT">Concept</option>
+                    <option value="PUBLISHED">Gepubliceerd</option>
+                    <option value="CLOSED">Gesloten</option>
+                  </select>
+                  <AdminBadge variant={badge.variant} dot>{badge.label}</AdminBadge>
+                </div>
+              </td>
+              <td className={t.td}>{new Date(job.created_at).toLocaleDateString('nl-NL')}</td>
+              <td className={`${t.td} text-right`}>
+                <Link to={`/opdrachten/${job.id}`} className={t.actionBtn} title="Bekijken"><Eye className="w-4 h-4" /></Link>
+              </td>
             </tr>
-          </thead>
-          <tbody className="divide-y divide-emerald-50">
-            {rows.map(({ job, employer }, idx) => {
-              const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-emerald-50/30';
-              return (
-                <tr key={job.id} className={`${rowBg} hover:bg-emerald-50/50 transition-colors`}>
-                  <td className="px-6 py-4">
-                    <Link to={`/opdrachten/${job.id}`} className="text-sm font-semibold text-[#0F172A] hover:text-[#4FA151] hover:underline transition">{job.title}</Link>
-                    {job.description && <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{job.description}</p>}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Link to={employer ? `/admin/organisaties/${employer.id}` : '#'} className="text-sm text-gray-800 hover:text-[#4FA151] hover:underline transition">{job.company_name || employer?.company_name || '—'}</Link>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <select
-                      value={normalizeJobStatus(job.status)}
-                      onChange={(e) => {
-                        const v = e.target.value as JobStatusValue;
-                        onStatusChange(job.id, v);
-                      }}
-                      className="text-sm border border-[#4FA151]/30 rounded-xl px-3 py-2 focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] bg-white min-w-[140px]"
-                    >
-                      <option value="DRAFT">Concept</option>
-                      <option value="PUBLISHED">Gepubliceerd</option>
-                      <option value="CLOSED">Gesloten</option>
-                    </select>
-                    <span className={`ml-2 px-2.5 py-1 rounded-lg text-xs font-medium ${STATUS_STYLE[normalizeJobStatus(job.status)] ?? 'bg-gray-100 text-gray-800 border border-gray-200'}`}>
-                      {normalizeJobStatus(job.status) === 'PUBLISHED' ? 'Gepubliceerd' : normalizeJobStatus(job.status) === 'DRAFT' ? 'Concept' : 'Gesloten'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{new Date(job.created_at).toLocaleDateString('nl-NL')}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <Link to={`/opdrachten/${job.id}`} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-[#4FA151] hover:bg-emerald-100 transition"><Eye className="w-4 h-4" />Bekijk</Link>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }

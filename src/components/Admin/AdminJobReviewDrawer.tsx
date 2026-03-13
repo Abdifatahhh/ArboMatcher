@@ -230,7 +230,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
               onClick={() => setTab(t.id)}
               className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap ${
                 tab === t.id
-                  ? 'border-[#4FA151] text-[#4FA151]'
+                  ? 'border-slate-900 text-slate-900'
                   : 'border-transparent text-gray-600 hover:text-[#0F172A]'
               }`}
             >
@@ -243,7 +243,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
         <div className="flex-1 overflow-y-auto p-4">
           {loading ? (
             <div className="flex justify-center py-12">
-              <Loader2 className="w-10 h-10 animate-spin text-[#4FA151]" />
+              <Loader2 className="w-10 h-10 animate-spin text-slate-400" />
             </div>
           ) : !job ? (
             <p className="text-gray-500">Opdracht niet gevonden.</p>
@@ -350,7 +350,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
                     <button
                       onClick={handleAddNote}
                       disabled={!noteText.trim() || addingNote}
-                      className="px-4 py-2 bg-[#4FA151] text-white rounded-lg text-sm font-medium hover:bg-[#3E8E45] disabled:opacity-50"
+                      className="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800 disabled:opacity-50"
                     >
                       {addingNote ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Toevoegen'}
                     </button>

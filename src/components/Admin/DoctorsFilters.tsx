@@ -1,4 +1,5 @@
 import type { VerificationFilter, StatusFilter } from '../../services/adminDoctorsService';
+import { filterStyles as f } from './AdminFiltersBar';
 
 interface DoctorsFiltersProps {
   verification: VerificationFilter;
@@ -17,35 +18,28 @@ const VERIFICATION_LABELS: Record<string, string> = {
   REJECTED: 'Afgewezen',
 };
 
-export function DoctorsFilters({
-  verification,
-  status,
-  search,
-  onVerificationChange,
-  onStatusChange,
-  onSearchChange,
-}: DoctorsFiltersProps) {
+export function DoctorsFilters({ verification, status, search, onVerificationChange, onStatusChange, onSearchChange }: DoctorsFiltersProps) {
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-end gap-3">
       <div>
-        <label className="block text-xs font-medium text-emerald-800/80 mb-1">Verificatie</label>
-        <select value={verification} onChange={(e) => onVerificationChange(e.target.value as VerificationFilter)} className="px-4 py-2.5 bg-white border border-emerald-200/80 rounded-xl text-gray-800 focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition">
+        <label className={f.label}>Verificatie</label>
+        <select value={verification} onChange={(e) => onVerificationChange(e.target.value as VerificationFilter)} className={f.select}>
           {(['', 'UNVERIFIED', 'PENDING', 'VERIFIED', 'REJECTED'] as const).map((v) => (
             <option key={v || 'all'} value={v}>{VERIFICATION_LABELS[v] ?? v}</option>
           ))}
         </select>
       </div>
       <div>
-        <label className="block text-xs font-medium text-emerald-800/80 mb-1">Status</label>
-        <select value={status} onChange={(e) => onStatusChange(e.target.value as StatusFilter)} className="px-4 py-2.5 bg-white border border-emerald-200/80 rounded-xl text-gray-800 focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition">
+        <label className={f.label}>Status</label>
+        <select value={status} onChange={(e) => onStatusChange(e.target.value as StatusFilter)} className={f.select}>
           <option value="">Alle</option>
           <option value="ACTIVE">Actief</option>
           <option value="BLOCKED">Geblokkeerd</option>
         </select>
       </div>
       <div className="flex-1 min-w-[200px]">
-        <label className="block text-xs font-medium text-emerald-800/80 mb-1">Zoeken</label>
-        <input type="search" value={search} onChange={(e) => onSearchChange(e.target.value)} placeholder="Naam, e-mail of BIG..." className="w-full px-4 py-2.5 bg-white border border-emerald-200/80 rounded-xl text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition" />
+        <label className={f.label}>Zoeken</label>
+        <input type="search" value={search} onChange={(e) => onSearchChange(e.target.value)} placeholder="Naam, e-mail of BIG..." className={f.input} />
       </div>
     </div>
   );
