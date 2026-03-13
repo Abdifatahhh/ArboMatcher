@@ -139,7 +139,7 @@ export default function Opdrachten() {
     <div className="min-h-screen bg-[#0F172A]">
       <div className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] py-16 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+          <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
             <Link to="/" className="hover:text-white transition flex items-center gap-1">
               <Home className="w-4 h-4" />
             </Link>
@@ -151,7 +151,7 @@ export default function Opdrachten() {
             <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Vacatures</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Opdrachten</h1>
-          <p className="text-xl text-gray-300 max-w-2xl">
+          <p className="text-xl text-slate-300 max-w-2xl">
             Bekijk alle beschikbare opdrachten voor bedrijfsartsen en arbo-professionals.
             Of het nu gaat om ZZP, detachering of loondienst – zoek in onze actuele opdrachten en ga aan de slag.
           </p>
@@ -330,7 +330,7 @@ export default function Opdrachten() {
                       type="button"
                       onClick={() => setPage(p => Math.max(1, p - 1))}
                       disabled={page === 1}
-                      className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
@@ -342,7 +342,7 @@ export default function Opdrachten() {
                         className={`min-w-[2.5rem] py-2 px-3 rounded-lg text-sm font-medium transition ${
                           p === page
                             ? 'bg-[#0F172A] text-white'
-                            : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
+                            : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
                         }`}
                       >
                         {p}
@@ -352,7 +352,7 @@ export default function Opdrachten() {
                       type="button"
                       onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                       disabled={page === totalPages}
-                      className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <ChevronRight className="w-5 h-5" />
                     </button>

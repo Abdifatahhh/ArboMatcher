@@ -8,7 +8,7 @@ export default function Prijzen() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-[#0F172A] mb-4">Prijzen</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
             Kies het abonnement dat bij uw behoeften past. Geen verborgen kosten.
           </p>
         </div>
@@ -20,7 +20,7 @@ export default function Prijzen() {
               <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Basic</h3>
               <div className="mb-6">
                 <span className="text-4xl font-bold text-[#0F172A]">€49</span>
-                <span className="text-gray-600">/maand</span>
+                <span className="text-slate-600">/maand</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 <div className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
@@ -36,17 +36,17 @@ export default function Prijzen() {
                   <span className="text-[#0F172A] font-medium">Basisfilters professionalslijst</span>
                 </div>
                 <div className="flex items-start bg-slate-50 rounded-lg px-3 py-2.5">
-                  <X className="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-400">Direct messaging</span>
+                  <X className="w-5 h-5 text-slate-400 mr-3 mt-0.5 flex-shrink-0" />
+                  <span className="text-slate-400">Direct messaging</span>
                 </div>
                 <div className="flex items-start bg-slate-50 rounded-lg px-3 py-2.5">
-                  <X className="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-400">Professionals uitnodigen</span>
+                  <X className="w-5 h-5 text-slate-400 mr-3 mt-0.5 flex-shrink-0" />
+                  <span className="text-slate-400">Professionals uitnodigen</span>
                 </div>
               </div>
               <AuthLink
                 to="/register"
-                className="block w-full bg-gray-200 text-[#0F172A] text-center py-3 rounded-lg font-semibold hover:bg-gray-300 transition"
+                className="block w-full bg-slate-200 text-[#0F172A] text-center py-3 rounded-lg font-semibold hover:bg-slate-300 transition"
               >
                 Start met Basic
               </AuthLink>
@@ -59,7 +59,7 @@ export default function Prijzen() {
               <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Pro</h3>
               <div className="mb-6">
                 <span className="text-4xl font-bold text-[#0F172A]">€149</span>
-                <span className="text-gray-600">/maand</span>
+                <span className="text-slate-600">/maand</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 {['5 actieve opdrachten', 'Onbeperkt reacties', 'Volledige professionalslijst', 'Direct messaging', 'Professionals uitnodigen'].map((t) => (
@@ -105,7 +105,7 @@ export default function Prijzen() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
               <h3 className="text-xl font-bold text-[#0F172A] mb-2">Gratis kennismaken</h3>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-slate-500 mb-4">
                 Voor professionals die eerst kennis willen maken met het platform.
               </p>
               <div className="mb-6">
@@ -121,7 +121,7 @@ export default function Prijzen() {
               </div>
               <AuthLink
                 to="/register"
-                className="block w-full border border-gray-300 text-[#0F172A] text-center py-3 rounded-lg font-semibold hover:bg-gray-50 transition"
+                className="block w-full border border-slate-300 text-[#0F172A] text-center py-3 rounded-lg font-semibold hover:bg-slate-50 transition"
               >
                 Start gratis
               </AuthLink>
@@ -134,12 +134,12 @@ export default function Prijzen() {
                 </span>
               </div>
               <h3 className="text-xl font-bold text-[#0F172A] mb-2 mt-2">Freelance PRO Smart</h3>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-slate-500 mb-4">
                 Voor professionals die direct willen reageren en de mooiste opdrachten willen scoren.
               </p>
               <div className="mb-6">
                 <span className="text-3xl font-bold text-[#0F172A]">&#8364; 159</span>
-                <span className="text-gray-600"> per jaar</span>
+                <span className="text-slate-600"> per jaar</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 {['Direct toegang tot alle opdrachten', 'Onbeperkt reageren op opdrachten', 'Onbeperkt zoekopdrachten opslaan', 'Bespaar 42% t.o.v. een Flex abonnement'].map((t) => (
@@ -159,12 +159,12 @@ export default function Prijzen() {
 
             <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
               <h3 className="text-xl font-bold text-[#0F172A] mb-2">Freelance PRO Flex</h3>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-slate-500 mb-4">
                 Voor professionals die direct willen reageren en de vrijheid van een korter abonnement willen ervaren.
               </p>
               <div className="mb-6">
                 <span className="text-3xl font-bold text-[#0F172A]">&#8364; 69</span>
-                <span className="text-gray-600"> per kwartaal</span>
+                <span className="text-slate-600"> per kwartaal</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 {['Direct toegang tot alle opdrachten', 'Onbeperkt reageren op opdrachten', 'Onbeperkt zoekopdrachten opslaan'].map((t) => (

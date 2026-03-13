@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthLink } from '../components/AuthLink';
 import { getLoginPath } from '../config/portal';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -256,7 +257,7 @@ export default function Register() {
           <div className="mt-5 text-center">
             <p className="text-slate-500 text-sm">
               Heb je al een account?{' '}
-              <Link to={getLoginPath()} className="text-[#0F172A] hover:underline font-semibold">Inloggen</Link>
+              <AuthLink to="/login" className="text-[#0F172A] hover:underline font-semibold">Inloggen</AuthLink>
             </p>
           </div>
         </div>

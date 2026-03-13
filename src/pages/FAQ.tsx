@@ -35,7 +35,7 @@ export default function FAQ() {
             <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Support</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Veelgestelde vragen</h1>
-          <p className="text-xl text-gray-300 max-w-2xl">
+          <p className="text-xl text-slate-300 max-w-2xl">
             Antwoorden op de meest gestelde vragen over het platform, abonnementen en het matchen van opdrachten en professionals.
           </p>
         </div>

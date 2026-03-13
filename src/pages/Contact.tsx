@@ -40,7 +40,7 @@ export default function Contact() {
             <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Contact</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Neem contact op</h1>
-          <p className="text-xl text-gray-300 max-w-2xl">
+          <p className="text-xl text-slate-300 max-w-2xl">
             Heeft u vragen over ArboMatcher? Wij staan klaar om u te helpen.
           </p>
         </div>

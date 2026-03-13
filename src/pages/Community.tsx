@@ -63,14 +63,14 @@ export default function Community() {
             <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Kennis & support</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Community</h1>
-          <p className="text-xl text-gray-300 max-w-2xl">
+          <p className="text-xl text-slate-300 max-w-2xl">
             Handige informatie, tips en uitleg voor professionals en organisaties. Alles over het platform, BIG-verificatie en succesvol matchen.
           </p>
         </div>
       </section>
 
       {/* Tabs + Content */}
-      <section className="py-12 sm:py-16 border-b border-gray-200/60">
+      <section className="py-12 sm:py-16 border-b border-slate-200/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-2 mb-10">
             <button
@@ -79,7 +79,7 @@ export default function Community() {
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition flex items-center gap-2 ${
                 activeTab === 'professionals'
                   ? 'bg-[#0F172A] text-white shadow-lg shadow-slate-900/10'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               <Stethoscope className="w-4 h-4" />
@@ -91,7 +91,7 @@ export default function Community() {
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition flex items-center gap-2 ${
                 activeTab === 'organisaties'
                   ? 'bg-[#0F172A] text-white shadow-lg shadow-slate-900/10'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               <Building2 className="w-4 h-4" />
@@ -141,7 +141,7 @@ export default function Community() {
       <section className="py-12 sm:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-[#0F172A] mb-2">Recente artikelen & tips</h2>
-          <p className="text-gray-600 mb-8">Handige kennis en updates voor op het platform.</p>
+          <p className="text-slate-600 mb-8">Handige kennis en updates voor op het platform.</p>
           <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {articles.map((art) => (
@@ -155,19 +155,19 @@ export default function Community() {
                       <p className="font-semibold text-[#0F172A] group-hover:text-[#0F172A] transition line-clamp-2">
                         {art.title}
                       </p>
-                      <p className="text-sm text-gray-500 mt-1">{art.date}</p>
+                      <p className="text-sm text-slate-500 mt-1">{art.date}</p>
                       <span className="inline-block mt-2 text-xs font-medium text-[#0F172A] bg-slate-100 px-2 py-1 rounded-lg">
                         {art.category}
                       </span>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-[#0F172A] flex-shrink-0 mt-1" />
+                    <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#0F172A] flex-shrink-0 mt-1" />
                   </div>
                 </Link>
               ))}
             </div>
           </div>
           <div className="mt-8 text-center">
-            <span className="inline-flex items-center gap-2 text-gray-500 text-sm">
+            <span className="inline-flex items-center gap-2 text-slate-500 text-sm">
               Meer artikelen volgen binnenkort.
             </span>
           </div>

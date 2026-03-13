@@ -230,10 +230,10 @@ export default function OpdrachtDetail() {
     return (
       <div className="min-h-[60vh] bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-700 mb-4">Opdracht niet gevonden</h2>
+          <Briefcase className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-slate-700 mb-4">Opdracht niet gevonden</h2>
           {fetchError && (
-            <p className="text-gray-500 mb-4 max-w-md mx-auto">{fetchError}</p>
+            <p className="text-slate-500 mb-4 max-w-md mx-auto">{fetchError}</p>
           )}
           <Link to="/opdrachten" className="text-[#0F172A] hover:underline font-medium">
             Terug naar opdrachten
@@ -499,7 +499,7 @@ export default function OpdrachtDetail() {
                     <div className="p-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 text-sm">
                       <p className="font-medium mb-1">PRO opdracht</p>
                       {opensAt > Date.now() && <p className="text-amber-800 text-xs">{getCountdownText()}</p>}
-                      <button disabled className="w-full mt-3 bg-gray-300 text-gray-500 py-2.5 rounded-lg text-sm font-medium cursor-not-allowed">
+                      <button disabled className="w-full mt-3 bg-slate-300 text-slate-500 py-2.5 rounded-lg text-sm font-medium cursor-not-allowed">
                         Reageer (na 48u)
                       </button>
                     </div>
@@ -513,16 +513,16 @@ export default function OpdrachtDetail() {
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   ) : (
-                    <p className="text-sm text-gray-500 text-center">Vul uw reactie hiernaast in en verstuur.</p>
+                    <p className="text-sm text-slate-500 text-center">Vul uw reactie hiernaast in en verstuur.</p>
                   )
                 ) : (
                   <>
-                    <p className="text-sm text-gray-600 mb-3">Alleen professionals kunnen reageren op opdrachten.</p>
+                    <p className="text-sm text-slate-600 mb-3">Alleen professionals kunnen reageren op opdrachten.</p>
                     <AuthLink
                       to="/register"
                       className="w-full inline-flex items-center justify-center gap-2 bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition text-sm"
                     >
-                      Registreren als arts
+                      Registreren als professional
                       <ArrowRight className="w-4 h-4" />
                     </AuthLink>
                   </>
@@ -551,7 +551,7 @@ export default function OpdrachtDetail() {
             >
               Heb je al een account? Log hier in
             </AuthLink>
-            <p className="text-gray-500 text-sm">
+            <p className="text-slate-500 text-sm">
               Nog geen account?{' '}
               <AuthLink to="/register" className="text-[#0F172A] font-medium hover:underline">
                 Registreer gratis
@@ -611,7 +611,7 @@ export default function OpdrachtDetail() {
                     to="/register"
                     className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
                   >
-                    {user && profile?.role !== 'professional' ? 'Registreren als arts' : 'Gratis registreren'}
+                    {user && profile?.role !== 'professional' ? 'Registreren als professional' : 'Gratis registreren'}
                     <ArrowRight className="w-4 h-4" />
                   </AuthLink>
                 </div>

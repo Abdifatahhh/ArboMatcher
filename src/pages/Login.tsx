@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { AuthLink } from '../components/AuthLink';
 import { useAuth } from '../context/AuthContext';
 import { AlertCircle, Wifi, Lock, Clock, Shield, Database, HelpCircle, CheckCircle } from 'lucide-react';
 import { LogoText } from '../components/ui/Logo';
@@ -103,7 +104,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
               <button
                 type="button"
                 onClick={async () => { await signOut(); }}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
               >
                 Uitloggen
               </button>
@@ -198,9 +199,9 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
           <div className="mt-5 text-center">
             <p className="text-slate-500 text-sm">
               Nog geen account?{' '}
-              <Link to="/register" className="text-[#0F172A] hover:underline font-semibold">
+              <AuthLink to="/register" className="text-[#0F172A] hover:underline font-semibold">
                 Maak een nieuw account
-              </Link>
+              </AuthLink>
             </p>
           </div>
         </div>
