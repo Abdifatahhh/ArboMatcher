@@ -15,6 +15,7 @@ lerna-debug.log*
 
 # Environment (geen secrets in repo)
 .env
+.env.*
 .env.local
 .env.*.local
 .env.development.local
