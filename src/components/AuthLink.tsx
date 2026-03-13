@@ -4,10 +4,8 @@ import { getAuthBaseUrl } from '../config/portal';
 
 const PORTAL_URL = 'https://portal.arbomatcher.nl/';
 
-type AuthPath = '/login' | '/register';
-
 interface AuthLinkProps {
-  to: AuthPath;
+  to: string;
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;

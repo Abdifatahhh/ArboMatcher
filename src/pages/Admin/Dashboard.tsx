@@ -221,7 +221,7 @@ export default function AdminDashboard() {
       )}
 
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        <StatCard label="Verificaties" value={stats.pendingVerifications} icon={CheckCircle} to="/admin/verificaties" accent sub="Wachtend op goedkeuring" />
+        <StatCard label="Verificaties" value={stats.pendingVerifications} icon={CheckCircle} to="/admin/verificaties" sub="Wachtend op goedkeuring" />
         <StatCard label="Professionals" value={stats.totalDoctors} icon={User} to="/admin/professionals" />
         <StatCard
           label="Gebruikers" value={stats.totalUsers} icon={Users} to="/admin/gebruikers"
@@ -235,7 +235,7 @@ export default function AdminDashboard() {
           label="Reacties" value={stats.totalApplications} icon={FileText} to="/admin/reacties"
           sub={stats.pendingApplications > 0 ? `${stats.pendingApplications} wachtend` : undefined}
         />
-        <StatCard label="Abonnementen" value={stats.activeSubscriptions} icon={CreditCard} to="/admin/abonnementen" accent sub="Actieve betalingen" />
+        <StatCard label="Abonnementen" value={stats.activeSubscriptions} icon={CreditCard} to="/admin/abonnementen" sub="Actieve betalingen" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

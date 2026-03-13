@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { AuthLink } from '../components/AuthLink';
 import { Building2, UserCheck, ArrowRight, CheckCircle, Clock, Shield, Users, Lightbulb } from 'lucide-react';
 
@@ -43,13 +42,13 @@ export default function Oplossingen() {
                   </div>
                 ))}
               </div>
-              <Link
+              <AuthLink
                 to="/register?type=organisatie"
                 className="inline-flex items-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
               >
                 Start als opdrachtgever
                 <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
+              </AuthLink>
             </div>
             <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200">
               <h3 className="font-bold text-[#0F172A] mb-4">Onze 5 professionals</h3>
@@ -87,13 +86,13 @@ export default function Oplossingen() {
                   </div>
                 ))}
               </div>
-              <Link
+              <AuthLink
                 to="/register?type=arts"
                 className="inline-flex items-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
               >
                 Registreer als professional
                 <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
+              </AuthLink>
             </div>
             <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200">
               <h3 className="font-bold text-[#0F172A] mb-4">Contractvorm</h3>
