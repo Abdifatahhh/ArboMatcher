@@ -446,7 +446,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             </Suspense>
-          <CookieBanner />
+          {!isPortal() && <CookieBanner />}
           </MaintenanceGate>
         </ToastProvider>
       </AuthProvider>
