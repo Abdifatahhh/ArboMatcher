@@ -65,7 +65,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     if (profile.role === 'ADMIN') {
       return [
         { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-        { path: '/admin/artsen', label: 'Professionals', icon: User },
+        { path: '/admin/professionals', label: 'Professionals', icon: User },
         { path: '/admin/instellingen', label: 'Instellingen', icon: Settings },
       ];
     }
@@ -93,7 +93,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       case 'ADMIN': {
         const rest = [
           { path: '/admin/verificaties', label: 'BIG Verificaties', icon: CheckCircle },
-          { path: '/admin/artsen', label: 'Professionals', icon: User },
+          { path: '/admin/professionals', label: 'Professionals', icon: User },
           { path: '/admin/gebruikers', label: 'Gebruikers', icon: Users },
           { path: '/admin/organisaties', label: 'Organisaties', icon: Building2 },
           { path: '/admin/opdrachten', label: 'Opdrachten', icon: Briefcase },

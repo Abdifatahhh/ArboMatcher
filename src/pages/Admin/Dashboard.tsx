@@ -186,7 +186,7 @@ export default function AdminDashboard() {
           type: 'verification',
           title: `Verificatie aangevraagd: ${name}`,
           subtitle: `BIG ${d.big_number}`,
-          link: `/admin/artsen/${d.id}`,
+          link: `/admin/professionals/${d.id}`,
           created_at: d.created_at,
         });
       });
@@ -290,7 +290,7 @@ export default function AdminDashboard() {
         </Link>
 
         <Link
-          to="/admin/artsen"
+          to="/admin/professionals"
           className="bg-white p-6 rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-[#4FA151]/25 hover:shadow-[#4FA151]/10 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-4">

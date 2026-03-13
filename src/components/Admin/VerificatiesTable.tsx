@@ -56,7 +56,7 @@ export function VerificatiesTable({
                 <Fragment key={doctor.id}>
                   <tr className={`${rowBg} hover:bg-emerald-50/50 transition-colors`}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <Link to={`/admin/artsen/${doctor.id}`} className="text-sm font-semibold text-[#0F172A] hover:text-[#4FA151] hover:underline transition">
+                      <Link to={`/admin/professionals/${doctor.id}`} className="text-sm font-semibold text-[#0F172A] hover:text-[#4FA151] hover:underline transition">
                         {profile.full_name || '—'}
                       </Link>
                     </td>
@@ -75,7 +75,7 @@ export function VerificatiesTable({
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{new Date(profile.created_at).toLocaleDateString('nl-NL')}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-2 flex-wrap">
-                        <Link to={`/admin/artsen/${doctor.id}`} className="inline-flex items-center gap-1 text-sm text-[#4FA151] hover:underline font-medium">Bekijken</Link>
+                        <Link to={`/admin/professionals/${doctor.id}`} className="inline-flex items-center gap-1 text-sm text-[#4FA151] hover:underline font-medium">Bekijken</Link>
                         <button type="button" onClick={() => onBigCheck(doctor.id, doctor.big_number)} disabled={isChecking} className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-sm text-emerald-800 bg-emerald-50 hover:bg-emerald-100 disabled:opacity-50 transition" title="BIG direct controleren">
                           {isChecking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
                           BIG check

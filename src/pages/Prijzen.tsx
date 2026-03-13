@@ -33,7 +33,7 @@ export default function Prijzen() {
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">Basisfilters artsenlijst</span>
+                  <span className="text-gray-700">Basisfilters professionalslijst</span>
                 </li>
                 <li className="flex items-start">
                   <X className="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
@@ -41,7 +41,7 @@ export default function Prijzen() {
                 </li>
                 <li className="flex items-start">
                   <X className="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-500">Artsen uitnodigen</span>
+                  <span className="text-gray-500">Professionals uitnodigen</span>
                 </li>
               </ul>
               <AuthLink
@@ -72,7 +72,7 @@ export default function Prijzen() {
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">Volledige artsenlijst</span>
+                  <span className="text-gray-700">Volledige professionalslijst</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
@@ -80,7 +80,7 @@ export default function Prijzen() {
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">Artsen uitnodigen</span>
+                  <span className="text-gray-700">Professionals uitnodigen</span>
                 </li>
               </ul>
               <AuthLink
@@ -129,12 +129,12 @@ export default function Prijzen() {
         </div>
 
         <div>
-          <h2 className="text-2xl font-bold text-[#0F172A] mb-8 text-center">Voor artsen</h2>
+          <h2 className="text-2xl font-bold text-[#0F172A] mb-8 text-center">Voor professionals</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg shadow-lg border-2 border-gray-200 p-8">
               <h3 className="text-xl font-bold text-[#0F172A] mb-2">Gratis kennismaken</h3>
               <p className="text-sm text-gray-500 mb-4">
-                Voor artsen die eerst kennis willen maken met het platform.
+                Voor professionals die eerst kennis willen maken met het platform.
               </p>
               <div className="mb-6">
                 <span className="text-3xl font-bold text-[#0F172A]">Gratis</span>
@@ -165,7 +165,7 @@ export default function Prijzen() {
               </div>
               <h3 className="text-xl font-bold text-[#0F172A] mb-2 mt-2">Freelance PRO Smart</h3>
               <p className="text-sm text-gray-500 mb-4">
-                Voor artsen die direct willen reageren en de mooiste opdrachten willen scoren.
+                Voor professionals die direct willen reageren en de mooiste opdrachten willen scoren.
               </p>
               <div className="mb-6">
                 <span className="text-3xl font-bold text-[#0F172A]">&#8364; 159</span>
@@ -200,7 +200,7 @@ export default function Prijzen() {
             <div className="bg-white rounded-lg shadow-lg border-2 border-gray-200 p-8">
               <h3 className="text-xl font-bold text-[#0F172A] mb-2">Freelance PRO Flex</h3>
               <p className="text-sm text-gray-500 mb-4">
-                Voor artsen die direct willen reageren en de vrijheid van een korter abonnement willen ervaren.
+                Voor professionals die direct willen reageren en de vrijheid van een korter abonnement willen ervaren.
               </p>
               <div className="mb-6">
                 <span className="text-3xl font-bold text-[#0F172A]">&#8364; 69</span>

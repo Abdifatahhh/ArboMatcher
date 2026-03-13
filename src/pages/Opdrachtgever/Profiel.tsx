@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { Employer, Profile } from '../../lib/types';
@@ -158,12 +159,21 @@ export default function OpdrachtgeverProfiel() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 KvK-nummer
               </label>
-              <input
-                type="text"
-                value={employer.kvk || ''}
-                onChange={(e) => setEmployer({ ...employer, kvk: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
-              />
+              <div className="flex flex-wrap items-start gap-4">
+                <input
+                  type="text"
+                  value={employer.kvk || ''}
+                  onChange={(e) => setEmployer({ ...employer, kvk: e.target.value })}
+                  disabled={(employer.kvk || '').replace(/\D/g, '').length === 8}
+                  className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent disabled:bg-gray-100 disabled:text-gray-600 disabled:cursor-not-allowed"
+                />
+                {(employer.kvk || '').replace(/\D/g, '').length === 8 && (
+                  <div className="text-sm text-gray-700">
+                    <p>KvK-nummer wijzigen?</p>
+                    <p>Neem <Link to="/contact" className="text-[#4FA151] hover:underline">contact op</Link> met de klantenservice.</p>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>

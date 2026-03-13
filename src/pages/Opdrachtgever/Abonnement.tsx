@@ -29,7 +29,7 @@ export default function OpdrachtgeverAbonnement() {
           </li>
           <li className="flex items-start">
             <CheckCircle className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
-            <span className="text-gray-700">Volledige artsenlijst</span>
+            <span className="text-gray-700">Volledige professionalslijst</span>
           </li>
           <li className="flex items-start">
             <CheckCircle className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
@@ -37,7 +37,7 @@ export default function OpdrachtgeverAbonnement() {
           </li>
           <li className="flex items-start">
             <CheckCircle className="w-5 h-5 text-[#4FA151] mr-3 mt-0.5 flex-shrink-0" />
-            <span className="text-gray-700">Artsen uitnodigen</span>
+            <span className="text-gray-700">Professionals uitnodigen</span>
           </li>
         </ul>
 

@@ -21,18 +21,18 @@ const IMG = {
 export const COMMUNITY_TOPICS: CommunityTopic[] = [
   {
     slug: 'starten-als-arts',
-    title: 'Starten als arts op ArboMatcher',
-    category: 'Voor artsen',
+    title: 'Starten als professional op ArboMatcher',
+    category: 'Voor professionals',
     description: 'Registreer met je BIG-nummer, maak je profiel compleet en ontvang opdrachten die bij je passen.',
     imageUrl: IMG.doctor,
     content: `Als bedrijfsarts of arbo-arts kun je via ArboMatcher opdrachten vinden die bij je passen. In dit overzicht lees je stap voor stap hoe je van registratie naar je eerste opdracht gaat.
 
 ## Registreren en profiel
 
-Maak een account aan met je e-mailadres. Kies de rol "Arts" en vul je basisgegevens in: naam, telefoon en je BIG-nummer. Zonder BIG-nummer kun je niet verifiëren en dus niet reageren op opdrachten. Zorg dat je het nummer zonder spaties of punten invult (11 cijfers).
+Maak een account aan met je e-mailadres. Kies de rol "Professional" en vul je basisgegevens in: naam, telefoon en je BIG-nummer. Zonder BIG-nummer kun je niet verifiëren en dus niet reageren op opdrachten. Zorg dat je het nummer zonder spaties of punten invult (11 cijfers).
 
 - Account aanmaken via "Gratis registreren"
-- Rol "Arts" selecteren
+- Rol "Professional" selecteren
 - BIG-nummer en contactgegevens invullen
 
 ## BIG-verificatie
@@ -62,10 +62,10 @@ Blader door de open opdrachten, filter op regio of type, en reageer met een kort
   {
     slug: 'big-verificatie-kwaliteit',
     title: 'BIG-verificatie en kwaliteit',
-    category: 'Voor artsen',
-    description: 'Alle artsen op het platform zijn BIG-geregistreerd. Zo garanderen we betrouwbare matching.',
+    category: 'Voor professionals',
+    description: 'Alle professionals op het platform zijn BIG-geregistreerd. Zo garanderen we betrouwbare matching.',
     imageUrl: IMG.shield,
-    content: `Op ArboMatcher werken alleen artsen met een geverifieerd BIG-nummer. Dat zorgt voor kwaliteit en vertrouwen voor organisaties en voor jou als professional.
+    content: `Op ArboMatcher werken alleen professionals met een geverifieerd BIG-nummer. Dat zorgt voor kwaliteit en vertrouwen voor organisaties en voor jou.
 
 ## Wat is BIG-verificatie?
 
@@ -90,7 +90,7 @@ In je profiel zie je of je status "Geverifieerd" is. Zonder deze status kun je n
   {
     slug: 'solliciteren-opdrachten',
     title: 'Solliciteren op opdrachten',
-    category: 'Voor artsen',
+    category: 'Voor professionals',
     description: 'Reageer op opdrachten, blijf op de hoogte van nieuwe vacatures en communiceer direct met organisaties.',
     imageUrl: IMG.briefcase,
     content: `Solliciteren op ArboMatcher is eenvoudig: je bekijkt open opdrachten, filtert op wat bij je past en stuurt een reactie met een korte motivatie. Hier lees je hoe je dat effectief doet.
@@ -118,7 +118,7 @@ De organisatie beoordeelt de reacties en kan kandidaten op de shortlist zetten o
   {
     slug: 'tarieven-administratie',
     title: 'Tarieven en administratie',
-    category: 'Voor artsen',
+    category: 'Voor professionals',
     description: 'Stel je uurtarief in, beheer je beschikbaarheid en houd je declaraties overzichtelijk.',
     imageUrl: IMG.briefcase,
     content: `Een helder uurtarief en overzichtelijke administratie helpen je om professioneel te werken en organisaties gerust te stellen. Hier een overzicht van wat er op het platform en in je eigen organisatie belangrijk is.
@@ -145,11 +145,11 @@ De afspraken over declaratie en facturatie maak je met de organisatie. Het platf
   },
   {
     slug: 'tips-voor-artsen',
-    title: 'Tips voor artsen',
-    category: 'Voor artsen',
+    title: 'Tips voor professionals',
+    category: 'Voor professionals',
     description: 'Hoe profileer je je goed? Hoe vergroot je je kansen op een match?',
     imageUrl: IMG.profile,
-    content: `Met een sterk profiel en duidelijke communicatie vergroot je je kansen op passende opdrachten. Hier praktische tips voor artsen op ArboMatcher.
+    content: `Met een sterk profiel en duidelijke communicatie vergroot je je kansen op passende opdrachten. Hier praktische tips voor professionals op ArboMatcher.
 
 ## Profiel optimaliseren
 
@@ -179,9 +179,9 @@ Reageer tijdig op opdrachten en op berichten van organisaties. Een professionele
     slug: 'opdrachten-plaatsen',
     title: 'Opdrachten plaatsen',
     category: 'Voor organisaties',
-    description: 'Plaats een opdracht, ontvang reacties van gekwalificeerde artsen en kies de juiste kandidaat.',
+    description: 'Plaats een opdracht, ontvang reacties van gekwalificeerde professionals en kies de juiste kandidaat.',
     imageUrl: IMG.office,
-    content: `Via ArboMatcher plaats je een opdracht en ontvang je reacties van BIG-geregistreerde artsen. Hier lees je hoe je dat van begin tot eind aanpakt.
+    content: `Via ArboMatcher plaats je een opdracht en ontvang je reacties van BIG-geregistreerde professionals. Hier lees je hoe je dat van begin tot eind aanpakt.
 
 ## Opdracht aanmaken
 
@@ -193,7 +193,7 @@ Log in als organisatie en kies "Opdracht plaatsen". Geef een duidelijke titel (b
 
 ## Profiel beschrijven
 
-Beschrijf het gewenste profiel: welke BIG-registratie is nodig, welke ervaring of specialismen zijn gewenst, en of de arts op locatie of op afstand moet kunnen werken? Dit helpt artsen om in te schatten of ze passen en filtert onnodige reacties.
+Beschrijf het gewenste profiel: welke BIG-registratie is nodig, welke ervaring of specialismen zijn gewenst, en of de professional op locatie of op afstand moet kunnen werken? Dit helpt professionals om in te schatten of ze passen en filtert onnodige reacties.
 
 - Vereiste BIG-registratie
 - Ervaring en specialismen
@@ -201,7 +201,7 @@ Beschrijf het gewenste profiel: welke BIG-registratie is nodig, welke ervaring o
 
 ## Reacties beoordelen
 
-Je ontvangt reacties van artsen met een motivatie en een link naar hun profiel. Bekijk de profielen op BIG-verificatie, ervaring en beschikbaarheid. Stel kandidaten op de shortlist en nodig ze eventueel uit voor een gesprek. Geef alle kandidaten binnen een paar werkdagen een eerste reactie.
+Je ontvangt reacties van professionals met een motivatie en een link naar hun profiel. Bekijk de profielen op BIG-verificatie, ervaring en beschikbaarheid. Stel kandidaten op de shortlist en nodig ze eventueel uit voor een gesprek. Geef alle kandidaten binnen een paar werkdagen een eerste reactie.
 
 - Reacties bekijken en vergelijken
 - Shortlist maken en kandidaten uitnodigen
@@ -213,15 +213,15 @@ Kies de kandidaat die het beste past en maak afspraken over startdatum, uren, ta
   },
   {
     slug: 'artsen-vinden-matchen',
-    title: 'Artsen vinden en matchen',
+    title: 'Professionals vinden en matchen',
     category: 'Voor organisaties',
     description: 'Zoek op specialisme, regio en beschikbaarheid. Direct contact zonder tussenpartij.',
     imageUrl: IMG.users,
-    content: `Op ArboMatcher vind je artsen op basis van specialisme, regio en beschikbaarheid. Je werkt direct met de professional, zonder tussenpartij. Hier hoe je zoekt en matcht.
+    content: `Op ArboMatcher vind je professionals op basis van specialisme, regio en beschikbaarheid. Je werkt direct met de professional, zonder tussenpartij. Hier hoe je zoekt en matcht.
 
 ## Zoeken en filteren
 
-Gebruik de filters om opdrachten of profielen te doorzoeken op regio, type (verzuim, PMO, etc.) en beschikbaarheid. Als organisatie zie je wie er gereageerd heeft op je opdracht; je kunt ook zoeken in het aanbod van artsen als je eerst wilt oriënteren.
+Gebruik de filters om opdrachten of profielen te doorzoeken op regio, type (verzuim, PMO, etc.) en beschikbaarheid. Als organisatie zie je wie er gereageerd heeft op je opdracht; je kunt ook zoeken in het aanbod van professionals als je eerst wilt oriënteren.
 
 - Filter op regio en type opdracht
 - Bekijk reacties op je geplaatste opdrachten
@@ -229,7 +229,7 @@ Gebruik de filters om opdrachten of profielen te doorzoeken op regio, type (verz
 
 ## Profielen bekijken
 
-Open het profiel van een arts om meer te zien: BIG-verificatie, specialismen, regio, bio en tarief/beschikbaarheid. Zo beoordeel je of iemand past bij je vraag. Alle getoonde artsen zijn BIG-geregistreerd; wij controleren dat voor je.
+Open het profiel van een professional om meer te zien: BIG-verificatie, specialismen, regio, bio en tarief/beschikbaarheid. Zo beoordeel je of iemand past bij je vraag. Alle getoonde professionals zijn BIG-geregistreerd; wij controleren dat voor je.
 
 - BIG-status en specialismen
 - Bio en ervaring
@@ -243,21 +243,21 @@ Na het selecteren van een kandidaat neem je contact op via het platform of zoals
     slug: 'verificatie-kwaliteitsborging',
     title: 'Verificatie en kwaliteitsborging',
     category: 'Voor organisaties',
-    description: 'Al onze artsen zijn BIG-geregistreerd. Wij controleren dit voor je.',
+    description: 'Al onze professionals zijn BIG-geregistreerd. Wij controleren dit voor je.',
     imageUrl: IMG.shield,
-    content: `Op ArboMatcher werken alleen artsen met een geverifieerd BIG-nummer. Dat vermindert uw zoekwerk en verhoogt de betrouwbaarheid van de matching.
+    content: `Op ArboMatcher werken alleen professionals met een geverifieerd BIG-nummer. Dat vermindert uw zoekwerk en verhoogt de betrouwbaarheid van de matching.
 
 ## BIG-register
 
-Het BIG-register is het landelijke register van bevoegde zorgverleners in Nederland. Wij controleren het BIG-nummer van elke arts die zich aanmeldt. Alleen bij een geldige, actuele registratie krijgt de arts de status "Geverifieerd" en kan hij of zij reageren op opdrachten.
+Het BIG-register is het landelijke register van bevoegde zorgverleners in Nederland. Wij controleren het BIG-nummer van elke professional die zich aanmeldt. Alleen bij een geldige, actuele registratie krijgt de professional de status "Geverifieerd" en kan hij of zij reageren op opdrachten.
 
 - Controle tegen het officiële register
-- Alleen geverifieerde artsen kunnen solliciteren
+- Alleen geverifieerde professionals kunnen solliciteren
 - Geen tussenpartij; direct contact met de professional
 
 ## Kwaliteitsgarantie
 
-Door deze verificatie weet u dat u alleen met BIG-geregistreerde professionals in contact komt. Wij garanderen geen inhoudelijke kwaliteit van het werk – die bepaalt u samen met de arts – maar wel dat de basiskwalificatie (BIG-registratie) is gecontroleerd.
+Door deze verificatie weet u dat u alleen met BIG-geregistreerde professionals in contact komt. Wij garanderen geen inhoudelijke kwaliteit van het werk – die bepaalt u samen met de professional – maar wel dat de basiskwalificatie (BIG-registratie) is gecontroleerd.
 
 - Basis: BIG-registratie gecontroleerd
 - Verdere kwaliteit: ervaring, referenties en afspraken onderling
@@ -272,13 +272,13 @@ Bij problemen of geschillen rond een opdracht raden we aan eerst onderling tot e
     category: 'Voor organisaties',
     description: 'ZZP, detachering of loondienst – kies de vorm die bij je organisatie past.',
     imageUrl: IMG.calendar,
-    content: `De inzet van een arts kan in verschillende contractvormen: ZZP, detachering of loondienst. Op ArboMatcher vindt u de professional; de precieze afspraken spreekt u onderling af. Hier een overzicht.
+    content: `De inzet van een professional kan in verschillende contractvormen: ZZP, detachering of loondienst. Op ArboMatcher vindt u de professional; de precieze afspraken spreekt u onderling af. Hier een overzicht.
 
 ## Contractvormen
 
-**ZZP:** De arts werkt als zzp'er voor u, vaak per opdracht of voor een bepaalde periode. U maakt afspraken over uren, tarief en reikwijdte.
+**ZZP:** De professional werkt als zzp'er voor u, vaak per opdracht of voor een bepaalde periode. U maakt afspraken over uren, tarief en reikwijdte.
 
-**Detachering:** De arts wordt via een detacheringsbureau of eigen onderneming bij u ingezet. Afspraken over verantwoordelijkheid en facturatie met de betreffende partij.
+**Detachering:** De professional wordt via een detacheringsbureau of eigen onderneming bij u ingezet. Afspraken over verantwoordelijkheid en facturatie met de betreffende partij.
 
 **Loondienst:** Vaste inzet in dienstverband bij uw organisatie of arbodienst, bijvoorbeeld een vaste dag per week of fulltime.
 

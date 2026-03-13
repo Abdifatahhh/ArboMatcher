@@ -40,7 +40,7 @@ export function DoctorsTable({ rows, onToggleBlock }: DoctorsTableProps) {
               <tr key={doctor.id} className={`${rowBg} hover:bg-emerald-50/50 transition-colors`}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center gap-2">
-                    <Link to={`/admin/artsen/${doctor.id}`} className="text-sm font-semibold text-[#0F172A] hover:text-[#4FA151] hover:underline transition">
+                    <Link to={`/admin/professionals/${doctor.id}`} className="text-sm font-semibold text-[#0F172A] hover:text-[#4FA151] hover:underline transition">
                       {profile.full_name || '—'}
                     </Link>
                     {(doctor as { doctor_plan?: string }).doctor_plan === 'PRO' && <Crown className="w-4 h-4 text-amber-500" title="PRO" />}
@@ -68,8 +68,8 @@ export function DoctorsTable({ rows, onToggleBlock }: DoctorsTableProps) {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <Link to={`/admin/artsen/${doctor.id}`} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-[#4FA151] hover:bg-emerald-100 transition" title="Bekijken"><Eye className="w-4 h-4" /></Link>
-                    <Link to={`/admin/artsen/${doctor.id}?edit=1`} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-emerald-100 hover:text-emerald-800 transition" title="Bewerken"><Pencil className="w-4 h-4" /></Link>
+                    <Link to={`/admin/professionals/${doctor.id}`} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-[#4FA151] hover:bg-emerald-100 transition" title="Bekijken"><Eye className="w-4 h-4" /></Link>
+                    <Link to={`/admin/professionals/${doctor.id}?edit=1`} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-emerald-100 hover:text-emerald-800 transition" title="Bewerken"><Pencil className="w-4 h-4" /></Link>
                     <button type="button" onClick={() => onToggleBlock(doctor.id)} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-emerald-100 transition" title={isBlocked ? 'Deblokkeren' : 'Blokkeren'}>
                       {isBlocked ? <CheckCircle className="w-4 h-4 text-green-600" /> : <Ban className="w-4 h-4 text-red-600" />}
                     </button>

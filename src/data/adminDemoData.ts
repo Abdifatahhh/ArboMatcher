@@ -334,7 +334,7 @@ export const demoApplications: (Application & { jobs: Job | null; professionals:
   },
 ];
 
-/** Demo artsen voor admin lijst (doctor + profile + applications_count). */
+/** Demo professionals voor admin lijst (doctor + profile + applications_count). */
 export type DemoDoctorRow = { doctor: Doctor & { profiles: Profile | null }; profile: Profile; applications_count: number };
 
 function buildDemoDoctorsList(): DemoDoctorRow[] {
@@ -412,13 +412,13 @@ function toActivityItems(): ActivityItem[] {
     });
   });
   demoDoctors.filter((d) => d.verification_status === 'PENDING').forEach((d) => {
-    const name = d.profiles?.full_name || 'Arts';
+    const name = d.profiles?.full_name || 'Professional';
     items.push({
       id: `verification-${d.id}`,
       type: 'verification',
       title: `Verificatie aangevraagd: ${name}`,
       subtitle: `BIG ${d.big_number}`,
-      link: `/admin/artsen/${d.id}`,
+      link: `/admin/professionals/${d.id}`,
       created_at: d.created_at,
     });
   });

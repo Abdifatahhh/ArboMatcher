@@ -89,7 +89,7 @@ export default function OpdrachtgeverKandidaten() {
         <div className="bg-white p-12 rounded-lg shadow-lg text-center">
           <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-700 mb-2">Geen kandidaten</h3>
-          <p className="text-gray-600">Er hebben nog geen artsen gereageerd op uw opdrachten</p>
+          <p className="text-gray-600">Er hebben nog geen professionals gereageerd op uw opdrachten</p>
         </div>
       ) : (
         <div className="space-y-6">

@@ -9,7 +9,7 @@ export interface StepItem {
 const STEPS: StepItem[] = [
   {
     id: 1,
-    title: 'Kies uit een groot aanbod van artsen',
+    title: 'Kies uit een groot aanbod van professionals',
     description: 'Zoek in ons netwerk van BIG-geregistreerde bedrijfsartsen en arbo-professionals op specialisme en regio.',
   },
   {
@@ -20,7 +20,7 @@ const STEPS: StepItem[] = [
   {
     id: 3,
     title: 'Binnen 48 uur kandidaten',
-    description: 'Ontvang reacties van gekwalificeerde artsen die passen bij je vacature. Meestal al binnen een werkdag.',
+    description: 'Ontvang reacties van gekwalificeerde professionals die passen bij je vacature. Meestal al binnen een werkdag.',
   },
   {
     id: 4,
@@ -30,7 +30,7 @@ const STEPS: StepItem[] = [
   {
     id: 5,
     title: 'Samen aan het werk',
-    description: 'Maak afspraken over start, uren en contractvorm. De arts kan direct aan de slag bij je organisatie.',
+    description: 'Maak afspraken over start, uren en contractvorm. De professional kan direct aan de slag bij je organisatie.',
   },
 ];
 

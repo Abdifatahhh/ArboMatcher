@@ -343,7 +343,7 @@ function App() {
             }
           />
             <Route
-            path="/admin/artsen"
+            path="/admin/professionals"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <DashboardLayout>
@@ -353,7 +353,7 @@ function App() {
             }
           />
             <Route
-            path="/admin/artsen/:id"
+            path="/admin/professionals/:id"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <DashboardLayout>

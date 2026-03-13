@@ -147,7 +147,7 @@ export default function AdminArtsDetail() {
         })
         .eq('id', id);
 
-      setMessage({ type: 'success', text: 'Arts-profiel opgeslagen.' });
+      setMessage({ type: 'success', text: 'Professional-profiel opgeslagen.' });
       await loadDoctor();
     } catch {
       setMessage({ type: 'error', text: 'Opslaan mislukt.' });
@@ -166,9 +166,9 @@ export default function AdminArtsDetail() {
   if (!doctor) {
     return (
       <div className="p-6">
-        <p className="text-red-600">Arts niet gevonden.</p>
-        <Link to="/admin/artsen" className="text-[#4FA151] hover:underline mt-2 inline-block">
-          Terug naar artsen
+        <p className="text-red-600">Professional niet gevonden.</p>
+        <Link to="/admin/professionals" className="text-[#4FA151] hover:underline mt-2 inline-block">
+          Terug naar professionals
         </Link>
       </div>
     );
@@ -179,18 +179,18 @@ export default function AdminArtsDetail() {
 
   return (
     <div className="p-6 max-w-4xl">
-      <button onClick={() => navigate('/admin/artsen')} className="flex items-center gap-2 text-emerald-700/80 hover:text-[#4FA151] mb-6 transition">
+      <button onClick={() => navigate('/admin/professionals')} className="flex items-center gap-2 text-emerald-700/80 hover:text-[#4FA151] mb-6 transition">
         <ArrowLeft className="w-4 h-4" />
-        Terug naar artsen
+        Terug naar professionals
       </button>
 
-      <h1 className="text-3xl font-bold text-[#0F172A] mb-2">{profile?.full_name || 'Arts bewerken'}</h1>
+      <h1 className="text-3xl font-bold text-[#0F172A] mb-2">{profile?.full_name || 'Professional bewerken'}</h1>
       <p className="text-emerald-700/80 text-sm mb-6">{(profile as Profile)?.email}</p>
 
       {isDemo && (
         <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-3 shadow-sm">
           <Info className="w-5 h-5 text-amber-600 flex-shrink-0" />
-          <p className="text-amber-900 text-sm">Dit is een demo-arts. Wijzigingen worden niet opgeslagen.</p>
+          <p className="text-amber-900 text-sm">Dit is een demo-professional. Wijzigingen worden niet opgeslagen.</p>
         </div>
       )}
 
@@ -206,12 +206,12 @@ export default function AdminArtsDetail() {
             </button>
           )}
           {!editMode && (
-            <Link to={`/admin/artsen/${id}?edit=1`} className="px-4 py-2 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
+            <Link to={`/admin/professionals/${id}?edit=1`} className="px-4 py-2 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
               Bewerken
             </Link>
           )}
           {editMode && (
-            <button type="button" onClick={() => navigate(`/admin/artsen/${id}`)} className="px-4 py-2 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
+            <button type="button" onClick={() => navigate(`/admin/professionals/${id}`)} className="px-4 py-2 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
               Annuleren
             </button>
           )}
@@ -397,7 +397,7 @@ export default function AdminArtsDetail() {
               <input type="text" value={doctor.verification_reason ?? ''} onChange={(e) => setDoctor((d) => (d ? { ...d, verification_reason: e.target.value || null } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition" placeholder="Optioneel" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-emerald-800/80 mb-2">Plan arts</label>
+              <label className="block text-sm font-medium text-emerald-800/80 mb-2">Plan professional</label>
               <select value={(doctor as { doctor_plan?: string }).doctor_plan ?? 'GRATIS'} onChange={(e) => setDoctor((d) => (d ? { ...d, doctor_plan: e.target.value as 'GRATIS' | 'PRO' } : null))} className="w-full px-4 py-2.5 border border-emerald-200/80 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition">
                 <option value="GRATIS">Gratis</option>
                 <option value="PRO">PRO</option>
@@ -411,7 +411,7 @@ export default function AdminArtsDetail() {
             <Save className="w-4 h-4" />
             {saving ? 'Opslaan...' : 'Opslaan'}
           </button>
-          <button type="button" onClick={() => navigate('/admin/artsen')} className="px-6 py-2.5 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
+          <button type="button" onClick={() => navigate('/admin/professionals')} className="px-6 py-2.5 border border-emerald-200 rounded-xl font-medium text-emerald-800 hover:bg-emerald-50 transition">
             Annuleren
           </button>
         </div>

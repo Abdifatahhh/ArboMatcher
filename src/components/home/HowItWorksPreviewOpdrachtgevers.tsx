@@ -41,7 +41,7 @@ function PreviewStep1() {
     <div className="p-6 sm:p-8">
       <div className="flex items-center gap-2 mb-6">
         <Users className="w-5 h-5 text-[#4FA151]" />
-        <span className="font-semibold text-[#0F172A]">Groot aanbod van artsen</span>
+        <span className="font-semibold text-[#0F172A]">Groot aanbod van professionals</span>
       </div>
       <div className="space-y-3">
         {DUMMY_ARTISTS.map((a, i) => (
@@ -113,7 +113,7 @@ function PreviewStep2() {
         ))}
       </div>
       <p className="text-sm text-gray-500 mt-4">
-        Vul de velden in en ontvang reacties van artsen die bij je opdracht passen.
+        Vul de velden in en ontvang reacties van professionals die bij je opdracht passen.
       </p>
     </div>
   );
@@ -148,7 +148,7 @@ function PreviewStep3() {
         ))}
       </div>
       <p className="text-sm text-gray-500 mt-4">
-        Meestal binnen 48 uur meerdere reacties van BIG-geregistreerde artsen.
+        Meestal binnen 48 uur meerdere reacties van BIG-geregistreerde professionals.
       </p>
     </div>
   );
@@ -202,7 +202,7 @@ function PreviewStep5() {
         </div>
         <div className="flex items-center gap-2">
           <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0" />
-          <span className="text-sm font-medium text-[#0F172A]">Arts kan direct starten</span>
+          <span className="text-sm font-medium text-[#0F172A]">Professional kan direct starten</span>
         </div>
       </div>
       <p className="text-sm text-gray-500 mt-4">

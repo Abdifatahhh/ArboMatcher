@@ -206,7 +206,7 @@ export default function AdminGebruikerDetail() {
             <div className="px-6 py-4 border-b border-emerald-100 bg-emerald-50/80">
               <h2 className="text-lg font-semibold text-emerald-900/90 flex items-center gap-2">
                 <Stethoscope className="w-5 h-5 text-[#4FA151]" />
-                Arts-profiel
+                Professional-profiel
               </h2>
             </div>
             <div className="p-6 space-y-2 text-sm">

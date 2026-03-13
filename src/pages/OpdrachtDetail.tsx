@@ -160,7 +160,7 @@ export default function OpdrachtDetail() {
     const cutoff48h = Date.now() - 48 * 60 * 60 * 1000;
     const plan = (doctor as { doctor_plan?: string }).doctor_plan ?? 'GRATIS';
     if (jobTier === 'PRO' && jobCreatedAt > cutoff48h && plan !== 'PRO') {
-      toast.error('Deze PRO opdracht is de eerste 48 uur exclusief voor PRO artsen.');
+      toast.error('Deze PRO opdracht is de eerste 48 uur exclusief voor PRO professionals.');
       return;
     }
 
@@ -175,7 +175,7 @@ export default function OpdrachtDetail() {
 
     if (error) {
       if (error.code === 'P0001' && error.message?.includes('PRO_48H_RULE')) {
-        toast.error('Deze PRO opdracht is de eerste 48 uur exclusief voor PRO artsen.');
+        toast.error('Deze PRO opdracht is de eerste 48 uur exclusief voor PRO professionals.');
       } else {
         toast.error('Er is een fout opgetreden');
       }
@@ -345,7 +345,7 @@ export default function OpdrachtDetail() {
                   </div>
                 ) : !canApply ? (
                   <div className="p-4 rounded-[12px] border border-amber-200 bg-amber-50">
-                    <p className="text-amber-900 font-medium mb-1">Deze PRO opdracht is de eerste 48 uur exclusief voor PRO artsen.</p>
+                    <p className="text-amber-900 font-medium mb-1">Deze PRO opdracht is de eerste 48 uur exclusief voor PRO professionals.</p>
                     {opensAt > Date.now() && (
                       <p className="text-amber-800 text-sm">{getCountdownText()}</p>
                     )}
@@ -515,7 +515,7 @@ export default function OpdrachtDetail() {
                   )
                 ) : (
                   <>
-                    <p className="text-sm text-gray-600 mb-3">Alleen artsen kunnen reageren op opdrachten.</p>
+                    <p className="text-sm text-gray-600 mb-3">Alleen professionals kunnen reageren op opdrachten.</p>
                     <AuthLink
                       to="/register"
                       className="w-full inline-flex items-center justify-center gap-2 bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition text-sm"
@@ -588,12 +588,12 @@ export default function OpdrachtDetail() {
                 <CheckCircle className="w-12 h-12 text-[#4FA151] mb-4" />
                 <h2 className="text-2xl font-bold text-[#0F172A] mb-2">
                   {user && profile?.role !== 'professional'
-                    ? 'Arts worden en reageren op opdrachten?'
+                    ? 'Professional worden en reageren op opdrachten?'
                     : 'Volledige opdracht bekijken en reageren?'}
                 </h2>
                 <p className="text-slate-600 mb-6">
                   {user && profile?.role !== 'professional'
-                    ? 'Registreer als arts (met BIG-nummer) om te solliciteren op opdrachten en in contact te komen met organisaties.'
+                    ? 'Registreer als professional (met BIG-nummer) om te solliciteren op opdrachten en in contact te komen met organisaties.'
                     : 'Maak gratis een account aan om de volledige omschrijving te bekijken, direct te reageren en toegang te krijgen tot alle functies van ArboMatcher.'}
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">

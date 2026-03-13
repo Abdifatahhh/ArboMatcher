@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { Doctor, Profile, ProfessionType } from '../../lib/types';
@@ -110,6 +111,9 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
             big_number: doctor.big_number?.trim() || null,
             profession_type: doctor.profession_type,
             rcm_number: doctor.rcm_number?.trim() || null,
+            employment_type: doctor.employment_type ?? null,
+            kvk: doctor.kvk?.replace(/\D/g, '').slice(0, 8) || null,
+            company_name: doctor.company_name?.trim() || null,
             bio: doctor.bio,
             specialties: doctor.specialties,
             regions: doctor.regions,
@@ -127,6 +131,9 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
             big_number: doctor.big_number?.trim() || null,
             profession_type: doctor.profession_type,
             rcm_number: doctor.rcm_number?.trim() || null,
+            employment_type: doctor.employment_type ?? null,
+            kvk: doctor.kvk?.replace(/\D/g, '').slice(0, 8) || null,
+            company_name: doctor.company_name?.trim() || null,
             bio: doctor.bio,
             specialties: doctor.specialties || [],
             regions: doctor.regions || [],
@@ -279,15 +286,51 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
                     </span>
                   )}
                 </label>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={11}
-                  value={doctor.big_number || ''}
-                  onChange={(e) => setDoctor({ ...doctor, big_number: e.target.value.replace(/\D/g, '').slice(0, 11) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
-                  placeholder="11 cijfers"
-                />
+                <div className="flex flex-wrap items-start gap-4">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={11}
+                    value={doctor.big_number || ''}
+                    onChange={(e) => setDoctor({ ...doctor, big_number: e.target.value.replace(/\D/g, '').slice(0, 11) })}
+                    disabled={(doctor.big_number || '').replace(/\D/g, '').length === 11}
+                    className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent disabled:bg-gray-100 disabled:text-gray-600 disabled:cursor-not-allowed"
+                    placeholder="11 cijfers"
+                  />
+                  {(doctor.big_number || '').replace(/\D/g, '').length === 11 && (
+                    <div className="text-sm text-gray-700">
+                      <p>BIG-nummer wijzigen?</p>
+                      <p>Neem <Link to="/contact" className="text-[#4FA151] hover:underline">contact op</Link> met de klantenservice.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {(doctor.employment_type === 'FREELANCE_ZZP' || (doctor.kvk || '').replace(/\D/g, '').length === 8) && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  KvK-nummer (ZZP)
+                </label>
+                <div className="flex flex-wrap items-start gap-4">
+                  <input
+                    type="text"
+                    value={doctor.kvk || ''}
+                    onChange={(e) => setDoctor({ ...doctor, kvk: e.target.value.replace(/\D/g, '').slice(0, 8) })}
+                    disabled={(doctor.kvk || '').replace(/\D/g, '').length === 8}
+                    className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent disabled:bg-gray-100 disabled:text-gray-600 disabled:cursor-not-allowed"
+                    placeholder="8 cijfers"
+                  />
+                  {(doctor.kvk || '').replace(/\D/g, '').length === 8 && (
+                    <div className="text-sm text-gray-700">
+                      <p>KvK-nummer wijzigen?</p>
+                      <p>Neem <Link to="/contact" className="text-[#4FA151] hover:underline">contact op</Link> met de klantenservice.</p>
+                    </div>
+                  )}
+                </div>
+                {doctor.company_name && (
+                  <p className="mt-1 text-sm text-gray-500">Bedrijfsnaam: {doctor.company_name}</p>
+                )}
               </div>
             )}
 

@@ -13,7 +13,7 @@ export default function Over() {
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Over ArboMatcher</h1>
           <p className="text-xl text-gray-300 max-w-2xl">
-            Het platform voor bedrijfsartsen & arbo-professionals.
+            Het platform voor professionals.
           </p>
         </div>
       </section>
@@ -22,7 +22,7 @@ export default function Over() {
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Onze missie</h2>
           <p className="text-[#111827] leading-relaxed mb-4 text-lg">
-            ArboMatcher is het professionele platform dat organisaties en bedrijfsartsen met elkaar verbindt.
+            ArboMatcher is het professionele platform dat organisaties en professionals met elkaar verbindt.
             Wij geloven in transparantie, kwaliteit en snelheid binnen de arbeidsgezondheidszorg.
           </p>
           <p className="text-[#111827] leading-relaxed text-lg">
@@ -165,7 +165,7 @@ export default function Over() {
         <section className="bg-[#F4FAF4] rounded-2xl border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 p-8 hover:shadow-[#4FA151]/10 hover:border-[#4FA151]/25 transition-all duration-300 text-center">
           <h2 className="text-2xl font-bold text-[#0F172A] mb-4">Sluit je aan bij ArboMatcher</h2>
           <p className="text-slate-600 mb-6">
-            Het platform voor bedrijfsartsen & arbo-professionals.
+            Het platform voor professionals.
           </p>
           <AuthLink
             to="/register"

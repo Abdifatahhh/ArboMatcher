@@ -41,7 +41,7 @@ export default function ArtsAbonnement() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-[#0F172A] mb-2">Upgrade naar PRO</h1>
         <p className="text-gray-500">
-          Word PRO en reager direct op alle opdrachten. Gratis-artsen kunnen na 48 uur op PRO-opdrachten reageren.
+          Word PRO en reager direct op alle opdrachten. Gratis-professionals kunnen na 48 uur op PRO-opdrachten reageren.
         </p>
       </div>
 

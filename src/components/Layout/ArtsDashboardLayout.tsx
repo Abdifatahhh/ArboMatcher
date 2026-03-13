@@ -84,7 +84,7 @@ export function ArtsDashboardLayout() {
         <Link to="/" className="inline-block">
           <LogoText theme="light" className="text-lg lg:text-xl" />
         </Link>
-        <p className="text-xs lg:text-sm mt-1.5 lg:mt-2 text-[#0F172A]/70 font-medium">Arts / professionals Dashboard</p>
+        <p className="text-xs lg:text-sm mt-1.5 lg:mt-2 text-[#0F172A]/70 font-medium">Professional Dashboard</p>
       </div>
       <nav className="flex-1 p-3 lg:p-4 space-y-0.5 lg:space-y-1">
         {ARTS_NAV.map((item) => {

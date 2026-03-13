@@ -85,7 +85,7 @@ export default function CommunityArticle() {
               <div>
                 <p className="text-amber-900 font-medium">Dit artikel wordt binnenkort gepubliceerd.</p>
                 <p className="text-amber-800/90 text-sm mt-1">
-                  We werken aan inhoudelijke artikelen en tips voor artsen en organisaties. Kom later terug of neem contact met ons op als je nu al vragen hebt.
+                  We werken aan inhoudelijke artikelen en tips voor professionals en organisaties. Kom later terug of neem contact met ons op als je nu al vragen hebt.
                 </p>
               </div>
             </div>

@@ -21,9 +21,9 @@ export const COMMUNITY_ARTICLES: CommunityArticle[] = [
     slug: 'big-verificatie-belangrijk',
     title: 'Wat is BIG-verificatie en waarom is het belangrijk?',
     date: '12 feb 2026',
-    category: 'Voor artsen',
+    category: 'Voor professionals',
     imageUrl: IMG.doctor,
-    imageAlt: 'Arts met documenten',
+    imageAlt: 'Professional met documenten',
     content: `Het BIG-register (Beroepen in de Individuele Gezondheidszorg) is het landelijke register waarin alle bevoegde zorgverleners in Nederland staan. Als bedrijfsarts of arbo-arts moet je BIG-geregistreerd zijn om wettelijk je beroep te mogen uitoefenen. Op ArboMatcher verifiëren we je BIG-nummer voordat je volledig toegang krijgt tot het platform.
 
 ## Waarom verifiëren we je BIG-nummer?
@@ -61,13 +61,13 @@ Zonder geldige BIG-registratie kun je op ArboMatcher geen opdrachten accepteren.
     category: 'Voor organisaties',
     imageUrl: IMG.office,
     imageAlt: 'Samenwerking in kantoor',
-    content: `Een duidelijke opdrachtbeschrijving trekt sneller de juiste artsen aan en bespaart je tijd bij het selecteren van kandidaten. In dit artikel lees je concrete tips om je opdracht effectief te maken, van titel tot nazorg.
+    content: `Een duidelijke opdrachtbeschrijving trekt sneller de juiste professionals aan en bespaart je tijd bij het selecteren van kandidaten. In dit artikel lees je concrete tips om je opdracht effectief te maken, van titel tot nazorg.
 
 ## Geef een duidelijke titel
 
-Gebruik een korte, herkenbare titel die het type inzet weergeeft. Voorbeelden: "Bedrijfsarts verzuimbegeleiding", "Arbo-arts preventief medisch onderzoek" of "Verzuimspecialist 6 maanden". Zo vinden artsen die bij je vraag passen je opdracht snel in hun zoekresultaten.
+Gebruik een korte, herkenbare titel die het type inzet weergeeft. Voorbeelden: "Bedrijfsarts verzuimbegeleiding", "Arbo-arts preventief medisch onderzoek" of "Verzuimspecialist 6 maanden". Zo vinden professionals die bij je vraag passen je opdracht snel in hun zoekresultaten.
 
-- Vermijd vage omschrijvingen zoals "Arts gezocht"
+- Vermijd vage omschrijvingen zoals "Professional gezocht"
 - Noem het specialisme of de taak in de titel
 - Houd de titel zoekmachinevriendelijk (maximaal circa 60 tekens)
 
@@ -90,7 +90,7 @@ Welke BIG-registratie is vereist? Zijn er specifieke ervaringen of specialismen 
 
 ## Reageer tijdig op sollicitaties
 
-Artsen investeren tijd in een reactie. Stel ze op de hoogte van de status – ontvangen, in behandeling, shortlist – en geef binnen een paar werkdagen een eerste reactie. Zo blijft het platform aantrekkelijk voor goede kandidaten en bouw je een goede reputatie op als organisatie.
+Professionals investeren tijd in een reactie. Stel ze op de hoogte van de status – ontvangen, in behandeling, shortlist – en geef binnen een paar werkdagen een eerste reactie. Zo blijft het platform aantrekkelijk voor goede kandidaten en bouw je een goede reputatie op als organisatie.
 
 - Plan een moment om reacties te beoordelen (bijv. na sluitingsdatum)
 - Laat afgewezen kandidaten kort weten dat je verder gaat met anderen
@@ -100,7 +100,7 @@ Artsen investeren tijd in een reactie. Stel ze op de hoogte van de status – on
     slug: 'uurtarief-bedrijfsarts',
     title: 'Uurtarief bepalen als bedrijfsarts: tips en richtlijnen',
     date: '5 feb 2026',
-    category: 'Voor artsen',
+    category: 'Voor professionals',
     imageUrl: IMG.finance,
     imageAlt: 'Bepalen van tarieven',
     content: `Een passend uurtarief is belangrijk voor je inkomsten én voor je positie op de markt. Te laag trekt misschien opdrachten aan maar doet geen recht aan je expertise; te hoog kan organisaties afschrikken. In dit artikel vind je handvatten om je tarief te bepalen en transparant te communiceren.
@@ -118,7 +118,7 @@ Wat vragen vergelijkbare bedrijfsartsen in jouw regio en met jouw ervaring? Wat 
 Net afgestudeerd of jarenlange ervaring met verzuim of PMO? Specifieke kennis – bijvoorbeeld mentaal verzuim, re-integratie of een bepaalde sector – kan een hoger tarief rechtvaardigen. Leg in je profiel en bij sollicitaties kort uit wat je extra biedt.
 
 - Starters kunnen iets onder het marktgemiddelde zitten om ervaring op te doen
-- Ervaren artsen of specialismen rechtvaardigen vaak een hoger tarief
+- Ervaren professionals of specialismen rechtvaardigen vaak een hoger tarief
 - Extra certificeringen of opleidingen kunnen meewegen
 
 ## Reken je kosten mee
@@ -145,7 +145,7 @@ Op ArboMatcher kun je je tarief of een bandbreedte in je profiel vermelden. Dat 
     category: 'Algemeen',
     imageUrl: IMG.legal,
     imageAlt: 'Wetgeving en documenten',
-    content: `De Wet verbetering poortwachter en het debat over de Wet VBAR (Verduidelijking Beoordeling Arbeidsrelaties) hebben gevolgen voor verzuim, re-integratie en de inzet van zzp'ers in Nederland. Op ArboMatcher werken organisaties en artsen die met deze thema's te maken hebben. Hier een overzicht wat de ontwikkelingen inhouden en wat het platform voor jou kan betekenen.
+    content: `De Wet verbetering poortwachter en het debat over de Wet VBAR (Verduidelijking Beoordeling Arbeidsrelaties) hebben gevolgen voor verzuim, re-integratie en de inzet van zzp'ers in Nederland. Op ArboMatcher werken organisaties en professionals die met deze thema's te maken hebben. Hier een overzicht wat de ontwikkelingen inhouden en wat het platform voor jou kan betekenen.
 
 ## Wat is de Wet VBAR?
 
@@ -157,25 +157,25 @@ Het wetsvoorstel VBAR richt zich op verduidelijking van arbeidsrelaties en het t
 
 ## Voor organisaties
 
-Heeft je organisatie behoefte aan een bedrijfsarts of arbo-arts (in loondienst, als ZZP of via detachering)? Via ArboMatcher vind je BIG-geregistreerde professionals voor verzuimbegeleiding, preventief medisch onderzoek of advies. Je plaatst een opdracht, ontvangt reacties van gekwalificeerde artsen en kiest op basis van profiel en beschikbaarheid. Zo voldoe je aan de eisen voor verzuimbegeleiding en werk je met betrouwbare partners.
+Heeft je organisatie behoefte aan een bedrijfsarts of arbo-arts (in loondienst, als ZZP of via detachering)? Via ArboMatcher vind je BIG-geregistreerde professionals voor verzuimbegeleiding, preventief medisch onderzoek of advies. Je plaatst een opdracht, ontvangt reacties van gekwalificeerde professionals en kiest op basis van profiel en beschikbaarheid. Zo voldoe je aan de eisen voor verzuimbegeleiding en werk je met betrouwbare partners.
 
-- Alle artsen op het platform zijn BIG-geregistreerd
+- Alle professionals op het platform zijn BIG-geregistreerd
 - Duidelijke afspraken over inzet en contractvorm
 - Geen verborgen kosten; direct contact met de professional
 
-## Voor artsen
+## Voor professionals
 
 De vraag naar bedrijfsartsen en arbo-professionals blijft groot. Op het platform zie je opdrachten van arbodiensten en werkgevers. Door je profiel compleet te houden en je BIG-verificatie up-to-date te houden, maak je kans op opdrachten die bij je expertise en beschikbaarheid passen. Houd daarnaast de ontwikkelingen rond minimumtarief en VBAR in de gaten; voor bedrijfsartsen liggen gangbare tarieven doorgaans boven de voorgestelde ondergrens.
 
 ## Blijf op de hoogte
 
-Wet- en regelgeving kan wijzigen. We houden onze community en artikelen bij met algemene uitleg; voor juridisch of fiscaal advies raadpleeg altijd een deskundige. Heb je vragen over hoe ArboMatcher aansluit op verzuimwetgeving of inzet van artsen in jouw situatie? Neem contact met ons op.`,
+Wet- en regelgeving kan wijzigen. We houden onze community en artikelen bij met algemene uitleg; voor juridisch of fiscaal advies raadpleeg altijd een deskundige. Heb je vragen over hoe ArboMatcher aansluit op verzuimwetgeving of inzet van professionals in jouw situatie? Neem contact met ons op.`,
   },
   {
     slug: 'profiel-optimaliseren',
     title: 'Je profiel optimaliseren: zo val je op bij organisaties',
     date: '28 jan 2026',
-    category: 'Voor artsen',
+    category: 'Voor professionals',
     imageUrl: IMG.profile,
     imageAlt: 'Profiel en cv',
     content: `Een sterk profiel op ArboMatcher vergroot de kans dat organisaties je uitnodigen of dat je reacties snel worden opgepakt. In dit artikel lees je wat organisaties het meest belangrijk vinden en hoe jij je profiel daarmee scherper maakt.

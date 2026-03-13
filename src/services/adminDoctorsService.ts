@@ -1,5 +1,5 @@
 /**
- * Admin Artsen (doctors) service.
+ * Admin Professionals (doctors) service.
  * Tables: doctors, profiles, applications.
  */
 
@@ -122,7 +122,7 @@ export async function getDoctorById(id: string): Promise<AdminDoctorRow | null> 
  */
 export async function toggleDoctorBlocked(doctorId: string): Promise<{ error: Error | null }> {
   const row = await getDoctorById(doctorId);
-  if (!row) return { error: new Error('Arts niet gevonden') };
+  if (!row) return { error: new Error('Professional niet gevonden') };
   const newStatus = row.profile.status === 'BLOCKED' ? 'ACTIVE' : 'BLOCKED';
   const { error } = await supabase.from('profiles').update({ status: newStatus }).eq('id', row.profile.id);
   return { error: error ?? null };

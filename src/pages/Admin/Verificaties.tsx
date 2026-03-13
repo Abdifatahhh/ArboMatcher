@@ -88,7 +88,7 @@ export default function AdminVerificaties() {
         <Shield className="w-8 h-8 text-[#4FA151]" />
         BIG Verificaties
       </h1>
-      <p className="text-emerald-700/80 text-sm mb-6">Beoordeel en verifieer BIG-registraties van artsen</p>
+      <p className="text-emerald-700/80 text-sm mb-6">Beoordeel en verifieer BIG-registraties van professionals</p>
 
       <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-emerald-100 shadow-md p-4 mb-6">
         <VerificatiesFilters

@@ -25,7 +25,7 @@ function slugify(s: string): string {
 const DEFAULT_TOPIC: CommunityTopic = {
   slug: '',
   title: '',
-  category: 'Voor artsen',
+  category: 'Voor professionals',
   description: '',
   imageUrl: '',
   imageAlt: '',
@@ -36,7 +36,7 @@ const DEFAULT_ARTICLE: CommunityArticle = {
   slug: '',
   title: '',
   date: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' }),
-  category: 'Voor artsen',
+  category: 'Voor professionals',
   imageUrl: '',
   imageAlt: '',
   content: '',
@@ -425,7 +425,7 @@ function TopicForm({
               onChange={(e) => onChange({ ...topic, category: e.target.value })}
               className="w-full px-3 py-2 border border-gray-200 rounded-xl"
             >
-              <option value="Voor artsen">Voor artsen</option>
+              <option value="Voor professionals">Voor professionals</option>
               <option value="Voor organisaties">Voor organisaties</option>
             </select>
           </div>
@@ -523,7 +523,7 @@ function ArticleForm({
                 onChange={(e) => onChange({ ...article, category: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-200 rounded-xl"
               >
-                <option value="Voor artsen">Voor artsen</option>
+                <option value="Voor professionals">Voor professionals</option>
                 <option value="Voor organisaties">Voor organisaties</option>
                 <option value="Algemeen">Algemeen</option>
               </select>

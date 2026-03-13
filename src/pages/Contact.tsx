@@ -145,7 +145,7 @@ export default function Contact() {
                         >
                           <option value="">Selecteer onderwerp</option>
                           <option value="algemeen">Algemene vraag</option>
-                          <option value="arts">Vraag als arts</option>
+                          <option value="arts">Vraag als professional</option>
                           <option value="organisatie">Vraag als organisatie</option>
                           <option value="technisch">Technische vraag</option>
                           <option value="samenwerking">Samenwerking</option>

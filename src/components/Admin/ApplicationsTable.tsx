@@ -30,7 +30,7 @@ export function ApplicationsTable({ rows, onStatusChange, isDemo }: Applications
           <thead>
             <tr className="bg-[#4FA151] border-b border-[#3E8E45]">
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Opdracht</th>
-              <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Arts</th>
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Professional</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Status</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-white uppercase tracking-wider">Datum</th>
               <th className="px-6 py-3.5 text-right text-xs font-semibold text-white uppercase tracking-wider">Wijzig status</th>
@@ -45,7 +45,7 @@ export function ApplicationsTable({ rows, onStatusChange, isDemo }: Applications
                     <Link to={`/opdrachten/${application.job_id}`} className="text-sm font-semibold text-[#0F172A] hover:text-[#4FA151] hover:underline transition">{job?.title || '—'}</Link>
                   </td>
                   <td className="px-6 py-4">
-                    <Link to={`/admin/artsen/${application.doctor_id}`} className="text-sm text-gray-800 hover:text-[#4FA151] hover:underline transition">{profile?.full_name || '—'}</Link>
+                    <Link to={`/admin/professionals/${application.doctor_id}`} className="text-sm text-gray-800 hover:text-[#4FA151] hover:underline transition">{profile?.full_name || '—'}</Link>
                     <div className="text-xs text-gray-500">{profile?.email}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

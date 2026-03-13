@@ -19,7 +19,7 @@ import { COMMUNITY_ARTICLES } from '../data/communityArticles';
 import type { CommunityTopic } from '../data/communityTopics';
 import type { CommunityArticle } from '../data/communityArticles';
 
-type TabId = 'artsen' | 'organisaties';
+type TabId = 'professionals' | 'organisaties';
 
 const ICON_BY_SLUG: Record<string, typeof Stethoscope> = {
   'starten-als-arts': Stethoscope,
@@ -34,7 +34,7 @@ const ICON_BY_SLUG: Record<string, typeof Stethoscope> = {
 };
 
 export default function Community() {
-  const [activeTab, setActiveTab] = useState<TabId>('artsen');
+  const [activeTab, setActiveTab] = useState<TabId>('professionals');
   const [topics, setTopics] = useState<CommunityTopic[]>(COMMUNITY_TOPICS);
   const [articles, setArticles] = useState<CommunityArticle[]>(COMMUNITY_ARTICLES);
 
@@ -50,7 +50,7 @@ export default function Community() {
   }, []);
 
   const categories = topics.filter(
-    (t) => t.category === (activeTab === 'artsen' ? 'Voor artsen' : 'Voor organisaties')
+    (t) => t.category === (activeTab === 'professionals' ? 'Voor professionals' : 'Voor organisaties')
   );
 
   return (
@@ -64,7 +64,7 @@ export default function Community() {
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Community</h1>
           <p className="text-xl text-gray-300 max-w-2xl">
-            Handige informatie, tips en uitleg voor artsen en organisaties. Alles over het platform, BIG-verificatie en succesvol matchen.
+            Handige informatie, tips en uitleg voor professionals en organisaties. Alles over het platform, BIG-verificatie en succesvol matchen.
           </p>
         </div>
       </section>
@@ -75,15 +75,15 @@ export default function Community() {
           <div className="flex flex-wrap gap-2 mb-10">
             <button
               type="button"
-              onClick={() => setActiveTab('artsen')}
+              onClick={() => setActiveTab('professionals')}
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition flex items-center gap-2 ${
-                activeTab === 'artsen'
+                activeTab === 'professionals'
                   ? 'bg-[#4FA151] text-white shadow-lg shadow-[#4FA151]/20'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
               <Stethoscope className="w-4 h-4" />
-              Voor artsen
+              Voor professionals
             </button>
             <button
               type="button"

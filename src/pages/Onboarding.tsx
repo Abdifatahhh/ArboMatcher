@@ -348,7 +348,7 @@ export default function Onboarding() {
     kvkSearchDebounceRef.current = setTimeout(() => {
       kvkSearchDebounceRef.current = null;
       searchKvk(trimmed);
-    }, 600);
+    }, 400);
     return () => {
       if (kvkSearchDebounceRef.current) clearTimeout(kvkSearchDebounceRef.current);
     };
@@ -434,14 +434,6 @@ export default function Onboarding() {
     navigate('/organisatie/dashboard', { replace: true });
   };
 
-  const handleProfessionalStep2Next = () => {
-    if (!profession) {
-      setError('Kies een beroep');
-      return;
-    }
-    setError('');
-    setProfessionStep(3);
-  };
 
   const EMPLOYMENT_OPTIONS: { value: EmploymentType; label: string }[] = [
     { value: 'FREELANCE_ZZP', label: 'Freelance / ZZP' },
@@ -477,6 +469,14 @@ export default function Onboarding() {
       rcm_number: rcmVal,
       employment_type: employmentType ?? null,
     };
+    const shouldSetPending =
+      !!bigVal &&
+      String(bigVal).replace(/\D/g, '').length === 11 &&
+      profession != null &&
+      NEEDS_BIG.includes(profession);
+    if (shouldSetPending) {
+      payload.verification_status = 'PENDING';
+    }
     if (employmentType === 'FREELANCE_ZZP' && kvkDigits && kvkDigits.length === 8) {
       payload.kvk = kvkDigits;
       payload.company_name = companyName.trim() || null;
@@ -489,18 +489,28 @@ export default function Onboarding() {
       payload.statutaire_naam = statutaireNaam.trim() || null;
     }
     if (proRow) {
-      await supabase.from('professionals').update(payload).eq('id', proRow.id);
+      const { error: proErr } = await supabase.from('professionals').update(payload).eq('id', proRow.id);
+      if (proErr) {
+        setError(proErr.message || 'Opslaan professional mislukt');
+        setLoading(false);
+        return;
+      }
     } else {
-      await supabase.from('professionals').insert({
+      const { error: proErr } = await supabase.from('professionals').insert({
         user_id: user.id,
         ...payload,
-        verification_status: 'UNVERIFIED',
+        verification_status: (payload.verification_status as string) ?? 'UNVERIFIED',
         doctor_plan: 'GRATIS',
         specialties: [],
         regions: [],
       });
+      if (proErr) {
+        setError(proErr.message || 'Aanmaken professional mislukt');
+        setLoading(false);
+        return;
+      }
     }
-    const { error: upErr } = await supabase.from('profiles').update({ onboarding_completed: true }).eq('id', user.id);
+    const { error: upErr } = await supabase.from('profiles').update({ onboarding_completed: true, role: 'professional' }).eq('id', user.id);
     if (upErr) {
       setError(upErr.message);
       setLoading(false);
@@ -534,18 +544,18 @@ export default function Onboarding() {
       <div className="min-h-screen bg-gradient-to-b from-emerald-50/80 via-[#F4FAF4] to-white flex flex-col">
         <OnboardingHeader profile={profile} user={user} onSignOut={handleSignOut} />
         <div className="flex-1 flex flex-col items-center justify-center pt-4 pb-10 md:pt-6 md:pb-16 px-4 md:px-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-1 text-center">Welkom, voltooi onderstaande stappen</h1>
-          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8 text-center max-w-xl">Voordat je ArboMatcher kunt gebruiken, kies je rol: professional (opdrachten zoeken) of organisatie (opdrachten plaatsen).</p>
-          <div className="w-full max-w-3xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Hoe wil je ArboMatcher gebruiken?</h1>
-          <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Kies je rol om verder te gaan.</p>
+          <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-0.5 text-center">Welkom, voltooi onderstaande stappen</h1>
+          <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6 text-center max-w-xl">Voordat je ArboMatcher kunt gebruiken, kies je rol: professional (opdrachten zoeken) of organisatie (opdrachten plaatsen).</p>
+          <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-5 md:p-8">
+          <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1">Hoe wil je ArboMatcher gebruiken?</h1>
+          <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6">Kies je rol om verder te gaan.</p>
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start text-sm">
               <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
               <p className="text-red-800">{error}</p>
             </div>
           )}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             {ROLE_OPTIONS.map((opt) => {
               const Icon = opt.icon;
               return (
@@ -554,18 +564,18 @@ export default function Onboarding() {
                   type="button"
                   disabled={roleChoosing}
                   onClick={() => handleRoleChoose(opt.value)}
-                  className="group p-6 md:p-8 rounded-2xl border-2 border-gray-200 hover:border-[#4FA151] hover:bg-emerald-50/50 hover:shadow-md transition-all duration-200 flex flex-col items-center text-center disabled:opacity-50 min-h-[180px] md:min-h-[220px] justify-center"
+                  className="group p-5 md:p-6 rounded-xl border-2 border-gray-200 hover:border-[#4FA151] hover:bg-emerald-50/50 hover:shadow-md transition-all duration-200 flex flex-col items-center text-center disabled:opacity-50 min-h-[140px] md:min-h-[160px] justify-center"
                 >
-                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-emerald-100/80 group-hover:bg-[#4FA151]/15 flex items-center justify-center mb-4 md:mb-5 transition-colors">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-emerald-100/80 group-hover:bg-[#4FA151]/15 flex items-center justify-center mb-3 md:mb-4 transition-colors">
                     <Icon className="w-7 h-7 md:w-9 md:h-9 text-[#4FA151]" strokeWidth={2} />
                   </div>
-                  <span className="font-bold text-[#0F172A] text-base md:text-lg lg:text-xl">{opt.label}</span>
-                  <span className="text-sm md:text-base text-gray-600 mt-1.5 md:mt-2 leading-snug">{opt.sub}</span>
+                  <span className="font-bold text-[#0F172A] text-sm md:text-base">{opt.label}</span>
+                  <span className="text-xs md:text-sm text-gray-600 mt-1 leading-snug">{opt.sub}</span>
                 </button>
               );
             })}
           </div>
-          <p className="mt-8 md:mt-10 pt-6 border-t border-gray-100 text-center text-sm text-gray-500">
+          <p className="mt-6 pt-4 border-t border-gray-100 text-center text-xs text-gray-500">
             Alle medische professionals worden gecontroleerd via het BIG-register.
           </p>
           </div>
@@ -595,32 +605,32 @@ export default function Onboarding() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50/80 via-[#F4FAF4] to-white flex flex-col">
       <OnboardingHeader profile={profile} user={user} onSignOut={handleSignOut} />
-      <div className="flex-1 flex flex-col items-center pt-4 pb-10 md:pt-6 md:pb-16 px-4 md:px-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-1 text-center">Welkom, voltooi onderstaande stappen</h1>
-        <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8 text-center max-w-2xl">Voordat je ArboMatcher kunt gebruiken, vul je de stappen hieronder in.</p>
+      <div className="flex-1 flex flex-col items-center justify-center pt-4 pb-10 md:pt-6 md:pb-16 px-4 md:px-6">
+        <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-0.5 text-center">Welkom, voltooi onderstaande stappen</h1>
+        <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6 text-center max-w-xl">Voordat je ArboMatcher kunt gebruiken, vul je de stappen hieronder in.</p>
 
       {isProfessional && (
-        <div className="w-full max-w-2xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
+        <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-5 md:p-8">
           {professionStep === 2 && (
             <>
-              <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
+              <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-4 md:mb-6 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
                 {backToRoleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}← Terug naar rolkeuze
               </button>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Kies je beroep</h1>
-              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Selecteer het beroep dat bij je past.</p>
+              <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1">Kies je beroep</h1>
+              <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6">Selecteer het beroep dat bij je past.</p>
               {error && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
                   <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
                   <p className="text-sm text-red-800">{error}</p>
                 </div>
               )}
-              <div className="space-y-3 md:space-y-4 mb-8 md:mb-10">
+              <div className="space-y-2 md:space-y-3 mb-6">
                 {PROFESSION_OPTIONS.map((p) => (
                   <button
                     key={p.value}
                     type="button"
-                    onClick={() => { setProfession(p.value); setError(''); }}
-                    className={`w-full flex items-center gap-4 p-5 md:p-6 rounded-2xl border-2 transition-all duration-200 text-left ${
+                    onClick={() => { setProfession(p.value); setError(''); setProfessionStep(3); }}
+                    className={`w-full flex items-center gap-3 p-4 md:p-5 rounded-xl border-2 transition-all duration-200 text-left ${
                       profession === p.value
                         ? 'border-[#4FA151] bg-emerald-50/60 shadow-sm'
                         : 'border-gray-200 hover:border-emerald-200 hover:bg-gray-50/80'
@@ -631,34 +641,27 @@ export default function Onboarding() {
                     }`}>
                       {profession === p.value && <div className="w-3 h-3 rounded-full bg-[#4FA151]" />}
                     </div>
-                    <span className="font-semibold text-[#0F172A] text-base md:text-lg">{p.label}</span>
+                    <span className="font-semibold text-[#0F172A] text-sm md:text-base">{p.label}</span>
                   </button>
                 ))}
               </div>
-              <button
-                type="button"
-                onClick={handleProfessionalStep2Next}
-                className="w-full bg-[#4FA151] text-white py-4 rounded-2xl font-semibold text-base md:text-lg hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50"
-              >
-                Volgende
-              </button>
             </>
           )}
 
           {professionStep === 3 && (
             <>
-              <button type="button" onClick={() => setProfessionStep(2)} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 text-sm md:text-base">
+              <button type="button" onClick={() => setProfessionStep(2)} className="text-[#4FA151] hover:underline font-medium mb-4 md:mb-6 text-sm md:text-base">
                 ← Terug naar beroep
               </button>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Hoe werk je?</h1>
-              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Kies of je als freelancer/ZZP werkt of in loondienst.</p>
+              <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1">Hoe werk je?</h1>
+              <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6">Kies of je als freelancer/ZZP werkt of in loondienst.</p>
               {error && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl flex items-start">
                   <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
                   <p className="text-sm text-red-800">{error}</p>
                 </div>
               )}
-              <div className="space-y-3 md:space-y-4 mb-8 md:mb-10">
+              <div className="space-y-2 md:space-y-3 mb-6">
                 {EMPLOYMENT_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
@@ -669,9 +672,9 @@ export default function Onboarding() {
                       if (opt.value === 'LOONDIENST') setProfessionStep(5);
                       else setProfessionStep(4);
                     }}
-                    className="w-full flex items-center gap-4 p-5 md:p-6 rounded-2xl border-2 transition-all duration-200 text-left border-gray-200 hover:border-[#4FA151] hover:bg-emerald-50/50"
+                    className="w-full flex items-center gap-3 p-4 md:p-5 rounded-xl border-2 transition-all duration-200 text-left border-gray-200 hover:border-[#4FA151] hover:bg-emerald-50/50"
                   >
-                    <span className="font-semibold text-[#0F172A] text-base md:text-lg">{opt.label}</span>
+                    <span className="font-semibold text-[#0F172A] text-sm md:text-base">{opt.label}</span>
                   </button>
                 ))}
               </div>
@@ -680,11 +683,11 @@ export default function Onboarding() {
 
           {professionStep === 4 && (
             <>
-              <button type="button" onClick={() => { setProfessionStep(3); setCompanyName(''); setKvk(''); setBillingAddress(''); setKvkSearchResults([]); setKvkConfirmPending(null); setCompanySearchQuery(''); }} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 text-sm md:text-base">
+              <button type="button" onClick={() => { setProfessionStep(3); setCompanyName(''); setKvk(''); setBillingAddress(''); setKvkSearchResults([]); setKvkConfirmPending(null); setCompanySearchQuery(''); }} className="text-[#4FA151] hover:underline font-medium mb-4 md:mb-6 text-sm md:text-base">
                 ← Terug naar hoe werk je
               </button>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Je bedrijf (ZZP)</h1>
-              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Zoek je eenmanszaak of bedrijf op naam of KvK-nummer en bevestig dat dit jouw bedrijf is.</p>
+              <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1">Je bedrijf (ZZP)</h1>
+              <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6">Zoek je eenmanszaak of bedrijf op naam of KvK-nummer en bevestig dat dit jouw bedrijf is.</p>
               {error && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
                   <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
@@ -709,51 +712,52 @@ export default function Onboarding() {
                 <>
                   <div className="mb-6">
                     <label htmlFor="proCompanySearch" className="block text-sm font-medium text-gray-700 mb-2">Zoek bedrijf op naam of KvK-nummer</label>
-                    <div className="flex gap-2">
-                      <div className="flex-1 relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                        <input
-                          id="proCompanySearch"
-                          type="text"
-                          value={companySearchQuery}
-                          onChange={(e) => {
-                            const v = e.target.value;
-                            setCompanySearchQuery(v);
-                            setError('');
-                            kvkRequestIdRef.current += 1;
-                            setKvkSearchMessage('idle');
-                            setKvkSearchErrorDetail('');
-                            if (v.trim().length < 3) setKvkSearchResults([]);
-                          }}
-                          onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), companySearchQuery.trim().length >= 3 && searchKvk())}
-                          className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                          placeholder="Bedrijf (min. 3 tekens)"
-                        />
-                      </div>
-                      <button type="button" disabled={companySearchQuery.trim().length < 3 || kvkLoading} onClick={() => searchKvk()} className="px-4 py-3 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] disabled:opacity-50 whitespace-nowrap">
-                        {kvkLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
-                      </button>
-                    </div>
-                    {kvkLoading && <p className="mt-2 text-sm text-gray-500">Bedrijven zoeken...</p>}
-                    {kvkSearchMessage === 'api_error' && !kvkLoading && <p className="mt-2 text-sm text-red-600">{kvkSearchErrorDetail || 'De zoekfunctie is tijdelijk niet beschikbaar. Probeer het later opnieuw.'}</p>}
-                  </div>
-                  {kvkSearchResults.length > 0 && (
-                    <div className="mb-6 max-h-72 overflow-y-auto space-y-3 rounded-xl border border-gray-200 bg-gray-50/50 p-4">
-                      <p className="text-sm font-medium text-gray-600 mb-3">Klik op je bedrijf</p>
-                      {kvkSearchResults.map((item) => (
-                        <button
-                          key={`${item.kvkNummer ?? ''}-${item.vestigingsnummer ?? ''}-${item.naam ?? ''}`}
-                          type="button"
-                          onClick={() => setKvkConfirmPending(item)}
-                          className="w-full text-left px-5 py-4 bg-white border border-gray-200 rounded-xl hover:bg-emerald-50 hover:border-[#4FA151] transition text-base"
-                        >
-                          <span className="font-semibold text-[#0F172A]">{item.naam || 'Onbekend'}</span>
-                          {item.kvkNummer && <span className="text-gray-500 ml-2">KvK {item.kvkNummer}</span>}
-                          {item.plaats && <span className="text-gray-400 ml-2">• {item.plaats}</span>}
+                    <div className="relative">
+                      <div className="flex gap-2">
+                        <div className="flex-1 relative">
+                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                          <input
+                            id="proCompanySearch"
+                            type="text"
+                            value={companySearchQuery}
+                            onChange={(e) => {
+                              const v = e.target.value;
+                              setCompanySearchQuery(v);
+                              setError('');
+                              kvkRequestIdRef.current += 1;
+                              setKvkSearchMessage('idle');
+                              setKvkSearchErrorDetail('');
+                              if (v.trim().length < 3) setKvkSearchResults([]);
+                            }}
+                            onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), companySearchQuery.trim().length >= 3 && searchKvk())}
+                            className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                            placeholder="Bedrijf (min. 3 tekens)"
+                          />
+                        </div>
+                      <button type="button" disabled={companySearchQuery.trim().length < 3 || kvkLoading} onClick={() => searchKvk()} className="px-4 py-3 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] whitespace-nowrap">
+                          <Search className="w-5 h-5" />
                         </button>
-                      ))}
+                      </div>
+                      {kvkSearchResults.length > 0 && (
+                        <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg p-2 space-y-1">
+                          <p className="text-xs font-medium text-gray-500 px-2 py-1">Klik op je bedrijf</p>
+                          {kvkSearchResults.map((item) => (
+                            <button
+                              key={`${item.kvkNummer ?? ''}-${item.vestigingsnummer ?? ''}-${item.naam ?? ''}`}
+                              type="button"
+                              onClick={() => setKvkConfirmPending(item)}
+                              className="w-full text-left px-4 py-3 rounded-lg border border-transparent hover:bg-emerald-50 hover:border-[#4FA151] transition text-sm"
+                            >
+                              <span className="font-semibold text-[#0F172A]">{item.naam || 'Onbekend'}</span>
+                              {item.kvkNummer && <span className="text-gray-500 ml-2">KvK {item.kvkNummer}</span>}
+                              {item.plaats && <span className="text-gray-400 ml-2">• {item.plaats}</span>}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  )}
+                    {kvkSearchMessage === 'api_error' && <p className="mt-2 text-sm text-red-600">{kvkSearchErrorDetail || 'De zoekfunctie is tijdelijk niet beschikbaar. Probeer het later opnieuw.'}</p>}
+                  </div>
                   {companyName && kvk.replace(/\D/g, '').length === 8 && (
                     <p className="mb-6 text-sm text-gray-600">Gekozen: <strong>{companyName}</strong> (KvK {kvk}).</p>
                   )}
@@ -769,18 +773,18 @@ export default function Onboarding() {
 
           {professionStep === 5 && (
             <>
-              <button type="button" onClick={() => setProfessionStep(employmentType === 'FREELANCE_ZZP' ? 4 : 3)} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 text-sm md:text-base">
+              <button type="button" onClick={() => setProfessionStep(employmentType === 'FREELANCE_ZZP' ? 4 : 3)} className="text-[#4FA151] hover:underline font-medium mb-4 md:mb-6 text-sm md:text-base">
                 ← Terug
               </button>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Validatie</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1">Validatie</h1>
               {profession && NEEDS_BIG.includes(profession) && (
                 <>
-                  <p className="text-gray-600 text-base mb-4">Vul je BIG-nummer in of zoek het op met je achternaam.</p>
-                  <div className="mb-6 p-4 bg-emerald-50/80 border border-emerald-200/80 rounded-xl">
+                  <p className="text-gray-600 text-sm mb-3">Vul je BIG-nummer in of zoek het op met je achternaam.</p>
+                  <div className="mb-4 p-3 bg-emerald-50/80 border border-emerald-200/80 rounded-xl">
                     <p className="text-sm font-medium text-[#0F172A] mb-3">Zoek je BIG-nummer op (zoals op bigregister.nl)</p>
-                    <div className="flex flex-wrap gap-4 mb-3">
+                    <div className="flex flex-wrap gap-6 mb-4">
                       <div>
-                        <p className="text-xs text-gray-600 mb-1.5">Geslacht *</p>
+                        <p className="text-sm font-medium text-[#0F172A] mb-2">Geslacht *</p>
                         <div className="flex gap-4">
                           <label className="flex items-center gap-2 cursor-pointer">
                             <input
@@ -790,7 +794,7 @@ export default function Onboarding() {
                               onChange={() => { setBigSearchGeslacht('Man'); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
                               className="text-[#4FA151] focus:ring-[#4FA151]"
                             />
-                            <span className="text-sm">Man</span>
+                            <span className="text-sm text-gray-800">Man</span>
                           </label>
                           <label className="flex items-center gap-2 cursor-pointer">
                             <input
@@ -800,34 +804,47 @@ export default function Onboarding() {
                               onChange={() => { setBigSearchGeslacht('Vrouw'); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
                               className="text-[#4FA151] focus:ring-[#4FA151]"
                             />
-                            <span className="text-sm">Vrouw</span>
+                            <span className="text-sm text-gray-800">Vrouw</span>
                           </label>
                         </div>
                       </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 mb-3">
-                      <input
-                        type="text"
-                        value={bigSearchVoorletters}
-                        onChange={(e) => { setBigSearchVoorletters(e.target.value.toUpperCase().slice(0, 10)); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
-                        placeholder="Voorletters"
-                        className="sm:col-span-2 px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
-                      />
-                      <input
-                        type="text"
-                        value={bigSearchAchternaam}
-                        onChange={(e) => { setBigSearchAchternaam(e.target.value); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
-                        placeholder="Achternaam *"
-                        className="sm:col-span-4 px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
-                      />
-                      <input
-                        type="text"
-                        value={bigSearchGeboortedatum}
-                        onChange={(e) => { setBigSearchGeboortedatum(e.target.value); setBigSearchError(''); }}
-                        placeholder="DD-MM-JJJJ of JJJJ-MM-DD"
-                        className="sm:col-span-3 px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
-                      />
-                      <button
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 mb-3">
+                      <div className="sm:col-span-2">
+                        <label htmlFor="bigSearchVoorletters" className="block text-sm font-medium text-[#0F172A] mb-1.5">Voorletters</label>
+                        <input
+                          id="bigSearchVoorletters"
+                          type="text"
+                          value={bigSearchVoorletters}
+                          onChange={(e) => { setBigSearchVoorletters(e.target.value.toUpperCase().slice(0, 10)); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
+                          placeholder="bijv. A.B."
+                          className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-[#0F172A] placeholder:text-gray-400 focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                        />
+                      </div>
+                      <div className="sm:col-span-4">
+                        <label htmlFor="bigSearchAchternaam" className="block text-sm font-medium text-[#0F172A] mb-1.5">Achternaam *</label>
+                        <input
+                          id="bigSearchAchternaam"
+                          type="text"
+                          value={bigSearchAchternaam}
+                          onChange={(e) => { setBigSearchAchternaam(e.target.value); setBigSearchError(''); setBigSearchResults([]); setBigSearchPendingSelection(null); }}
+                          placeholder="bijv. Jansen"
+                          className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-[#0F172A] placeholder:text-gray-400 focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                        />
+                      </div>
+                      <div className="sm:col-span-3">
+                        <label htmlFor="bigSearchGeboortedatum" className="block text-sm font-medium text-[#0F172A] mb-1.5">Geboortedatum</label>
+                        <input
+                          id="bigSearchGeboortedatum"
+                          type="text"
+                          value={bigSearchGeboortedatum}
+                          onChange={(e) => { setBigSearchGeboortedatum(e.target.value); setBigSearchError(''); }}
+                          placeholder="DD-MM-JJJJ"
+                          className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-[#0F172A] placeholder:text-gray-400 focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151]"
+                        />
+                      </div>
+                      <div className="sm:col-span-3 flex items-end">
+                        <button
                         type="button"
                         disabled={bigSearchLoading || !bigSearchGeslacht || bigSearchAchternaam.trim().length < 2}
                         onClick={async () => {
@@ -843,7 +860,7 @@ export default function Onboarding() {
                             } else if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
                               birthDate = raw;
                             } else {
-                              setBigSearchError('Geboortedatum: gebruik DD-MM-JJJJ of JJJJ-MM-DD');
+                              setBigSearchError('Geboortedatum: gebruik DD-MM-JJJJ');
                               return;
                             }
                           }
@@ -862,6 +879,7 @@ export default function Onboarding() {
                         {bigSearchLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
                         Zoeken
                       </button>
+                      </div>
                     </div>
                     {bigSearchError && (
                       <div className="mb-2">
@@ -969,7 +987,7 @@ export default function Onboarding() {
                 type="button"
                 disabled={loading || (profession && NEEDS_BIG.includes(profession) && bigNumber.replace(/\D/g, '').length !== 11)}
                 onClick={saveProfessionalAndComplete}
-                className="w-full bg-[#4FA151] text-white py-4 rounded-2xl font-semibold text-base hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold text-sm hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span> : 'Registratie voltooien'}
               </button>
@@ -979,38 +997,38 @@ export default function Onboarding() {
       )}
 
       {isOrganisatie && !profile?.onboarding_completed && (
-        <div className="w-full max-w-2xl bg-white rounded-2xl md:rounded-3xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-6 md:p-10">
-          <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-6 md:mb-8 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
+        <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-lg shadow-emerald-900/5 border border-emerald-100/80 p-5 md:p-8">
+          <button type="button" onClick={handleBackToRoleChoice} disabled={backToRoleLoading} className="text-[#4FA151] hover:underline font-medium mb-4 md:mb-6 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
             {backToRoleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}← Terug naar rolkeuze
           </button>
           {!organisationType ? (
             <>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Kies type organisatie</h1>
-              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Selecteer het type organisatie dat bij je past.</p>
+              <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1">Kies type organisatie</h1>
+              <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6">Selecteer het type organisatie dat bij je past.</p>
               {error && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
                   <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
                   <p className="text-sm text-red-800">{error}</p>
                 </div>
               )}
-              <div className="space-y-4 md:space-y-5 mb-8">
+              <div className="space-y-2 md:space-y-3 mb-6">
                 {ORGANISATION_TYPE_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
                     type="button"
                     onClick={() => { setOrganisationType(opt.value); setError(''); }}
-                    className="w-full flex items-center gap-5 p-6 md:p-8 rounded-2xl border-2 transition-all duration-200 text-left border-gray-200 hover:border-[#4FA151] hover:bg-emerald-50/50"
+                    className="w-full flex items-center gap-3 p-4 md:p-5 rounded-xl border-2 transition-all duration-200 text-left border-gray-200 hover:border-[#4FA151] hover:bg-emerald-50/50"
                   >
-                    <span className="font-semibold text-[#0F172A] text-lg md:text-xl">{opt.label}</span>
+                    <span className="font-semibold text-[#0F172A] text-sm md:text-base">{opt.label}</span>
                   </button>
                 ))}
               </div>
             </>
           ) : (
             <>
-              <button type="button" onClick={() => setOrganisationType(null)} className="text-gray-500 hover:text-[#4FA151] font-medium mb-4 text-sm">← Terug naar type organisatie</button>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2">Registreer je bedrijf</h1>
-              <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Zoek je bedrijf op naam of KvK-nummer, kies je bedrijf en voltooi de registratie. Adres en overige gegevens kun je later op je dashboard invullen.</p>
+              <button type="button" onClick={() => setOrganisationType(null)} className="text-gray-500 hover:text-[#4FA151] font-medium mb-3 text-sm">← Terug naar type organisatie</button>
+              <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1">Registreer je bedrijf</h1>
+              <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6">Zoek je bedrijf op naam of KvK-nummer, kies je bedrijf en voltooi de registratie. Adres en overige gegevens kun je later op je dashboard invullen.</p>
               {error && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
                   <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
@@ -1019,38 +1037,56 @@ export default function Onboarding() {
               )}
               <div className="mb-6">
             <label htmlFor="companySearch" className="block text-sm font-medium text-gray-700 mb-2">Zoek bedrijf op naam of KvK-nummer</label>
-            <div className="flex gap-2">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                <input
-                  id="companySearch"
-                  type="text"
-                  value={companySearchQuery}
-                  onChange={(e) => {
-                  const v = e.target.value;
-                  setCompanySearchQuery(v);
-                  setError('');
-                  kvkRequestIdRef.current += 1;
-                  setKvkSearchMessage('idle');
-                  setKvkSearchErrorDetail('');
-                  if (v.trim().length < 3) setKvkSearchResults([]);
-                }}
-                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), companySearchQuery.trim().length >= 3 && searchKvk())}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                  placeholder="Bedrijf (min. 3 tekens)"
-                />
+            <div className="relative">
+              <div className="flex gap-2">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                  <input
+                    id="companySearch"
+                    type="text"
+                    value={companySearchQuery}
+                    onChange={(e) => {
+                    const v = e.target.value;
+                    setCompanySearchQuery(v);
+                    setError('');
+                    kvkRequestIdRef.current += 1;
+                    setKvkSearchMessage('idle');
+                    setKvkSearchErrorDetail('');
+                    if (v.trim().length < 3) setKvkSearchResults([]);
+                  }}
+                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), companySearchQuery.trim().length >= 3 && searchKvk())}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                    placeholder="Bedrijf (min. 3 tekens)"
+                  />
+                </div>
+                <button
+                  type="button"
+                  disabled={companySearchQuery.trim().length < 3 || kvkLoading}
+                  onClick={() => searchKvk()}
+                  className="px-4 py-3 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] whitespace-nowrap"
+                >
+                  <Search className="w-5 h-5" />
+                </button>
               </div>
-              <button
-                type="button"
-                disabled={companySearchQuery.trim().length < 3 || kvkLoading}
-                onClick={() => searchKvk()}
-                className="px-4 py-3 bg-[#4FA151] text-white rounded-xl font-medium hover:bg-[#3E8E45] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
-              >
-                {kvkLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
-              </button>
+              {kvkSearchResults.length > 0 && !kvkConfirmPending && (
+                <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg p-2 space-y-1">
+                  <p className="text-xs font-medium text-gray-500 px-2 py-1">Klik op je bedrijf</p>
+                  {kvkSearchResults.map((item) => (
+                    <button
+                      key={`${item.kvkNummer ?? ''}-${item.vestigingsnummer ?? ''}-${item.naam ?? ''}`}
+                      type="button"
+                      onClick={() => setKvkConfirmPending(item)}
+                      className="w-full text-left px-4 py-3 rounded-lg border border-transparent hover:bg-emerald-50 hover:border-[#4FA151] transition text-sm"
+                    >
+                      <span className="font-semibold text-[#0F172A]">{item.naam || 'Onbekend'}</span>
+                      {item.kvkNummer && <span className="text-gray-500 ml-2">KvK {item.kvkNummer}</span>}
+                      {item.plaats && <span className="text-gray-400 ml-2">• {item.plaats}</span>}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-            {kvkLoading && <p className="mt-2 text-sm text-gray-500">Bedrijven zoeken...</p>}
-            {kvkSearchMessage === 'api_error' && !kvkLoading && <p className="mt-2 text-sm text-red-600">{kvkSearchErrorDetail || 'De zoekfunctie is tijdelijk niet beschikbaar. Probeer het later opnieuw.'}</p>}
+            {kvkSearchMessage === 'api_error' && <p className="mt-2 text-sm text-red-600">{kvkSearchErrorDetail || 'De zoekfunctie is tijdelijk niet beschikbaar. Probeer het later opnieuw.'}</p>}
           </div>
           {kvkConfirmPending && (
             <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
@@ -1078,23 +1114,6 @@ export default function Onboarding() {
               </div>
             </div>
           )}
-          {kvkSearchResults.length > 0 && !kvkConfirmPending && (
-            <div className="mb-6 max-h-72 overflow-y-auto space-y-3 rounded-xl border border-gray-200 bg-gray-50/50 p-4">
-              <p className="text-sm font-medium text-gray-600 mb-3">Klik op je bedrijf</p>
-              {kvkSearchResults.map((item) => (
-                <button
-                  key={`${item.kvkNummer ?? ''}-${item.vestigingsnummer ?? ''}-${item.naam ?? ''}`}
-                  type="button"
-                  onClick={() => setKvkConfirmPending(item)}
-                  className="w-full text-left px-5 py-4 bg-white border border-gray-200 rounded-xl hover:bg-emerald-50 hover:border-[#4FA151] transition text-base"
-                >
-                  <span className="font-semibold text-[#0F172A]">{item.naam || 'Onbekend'}</span>
-                  {item.kvkNummer && <span className="text-gray-500 ml-2">KvK {item.kvkNummer}</span>}
-                  {item.plaats && <span className="text-gray-400 ml-2">• {item.plaats}</span>}
-                </button>
-              ))}
-            </div>
-          )}
           {companyName && kvk.replace(/\D/g, '').length === 8 && (
             <p className="mb-6 text-sm text-gray-600">
               Gekozen: <strong>{companyName}</strong> (KvK {kvk}). Je kunt adres en overige gegevens later op je dashboard invullen.
@@ -1104,8 +1123,8 @@ export default function Onboarding() {
             type="button"
             disabled={organisatieSaving || !companyName.trim() || kvk.replace(/\D/g, '').length !== 8}
             onClick={saveOrganisatieAndComplete}
-            className="w-full bg-[#4FA151] text-white py-4 rounded-2xl font-semibold text-base hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold text-sm hover:bg-[#3E8E45] transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
             {organisatieSaving ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span> : 'Registratie voltooien'}
           </button>
             </>

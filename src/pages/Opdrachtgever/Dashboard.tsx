@@ -109,7 +109,7 @@ export default function OpdrachtgeverDashboard() {
             <span className="text-xl md:text-3xl font-bold text-[#0F172A]">{stats.messages}</span>
           </div>
           <h3 className="text-sm md:text-lg font-semibold text-gray-800">Berichten</h3>
-          <p className="text-xs md:text-sm text-gray-600">Conversaties met artsen</p>
+          <p className="text-xs md:text-sm text-gray-600">Conversaties met professionals</p>
         </Link>
         <Link
           to="/organisatie/profiel"
@@ -144,7 +144,7 @@ export default function OpdrachtgeverDashboard() {
           className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white border border-slate-200 text-[#0F172A] rounded-xl text-xs md:text-sm font-medium hover:bg-slate-50 hover:border-[#4FA151]/30 transition"
         >
           <User className="w-3.5 h-3.5 md:w-4 md:h-4" />
-          Zoek artsen
+          Zoek professionals
         </Link>
       </div>
 
@@ -164,7 +164,7 @@ export default function OpdrachtgeverDashboard() {
               <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
             </Link>
             <Link to="/professional" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
-              <span className="font-medium text-gray-800">Zoek artsen</span>
+              <span className="font-medium text-gray-800">Zoek professionals</span>
               <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
             </Link>
           </div>
@@ -173,7 +173,7 @@ export default function OpdrachtgeverDashboard() {
           <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
             <h2 className="text-base md:text-xl font-bold text-[#0F172A] mb-3 md:mb-4">Overzicht</h2>
             <p className="text-xs md:text-sm text-gray-600">
-              Beheer uw opdrachten, bekijk kandidaten en voer gesprekken met artsen vanuit dit dashboard.
+              Beheer uw opdrachten, bekijk kandidaten en voer gesprekken met professionals vanuit dit dashboard.
             </p>
           </div>
         </div>

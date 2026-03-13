@@ -55,7 +55,7 @@ function renderNewInvite(data: Record<string, string>): { subject: string; html:
   const body = `
     <h1 style="margin:0 0 16px;font-size:22px;color:#0f172a">Uitnodiging ontvangen</h1>
     <p style="margin:0 0 16px;font-size:16px;line-height:1.5;color:#334155">${inviterName} nodigt je uit om te reageren op de opdracht <strong>${jobTitle}</strong>.</p>
-    <p style="margin:0"><a href="${base}/arts/uitnodigingen" style="display:inline-block;padding:12px 24px;background:#4fa151;color:#fff;text-decoration:none;border-radius:8px;font-weight:600">Bekijk uitnodigingen</a></p>
+    <p style="margin:0"><a href="${base}/professional/uitnodigingen" style="display:inline-block;padding:12px 24px;background:#4fa151;color:#fff;text-decoration:none;border-radius:8px;font-weight:600">Bekijk uitnodigingen</a></p>
   `;
   return { subject, html: htmlLayout(body, "Nieuwe uitnodiging voor een opdracht.") };
 }
