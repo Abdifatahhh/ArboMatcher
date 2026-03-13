@@ -1,6 +1,6 @@
 export default function Privacy() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+    <div className="min-h-screen bg-white">
       <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Privacyverklaring & Cookies</h1>
@@ -11,18 +11,18 @@ export default function Privacy() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <nav className="mb-12 pb-6 border-b border-[#4FA151]/20">
+        <nav className="mb-12 pb-6 border-b border-slate-200">
           <p className="text-sm font-medium text-[#0F172A]/70 mb-2">Inhoudsopgave</p>
           <ol className="list-decimal list-inside space-y-1 text-[#0F172A]">
-            <li><a href="#section_verantwoordelijke" className="text-[#4FA151] hover:underline">Verantwoordelijke</a></li>
-            <li><a href="#section_gegevens" className="text-[#4FA151] hover:underline">Welke gegevens wij verwerken</a></li>
-            <li><a href="#section_doelen" className="text-[#4FA151] hover:underline">Doelen en rechtsgronden</a></li>
-            <li><a href="#section_bewaartermijnen" className="text-[#4FA151] hover:underline">Bewaartermijnen</a></li>
-            <li><a href="#section_derden" className="text-[#4FA151] hover:underline">Delen met derden en verwerkers</a></li>
-            <li><a href="#section_beveiliging" className="text-[#4FA151] hover:underline">Beveiliging</a></li>
-            <li><a href="#section_rechten" className="text-[#4FA151] hover:underline">Uw rechten</a></li>
-            <li><a href="#section_cookies" className="text-[#4FA151] hover:underline">Cookies</a></li>
-            <li><a href="#section_wijzigingen" className="text-[#4FA151] hover:underline">Wijzigingen en contact</a></li>
+            <li><a href="#section_verantwoordelijke" className="text-[#0F172A] hover:underline">Verantwoordelijke</a></li>
+            <li><a href="#section_gegevens" className="text-[#0F172A] hover:underline">Welke gegevens wij verwerken</a></li>
+            <li><a href="#section_doelen" className="text-[#0F172A] hover:underline">Doelen en rechtsgronden</a></li>
+            <li><a href="#section_bewaartermijnen" className="text-[#0F172A] hover:underline">Bewaartermijnen</a></li>
+            <li><a href="#section_derden" className="text-[#0F172A] hover:underline">Delen met derden en verwerkers</a></li>
+            <li><a href="#section_beveiliging" className="text-[#0F172A] hover:underline">Beveiliging</a></li>
+            <li><a href="#section_rechten" className="text-[#0F172A] hover:underline">Uw rechten</a></li>
+            <li><a href="#section_cookies" className="text-[#0F172A] hover:underline">Cookies</a></li>
+            <li><a href="#section_wijzigingen" className="text-[#0F172A] hover:underline">Wijzigingen en contact</a></li>
           </ol>
         </nav>
 

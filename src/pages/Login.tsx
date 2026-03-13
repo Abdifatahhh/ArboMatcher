@@ -86,7 +86,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
   const ErrorIcon = errorCategory ? errorIcons[errorCategory] : AlertCircle;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-6 pb-8 md:pt-24 md:pb-12 px-4">
+    <div className="min-h-screen bg-white flex flex-col items-center pt-6 pb-8 md:pt-24 md:pb-12 px-4">
       <div className="w-full max-w-md">
         {showAlreadyLoggedInBanner && user?.email && (
           <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm">
@@ -96,7 +96,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
               <button
                 type="button"
                 onClick={() => navigate('/onboarding', { replace: true })}
-                className="px-4 py-2 bg-[#4FA151] text-white rounded-lg font-medium hover:bg-[#3E8E45]"
+                className="px-4 py-2 bg-[#0F172A] text-white rounded-lg font-medium hover:bg-[#1E293B]"
               >
                 Doorgaan naar onboarding
               </button>
@@ -128,21 +128,21 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
 
         <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-5 md:mb-6">Inloggen</h1>
 
-        <div className="bg-white md:rounded-2xl md:shadow-sm md:p-8 md:border md:border-slate-100">
+        <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
           {verified && !error && (
-            <div className="mb-5 p-3 bg-green-50 border border-green-200 rounded-lg flex items-start text-sm">
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-xl flex items-start text-sm">
               <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 mr-3 flex-shrink-0" />
               <p className="text-green-800">Je e-mail is geverifieerd. Log in om verder te gaan.</p>
             </div>
           )}
 
           {error && (
-            <div className="mb-5 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start text-sm">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl flex items-start text-sm">
               <ErrorIcon className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
               <div>
                 <p className="text-red-800">{error}</p>
                 {errorCategory === 'email_not_confirmed' && (
-                  <Link to="/email-verificatie" className="text-[#4FA151] hover:underline mt-2 inline-block">
+                  <Link to="/email-verificatie" className="text-[#0F172A] hover:underline mt-2 inline-block">
                     Meer over e-mailverificatie
                   </Link>
                 )}
@@ -150,9 +150,9 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-[#0F172A] mb-1.5">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <label htmlFor="email" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 E-mailadres
               </label>
               <input
@@ -161,13 +161,13 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition text-[#0F172A] placeholder:text-gray-400"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] placeholder:text-slate-400 outline-none"
                 placeholder="Vul hier je e-mailadres in"
               />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-[#0F172A] mb-1.5">
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <label htmlFor="password" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 Wachtwoord
               </label>
               <input
@@ -176,30 +176,29 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition text-[#0F172A] placeholder:text-gray-400"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] placeholder:text-slate-400 outline-none"
                 placeholder="Vul hier je wachtwoord in"
               />
-            </div>
-
-            <div>
-              <Link to="/wachtwoord-vergeten" className="text-sm text-[#4FA151] hover:underline font-medium">
-                Wachtwoord vergeten?
-              </Link>
+              <div className="mt-2">
+                <Link to="/wachtwoord-vergeten" className="text-xs text-slate-500 hover:text-[#0F172A] font-medium transition">
+                  Wachtwoord vergeten?
+                </Link>
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#4FA151] text-white py-3.5 rounded-lg font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed text-base"
+              className="w-full bg-[#0F172A] text-white py-3.5 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50 disabled:cursor-not-allowed text-base shadow-lg shadow-slate-900/10"
             >
               {loading ? 'Bezig met inloggen...' : 'Inloggen'}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-[#0F172A]/80 text-sm">
+          <div className="mt-5 text-center">
+            <p className="text-slate-500 text-sm">
               Nog geen account?{' '}
-              <Link to="/register" className="text-[#4FA151] hover:underline font-semibold">
+              <Link to="/register" className="text-[#0F172A] hover:underline font-semibold">
                 Maak een nieuw account
               </Link>
             </p>

@@ -122,16 +122,16 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center pt-8 pb-8 md:pt-24 md:pb-12 px-3 md:px-4">
+    <div className="min-h-screen bg-white flex flex-col items-center pt-8 pb-8 md:pt-24 md:pb-12 px-3 md:px-4">
       <div className="mb-10">
         <LogoText theme="light" className="text-2xl" />
       </div>
 
-      <div className="w-full max-w-xl bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-8">
+      <div className="w-full max-w-xl">
         <h1 className="text-2xl font-bold text-[#0F172A] mb-6">Account aanmaken</h1>
 
         {(error || isOnCooldown) && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
+          <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
             <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-3 flex-shrink-0" />
             <div className="text-sm text-red-800">
               <p>{error || (isOnCooldown ? `Te veel pogingen. Probeer over ${cooldownSecondsLeft} seconden opnieuw.` : '')}</p>
@@ -139,124 +139,126 @@ export default function Register() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-500 mb-2">Voornaam</label>
+        <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+                <label htmlFor="firstName" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Voornaam</label>
+                <input
+                  id="firstName"
+                  type="text"
+                  required
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
+                  placeholder="Voornaam"
+                />
+              </div>
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+                <label htmlFor="lastName" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Achternaam</label>
+                <input
+                  id="lastName"
+                  type="text"
+                  required
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
+                  placeholder="Achternaam"
+                />
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <label htmlFor="email" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">E-mailadres</label>
               <input
-                id="firstName"
-                type="text"
+                id="email"
+                type="email"
                 required
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                placeholder="Voornaam"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
+                placeholder="uw@email.nl"
               />
             </div>
-            <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-500 mb-2">Achternaam</label>
+
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <label htmlFor="phone" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Telefoonnummer</label>
               <input
-                id="lastName"
-                type="text"
-                required
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
-                placeholder="Achternaam"
+                id="phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
+                placeholder="Bijv. 06-12345678"
               />
             </div>
-          </div>
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-500 mb-2">E-mailadres</label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
-              placeholder="uw@email.nl"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-500 mb-2">Telefoonnummer</label>
-            <input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
-              placeholder="Bijv. 06-12345678"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-500 mb-2">Wachtwoord</label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
-              placeholder="Minimaal 8 karakters"
-            />
-            <p className="mt-1 text-xs text-gray-500">Minimaal 8 karakters.</p>
-          </div>
-
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-500 mb-2">Bevestig wachtwoord</label>
-            <input
-              id="confirmPassword"
-              type="password"
-              required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
-              placeholder="Bevestig wachtwoord"
-            />
-          </div>
-
-          <div className="space-y-4">
-            <PrivacyConsent
-              checked={acceptPrivacy}
-              onChange={setAcceptPrivacy}
-              toggles={consentToggles}
-              onTogglesChange={setConsentToggles}
-            />
-            <label className="flex items-start gap-3 cursor-pointer">
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <label htmlFor="password" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Wachtwoord</label>
               <input
-                type="checkbox"
-                checked={acceptTerms}
-                onChange={(e) => setAcceptTerms(e.target.checked)}
-                className="mt-1 w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
+                placeholder="Minimaal 8 karakters"
               />
-              <span className="text-sm text-gray-700">
-                Ik ga akkoord met de <Link to="/terms" className="text-[#4FA151] hover:underline">algemene voorwaarden</Link>
-              </span>
-            </label>
+              <p className="mt-1.5 text-xs text-slate-400">Minimaal 8 karakters.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <label htmlFor="confirmPassword" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Bevestig wachtwoord</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
+                placeholder="Bevestig wachtwoord"
+              />
+            </div>
+
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm space-y-4">
+              <PrivacyConsent
+                checked={acceptPrivacy}
+                onChange={setAcceptPrivacy}
+                toggles={consentToggles}
+                onTogglesChange={setConsentToggles}
+              />
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={acceptTerms}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  className="mt-1 w-4 h-4 rounded border-slate-300 text-[#0F172A] focus:ring-slate-900"
+                />
+                <span className="text-sm text-slate-600">
+                  Ik ga akkoord met de <Link to="/terms" className="text-[#0F172A] hover:underline font-medium">algemene voorwaarden</Link>
+                </span>
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isOnCooldown}
+              className="w-full bg-[#0F172A] text-white py-3.5 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-slate-900/10"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span>
+              ) : (
+                isOnCooldown ? `Wacht ${cooldownSecondsLeft}s` : 'Account aanmaken'
+              )}
+            </button>
+          </form>
+
+          <div className="mt-5 text-center">
+            <p className="text-slate-500 text-sm">
+              Heb je al een account?{' '}
+              <Link to={getLoginPath()} className="text-[#0F172A] hover:underline font-semibold">Inloggen</Link>
+            </p>
           </div>
-
-          <button
-            type="submit"
-            disabled={isOnCooldown}
-            className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span>
-            ) : (
-              isOnCooldown ? `Wacht ${cooldownSecondsLeft}s` : 'Account aanmaken'
-            )}
-          </button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <p className="text-gray-600">
-            Heb je al een account?{' '}
-            <Link to={getLoginPath()} className="text-[#4FA151] hover:underline font-medium">Inloggen</Link>
-          </p>
         </div>
       </div>
     </div>

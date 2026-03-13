@@ -3,8 +3,8 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { AuthLink } from '../components/AuthLink';
 import { supabase } from '../lib/supabase';
 import type { Job } from '../lib/types';
-import { Search, MapPin, Briefcase, Calendar, ChevronDown, ChevronLeft, ChevronRight, X, CheckCircle, ArrowRight, Home, Users } from 'lucide-react';
-import { CONTRACT_FORM_OPTIONS, REMOTE_TYPE_OPTIONS } from '../lib/opdrachtConstants';
+import { Search, MapPin, Briefcase, Calendar, ChevronDown, ChevronLeft, ChevronRight, X, CheckCircle, ArrowRight, Home, Users, Building2, Clock } from 'lucide-react';
+import { CONTRACT_FORM_OPTIONS, REMOTE_TYPE_OPTIONS, getContractFormLabel, getRemoteTypeLabel } from '../lib/opdrachtConstants';
 
 const isDev = import.meta.env.DEV;
 
@@ -147,8 +147,8 @@ export default function Opdrachten() {
             <span className="text-white font-medium">Opdrachten</span>
           </div>
           <div className="flex items-center gap-3 mb-4">
-            <Briefcase className="w-8 h-8 text-[#4FA151]" />
-            <span className="text-[#4FA151] font-semibold text-sm uppercase tracking-wider">Vacatures</span>
+            <Briefcase className="w-8 h-8 text-slate-400" />
+            <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Vacatures</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Opdrachten</h1>
           <p className="text-xl text-gray-300 max-w-2xl">
@@ -158,27 +158,27 @@ export default function Opdrachten() {
         </div>
       </div>
 
-      <div className="bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white rounded-t-3xl pt-8 pb-12">
+      <div className="bg-white rounded-t-3xl pt-8 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <div className="bg-[#F4FAF4] rounded-2xl p-8 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 hover:shadow-[#4FA151]/10 hover:border-[#4FA151]/25 transition-all duration-300">
+          <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-lg shadow-slate-200/30 hover:shadow-slate-200/50 hover:border-slate-300 transition-all duration-300">
             <h2 className="text-lg font-semibold text-[#0F172A] mb-4">De juiste professional vinden?</h2>
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-slate-700 flex-shrink-0" />
                 <span className="text-slate-600"><span className="font-semibold text-[#0F172A]">Persoonlijke hulp</span> bij opdracht plaatsing</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-slate-700 flex-shrink-0" />
                 <span className="text-slate-600">Binnen <span className="font-semibold text-[#0F172A]">48 uur</span> de juiste match</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-[#4FA151] flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-slate-700 flex-shrink-0" />
                 <span className="text-slate-600">Geheel <span className="font-semibold text-[#0F172A]">onafhankelijk</span></span>
               </div>
               <AuthLink
                 to="/register"
-                className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition ml-auto"
+                className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition ml-auto"
               >
                 Plaats je eerste opdracht gratis
                 <ArrowRight className="w-4 h-4" />
@@ -194,67 +194,135 @@ export default function Opdrachten() {
                 Kon niet alle opdrachten laden: {error}. Toon alleen beschikbare resultaten.
               </div>
             )}
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-sm text-gray-500">{jobs.length} opdrachten (pagina {page} van {totalPages})</p>
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-sm text-slate-500 font-medium">{jobs.length} opdracht{jobs.length !== 1 ? 'en' : ''} <span className="text-slate-400">· pagina {page}/{totalPages}</span></p>
               <div className="relative">
                 <select
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest')}
-                  className="appearance-none bg-white border border-gray-200 rounded-[12px] px-4 py-2 pr-10 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#4FA151] cursor-pointer"
+                  className="appearance-none bg-white border border-slate-200 rounded-xl px-4 py-2 pr-10 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900/20 cursor-pointer shadow-sm"
                 >
                   <option value="newest">Nieuwste eerst</option>
                   <option value="oldest">Oudste eerst</option>
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
               </div>
             </div>
+
+            {hasActiveFilters && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {searchTerm && (
+                  <button onClick={() => setSearchTerm('')} className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#0F172A] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E293B] transition">
+                    "{searchTerm}" <X className="w-3 h-3" />
+                  </button>
+                )}
+                {filters.expertise.map(v => {
+                  const label = expertiseOptions.find(o => o.value === v)?.label || v;
+                  return (
+                    <button key={v} onClick={() => toggleFilter('expertise', v)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#0F172A] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E293B] transition">
+                      {label} <X className="w-3 h-3" />
+                    </button>
+                  );
+                })}
+                {filters.location.map(v => {
+                  const label = locationOptions.find(o => o.value === v)?.label || v;
+                  return (
+                    <button key={v} onClick={() => toggleFilter('location', v)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#0F172A] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E293B] transition">
+                      {label} <X className="w-3 h-3" />
+                    </button>
+                  );
+                })}
+                {filters.contractvorm.map(v => {
+                  const label = CONTRACT_FORM_OPTIONS.find(o => o.value === v)?.label || v;
+                  return (
+                    <button key={v} onClick={() => toggleFilter('contractvorm', v)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#0F172A] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E293B] transition">
+                      {label} <X className="w-3 h-3" />
+                    </button>
+                  );
+                })}
+                <button onClick={clearAllFilters} className="text-xs text-slate-500 hover:text-[#0F172A] font-medium ml-1 transition">
+                  Alles wissen
+                </button>
+              </div>
+            )}
 
             {loading ? (
               <div className="flex justify-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]"></div>
               </div>
             ) : jobs.length === 0 ? (
-              <div className="bg-white p-12 rounded-[16px] shadow-sm text-center">
-                <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">Geen opdrachten gevonden</h3>
-                <p className="text-gray-500">Probeer andere filters of kom later terug</p>
+              <div className="bg-slate-50 p-12 rounded-2xl border border-slate-200 text-center">
+                <Briefcase className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-[#0F172A] mb-2">Geen opdrachten gevonden</h3>
+                <p className="text-slate-500">Probeer andere filters of kom later terug</p>
               </div>
             ) : (
-              <div className="space-y-3">
-                {paginatedJobs.map((job) => (
+              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-3">
+                {paginatedJobs.map((job) => {
+                  const desc = (job as { description?: string }).description || '';
+                  const snippet = desc.length > 120 ? desc.slice(0, 120).trim() + '...' : desc;
+                  return (
                   <Link
                     key={job.id}
                     to={`/opdrachten/${job.id}`}
-                    className="block bg-white rounded-[16px] border border-gray-100 hover:border-[#4FA151]/30 hover:shadow-md transition group"
+                    className="block bg-white rounded-xl border border-slate-200 shadow-sm hover:border-slate-300 hover:shadow-md transition-all group"
                   >
-                    <div className="flex items-center px-6 py-5 gap-4">
-                      <div className="flex-1 min-w-0 pr-4">
-                        <h3 className="text-base font-semibold text-[#0F172A] group-hover:text-[#4FA151] transition truncate">
+                    <div className="p-5">
+                      <div className="flex items-start justify-between gap-4 mb-2">
+                        <h3 className="text-base font-bold text-[#0F172A] group-hover:text-[#0F172A] transition line-clamp-1">
                           {job.title}
                         </h3>
+                        <span className="flex items-center gap-1.5 text-[#0F172A] font-medium text-sm whitespace-nowrap flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                          Bekijk
+                          <ArrowRight className="w-4 h-4" />
+                        </span>
                       </div>
 
-                      <div className="flex items-center gap-6 sm:gap-8 text-sm text-gray-500 flex-shrink-0">
-                        <div className="flex items-center gap-2 min-w-[120px]">
-                          <MapPin className="w-4 h-4 text-[#4FA151] flex-shrink-0" />
-                          <span className="truncate">{job.region || '-'}</span>
-                        </div>
-                        <div className="flex items-center gap-2 min-w-[50px]">
-                          <Users className="w-4 h-4 text-[#0F172A] flex-shrink-0" />
-                          <span>{(job as { applicants_count?: number }).applicants_count ?? 0}</span>
-                        </div>
-                        <div className="flex items-center gap-2 min-w-[90px]">
-                          <Calendar className="w-4 h-4 text-[#0F172A] flex-shrink-0" />
-                          <span>{formatDate(job.created_at)}</span>
-                        </div>
-                        <span className="flex items-center gap-1.5 text-[#4FA151] font-medium text-sm whitespace-nowrap">
-                          Bekijk
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                      {snippet && (
+                        <p className="text-sm text-slate-500 line-clamp-2 mb-3 leading-relaxed">{snippet}</p>
+                      )}
+
+                      <div className="flex flex-wrap items-center gap-2">
+                        {job.region && (
+                          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100">
+                            <MapPin className="w-3 h-3" />
+                            {job.region}
+                          </span>
+                        )}
+                        {job.job_type && (
+                          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100">
+                            <Briefcase className="w-3 h-3" />
+                            {getContractFormLabel(job.job_type)}
+                          </span>
+                        )}
+                        {(job as { remote_type?: string }).remote_type && (
+                          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100">
+                            <Building2 className="w-3 h-3" />
+                            {getRemoteTypeLabel((job as { remote_type?: string }).remote_type)}
+                          </span>
+                        )}
+                        {(job as { hours_per_week?: number }).hours_per_week && (
+                          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100">
+                            <Clock className="w-3 h-3" />
+                            {(job as { hours_per_week?: number }).hours_per_week} uur/week
+                          </span>
+                        )}
+
+                        <span className="ml-auto text-xs text-slate-400 flex items-center gap-3">
+                          <span className="flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {(job as { applicants_count?: number }).applicants_count ?? 0}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            {formatDate(job.created_at)}
+                          </span>
                         </span>
                       </div>
                     </div>
                   </Link>
-                ))}
+                  );
+                })}
 
                 {totalPages > 1 && (
                   <nav className="flex items-center justify-center gap-2 mt-6 flex-wrap">
@@ -273,7 +341,7 @@ export default function Opdrachten() {
                         onClick={() => setPage(p)}
                         className={`min-w-[2.5rem] py-2 px-3 rounded-lg text-sm font-medium transition ${
                           p === page
-                            ? 'bg-[#4FA151] text-white'
+                            ? 'bg-[#0F172A] text-white'
                             : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
                         }`}
                       >
@@ -291,7 +359,7 @@ export default function Opdrachten() {
                   </nav>
                 )}
 
-                <div className="bg-[#F4FAF4] rounded-2xl p-8 border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 mt-8">
+                <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-lg shadow-slate-200/30 mt-8">
                   <h3 className="text-lg font-semibold text-[#0F172A] mb-2">
                     Reageren op deze opdracht?
                   </h3>
@@ -307,7 +375,7 @@ export default function Opdrachten() {
                     </AuthLink>
                     <AuthLink
                       to="/register"
-                      className="px-6 py-3 bg-[#4FA151] text-white rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+                      className="px-6 py-3 bg-[#0F172A] text-white rounded-xl font-semibold hover:bg-[#1E293B] transition"
                     >
                       Gratis registreren
                     </AuthLink>
@@ -318,88 +386,85 @@ export default function Opdrachten() {
           </div>
 
           <div className="w-full lg:w-80 order-1 lg:order-2">
-            <div className="bg-white rounded-[16px] p-6 border border-gray-100 sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-semibold text-[#0F172A]">Zoekfilter</h3>
+            <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 sticky top-24">
+              <div className="flex items-center justify-between mb-5">
+                <h3 className="font-bold text-[#0F172A]">Zoekfilter</h3>
                 {hasActiveFilters && (
                   <button
                     onClick={clearAllFilters}
-                    className="text-sm text-[#4FA151] hover:text-[#3E8E45] font-medium"
+                    className="text-xs text-slate-500 hover:text-[#0F172A] font-medium transition"
                   >
-                    Leegmaken
+                    Wissen
                   </button>
                 )}
               </div>
 
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Zoekterm</label>
+              <div className="space-y-4">
+                <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Zoekterm</label>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
                       type="text"
                       placeholder="Zoekterm(en)"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-[12px] text-sm focus:ring-2 focus:ring-[#4FA151] focus:border-transparent"
+                      className="w-full pl-10 pr-9 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 outline-none transition"
                     />
                     {searchTerm && (
-                      <button
-                        onClick={() => setSearchTerm('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
-                      >
-                        <X className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                      <button onClick={() => setSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <X className="w-4 h-4 text-slate-400 hover:text-slate-600" />
                       </button>
                     )}
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Expertisegebied</label>
-                  <div className="space-y-2">
+                <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Expertisegebied</label>
+                  <div className="space-y-2.5">
                     {expertiseOptions.map((option) => (
-                      <label key={option.value} className="flex items-center gap-3 cursor-pointer">
+                      <label key={option.value} className="flex items-center gap-3 cursor-pointer group">
                         <input
                           type="checkbox"
                           checked={filters.expertise.includes(option.value)}
                           onChange={() => toggleFilter('expertise', option.value)}
-                          className="w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
+                          className="w-4 h-4 rounded border-slate-300 text-[#0F172A] focus:ring-slate-900"
                         />
-                        <span className="text-sm text-gray-700">{option.label}</span>
+                        <span className="text-sm text-slate-600 group-hover:text-[#0F172A] transition">{option.label}</span>
                       </label>
                     ))}
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Werklocatie</label>
-                  <div className="space-y-2">
+                <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Werklocatie</label>
+                  <div className="space-y-2.5">
                     {locationOptions.map((option) => (
-                      <label key={option.value} className="flex items-center gap-3 cursor-pointer">
+                      <label key={option.value} className="flex items-center gap-3 cursor-pointer group">
                         <input
                           type="checkbox"
                           checked={filters.location.includes(option.value)}
                           onChange={() => toggleFilter('location', option.value)}
-                          className="w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
+                          className="w-4 h-4 rounded border-slate-300 text-[#0F172A] focus:ring-slate-900"
                         />
-                        <span className="text-sm text-gray-700">{option.label}</span>
+                        <span className="text-sm text-slate-600 group-hover:text-[#0F172A] transition">{option.label}</span>
                       </label>
                     ))}
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Contractvorm</label>
-                  <div className="space-y-2">
+                <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Contractvorm</label>
+                  <div className="space-y-2.5">
                     {CONTRACT_FORM_OPTIONS.map((option) => (
-                      <label key={option.value} className="flex items-center gap-3 cursor-pointer">
+                      <label key={option.value} className="flex items-center gap-3 cursor-pointer group">
                         <input
                           type="checkbox"
                           checked={filters.contractvorm.includes(option.value)}
                           onChange={() => toggleFilter('contractvorm', option.value)}
-                          className="w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
+                          className="w-4 h-4 rounded border-slate-300 text-[#0F172A] focus:ring-slate-900"
                         />
-                        <span className="text-sm text-gray-700">{option.label}</span>
+                        <span className="text-sm text-slate-600 group-hover:text-[#0F172A] transition">{option.label}</span>
                       </label>
                     ))}
                   </div>
@@ -407,7 +472,7 @@ export default function Opdrachten() {
 
                 <button
                   onClick={() => fetchJobs()}
-                  className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+                  className="w-full bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
                 >
                   Filters toepassen
                 </button>

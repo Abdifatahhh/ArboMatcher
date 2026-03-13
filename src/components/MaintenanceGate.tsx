@@ -51,7 +51,7 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
   }, []);
 
   if (!ready) {
-    return <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white" />;
+    return <div className="min-h-screen bg-white" />;
   }
 
   if (showApp) {

@@ -50,7 +50,7 @@ export function PrivacyConsent({ checked, onChange, toggles, onTogglesChange }: 
             type="checkbox"
             checked={checked}
             onChange={(e) => onChange(e.target.checked)}
-            className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#4FA151] focus:ring-[#4FA151]"
+            className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#0F172A] focus:ring-slate-900"
           />
           <span className="text-sm text-[#0F172A]">
             Ik ga akkoord met de verwerking van mijn persoonsgegevens
@@ -61,7 +61,7 @@ export function PrivacyConsent({ checked, onChange, toggles, onTogglesChange }: 
         <button
           type="button"
           onClick={() => setShowExtended(true)}
-          className="text-sm font-medium text-[#4FA151] hover:text-[#3E8E45] hover:underline ml-7"
+          className="text-sm font-medium text-[#0F172A] hover:text-slate-700 hover:underline ml-7"
         >
           Uitgebreide instellingen
         </button>
@@ -76,7 +76,7 @@ export function PrivacyConsent({ checked, onChange, toggles, onTogglesChange }: 
             <div className="p-5 border-b border-gray-100">
               <h3 className="font-bold text-[#0F172A] text-lg">Uitgebreide instellingen</h3>
             </div>
-            <div className="p-5 overflow-y-auto flex-1 space-y-4 bg-[#F4FAF4]/50">
+            <div className="p-5 overflow-y-auto flex-1 space-y-4 bg-slate-50/50">
               {EXTENDED_SETTINGS.map((text, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <button
@@ -85,7 +85,7 @@ export function PrivacyConsent({ checked, onChange, toggles, onTogglesChange }: 
                     aria-checked={toggles[i]}
                     onClick={() => setToggle(i, !toggles[i])}
                     className={`flex-shrink-0 w-11 h-6 rounded-full transition-colors flex items-center ${
-                      toggles[i] ? 'bg-[#4FA151] justify-end' : 'bg-[#EDF2F7] justify-start'
+                      toggles[i] ? 'bg-[#0F172A] justify-end' : 'bg-[#EDF2F7] justify-start'
                     }`}
                   >
                     <span className="w-5 h-5 bg-white rounded-full shadow mx-0.5" />
@@ -98,7 +98,7 @@ export function PrivacyConsent({ checked, onChange, toggles, onTogglesChange }: 
               <button
                 type="button"
                 onClick={() => setShowExtended(false)}
-                className="px-5 py-2.5 bg-[#4FA151] text-white font-medium rounded-xl hover:bg-[#3E8E45] transition"
+                className="px-5 py-2.5 bg-[#0F172A] text-white font-medium rounded-xl hover:bg-[#1E293B] transition"
               >
                 Instellingen opslaan
               </button>

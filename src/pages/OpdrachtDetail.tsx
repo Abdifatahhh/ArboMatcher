@@ -44,8 +44,8 @@ export default function OpdrachtDetail() {
       return;
     }
     (async () => {
-      const { data } = await supabase.from('professionals').select('doctor_plan').eq('user_id', user.id).maybeSingle();
-      setDoctorPlan((data?.doctor_plan === 'PRO' ? 'PRO' : 'GRATIS') ?? null);
+      const { data } = await supabase.from('professionals').select('plan').eq('user_id', user.id).maybeSingle();
+      setDoctorPlan((data?.plan === 'PRO' ? 'PRO' : 'GRATIS') ?? null);
     })();
   }, [user, profile?.role, job?.id, isFakeJob]);
 
@@ -111,7 +111,7 @@ export default function OpdrachtDetail() {
         .from('applications')
         .select('id')
         .eq('job_id', id)
-        .eq('doctor_id', doctor.id)
+        .eq('professional_id', doctor.id)
         .maybeSingle();
 
       setHasApplied(!!data);
@@ -140,7 +140,7 @@ export default function OpdrachtDetail() {
 
     const { data: doctor } = await supabase
       .from('professionals')
-      .select('id, verification_status, doctor_plan')
+      .select('id, verification_status, plan')
       .eq('user_id', user.id)
       .maybeSingle();
 
@@ -158,7 +158,7 @@ export default function OpdrachtDetail() {
     const jobTier = 'job_tier' in job ? job.job_tier : ((job as { is_pro?: boolean }).is_pro ? 'PRO' : 'STANDARD');
     const jobCreatedAt = job.created_at ? new Date(job.created_at).getTime() : 0;
     const cutoff48h = Date.now() - 48 * 60 * 60 * 1000;
-    const plan = (doctor as { doctor_plan?: string }).doctor_plan ?? 'GRATIS';
+    const plan = (doctor as { plan?: string }).plan ?? 'GRATIS';
     if (jobTier === 'PRO' && jobCreatedAt > cutoff48h && plan !== 'PRO') {
       toast.error('Deze PRO opdracht is de eerste 48 uur exclusief voor PRO professionals.');
       return;
@@ -168,7 +168,7 @@ export default function OpdrachtDetail() {
 
     const { error } = await supabase.from('applications').insert({
       job_id: job.id,
-      doctor_id: doctor.id,
+      professional_id: doctor.id,
       message,
       status: 'PENDING'
     });
@@ -220,7 +220,7 @@ export default function OpdrachtDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+      <div className="min-h-[60vh] flex items-center justify-center bg-white">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]" />
       </div>
     );
@@ -228,14 +228,14 @@ export default function OpdrachtDetail() {
 
   if (!job) {
     return (
-      <div className="min-h-[60vh] bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+      <div className="min-h-[60vh] bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-700 mb-4">Opdracht niet gevonden</h2>
           {fetchError && (
             <p className="text-gray-500 mb-4 max-w-md mx-auto">{fetchError}</p>
           )}
-          <Link to="/opdrachten" className="text-[#4FA151] hover:underline font-medium">
+          <Link to="/opdrachten" className="text-[#0F172A] hover:underline font-medium">
             Terug naar opdrachten
           </Link>
         </div>
@@ -265,42 +265,42 @@ export default function OpdrachtDetail() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
-      <section className="border-b border-gray-200/60">
+    <div className="min-h-screen w-full bg-white">
+      <section className="border-b border-slate-200/60 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
             onClick={() => navigate('/opdrachten')}
-            className="flex items-center gap-2 text-gray-500 hover:text-[#0F172A] transition mb-4"
+            className="flex items-center gap-2 text-slate-400 hover:text-[#0F172A] transition mb-5 text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
             Terug naar opdrachten
           </button>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <div className="flex flex-wrap items-center gap-3 mb-1">
+              <div className="flex flex-wrap items-center gap-3 mb-2">
                 <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A]">{getProfessionalLabel(job.title)}</h1>
                 {!isFakeJob && jobTier === 'PRO' && (
-                  <span className="px-2.5 py-1 bg-[#4FA151]/15 text-[#4FA151] text-xs font-semibold rounded-full border border-[#4FA151]/30">
+                  <span className="px-2.5 py-1 bg-[#0F172A] text-white text-xs font-semibold rounded-lg">
                     PRO
                   </span>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-3 mt-2 text-gray-500">
+              <div className="flex flex-wrap items-center gap-2 mt-1">
                 {job.region && (
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                    <MapPin className="w-3.5 h-3.5" />
                     {job.region}
                   </span>
                 )}
                 {job.job_type && (
-                  <span className="flex items-center gap-1">
-                    <Briefcase className="w-4 h-4" />
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                    <Briefcase className="w-3.5 h-3.5" />
                     {getContractFormLabel(job.job_type)}
                   </span>
                 )}
                 {job.hours_per_week && (
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                    <Clock className="w-3.5 h-3.5" />
                     {job.hours_per_week} uur/week
                   </span>
                 )}
@@ -309,7 +309,7 @@ export default function OpdrachtDetail() {
             {!user && (
               <AuthLink
                 to="/login"
-                className="inline-flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition whitespace-nowrap"
+                className="inline-flex items-center justify-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition whitespace-nowrap shadow-lg shadow-slate-900/10"
               >
                 Direct solliciteren
               </AuthLink>
@@ -323,64 +323,66 @@ export default function OpdrachtDetail() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-[16px] p-6 border border-gray-100">
-              <h2 className="text-lg font-bold text-[#0F172A] mb-4">Omschrijving</h2>
-              {!user ? (
-                <div className="text-gray-600 leading-relaxed whitespace-pre-wrap max-h-[320px] overflow-hidden">
-                  {description ? descriptionWithoutClient(description) || 'Geen omschrijving beschikbaar.' : 'Geen omschrijving beschikbaar.'}
-                </div>
-              ) : (
-                <div className="text-gray-600 leading-relaxed whitespace-pre-wrap">
-                  {description || 'Geen omschrijving beschikbaar.'}
-                </div>
-              )}
+            <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+              <h2 className="text-lg font-bold text-[#0F172A] mb-4 px-1">Omschrijving</h2>
+              <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+                {!user ? (
+                  <div className="text-slate-600 leading-relaxed whitespace-pre-wrap max-h-[320px] overflow-hidden">
+                    {description ? descriptionWithoutClient(description) || 'Geen omschrijving beschikbaar.' : 'Geen omschrijving beschikbaar.'}
+                  </div>
+                ) : (
+                  <div className="text-slate-600 leading-relaxed whitespace-pre-wrap">
+                    {description || 'Geen omschrijving beschikbaar.'}
+                  </div>
+                )}
+              </div>
             </div>
 
             {user && profile?.role === 'professional' && !isFakeJob && (
-              <div className="bg-white rounded-[16px] p-6 border border-gray-100">
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
                 {hasApplied ? (
-                  <div className="bg-[#4FA151]/10 border border-[#4FA151] text-[#4FA151] p-4 rounded-[12px] text-center flex items-center justify-center gap-2">
-                    <CheckCircle className="w-5 h-5" />
+                  <div className="bg-white border border-slate-200 text-slate-700 p-4 rounded-xl text-center flex items-center justify-center gap-2 shadow-sm">
+                    <CheckCircle className="w-5 h-5 text-slate-500" />
                     U heeft al gereageerd op deze opdracht
                   </div>
                 ) : !canApply ? (
-                  <div className="p-4 rounded-[12px] border border-amber-200 bg-amber-50">
+                  <div className="bg-white p-5 rounded-xl border border-amber-200">
                     <p className="text-amber-900 font-medium mb-1">Deze PRO opdracht is de eerste 48 uur exclusief voor PRO professionals.</p>
                     {opensAt > Date.now() && (
                       <p className="text-amber-800 text-sm">{getCountdownText()}</p>
                     )}
-                    <button disabled className="w-full mt-4 bg-gray-300 text-gray-500 py-3 rounded-xl font-semibold cursor-not-allowed">
+                    <button disabled className="w-full mt-4 bg-slate-200 text-slate-400 py-3 rounded-xl font-semibold cursor-not-allowed">
                       Reageer op deze opdracht
                     </button>
                   </div>
                 ) : !showApplicationForm ? (
                   <button
                     onClick={() => setShowApplicationForm(true)}
-                    className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+                    className="w-full bg-[#0F172A] text-white py-3.5 rounded-xl font-semibold hover:bg-[#1E293B] transition shadow-lg shadow-slate-900/10"
                   >
                     Reageer op deze opdracht
                   </button>
                 ) : (
-                  <div>
-                    <h3 className="text-lg font-semibold text-[#0F172A] mb-4">Uw reactie</h3>
+                  <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+                    <h3 className="text-lg font-bold text-[#0F172A] mb-4">Uw reactie</h3>
                     <textarea
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Waarom bent u geschikt voor deze opdracht? (optioneel)"
                       rows={5}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-[12px] focus:ring-2 focus:ring-[#4FA151] focus:border-transparent mb-4"
+                      className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 outline-none transition mb-4"
                     />
-                    <div className="flex gap-4">
+                    <div className="flex gap-3">
                       <button
                         onClick={handleApply}
                         disabled={applying}
-                        className="flex-1 bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50"
+                        className="flex-1 bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50"
                       >
                         {applying ? 'Bezig...' : 'Verstuur reactie'}
                       </button>
                       <button
                         onClick={() => setShowApplicationForm(false)}
-                        className="px-6 py-3 border border-gray-200 rounded-[12px] hover:bg-gray-50 transition"
+                        className="px-6 py-3 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 transition"
                       >
                         Annuleren
                       </button>
@@ -392,104 +394,104 @@ export default function OpdrachtDetail() {
           </div>
 
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white rounded-[16px] p-6 border border-gray-100 sticky top-24">
-              <h3 className="font-semibold text-[#0F172A] mb-4">Opdrachtdetails</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-[#4FA151]/10 rounded-[12px] flex items-center justify-center flex-shrink-0">
-                    <Calendar className="w-5 h-5 text-[#4FA151]" />
+            <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 sticky top-24">
+              <h3 className="font-bold text-[#0F172A] mb-4 px-1">Opdrachtdetails</h3>
+              <div className="space-y-2.5">
+                <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
+                  <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-4.5 h-4.5 text-slate-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Publicatiedatum</p>
-                    <p className="text-[#0F172A] font-medium">{formatDate(job.created_at)}</p>
+                    <p className="text-xs text-slate-400 font-medium">Publicatiedatum</p>
+                    <p className="text-[#0F172A] font-semibold text-sm">{formatDate(job.created_at)}</p>
                   </div>
                 </div>
 
                 {job.region && (
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#4FA151]/10 rounded-[12px] flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-5 h-5 text-[#4FA151]" />
+                  <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
+                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-4.5 h-4.5 text-slate-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Locatie</p>
-                      <p className="text-[#0F172A] font-medium">{job.region}</p>
+                      <p className="text-xs text-slate-400 font-medium">Locatie</p>
+                      <p className="text-[#0F172A] font-semibold text-sm">{job.region}</p>
                     </div>
                   </div>
                 )}
 
                 {job.job_type && (
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#4FA151]/10 rounded-[12px] flex items-center justify-center flex-shrink-0">
-                      <Briefcase className="w-5 h-5 text-[#4FA151]" />
+                  <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
+                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Briefcase className="w-4.5 h-4.5 text-slate-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Contractvorm</p>
-                      <p className="text-[#0F172A] font-medium">{getContractFormLabel(job.job_type)}</p>
+                      <p className="text-xs text-slate-400 font-medium">Contractvorm</p>
+                      <p className="text-[#0F172A] font-semibold text-sm">{getContractFormLabel(job.job_type)}</p>
                     </div>
                   </div>
                 )}
 
                 {user && job.hours_per_week && (
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#4FA151]/10 rounded-[12px] flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-5 h-5 text-[#4FA151]" />
+                  <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
+                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-4.5 h-4.5 text-slate-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Uren per week</p>
-                      <p className="text-[#0F172A] font-medium">{job.hours_per_week} uur</p>
+                      <p className="text-xs text-slate-400 font-medium">Uren per week</p>
+                      <p className="text-[#0F172A] font-semibold text-sm">{job.hours_per_week} uur</p>
                     </div>
                   </div>
                 )}
 
                 {user && durationWeeks && durationWeeks > 0 && (
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#4FA151]/10 rounded-[12px] flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-5 h-5 text-[#4FA151]" />
+                  <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
+                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-4.5 h-4.5 text-slate-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Duur opdracht</p>
-                      <p className="text-[#0F172A] font-medium">{durationWeeks > 52 ? `${Math.round(durationWeeks / 52)} jaar` : `${durationWeeks} weken`}</p>
+                      <p className="text-xs text-slate-400 font-medium">Duur opdracht</p>
+                      <p className="text-[#0F172A] font-semibold text-sm">{durationWeeks > 52 ? `${Math.round(durationWeeks / 52)} jaar` : `${durationWeeks} weken`}</p>
                     </div>
                   </div>
                 )}
 
                 {user && remoteType && (
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#4FA151]/10 rounded-[12px] flex items-center justify-center flex-shrink-0">
-                      <Building2 className="w-5 h-5 text-[#4FA151]" />
+                  <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
+                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Building2 className="w-4.5 h-4.5 text-slate-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Werklocatie</p>
-                      <p className="text-[#0F172A] font-medium">{getRemoteTypeLabel(remoteType)}</p>
+                      <p className="text-xs text-slate-400 font-medium">Werklocatie</p>
+                      <p className="text-[#0F172A] font-semibold text-sm">{getRemoteTypeLabel(remoteType)}</p>
                     </div>
                   </div>
                 )}
 
                 {user && (
-                <div className="pt-4 border-t border-gray-100 space-y-3">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="flex items-center gap-2 text-gray-500">
-                      <Eye className="w-4 h-4" />
-                      Weergaven
-                    </span>
-                    <span className="font-medium text-[#0F172A]">{viewsCount}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="flex items-center gap-2 text-gray-500">
-                      <Users className="w-4 h-4" />
-                      Reacties
-                    </span>
-                    <span className="font-medium text-[#0F172A]">{applicationsCount}</span>
-                  </div>
-                </div>
+                  <>
+                    <div className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm text-sm">
+                      <span className="flex items-center gap-2 text-slate-400">
+                        <Eye className="w-4 h-4" />
+                        Weergaven
+                      </span>
+                      <span className="font-semibold text-[#0F172A]">{viewsCount}</span>
+                    </div>
+                    <div className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm text-sm">
+                      <span className="flex items-center gap-2 text-slate-400">
+                        <Users className="w-4 h-4" />
+                        Reacties
+                      </span>
+                      <span className="font-semibold text-[#0F172A]">{applicationsCount}</span>
+                    </div>
+                  </>
                 )}
               </div>
 
               {user && (
-              <div className="mt-6 pt-6 border-t border-gray-100">
+              <div className="mt-4 pt-4 border-t border-slate-200">
                 {profile?.role === 'professional' && !isFakeJob ? (
                   hasApplied ? (
-                    <div className="bg-[#4FA151]/10 border border-[#4FA151]/30 text-[#4FA151] p-4 rounded-xl text-center flex items-center justify-center gap-2">
+                    <div className="bg-slate-100 border border-slate-200 text-slate-700 p-4 rounded-xl text-center flex items-center justify-center gap-2">
                       <CheckCircle className="w-5 h-5 shrink-0" />
                       <span className="text-sm font-medium">U heeft al gereageerd</span>
                     </div>
@@ -505,7 +507,7 @@ export default function OpdrachtDetail() {
                     <button
                       type="button"
                       onClick={() => setShowApplicationForm(true)}
-                      className="w-full inline-flex items-center justify-center gap-2 bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
                     >
                       Reageer op deze opdracht
                       <ArrowRight className="w-4 h-4" />
@@ -518,7 +520,7 @@ export default function OpdrachtDetail() {
                     <p className="text-sm text-gray-600 mb-3">Alleen professionals kunnen reageren op opdrachten.</p>
                     <AuthLink
                       to="/register"
-                      className="w-full inline-flex items-center justify-center gap-2 bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition text-sm"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition text-sm"
                     >
                       Registreren als arts
                       <ArrowRight className="w-4 h-4" />
@@ -539,19 +541,19 @@ export default function OpdrachtDetail() {
               width: '100vw',
               left: '50%',
               transform: 'translateX(-50%)',
-              background: 'linear-gradient(to bottom, transparent 0%, rgba(244,250,244,0.95) 40%, #F4FAF4 60%)',
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(248,250,252,0.95) 40%, #f8fafc 60%)',
             }}
           >
             <h2 className="text-xl font-bold text-[#0F172A] mb-3 text-center">Volledige opdracht bekijken?</h2>
             <AuthLink
               to="/login"
-              className="inline-flex items-center justify-center bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition mb-3"
+              className="inline-flex items-center justify-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition mb-3"
             >
               Heb je al een account? Log hier in
             </AuthLink>
             <p className="text-gray-500 text-sm">
               Nog geen account?{' '}
-              <AuthLink to="/register" className="text-[#4FA151] font-medium hover:underline">
+              <AuthLink to="/register" className="text-[#0F172A] font-medium hover:underline">
                 Registreer gratis
               </AuthLink>
             </p>
@@ -560,7 +562,7 @@ export default function OpdrachtDetail() {
         </>
       </div>
 
-      <section className="py-24 bg-gradient-to-b from-[#F4FAF4] to-[#FAFDFA] relative overflow-hidden" aria-labelledby="process-title">
+      <section className="py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden" aria-labelledby="process-title">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-12 sm:mb-14">
             <h2 id="process-title" className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Hoe ArboMatcher werkt</h2>
@@ -584,8 +586,8 @@ export default function OpdrachtDetail() {
       {user && profile?.role !== 'professional' && (
           <section className="mt-12 sm:mt-16">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-[#F4FAF4] rounded-2xl border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 p-8 sm:p-10 hover:shadow-[#4FA151]/10 hover:border-[#4FA151]/25 transition-all duration-300">
-                <CheckCircle className="w-12 h-12 text-[#4FA151] mb-4" />
+              <div className="bg-slate-50 rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/30 p-8 sm:p-10 hover:shadow-slate-200/50 hover:border-slate-300 transition-all duration-300">
+                <CheckCircle className="w-12 h-12 text-slate-700 mb-4" />
                 <h2 className="text-2xl font-bold text-[#0F172A] mb-2">
                   {user && profile?.role !== 'professional'
                     ? 'Professional worden en reageren op opdrachten?'
@@ -607,7 +609,7 @@ export default function OpdrachtDetail() {
                   )}
                   <AuthLink
                     to="/register"
-                    className="inline-flex items-center gap-2 bg-[#4FA151] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition"
+                    className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
                   >
                     {user && profile?.role !== 'professional' ? 'Registreren als arts' : 'Gratis registreren'}
                     <ArrowRight className="w-4 h-4" />
@@ -615,15 +617,15 @@ export default function OpdrachtDetail() {
                 </div>
                 <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8 text-sm text-slate-500">
                   <span className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-[#4FA151]" />
+                    <CheckCircle className="w-4 h-4 text-slate-700" />
                     Gratis account
                   </span>
                   <span className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-[#4FA151]" />
+                    <CheckCircle className="w-4 h-4 text-slate-700" />
                     Direct reageren
                   </span>
                   <span className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-[#4FA151]" />
+                    <CheckCircle className="w-4 h-4 text-slate-700" />
                     Alle opdrachten zien
                   </span>
                 </div>

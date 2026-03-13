@@ -5,7 +5,7 @@ import { LogoText } from '../components/ui/Logo';
 
 export default function RegistratieGelukt() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center py-12 px-4">
       <div className="mb-8">
         <Link to="/">
           <LogoText theme="light" className="text-2xl" />
@@ -22,11 +22,11 @@ export default function RegistratieGelukt() {
         <div className="flex flex-col gap-3">
           <Link
             to={getLoginPath()}
-            className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition text-center"
+            className="w-full bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition text-center"
           >
             Naar inloggen
           </Link>
-          <Link to="/email-verificatie" className="text-[#4FA151] hover:underline text-sm">
+          <Link to="/email-verificatie" className="text-[#0F172A] hover:underline text-sm">
             Meer over e-mailverificatie
           </Link>
         </div>

@@ -31,7 +31,7 @@ export default function WachtwoordVergeten() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white flex flex-col items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center py-12 px-4">
       <div className="mb-8">
         <Link to="/">
           <LogoText theme="light" className="text-2xl" />
@@ -51,7 +51,7 @@ export default function WachtwoordVergeten() {
             </div>
             <Link
               to={getLoginPath()}
-              className="block w-full text-center text-[#4FA151] hover:underline font-medium"
+              className="block w-full text-center text-[#0F172A] hover:underline font-medium"
             >
               Terug naar inloggen
             </Link>
@@ -80,7 +80,7 @@ export default function WachtwoordVergeten() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-[#4FA151] focus:bg-white transition text-[#0F172A]"
+                  className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-slate-900 focus:bg-white transition text-[#0F172A]"
                   placeholder="Vul hier je e-mailadres in"
                 />
               </div>
@@ -88,14 +88,14 @@ export default function WachtwoordVergeten() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#4FA151] text-white py-3 rounded-xl font-semibold hover:bg-[#3E8E45] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Bezig...' : 'Wachtwoord herstellen'}
               </button>
             </form>
 
             <div className="mt-6 text-center">
-              <Link to={getLoginPath()} className="text-[#4FA151] hover:underline font-medium">
+              <Link to={getLoginPath()} className="text-[#0F172A] hover:underline font-medium">
                 Terug naar inloggen
               </Link>
             </div>

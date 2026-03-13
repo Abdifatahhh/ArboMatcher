@@ -41,19 +41,19 @@ export default function Home() {
 
   return (
     <div className="font-['Inter']">
-      <section className="relative bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white pt-32 pb-32 sm:pt-40 sm:pb-40 overflow-hidden [contain:layout]">
+      <section className="relative bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white pt-20 pb-24 sm:pt-28 sm:pb-32 overflow-hidden [contain:layout]">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-[#4FA151]/10 rounded-full blur-3xl" />
+          <div className="absolute top-20 right-10 w-72 h-72 bg-blue-500/8 rounded-full blur-3xl" />
           <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#1E293B]/50 rounded-full blur-3xl" />
-          <svg className="absolute right-0 top-1/2 -translate-y-1/2 opacity-5" width="700" height="700" viewBox="0 0 700 700">
+          <svg className="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.03]" width="700" height="700" viewBox="0 0 700 700">
             <circle cx="350" cy="350" r="200" stroke="currentColor" strokeWidth="1" fill="none" />
             <circle cx="350" cy="350" r="280" stroke="currentColor" strokeWidth="1" fill="none" />
             <circle cx="350" cy="350" r="120" stroke="currentColor" strokeWidth="1" fill="none" />
             <path d="M350 70 L350 630 M70 350 L630 350" stroke="currentColor" strokeWidth="1" />
-            <circle cx="350" cy="150" r="8" fill="#4FA151" />
-            <circle cx="550" cy="350" r="8" fill="#4FA151" />
-            <circle cx="350" cy="550" r="8" fill="#4FA151" />
-            <circle cx="150" cy="350" r="8" fill="#4FA151" />
+            <circle cx="350" cy="150" r="8" fill="white" opacity="0.3" />
+            <circle cx="550" cy="350" r="8" fill="white" opacity="0.3" />
+            <circle cx="350" cy="550" r="8" fill="white" opacity="0.3" />
+            <circle cx="150" cy="350" r="8" fill="white" opacity="0.3" />
           </svg>
         </div>
 
@@ -62,43 +62,43 @@ export default function Home() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Organisaties en arbo-professionals efficiënt verbonden.
             </h1>
-            <p className="text-xl text-gray-300 mb-10 leading-relaxed">
+            <p className="text-xl text-slate-300 mb-10 leading-relaxed">
               ArboMatcher verbindt organisaties met gekwalificeerde bedrijfsartsen en arbo-professionals voor ZZP, detachering en loondienst.
             </p>
           </div>
 
           <form onSubmit={handleSearch} className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-[16px] shadow-2xl p-2 flex flex-col sm:flex-row gap-2">
+            <div className="bg-white rounded-2xl shadow-2xl p-2 flex flex-col sm:flex-row gap-2">
               <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Zoek op specialisatie, regio of contractvorm"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 border-0 rounded-[12px] focus:ring-2 focus:ring-[#4FA151] text-[#111827] placeholder:text-gray-400 text-lg"
+                  className="w-full pl-12 pr-4 py-4 border-0 rounded-xl focus:ring-2 focus:ring-slate-900 text-slate-900 placeholder:text-slate-400 text-lg"
                 />
               </div>
               <button
                 type="submit"
-                className="bg-[#4FA151] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#3E8E45] transition whitespace-nowrap text-lg"
+                className="bg-[#0F172A] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#1E293B] transition whitespace-nowrap text-lg"
               >
                 Bekijk actuele opdrachten
               </button>
             </div>
           </form>
 
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-6 text-sm text-gray-300">
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-6 text-sm text-slate-400">
             <span className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-[#4FA151]" />
+              <CheckCircle className="w-4 h-4 text-slate-400" />
               Landelijke dekking
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-[#4FA151]" />
+              <CheckCircle className="w-4 h-4 text-slate-400" />
               BIG-geverifieerde professionals
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-[#4FA151]" />
+              <CheckCircle className="w-4 h-4 text-slate-400" />
               Eén platform voor organisaties en professionals
             </span>
           </div>
@@ -114,7 +114,7 @@ export default function Home() {
         )}
       </div>
 
-      <section className="py-24 bg-gradient-to-b from-[#F4FAF4] to-[#FAFDFA] relative overflow-hidden">
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Hoe ArboMatcher werkt</h2>
@@ -125,7 +125,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8 relative">
             <div className="relative flex flex-col items-center md:block">
-              <div className="w-full bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-200/30 p-8 hover:shadow-xl hover:shadow-slate-200/40 hover:border-[#4FA151]/30 transition-all duration-300 h-full flex flex-col">
+              <div className="w-full bg-white rounded-2xl border border-slate-200/80 shadow-sm p-8 hover:shadow-md hover:border-slate-300 transition-all duration-300 h-full flex flex-col">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-800 flex items-center justify-center text-white shadow-lg shrink-0">
                     <UserPlus className="w-7 h-7" strokeWidth={2} />
@@ -141,7 +141,7 @@ export default function Home() {
             </div>
 
             <div className="relative flex flex-col items-center md:block">
-              <div className="w-full bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-200/30 p-8 hover:shadow-xl hover:shadow-slate-200/40 hover:border-[#4FA151]/30 transition-all duration-300 h-full flex flex-col">
+              <div className="w-full bg-white rounded-2xl border border-slate-200/80 shadow-sm p-8 hover:shadow-md hover:border-slate-300 transition-all duration-300 h-full flex flex-col">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-800 flex items-center justify-center text-white shadow-lg shrink-0">
                     <PenLine className="w-7 h-7" strokeWidth={2} />
@@ -157,9 +157,9 @@ export default function Home() {
             </div>
 
             <div className="relative flex flex-col items-center md:block">
-              <div className="w-full bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-200/30 p-8 hover:shadow-xl hover:shadow-slate-200/40 hover:border-[#4FA151]/30 transition-all duration-300 h-full flex flex-col">
+              <div className="w-full bg-white rounded-2xl border border-slate-200/80 shadow-sm p-8 hover:shadow-md hover:border-slate-300 transition-all duration-300 h-full flex flex-col">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4FA151] to-[#3E8E45] flex items-center justify-center text-white shadow-lg shadow-[#4FA151]/25 shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-700 flex items-center justify-center text-white shadow-lg shrink-0">
                     <Handshake className="w-7 h-7" strokeWidth={2} />
                   </div>
                   <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Stap 3</span>
@@ -174,10 +174,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24 bg-gradient-to-b from-[#FAFDFA] to-[#FDFEFD] relative overflow-hidden">
+      <section className="py-24 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <span className="inline-block text-[#4FA151] font-semibold text-sm uppercase tracking-widest mb-3">Doelgroep</span>
+            <span className="inline-block text-slate-500 font-semibold text-sm uppercase tracking-widest mb-3">Doelgroep</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Oplossingen voor iedereen</h2>
             <p className="text-slate-600 text-lg max-w-xl mx-auto">
               Of u nu organisatie of professional bent, ArboMatcher biedt de juiste oplossing.
@@ -187,7 +187,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
             <Link
               to="/oplossingen"
-              className="group block bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-200/30 p-8 hover:shadow-xl hover:shadow-slate-200/40 hover:border-[#4FA151]/30 transition-all duration-300 h-full flex flex-col"
+              className="group block bg-white rounded-2xl border border-slate-200 shadow-sm p-8 hover:shadow-md hover:border-slate-300 transition-all duration-300 h-full flex flex-col"
             >
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-800 flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-105 transition-transform">
                 <Building2 className="w-7 h-7" strokeWidth={2} />
@@ -196,7 +196,7 @@ export default function Home() {
               <p className="text-slate-600 leading-relaxed flex-1 mb-6">
                 Direct toegang tot een netwerk van ervaren bedrijfsartsen voor verzuimbegeleiding, preventie en re-integratie.
               </p>
-              <span className="inline-flex items-center text-[#4FA151] font-semibold group-hover:gap-3 transition-all gap-2">
+              <span className="inline-flex items-center text-[#0F172A] font-semibold group-hover:gap-3 transition-all gap-2">
                 Meer informatie
                 <ArrowRight className="w-4 h-4" />
               </span>
@@ -204,16 +204,16 @@ export default function Home() {
 
             <Link
               to="/oplossingen"
-              className="group block bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-200/30 p-8 hover:shadow-xl hover:shadow-slate-200/40 hover:border-[#4FA151]/30 transition-all duration-300 h-full flex flex-col"
+              className="group block bg-slate-50 rounded-2xl border border-slate-200 shadow-sm p-8 hover:shadow-md hover:border-slate-300 transition-all duration-300 h-full flex flex-col"
             >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4FA151] to-[#3E8E45] flex items-center justify-center text-white shadow-lg shadow-[#4FA151]/25 mb-6 group-hover:scale-105 transition-transform">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-700 flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-105 transition-transform">
                 <UserCheck className="w-7 h-7" strokeWidth={2} />
               </div>
               <h3 className="text-xl font-bold text-[#0F172A] mb-3">Voor Professionals</h3>
               <p className="text-slate-600 leading-relaxed flex-1 mb-6">
                 Reageer op opdrachten van organisaties met flexibele inzetvormen.
               </p>
-              <span className="inline-flex items-center text-[#4FA151] font-semibold group-hover:gap-3 transition-all gap-2">
+              <span className="inline-flex items-center text-[#0F172A] font-semibold group-hover:gap-3 transition-all gap-2">
                 Meer informatie
                 <ArrowRight className="w-4 h-4" />
               </span>
@@ -222,13 +222,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24 bg-gradient-to-b from-[#FDFEFD] to-white relative overflow-hidden">
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="inline-block text-[#4FA151] font-semibold text-sm uppercase tracking-widest mb-3">Voordelen</span>
+              <span className="inline-block text-slate-500 font-semibold text-sm uppercase tracking-widest mb-3">Voordelen</span>
               <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-10 tracking-tight">Waarom ArboMatcher?</h2>
-              <div className="space-y-5">
+              <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3">
                 {[
                   { icon: Shield, text: 'BIG-verificatie van alle professionals' },
                   { icon: Lock, text: 'AVG-proof communicatie' },
@@ -236,18 +236,18 @@ export default function Home() {
                   { icon: Globe, text: 'Landelijke dekking in alle 12 provincies' },
                   { icon: Award, text: 'Eén platform voor organisaties en professionals' },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/80 transition-colors">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4FA151]/15 to-[#4FA151]/5 flex items-center justify-center flex-shrink-0 border border-[#4FA151]/10">
-                      <item.icon className="w-6 h-6 text-[#4FA151]" strokeWidth={2} />
+                  <div key={i} className="flex items-start gap-4 bg-slate-50 rounded-xl px-4 py-3.5 border border-slate-100">
+                    <div className="w-11 h-11 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-5 h-5 text-slate-700" strokeWidth={2} />
                     </div>
-                    <p className="text-slate-700 text-lg font-medium pt-2">{item.text}</p>
+                    <p className="text-[#0F172A] text-lg font-medium pt-1.5">{item.text}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-[#F4FAF4] rounded-2xl border border-[#4FA151]/15 shadow-lg shadow-slate-200/30 p-8 lg:p-10 hover:shadow-xl hover:shadow-[#4FA151]/10 hover:border-[#4FA151]/25 transition-all duration-300">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4FA151] to-[#3E8E45] flex items-center justify-center text-white shadow-lg shadow-[#4FA151]/25 mb-6">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 lg:p-10 hover:shadow-md transition-all duration-300">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-700 flex items-center justify-center text-white shadow-lg mb-6">
                 <FileText className="w-7 h-7" strokeWidth={2} />
               </div>
               <h3 className="text-xl font-bold text-[#0F172A] mb-4">
@@ -265,7 +265,7 @@ export default function Home() {
                 </Link>
                 <AuthLink
                   to="/register"
-                  className="inline-flex items-center justify-center bg-[#4FA151] text-white px-6 py-3.5 rounded-xl font-semibold hover:bg-[#3E8E45] transition shadow-lg shadow-[#4FA151]/25"
+                  className="inline-flex items-center justify-center border border-slate-200 text-slate-700 px-6 py-3.5 rounded-xl font-semibold hover:bg-slate-50 transition"
                 >
                   Gratis registreren
                 </AuthLink>

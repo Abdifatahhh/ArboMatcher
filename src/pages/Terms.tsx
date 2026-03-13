@@ -1,6 +1,6 @@
 export default function Terms() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+    <div className="min-h-screen bg-white">
       <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Algemene Voorwaarden</h1>
@@ -11,18 +11,18 @@ export default function Terms() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <nav className="mb-12 pb-6 border-b border-[#4FA151]/20">
+        <nav className="mb-12 pb-6 border-b border-slate-200">
           <p className="text-sm font-medium text-[#0F172A]/70 mb-2">Inhoudsopgave</p>
           <ol className="list-decimal list-inside space-y-1 text-[#0F172A]">
-            <li><a href="#section_definities" className="text-[#4FA151] hover:underline">Definities</a></li>
-            <li><a href="#section_algemeen" className="text-[#4FA151] hover:underline">Algemeen, toepasselijkheid</a></li>
-            <li><a href="#section_verplichtingen_am" className="text-[#4FA151] hover:underline">Verplichtingen ArboMatcher</a></li>
-            <li><a href="#section_verplichtingen_gebruikers" className="text-[#4FA151] hover:underline">Verplichtingen gebruikers</a></li>
-            <li><a href="#section_verlenging_betaling" className="text-[#4FA151] hover:underline">Verlenging, prijzen, facturatie, betaling</a></li>
-            <li><a href="#section_levering" className="text-[#4FA151] hover:underline">Levering, overmacht</a></li>
-            <li><a href="#section_ie" className="text-[#4FA151] hover:underline">Intellectuele eigendom</a></li>
-            <li><a href="#section_aansprakelijkheid" className="text-[#4FA151] hover:underline">Aansprakelijkheid</a></li>
-            <li><a href="#section_overig" className="text-[#4FA151] hover:underline">Overige bepalingen</a></li>
+            <li><a href="#section_definities" className="text-[#0F172A] hover:underline">Definities</a></li>
+            <li><a href="#section_algemeen" className="text-[#0F172A] hover:underline">Algemeen, toepasselijkheid</a></li>
+            <li><a href="#section_verplichtingen_am" className="text-[#0F172A] hover:underline">Verplichtingen ArboMatcher</a></li>
+            <li><a href="#section_verplichtingen_gebruikers" className="text-[#0F172A] hover:underline">Verplichtingen gebruikers</a></li>
+            <li><a href="#section_verlenging_betaling" className="text-[#0F172A] hover:underline">Verlenging, prijzen, facturatie, betaling</a></li>
+            <li><a href="#section_levering" className="text-[#0F172A] hover:underline">Levering, overmacht</a></li>
+            <li><a href="#section_ie" className="text-[#0F172A] hover:underline">Intellectuele eigendom</a></li>
+            <li><a href="#section_aansprakelijkheid" className="text-[#0F172A] hover:underline">Aansprakelijkheid</a></li>
+            <li><a href="#section_overig" className="text-[#0F172A] hover:underline">Overige bepalingen</a></li>
           </ol>
         </nav>
 

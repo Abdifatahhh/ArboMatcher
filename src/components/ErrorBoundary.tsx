@@ -36,7 +36,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </p>
             <Link
               to="/"
-              className="inline-block bg-[#4FA151] text-white px-6 py-2 rounded-xl font-medium hover:bg-[#3E8E45] transition"
+              className="inline-block bg-[#0F172A] text-white px-6 py-2 rounded-xl font-medium hover:bg-[#1E293B] transition"
             >
               Naar start
             </Link>

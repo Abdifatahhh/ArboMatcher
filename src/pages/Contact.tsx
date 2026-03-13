@@ -32,12 +32,12 @@ export default function Contact() {
   const faqPreview = faqGroups.flatMap(g => g.items).slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+    <div className="min-h-screen bg-white">
       <div className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] text-white py-16 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-4">
-            <Mail className="w-8 h-8 text-[#4FA151]" />
-            <span className="text-[#4FA151] font-semibold text-sm uppercase tracking-wider">Contact</span>
+            <Mail className="w-8 h-8 text-slate-400" />
+            <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Contact</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Neem contact op</h1>
           <p className="text-xl text-gray-300 max-w-2xl">
@@ -52,8 +52,8 @@ export default function Contact() {
             <div className="bg-white rounded-2xl p-8 sm:p-10 shadow-lg shadow-slate-200/40 border border-slate-100 overflow-hidden">
               {submitted ? (
                 <div className="text-center py-14 px-4">
-                  <div className="w-20 h-20 bg-[#4FA151]/10 rounded-2xl flex items-center justify-center mx-auto mb-6 ring-4 ring-[#4FA151]/10">
-                    <CheckCircle className="w-10 h-10 text-[#4FA151]" />
+                  <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 ring-4 ring-slate-100">
+                    <CheckCircle className="w-10 h-10 text-slate-700" />
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-bold text-[#0F172A] mb-3">
                     Bericht verzonden
@@ -66,7 +66,7 @@ export default function Contact() {
                       setSubmitted(false);
                       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
                     }}
-                    className="mt-8 inline-flex items-center gap-2 text-[#4FA151] font-semibold hover:text-[#3E8E45] transition"
+                    className="mt-8 inline-flex items-center gap-2 text-[#0F172A] font-semibold hover:text-slate-700 transition"
                   >
                     Nieuw bericht versturen
                   </button>
@@ -95,7 +95,7 @@ export default function Contact() {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-[#4FA151] focus:ring-2 focus:ring-[#4FA151]/20 outline-none transition text-[#0F172A] placeholder:text-slate-400"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-slate-400 focus:ring-2 focus:ring-slate-900/20 outline-none transition text-[#0F172A] placeholder:text-slate-400"
                           placeholder="Uw volledige naam"
                         />
                       </div>
@@ -110,7 +110,7 @@ export default function Contact() {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-[#4FA151] focus:ring-2 focus:ring-[#4FA151]/20 outline-none transition text-[#0F172A] placeholder:text-slate-400"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-slate-400 focus:ring-2 focus:ring-slate-900/20 outline-none transition text-[#0F172A] placeholder:text-slate-400"
                           placeholder="uw@email.nl"
                         />
                       </div>
@@ -127,7 +127,7 @@ export default function Contact() {
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-[#4FA151] focus:ring-2 focus:ring-[#4FA151]/20 outline-none transition text-[#0F172A] placeholder:text-slate-400"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-slate-400 focus:ring-2 focus:ring-slate-900/20 outline-none transition text-[#0F172A] placeholder:text-slate-400"
                           placeholder="06 12345678"
                         />
                       </div>
@@ -141,7 +141,7 @@ export default function Contact() {
                           required
                           value={formData.subject}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-[#4FA151] focus:ring-2 focus:ring-[#4FA151]/20 outline-none transition text-[#0F172A] bg-white"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-slate-400 focus:ring-2 focus:ring-slate-900/20 outline-none transition text-[#0F172A] bg-white"
                         >
                           <option value="">Selecteer onderwerp</option>
                           <option value="algemeen">Algemene vraag</option>
@@ -165,7 +165,7 @@ export default function Contact() {
                         rows={5}
                         value={formData.message}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-[#4FA151] focus:ring-2 focus:ring-[#4FA151]/20 outline-none transition resize-none text-[#0F172A] placeholder:text-slate-400"
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-slate-400 focus:ring-2 focus:ring-slate-900/20 outline-none transition resize-none text-[#0F172A] placeholder:text-slate-400"
                         placeholder="Waar kunnen wij u mee helpen?"
                       />
                     </div>
@@ -173,7 +173,7 @@ export default function Contact() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full sm:w-auto min-w-[200px] px-8 py-4 bg-[#4FA151] text-white font-semibold rounded-xl hover:bg-[#3E8E45] transition flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-[#4FA151]/25 hover:shadow-[#4FA151]/30"
+                      className="w-full sm:w-auto min-w-[200px] px-8 py-4 bg-[#0F172A] text-white font-semibold rounded-xl hover:bg-[#1E293B] transition flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-slate-900/10 hover:shadow-slate-200/50"
                     >
                       {loading ? (
                         <>
@@ -194,30 +194,30 @@ export default function Contact() {
           </div>
 
           <div className="space-y-5">
-            <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-100 shadow-lg shadow-slate-200/30">
-              <h3 className="text-lg font-bold text-[#0F172A] mb-5">Contactgegevens</h3>
-              <div className="space-y-5">
-                <a href="tel:013-1234567" className="flex items-start gap-4 group">
-                  <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#4FA151] transition">
-                    <Phone className="w-5 h-5 text-[#4FA151] group-hover:text-white transition" />
+            <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+              <h3 className="text-lg font-bold text-[#0F172A] mb-4 px-1">Contactgegevens</h3>
+              <div className="space-y-2.5">
+                <a href="tel:013-1234567" className="flex items-start gap-4 group bg-white rounded-xl px-4 py-3.5 border border-slate-200 shadow-sm hover:shadow-md transition">
+                  <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#0F172A] transition">
+                    <Phone className="w-5 h-5 text-slate-700 group-hover:text-white transition" />
                   </div>
                   <div>
                     <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-0.5">Telefoon</p>
-                    <p className="font-semibold text-[#0F172A] group-hover:text-[#4FA151] transition">013-1234567</p>
+                    <p className="font-semibold text-[#0F172A]">013-1234567</p>
                   </div>
                 </a>
-                <a href="mailto:info@arbomatcher.nl" className="flex items-start gap-4 group">
-                  <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#4FA151] transition">
-                    <Mail className="w-5 h-5 text-[#4FA151] group-hover:text-white transition" />
+                <a href="mailto:info@arbomatcher.nl" className="flex items-start gap-4 group bg-white rounded-xl px-4 py-3.5 border border-slate-200 shadow-sm hover:shadow-md transition">
+                  <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#0F172A] transition">
+                    <Mail className="w-5 h-5 text-slate-700 group-hover:text-white transition" />
                   </div>
                   <div>
                     <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-0.5">E-mail</p>
-                    <p className="font-semibold text-[#0F172A] group-hover:text-[#4FA151] transition break-all">info@arbomatcher.nl</p>
+                    <p className="font-semibold text-[#0F172A] break-all">info@arbomatcher.nl</p>
                   </div>
                 </a>
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-4 bg-white rounded-xl px-4 py-3.5 border border-slate-200 shadow-sm">
                   <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-[#4FA151]" />
+                    <MapPin className="w-5 h-5 text-slate-700" />
                   </div>
                   <div>
                     <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-0.5">Adres</p>
@@ -229,32 +229,34 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-100 shadow-lg shadow-slate-200/30">
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-5 h-5 text-[#4FA151]" />
+            <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+              <h3 className="font-bold text-[#0F172A] mb-3 px-1">Openingstijden</h3>
+              <div className="space-y-2.5">
+                <div className="flex justify-between items-baseline gap-4 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm text-sm">
+                  <span className="text-slate-600 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-slate-400" />
+                    Maandag – Vrijdag
+                  </span>
+                  <span className="font-semibold text-[#0F172A] tabular-nums whitespace-nowrap">09:00 – 17:00</span>
                 </div>
-                <div className="min-w-0">
-                  <h3 className="font-bold text-[#0F172A] mb-3">Openingstijden</h3>
-                  <div className="space-y-2.5 text-sm">
-                    <div className="flex justify-between items-baseline gap-4">
-                      <span className="text-slate-600">Maandag – Vrijdag</span>
-                      <span className="font-semibold text-[#0F172A] tabular-nums whitespace-nowrap">09:00 – 17:00</span>
-                    </div>
-                    <div className="flex justify-between items-baseline gap-4">
-                      <span className="text-slate-600">Weekend</span>
-                      <span className="font-semibold text-[#0F172A] whitespace-nowrap">Gesloten</span>
-                    </div>
-                  </div>
+                <div className="flex justify-between items-baseline gap-4 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm text-sm">
+                  <span className="text-slate-600">Weekend</span>
+                  <span className="font-semibold text-[#0F172A] whitespace-nowrap">Gesloten</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-100 shadow-lg shadow-slate-200/30">
-              <h3 className="font-bold text-[#0F172A] mb-3">Bedrijfsgegevens</h3>
-              <div className="space-y-2 text-sm text-slate-600">
-                <p><span className="text-slate-500">KvK:</span> 12345678</p>
-                <p><span className="text-slate-500">BTW:</span> NL123456789B01</p>
+            <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+              <h3 className="font-bold text-[#0F172A] mb-3 px-1">Bedrijfsgegevens</h3>
+              <div className="space-y-2.5">
+                <div className="flex justify-between items-baseline bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm text-sm">
+                  <span className="text-slate-500">KvK</span>
+                  <span className="font-semibold text-[#0F172A]">12345678</span>
+                </div>
+                <div className="flex justify-between items-baseline bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm text-sm">
+                  <span className="text-slate-500">BTW</span>
+                  <span className="font-semibold text-[#0F172A]">NL123456789B01</span>
+                </div>
               </div>
             </div>
           </div>
@@ -262,19 +264,17 @@ export default function Contact() {
 
         <section className="mt-16 sm:mt-20">
           <div className="flex items-center gap-3 mb-6">
-            <HelpCircle className="w-6 h-6 text-[#4FA151]" />
+            <HelpCircle className="w-6 h-6 text-slate-700" />
             <h2 className="text-2xl font-bold text-[#0F172A]">Veelgestelde vragen</h2>
           </div>
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-lg shadow-slate-200/30 overflow-hidden">
-            <div className="divide-y divide-slate-100">
-              {faqPreview.map((item) => (
-                <ContactFaqItem key={item.q} q={item.q} a={item.a} />
-              ))}
-            </div>
-            <div className="px-6 sm:px-8 py-5 bg-slate-50/50 border-t border-slate-100">
+          <div className="bg-slate-50 rounded-2xl border border-slate-200 p-4 space-y-2.5">
+            {faqPreview.map((item) => (
+              <ContactFaqItem key={item.q} q={item.q} a={item.a} />
+            ))}
+            <div className="pt-2 px-1">
               <Link
                 to="/faq"
-                className="inline-flex items-center gap-2 text-[#4FA151] font-semibold hover:text-[#3E8E45] transition"
+                className="inline-flex items-center gap-2 text-[#0F172A] font-semibold hover:text-slate-700 transition"
               >
                 Bekijk alle veelgestelde vragen
                 <ChevronDown className="w-4 h-4 rotate-[-90deg]" />
@@ -290,17 +290,17 @@ export default function Contact() {
 function ContactFaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div>
+    <div className={`bg-white rounded-xl border border-slate-200 shadow-sm transition-all ${open ? 'ring-1 ring-slate-200' : ''}`}>
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-4 px-6 sm:px-8 text-left hover:bg-slate-50/50 transition"
+        className="w-full flex items-center justify-between py-3.5 px-4 text-left hover:bg-slate-50/50 transition rounded-xl"
       >
         <span className="font-semibold text-[#0F172A] pr-4">{q}</span>
         {open ? <ChevronUp className="w-5 h-5 text-slate-400 shrink-0" /> : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />}
       </button>
       {open && (
-        <div className="pb-4 px-6 sm:px-8">
+        <div className="pb-4 px-4">
           <p className="text-slate-600 leading-relaxed text-sm">{a}</p>
         </div>
       )}

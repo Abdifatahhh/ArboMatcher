@@ -88,7 +88,7 @@ export function JobQualityScoreCard({
           <button
             type="button"
             onClick={onImproveClick}
-            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[#4FA151]/30 text-[#4FA151] hover:bg-[#4FA151]/5 font-medium text-sm transition"
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium text-sm transition"
           >
             <Sparkles className="w-4 h-4" />
             Verbeter mijn opdracht

@@ -24,7 +24,7 @@ export default function CommunityArticle() {
   if (article === undefined) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#4FA151] border-t-transparent" />
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-slate-900 border-t-transparent" />
       </div>
     );
   }
@@ -33,7 +33,7 @@ export default function CommunityArticle() {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center px-4">
         <p className="text-gray-600 mb-4">Artikel niet gevonden.</p>
-        <Link to="/community" className="text-[#4FA151] font-semibold hover:underline inline-flex items-center gap-2">
+        <Link to="/community" className="text-[#0F172A] font-semibold hover:underline inline-flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
           Terug naar Community
         </Link>
@@ -44,7 +44,7 @@ export default function CommunityArticle() {
   const hasContent = article.content && article.content.trim().length > 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] via-[#F4FAF4] to-white">
+    <div className="min-h-screen bg-white">
       <section className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] text-white py-16 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
           <div className="mb-8">
@@ -56,7 +56,7 @@ export default function CommunityArticle() {
               Terug naar Community
             </Link>
           </div>
-          <span className="block text-[#4FA151] font-medium text-sm mb-2">{article.category}</span>
+          <span className="block text-slate-400 font-medium text-sm mb-2">{article.category}</span>
           <h1 className="text-3xl sm:text-4xl font-bold mb-2">{article.title}</h1>
           <p className="text-gray-400">{article.date}</p>
         </div>
@@ -93,7 +93,7 @@ export default function CommunityArticle() {
           <div className="mt-10 pt-8 border-t border-gray-100">
             <Link
               to="/community"
-              className="inline-flex items-center gap-2 text-[#4FA151] font-semibold hover:text-[#3E8E45] transition"
+              className="inline-flex items-center gap-2 text-[#0F172A] font-semibold hover:text-slate-700 transition"
             >
               <ArrowLeft className="w-4 h-4" />
               Naar alle artikelen

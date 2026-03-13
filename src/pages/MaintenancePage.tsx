@@ -40,7 +40,7 @@ export default function MaintenancePage({ onBypass }: MaintenancePageProps) {
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-100 bg-gray-50/80">
             <div className="flex items-center justify-center gap-2 text-gray-800">
-              <Lock className="w-6 h-6 text-[#4FA151]" />
+              <Lock className="w-6 h-6 text-slate-700" />
               <h1 className="text-xl font-semibold">Onderhoudsmodus</h1>
             </div>
           </div>
@@ -58,7 +58,7 @@ export default function MaintenancePage({ onBypass }: MaintenancePageProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Wachtwoord voor toegang tijdens onderhoud"
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4FA151] focus:border-[#4FA151] transition placeholder:text-gray-400"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-400 transition placeholder:text-gray-400"
                   autoComplete="current-password"
                 />
               </div>
@@ -68,7 +68,7 @@ export default function MaintenancePage({ onBypass }: MaintenancePageProps) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#4FA151] text-white px-4 py-2.5 rounded-xl font-medium hover:bg-[#3E8E45] transition disabled:opacity-50"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#0F172A] text-white px-4 py-2.5 rounded-xl font-medium hover:bg-[#1E293B] transition disabled:opacity-50"
               >
                 {loading ? 'Bezig...' : 'Toegang vragen'}
               </button>

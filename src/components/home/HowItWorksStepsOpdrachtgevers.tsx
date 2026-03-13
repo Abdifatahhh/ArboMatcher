@@ -56,10 +56,10 @@ export function HowItWorksStepsOpdrachtgevers({ activeStep, onStepChange }: HowI
             <button
               type="button"
               onClick={() => onStepChange(step.id)}
-              className={`w-full text-left rounded-xl px-4 py-4 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4FA151] focus-visible:ring-offset-2 ${
+              className={`w-full text-left rounded-xl px-4 py-4 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 ${
                 isActive
-                  ? 'bg-white border border-gray-200 shadow-sm'
-                  : 'border border-transparent hover:bg-white hover:border-gray-100'
+                  ? 'bg-white border border-slate-200 shadow-sm'
+                  : 'border border-transparent hover:bg-white hover:border-slate-100'
               }`}
               aria-pressed={isActive}
               aria-current={isActive ? 'step' : undefined}
@@ -68,19 +68,19 @@ export function HowItWorksStepsOpdrachtgevers({ activeStep, onStepChange }: HowI
               <span className="flex items-center gap-3">
                 <span
                   className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-colors ${
-                    isActive ? 'bg-[#4FA151] text-white' : 'bg-gray-200 text-gray-600'
+                    isActive ? 'bg-[#0F172A] text-white' : 'bg-slate-200 text-slate-600'
                   }`}
                 >
                   {step.id}
                 </span>
-                <span className={`font-semibold ${isActive ? 'text-[#0F172A]' : 'text-gray-700'}`}>
+                <span className={`font-semibold ${isActive ? 'text-[#0F172A]' : 'text-slate-700'}`}>
                   {step.title}
                 </span>
               </span>
               {isActive && (
                 <p
                   id={`${listId}-desc-${step.id}`}
-                  className="mt-2 ml-11 text-sm text-gray-600 leading-relaxed"
+                  className="mt-2 ml-11 text-sm text-slate-600 leading-relaxed"
                 >
                   {step.description}
                 </p>

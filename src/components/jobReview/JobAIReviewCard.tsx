@@ -27,7 +27,7 @@ export function JobAIReviewCard({ feedback, compact }: JobAIReviewCardProps) {
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <div className="px-4 py-2.5 border-b border-gray-100 flex items-center gap-2">
-        <Sparkles className="w-4 h-4 text-[#4FA151]" />
+        <Sparkles className="w-4 h-4 text-slate-500" />
         <span className="font-medium text-[#0F172A]">AI-beoordeling</span>
       </div>
       <div className={`space-y-3 ${compact ? 'p-3' : 'p-4'}`}>
