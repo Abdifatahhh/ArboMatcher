@@ -209,7 +209,7 @@ export default function Home() {
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-700 flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-105 transition-transform">
                 <UserCheck className="w-7 h-7" strokeWidth={2} />
               </div>
-              <h3 className="text-xl font-bold text-[#0F172A] mb-3">Voor Professionals</h3>
+              <h3 className="text-xl font-bold text-[#0F172A] mb-3">Voor professionals</h3>
               <p className="text-slate-600 leading-relaxed flex-1 mb-6">
                 Reageer op opdrachten van organisaties met flexibele inzetvormen.
               </p>

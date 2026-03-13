@@ -58,7 +58,7 @@ export default function Register() {
     e.preventDefault();
     setError('');
     if (isOnCooldown) {
-      setError(`Wacht nog ${cooldownSecondsLeft} seconden voordat u opnieuw kunt proberen.`);
+      setError(`Wacht nog ${cooldownSecondsLeft} seconden voordat je opnieuw kunt proberen.`);
       return;
     }
     if (password !== confirmPassword) {
@@ -70,7 +70,7 @@ export default function Register() {
       return;
     }
     if (!acceptPrivacy || !acceptTerms) {
-      setError('U moet akkoord gaan met de voorwaarden');
+      setError('Je moet akkoord gaan met de voorwaarden');
       return;
     }
     const emailTrim = email.trim().toLowerCase();
@@ -109,7 +109,7 @@ export default function Register() {
     if (signUpError) {
       if (signUpError.category === 'too_many_requests') {
         setCooldownUntil(Date.now() + COOLDOWN_SECONDS * 1000);
-        setError('De aanmeldservice heeft even een limiet bereikt. U kunt over een minuut opnieuw proberen.');
+        setError('De aanmeldservice heeft even een limiet bereikt. Je kunt over een minuut opnieuw proberen.');
       } else {
         setError(signUpError.userMessage);
       }

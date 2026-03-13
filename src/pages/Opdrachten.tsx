@@ -166,7 +166,7 @@ export default function Opdrachten() {
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-slate-700 flex-shrink-0" />
-                <span className="text-slate-600"><span className="font-semibold text-[#0F172A]">Persoonlijke hulp</span> bij opdracht plaatsing</span>
+                <span className="text-slate-600"><span className="font-semibold text-[#0F172A]">Persoonlijke hulp</span> bij opdrachtplaatsing</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-slate-700 flex-shrink-0" />
@@ -180,7 +180,7 @@ export default function Opdrachten() {
                 to="/register"
                 className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition ml-auto"
               >
-                Plaats je eerste opdracht gratis
+                Plaats uw eerste opdracht gratis
                 <ArrowRight className="w-4 h-4" />
               </AuthLink>
             </div>

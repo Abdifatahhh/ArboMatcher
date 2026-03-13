@@ -36,7 +36,7 @@ export default function Over() {
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 { icon: Shield, title: 'Kwaliteit', desc: 'Alle professionals worden geverifieerd via hun BIG-registratie. Zo garanderen we dat u werkt met gecertificeerde professionals.' },
-                { icon: Zap, title: 'Snelheid', desc: 'Door ons efficiente matchingsysteem vindt u snel de juiste kandidaat. 95% match binnen 48 uur.' },
+                { icon: Zap, title: 'Snelheid', desc: 'Door ons efficiënte matchingsysteem vindt u snel de juiste kandidaat. 95% match binnen 48 uur.' },
                 { icon: Eye, title: 'Transparantie', desc: 'Duidelijke profielen en eerlijke reviews. Na matching rechtstreeks contact tussen organisatie en professional.' },
                 { icon: Lock, title: 'Betrouwbaarheid', desc: 'AVG-proof communicatie en veilige gegevensuitwisseling volgens de hoogste standaarden.' },
               ].map((item) => (
@@ -104,7 +104,7 @@ export default function Over() {
         </section>
 
         <section className="bg-slate-50 rounded-2xl border border-slate-200 p-8 text-center">
-          <h2 className="text-2xl font-bold text-[#0F172A] mb-4">Sluit je aan bij ArboMatcher</h2>
+          <h2 className="text-2xl font-bold text-[#0F172A] mb-4">Sluit u aan bij ArboMatcher</h2>
           <p className="text-slate-600 mb-6">
             Het platform voor professionals.
           </p>

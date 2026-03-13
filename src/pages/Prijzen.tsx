@@ -83,7 +83,7 @@ export default function Prijzen() {
                 <span className="text-4xl font-bold text-[#0F172A]">Op maat</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
-                {['Onbeperkt opdrachten', 'Alle Pro functies', 'Dedicated support', 'Custom SLA', 'API toegang'].map((t) => (
+                {['Onbeperkt opdrachten', 'Alle Pro-functies', 'Dedicated support', 'Custom SLA', 'API-toegang'].map((t) => (
                   <div key={t} className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
                     <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-[#0F172A] font-medium">{t}</span>
@@ -142,7 +142,7 @@ export default function Prijzen() {
                 <span className="text-slate-600"> per jaar</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
-                {['Direct toegang tot alle opdrachten', 'Onbeperkt reageren op opdrachten', 'Onbeperkt zoekopdrachten opslaan', 'Bespaar 42% t.o.v. een Flex abonnement'].map((t) => (
+                {['Direct toegang tot alle opdrachten', 'Onbeperkt reageren op opdrachten', 'Onbeperkt zoekopdrachten opslaan', 'Bespaar 42% t.o.v. een Flex-abonnement'].map((t) => (
                   <div key={t} className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
                     <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-[#0F172A] font-medium">{t}</span>

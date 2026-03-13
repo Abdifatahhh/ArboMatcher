@@ -181,7 +181,7 @@ export default function Community() {
             <CheckCircle className="w-12 h-12 mx-auto mb-4 text-slate-700" />
             <h2 className="text-2xl font-bold text-[#0F172A] mb-2">Nog vragen?</h2>
             <p className="text-slate-600 mb-6">
-              Bekijk de veelgestelde vragen of neem contact met ons op. We helpen je graag verder.
+              Bekijk de veelgestelde vragen of neem contact met ons op. Wij helpen u graag verder.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link

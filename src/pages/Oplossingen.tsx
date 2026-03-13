@@ -67,7 +67,7 @@ export default function Oplossingen() {
               <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mb-6">
                 <UserCheck className="w-8 h-8 text-slate-700" />
               </div>
-              <h2 className="text-3xl font-bold text-[#0F172A] mb-6">Voor Professionals</h2>
+              <h2 className="text-3xl font-bold text-[#0F172A] mb-6">Voor professionals</h2>
               <p className="text-slate-600 mb-6 text-lg leading-relaxed">
                 Reageer op opdrachten van organisaties. Bepaal zelf waar, wanneer en hoeveel u werkt met flexibele inzetvormen.
               </p>

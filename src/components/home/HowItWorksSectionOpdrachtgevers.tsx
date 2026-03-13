@@ -15,7 +15,7 @@ export function HowItWorksSectionOpdrachtgevers() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="text-center mb-12 sm:mb-14">
           <p className="text-slate-500 font-medium text-sm uppercase tracking-wider mb-1">
-            Top talent om te groeien
+            Toptalent om mee te groeien
           </p>
           <h2
             id="how-it-works-organisaties-title"

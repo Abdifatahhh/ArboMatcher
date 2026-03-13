@@ -59,7 +59,7 @@ export default function WachtwoordVergeten() {
         ) : (
           <>
             <p className="text-gray-600 mb-6">
-              Vul hieronder het e-mailadres in waarmee je bekend bent bij ArboMatch. Wij sturen je vervolgens een mail waarmee je het wachtwoord kan herstellen.
+              Vul hieronder het e-mailadres in waarmee je bekend bent bij ArboMatcher. Wij sturen je vervolgens een e-mail waarmee je het wachtwoord kunt herstellen.
             </p>
 
             {error && (

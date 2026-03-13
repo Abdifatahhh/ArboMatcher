@@ -549,7 +549,7 @@ export default function OpdrachtDetail() {
               to="/login"
               className="inline-flex items-center justify-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition mb-3"
             >
-              Heb je al een account? Log hier in
+              Heeft u al een account? Log hier in
             </AuthLink>
             <p className="text-slate-500 text-sm">
               Nog geen account?{' '}
@@ -567,7 +567,7 @@ export default function OpdrachtDetail() {
           <div className="text-center mb-12 sm:mb-14">
             <h2 id="process-title" className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Hoe ArboMatcher werkt</h2>
             <p className="text-slate-600 text-lg max-w-xl mx-auto">
-              Van registratie tot je eerste opdracht. Ontvang een e-mail wanneer er nieuwe opdrachten bijpassen.
+              Van registratie tot uw eerste opdracht. Ontvang een e-mail wanneer er nieuwe opdrachten bij u passen.
             </p>
           </div>
 

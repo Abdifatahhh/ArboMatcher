@@ -21,7 +21,7 @@ export function HowItWorksSection() {
             Eenvoudig een nieuwe opdracht vinden
           </h2>
           <p className="text-slate-500 font-semibold text-sm uppercase tracking-wider">
-            Voor Arbo Professionals
+            Voor arbo-professionals
           </p>
         </header>
 
