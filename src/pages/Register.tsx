@@ -142,7 +142,7 @@ export default function Register() {
 
         <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
           <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
                 <label htmlFor="firstName" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Voornaam</label>
                 <input

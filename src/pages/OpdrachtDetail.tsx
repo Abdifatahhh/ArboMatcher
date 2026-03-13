@@ -562,7 +562,7 @@ export default function OpdrachtDetail() {
         </>
       </div>
 
-      <section className="py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden" aria-labelledby="process-title">
+      <section className="py-12 sm:py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden" aria-labelledby="process-title">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-12 sm:mb-14">
             <h2 id="process-title" className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Hoe ArboMatcher werkt</h2>
@@ -585,8 +585,8 @@ export default function OpdrachtDetail() {
 
       {user && profile?.role !== 'professional' && (
           <section className="mt-12 sm:mt-16">
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-slate-50 rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/30 p-8 sm:p-10 hover:shadow-slate-200/50 hover:border-slate-300 transition-all duration-300">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="bg-slate-50 rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/30 p-5 sm:p-10 hover:shadow-slate-200/50 hover:border-slate-300 transition-all duration-300">
                 <CheckCircle className="w-12 h-12 text-slate-700 mb-4" />
                 <h2 className="text-2xl font-bold text-[#0F172A] mb-2">
                   {user && profile?.role !== 'professional'

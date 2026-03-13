@@ -7,7 +7,7 @@ export default function Prijzen() {
     <div className="min-h-screen bg-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-[#0F172A] mb-4">Prijzen</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4">Prijzen</h1>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
             Kies het abonnement dat bij uw behoeften past. Geen verborgen kosten.
           </p>
@@ -16,10 +16,10 @@ export default function Prijzen() {
         <div className="mb-16">
           <h2 className="text-2xl font-bold text-[#0F172A] mb-8 text-center">Voor organisaties</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
+            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-5 sm:p-8">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Basic</h3>
               <div className="mb-6">
-                <span className="text-4xl font-bold text-[#0F172A]">€49</span>
+                <span className="text-3xl sm:text-4xl font-bold text-[#0F172A]">€49</span>
                 <span className="text-slate-600">/maand</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
@@ -52,13 +52,13 @@ export default function Prijzen() {
               </AuthLink>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl border-2 border-[#0F172A] p-8 relative">
+            <div className="bg-white rounded-2xl shadow-xl border-2 border-[#0F172A] p-5 sm:p-8 relative">
               <div className="absolute top-0 right-0 bg-[#0F172A] text-white px-4 py-1 text-sm font-semibold rounded-bl-lg rounded-tr-lg">
                 Populair
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Pro</h3>
               <div className="mb-6">
-                <span className="text-4xl font-bold text-[#0F172A]">€149</span>
+                <span className="text-3xl sm:text-4xl font-bold text-[#0F172A]">€149</span>
                 <span className="text-slate-600">/maand</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
@@ -77,10 +77,10 @@ export default function Prijzen() {
               </AuthLink>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
+            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-5 sm:p-8">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Enterprise</h3>
               <div className="mb-6">
-                <span className="text-4xl font-bold text-[#0F172A]">Op maat</span>
+                <span className="text-3xl sm:text-4xl font-bold text-[#0F172A]">Op maat</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 {['Onbeperkt opdrachten', 'Alle Pro-functies', 'Dedicated support', 'Custom SLA', 'API-toegang'].map((t) => (
@@ -103,7 +103,7 @@ export default function Prijzen() {
         <div>
           <h2 className="text-2xl font-bold text-[#0F172A] mb-8 text-center">Voor professionals</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
+            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-5 sm:p-8">
               <h3 className="text-xl font-bold text-[#0F172A] mb-2">Gratis kennismaken</h3>
               <p className="text-sm text-slate-500 mb-4">
                 Voor professionals die eerst kennis willen maken met het platform.
@@ -127,7 +127,7 @@ export default function Prijzen() {
               </AuthLink>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl border-2 border-[#0F172A] p-8 relative">
+            <div className="bg-white rounded-2xl shadow-xl border-2 border-[#0F172A] p-5 sm:p-8 relative">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#0F172A] text-white text-sm px-4 py-1 rounded-full">
                   Meest gekozen
@@ -157,7 +157,7 @@ export default function Prijzen() {
               </AuthLink>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
+            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-5 sm:p-8">
               <h3 className="text-xl font-bold text-[#0F172A] mb-2">Freelance PRO Flex</h3>
               <p className="text-sm text-slate-500 mb-4">
                 Voor professionals die direct willen reageren en de vrijheid van een korter abonnement willen ervaren.
@@ -184,7 +184,7 @@ export default function Prijzen() {
           </div>
         </div>
 
-        <div className="mt-16 bg-slate-50 p-8 rounded-2xl border border-slate-200">
+        <div className="mt-16 bg-slate-50 p-5 sm:p-8 rounded-2xl border border-slate-200">
           <h2 className="text-2xl font-bold text-[#0F172A] mb-6 text-center">Veelgestelde vragen</h2>
           <div className="max-w-3xl mx-auto space-y-3">
             {[

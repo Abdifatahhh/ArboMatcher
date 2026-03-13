@@ -89,7 +89,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
               )}
             </div>
 
-            <button className="md:hidden text-white p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <button className="md:hidden text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
@@ -97,17 +97,17 @@ export function PublicLayout({ children }: PublicLayoutProps) {
           {mobileMenuOpen && (
             <div className="md:hidden pb-4 space-y-1">
               {navLinks.map((item) => (
-                <Link key={item.to} to={item.to} className="block px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:text-white hover:bg-white/5 transition" onClick={() => setMobileMenuOpen(false)}>{item.label}</Link>
+                <Link key={item.to} to={item.to} className="block px-3 py-3 rounded-lg text-sm text-slate-300 hover:text-white hover:bg-white/5 transition" onClick={() => setMobileMenuOpen(false)}>{item.label}</Link>
               ))}
               <div className="border-t border-white/10 mt-2 pt-2">
                 {user && profile ? (
                   <>
-                    <Link to={getDashboardLink()} className="block px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:text-white hover:bg-white/5 transition" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
+                    <Link to={getDashboardLink()} className="block px-3 py-3 rounded-lg text-sm text-slate-300 hover:text-white hover:bg-white/5 transition" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
                     <button onClick={() => { handleSignOut(); setMobileMenuOpen(false); }} className="block w-full text-left px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:text-white hover:bg-white/5 transition">Uitloggen</button>
                   </>
                 ) : (
                   <>
-                    <AuthLink to="/login" className="block px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:text-white hover:bg-white/5 transition" onClick={() => setMobileMenuOpen(false)}>Inloggen</AuthLink>
+                    <AuthLink to="/login" className="block px-3 py-3 rounded-lg text-sm text-slate-300 hover:text-white hover:bg-white/5 transition" onClick={() => setMobileMenuOpen(false)}>Inloggen</AuthLink>
                     <div className="px-3 pt-2">
                       <AuthLink to="/register" className="block bg-white text-[#0F172A] py-2.5 rounded-lg text-sm font-medium hover:bg-slate-100 transition text-center" onClick={() => setMobileMenuOpen(false)}>Gratis registreren</AuthLink>
                     </div>

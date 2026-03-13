@@ -112,7 +112,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
           </div>
         )}
         <div className="flex justify-center mb-8 md:mb-10">
-          <LogoText theme="light" className="text-5xl min-[768px]:text-2xl" />
+          <LogoText theme="light" className="text-2xl md:text-3xl" />
         </div>
 
         {healthStatus && !healthStatus.healthy && (

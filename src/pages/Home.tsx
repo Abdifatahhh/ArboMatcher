@@ -114,9 +114,9 @@ export default function Home() {
         )}
       </div>
 
-      <section className="py-24 bg-slate-50 relative overflow-hidden">
+      <section className="py-12 sm:py-24 bg-slate-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Hoe ArboMatcher werkt</h2>
             <p className="text-slate-600 text-lg max-w-xl mx-auto">
               Van registratie tot samenwerking in drie eenvoudige stappen
@@ -174,9 +174,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-12 sm:py-24 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 sm:mb-16">
             <span className="inline-block text-slate-500 font-semibold text-sm uppercase tracking-widest mb-3">Doelgroep</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">Oplossingen voor iedereen</h2>
             <p className="text-slate-600 text-lg max-w-xl mx-auto">
@@ -222,9 +222,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24 bg-slate-50 relative overflow-hidden">
+      <section className="py-12 sm:py-24 bg-slate-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div>
               <span className="inline-block text-slate-500 font-semibold text-sm uppercase tracking-widest mb-3">Voordelen</span>
               <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-10 tracking-tight">Waarom ArboMatcher?</h2>
@@ -246,7 +246,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 lg:p-10 hover:shadow-md transition-all duration-300">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-8 lg:p-10 hover:shadow-md transition-all duration-300">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-700 flex items-center justify-center text-white shadow-lg mb-6">
                 <FileText className="w-7 h-7" strokeWidth={2} />
               </div>

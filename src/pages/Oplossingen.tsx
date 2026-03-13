@@ -17,9 +17,9 @@ export default function Oplossingen() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-10 sm:mb-20">
             <div>
               <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mb-6">
                 <Building2 className="w-8 h-8 text-slate-700" />
@@ -50,7 +50,7 @@ export default function Oplossingen() {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </AuthLink>
             </div>
-            <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+            <div className="bg-slate-50 rounded-2xl p-5 sm:p-8 border border-slate-200">
               <h3 className="font-bold text-[#0F172A] mb-4">Onze 5 professionals</h3>
               <div className="space-y-3">
                 {['Bedrijfsarts', 'Arbo-arts', 'Verzekeringsarts', 'Praktijkondersteuner bedrijfsarts (POB)', 'Casemanager verzuim'].map((profile) => (
@@ -62,7 +62,7 @@ export default function Oplossingen() {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div>
               <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mb-6">
                 <UserCheck className="w-8 h-8 text-slate-700" />
@@ -94,9 +94,9 @@ export default function Oplossingen() {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </AuthLink>
             </div>
-            <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+            <div className="bg-slate-50 rounded-2xl p-5 sm:p-8 border border-slate-200">
               <h3 className="font-bold text-[#0F172A] mb-4">Contractvorm</h3>
-              <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                 {[
                   { label: 'ZZP / Freelance', desc: 'Flexibele opdrachten' },
                   { label: 'Detachering', desc: 'Langere projecten' },
@@ -129,9 +129,9 @@ export default function Oplossingen() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-12 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-slate-50 rounded-2xl border border-slate-200 p-8 sm:p-10 text-center">
+          <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 sm:p-10 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4">
               Ontdek de mogelijkheden
             </h2>

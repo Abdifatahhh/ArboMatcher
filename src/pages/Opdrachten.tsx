@@ -161,9 +161,9 @@ export default function Opdrachten() {
       <div className="bg-white rounded-t-3xl pt-8 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-lg shadow-slate-200/30 hover:shadow-slate-200/50 hover:border-slate-300 transition-all duration-300">
+          <div className="bg-slate-50 rounded-2xl p-5 sm:p-8 border border-slate-200 shadow-lg shadow-slate-200/30 hover:shadow-slate-200/50 hover:border-slate-300 transition-all duration-300">
             <h2 className="text-lg font-semibold text-[#0F172A] mb-4">De juiste professional vinden?</h2>
-            <div className="flex flex-wrap items-center gap-6">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-4 sm:gap-6">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-slate-700 flex-shrink-0" />
                 <span className="text-slate-600"><span className="font-semibold text-[#0F172A]">Persoonlijke hulp</span> bij opdrachtplaatsing</span>
@@ -178,7 +178,7 @@ export default function Opdrachten() {
               </div>
               <AuthLink
                 to="/register"
-                className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition ml-auto"
+                className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition w-full sm:w-auto sm:ml-auto justify-center"
               >
                 Plaats uw eerste opdracht gratis
                 <ArrowRight className="w-4 h-4" />
@@ -272,7 +272,7 @@ export default function Opdrachten() {
                         <h3 className="text-base font-bold text-[#0F172A] group-hover:text-[#0F172A] transition line-clamp-1">
                           {job.title}
                         </h3>
-                        <span className="flex items-center gap-1.5 text-[#0F172A] font-medium text-sm whitespace-nowrap flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="flex items-center gap-1.5 text-[#0F172A] font-medium text-sm whitespace-nowrap flex-shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                           Bekijk
                           <ArrowRight className="w-4 h-4" />
                         </span>
