@@ -156,14 +156,14 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
     <>
       <div className="fixed inset-0 z-40 bg-black/40" onClick={onClose} aria-hidden />
       <div className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-2xl bg-white shadow-xl flex flex-col">
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-4 border-b border-slate-200">
           <h2 className="text-lg font-semibold text-[#0F172A]">
             {loading ? 'Laden...' : job?.title ?? 'Opdracht'}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+            className="p-2 rounded-lg hover:bg-slate-100 text-slate-600"
             aria-label="Sluiten"
           >
             <X className="w-5 h-5" />
@@ -171,7 +171,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
         </div>
 
         {job && (
-          <div className="px-4 py-2 border-b border-gray-100 flex items-center gap-2 flex-wrap">
+          <div className="px-4 py-2 border-b border-slate-100 flex items-center gap-2 flex-wrap">
             <JobReviewStatusBadge status={job.review_status ?? 'draft'} size="sm" />
             {job.overall_score != null && (
               <JobScoreBadge score={job.overall_score} size="sm" showLabel />
@@ -222,7 +222,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
           </div>
         )}
 
-        <div className="flex border-b border-gray-100 overflow-x-auto">
+        <div className="flex border-b border-slate-100 overflow-x-auto">
           {tabs.map((t) => (
             <button
               key={t.id}
@@ -231,7 +231,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
               className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap ${
                 tab === t.id
                   ? 'border-slate-900 text-slate-900'
-                  : 'border-transparent text-gray-600 hover:text-[#0F172A]'
+                  : 'border-transparent text-slate-600 hover:text-[#0F172A]'
               }`}
             >
               {t.icon}
@@ -246,41 +246,41 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
               <Loader2 className="w-10 h-10 animate-spin text-slate-400" />
             </div>
           ) : !job ? (
-            <p className="text-gray-500">Opdracht niet gevonden.</p>
+            <p className="text-slate-500">Opdracht niet gevonden.</p>
           ) : (
             <>
               {tab === 'gegevens' && (
                 <div className="space-y-6">
                   <section>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Opdracht</h3>
+                    <h3 className="text-sm font-semibold text-slate-500 uppercase mb-2">Opdracht</h3>
                     <dl className="grid grid-cols-1 gap-2 text-sm">
-                      <div><dt className="text-gray-500">Titel</dt><dd className="font-medium">{job.title}</dd></div>
-                      <div><dt className="text-gray-500">Beschrijving</dt><dd className="whitespace-pre-wrap">{job.description ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">Eisen / wensen</dt><dd>{job.requirements ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">Startdatum</dt><dd>{job.start_date ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">Duur</dt><dd>{job.duration_weeks != null ? `${job.duration_weeks} weken` : '—'}</dd></div>
-                      <div><dt className="text-gray-500">Uren/week</dt><dd>{job.hours_per_week ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">Tarief/salaris</dt><dd>{job.rate_min != null || job.rate_max != null ? `${job.rate_min ?? '?'} – ${job.rate_max ?? '?'}` : '—'}</dd></div>
-                      <div><dt className="text-gray-500">Contractvorm</dt><dd>{getContractFormLabel(job.job_type)}</dd></div>
-                      <div><dt className="text-gray-500">Werkwijze</dt><dd>{getRemoteTypeLabel(job.remote_type)}</dd></div>
-                      <div><dt className="text-gray-500">Locatie</dt><dd>{job.region ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">Type professional</dt><dd>{targetProfessionLabel}</dd></div>
-                      <div><dt className="text-gray-500">Status</dt><dd>{job.review_status ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">Aangemaakt</dt><dd>{job.created_at ? new Date(job.created_at).toLocaleString('nl-NL') : '—'}</dd></div>
-                      <div><dt className="text-gray-500">Laatst gewijzigd</dt><dd>{job.updated_at ? new Date(job.updated_at).toLocaleString('nl-NL') : '—'}</dd></div>
-                      {job.submitted_at && <div><dt className="text-gray-500">Ingediend</dt><dd>{new Date(job.submitted_at).toLocaleString('nl-NL')}</dd></div>}
-                      {job.approved_at && <div><dt className="text-gray-500">Goedgekeurd</dt><dd>{new Date(job.approved_at).toLocaleString('nl-NL')}</dd></div>}
-                      {job.published_at && <div><dt className="text-gray-500">Gepubliceerd</dt><dd>{new Date(job.published_at).toLocaleString('nl-NL')}</dd></div>}
+                      <div><dt className="text-slate-500">Titel</dt><dd className="font-medium">{job.title}</dd></div>
+                      <div><dt className="text-slate-500">Beschrijving</dt><dd className="whitespace-pre-wrap">{job.description ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">Eisen / wensen</dt><dd>{job.requirements ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">Startdatum</dt><dd>{job.start_date ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">Duur</dt><dd>{job.duration_weeks != null ? `${job.duration_weeks} weken` : '—'}</dd></div>
+                      <div><dt className="text-slate-500">Uren/week</dt><dd>{job.hours_per_week ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">Tarief/salaris</dt><dd>{job.rate_min != null || job.rate_max != null ? `${job.rate_min ?? '?'} – ${job.rate_max ?? '?'}` : '—'}</dd></div>
+                      <div><dt className="text-slate-500">Contractvorm</dt><dd>{getContractFormLabel(job.job_type)}</dd></div>
+                      <div><dt className="text-slate-500">Werkwijze</dt><dd>{getRemoteTypeLabel(job.remote_type)}</dd></div>
+                      <div><dt className="text-slate-500">Locatie</dt><dd>{job.region ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">Type professional</dt><dd>{targetProfessionLabel}</dd></div>
+                      <div><dt className="text-slate-500">Status</dt><dd>{job.review_status ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">Aangemaakt</dt><dd>{job.created_at ? new Date(job.created_at).toLocaleString('nl-NL') : '—'}</dd></div>
+                      <div><dt className="text-slate-500">Laatst gewijzigd</dt><dd>{job.updated_at ? new Date(job.updated_at).toLocaleString('nl-NL') : '—'}</dd></div>
+                      {job.submitted_at && <div><dt className="text-slate-500">Ingediend</dt><dd>{new Date(job.submitted_at).toLocaleString('nl-NL')}</dd></div>}
+                      {job.approved_at && <div><dt className="text-slate-500">Goedgekeurd</dt><dd>{new Date(job.approved_at).toLocaleString('nl-NL')}</dd></div>}
+                      {job.published_at && <div><dt className="text-slate-500">Gepubliceerd</dt><dd>{new Date(job.published_at).toLocaleString('nl-NL')}</dd></div>}
                     </dl>
                   </section>
                   <section>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Organisatie</h3>
+                    <h3 className="text-sm font-semibold text-slate-500 uppercase mb-2">Organisatie</h3>
                     <dl className="grid grid-cols-1 gap-2 text-sm">
-                      <div><dt className="text-gray-500">Bedrijfsnaam</dt><dd className="font-medium">{employer?.company_name ?? job.company_name ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">KvK</dt><dd>{employer?.kvk_number ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">Contactpersoon</dt><dd>{employer?.contact_person ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">E-mail</dt><dd>{employer?.email ?? '—'}</dd></div>
-                      <div><dt className="text-gray-500">Telefoon</dt><dd>{employer?.phone ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">Bedrijfsnaam</dt><dd className="font-medium">{employer?.company_name ?? job.company_name ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">KvK</dt><dd>{employer?.kvk_number ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">Contactpersoon</dt><dd>{employer?.contact_person ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">E-mail</dt><dd>{employer?.email ?? '—'}</dd></div>
+                      <div><dt className="text-slate-500">Telefoon</dt><dd>{employer?.phone ?? '—'}</dd></div>
                     </dl>
                   </section>
                 </div>
@@ -290,13 +290,13 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
                 <div className="space-y-6">
                   <div className="flex gap-4 flex-wrap">
                     {job.structure_score != null && (
-                      <div><span className="text-xs text-gray-500">Structure</span><br /><JobScoreBadge score={job.structure_score} size="md" /></div>
+                      <div><span className="text-xs text-slate-500">Structure</span><br /><JobScoreBadge score={job.structure_score} size="md" /></div>
                     )}
                     {job.ai_score != null && (
-                      <div><span className="text-xs text-gray-500">AI</span><br /><JobScoreBadge score={job.ai_score} size="md" /></div>
+                      <div><span className="text-xs text-slate-500">AI</span><br /><JobScoreBadge score={job.ai_score} size="md" /></div>
                     )}
                     {job.overall_score != null && (
-                      <div><span className="text-xs text-gray-500">Totaal</span><br /><JobScoreBadge score={job.overall_score} size="md" showLabel /></div>
+                      <div><span className="text-xs text-slate-500">Totaal</span><br /><JobScoreBadge score={job.overall_score} size="md" showLabel /></div>
                     )}
                   </div>
                   {checklist && <JobCompletionChecklist items={checklist.items} />}
@@ -305,32 +305,32 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
               )}
 
               {tab === 'preview' && (
-                <div className="bg-gray-50 rounded-xl p-6 text-sm">
+                <div className="bg-slate-50 rounded-xl p-6 text-sm">
                   <h3 className="font-semibold text-[#0F172A] mb-2">{job.title}</h3>
-                  <p className="text-gray-600 whitespace-pre-wrap mb-4">{job.description ?? ''}</p>
-                  <div className="flex flex-wrap gap-2 text-gray-500">
+                  <p className="text-slate-600 whitespace-pre-wrap mb-4">{job.description ?? ''}</p>
+                  <div className="flex flex-wrap gap-2 text-slate-500">
                     <span>{getContractFormLabel(job.job_type)}</span>
                     <span>•</span>
                     <span>{getRemoteTypeLabel(job.remote_type)}</span>
                     {job.region && <><span>•</span><span>{job.region}</span></>}
                     {job.hours_per_week != null && <><span>•</span><span>{job.hours_per_week} u/w</span></>}
                   </div>
-                  <p className="mt-4 text-gray-400">Live preview komt overeen met de weergave op het platform.</p>
+                  <p className="mt-4 text-slate-400">Live preview komt overeen met de weergave op het platform.</p>
                 </div>
               )}
 
               {tab === 'historie' && (
                 <div className="space-y-2">
                   {history.length === 0 ? (
-                    <p className="text-gray-500 text-sm">Geen historie.</p>
+                    <p className="text-slate-500 text-sm">Geen historie.</p>
                   ) : (
                     history.map((h) => (
-                      <div key={h.id} className="flex gap-3 py-2 border-b border-gray-100 text-sm">
-                        <span className="text-gray-500 shrink-0">{new Date(h.created_at).toLocaleString('nl-NL')}</span>
+                      <div key={h.id} className="flex gap-3 py-2 border-b border-slate-100 text-sm">
+                        <span className="text-slate-500 shrink-0">{new Date(h.created_at).toLocaleString('nl-NL')}</span>
                         <span className="font-medium">{h.action}</span>
-                        {h.old_status && <span className="text-gray-500">{h.old_status} →</span>}
+                        {h.old_status && <span className="text-slate-500">{h.old_status} →</span>}
                         <span>{h.new_status}</span>
-                        {h.note && <span className="text-gray-600">({h.note})</span>}
+                        {h.note && <span className="text-slate-600">({h.note})</span>}
                       </div>
                     ))
                   )}
@@ -357,12 +357,12 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
                   </div>
                   <ul className="space-y-2">
                     {notes.length === 0 ? (
-                      <li className="text-gray-500 text-sm">Geen notities.</li>
+                      <li className="text-slate-500 text-sm">Geen notities.</li>
                     ) : (
                       notes.map((n) => (
-                        <li key={n.id} className="bg-gray-50 rounded-lg p-3 text-sm">
-                          <p className="text-gray-700">{n.note}</p>
-                          <p className="text-xs text-gray-400 mt-1">{new Date(n.created_at).toLocaleString('nl-NL')}</p>
+                        <li key={n.id} className="bg-slate-50 rounded-lg p-3 text-sm">
+                          <p className="text-slate-700">{n.note}</p>
+                          <p className="text-xs text-slate-400 mt-1">{new Date(n.created_at).toLocaleString('nl-NL')}</p>
                         </li>
                       ))
                     )}

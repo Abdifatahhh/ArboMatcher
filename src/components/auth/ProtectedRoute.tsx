@@ -23,7 +23,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
   if (loading || !profile) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#F1F5F9]">
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#0F172A]/20 border-t-[#0F172A]" />
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-emerald-500/20 border-t-emerald-500" />
       </div>
     );
   }

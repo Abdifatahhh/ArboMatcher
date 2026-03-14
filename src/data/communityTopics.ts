@@ -45,7 +45,7 @@ Na het invullen van je BIG-nummer controleren we dit tegen het landelijke BIG-re
 
 ## Specialismen en regio's
 
-Vul in je profiel in welke specialismen en regio's bij je passen. Opdrachtgevers zoeken op deze filters; hoe completer je profiel, hoe groter de kans dat je relevante opdrachten ziet. Je kunt meerdere regio's en specialismen selecteren.
+Vul in je profiel in welke specialismen en regio's bij je passen. Organisaties zoeken op deze filters; hoe completer je profiel, hoe groter de kans dat je relevante opdrachten ziet. Je kunt meerdere regio's en specialismen selecteren.
 
 - Specialismen: verzuim, PMO, re-integratie, etc.
 - Regio's: waar wil je werken of op afstand ondersteunen?
@@ -53,7 +53,7 @@ Vul in je profiel in welke specialismen en regio's bij je passen. Opdrachtgevers
 
 ## Je eerste opdracht
 
-Blader door de open opdrachten, filter op regio of type, en reageer met een korte motivatie. Opdrachtgevers ontvangen je reactie en kunnen je uitnodigen voor een gesprek of direct een opdracht toewijzen. Reageer tijdig en helder om je kansen te vergroten.
+Blader door de open opdrachten, filter op regio of type, en reageer met een korte motivatie. Organisaties ontvangen je reactie en kunnen je uitnodigen voor een gesprek of direct een opdracht toewijzen. Reageer tijdig en helder om je kansen te vergroten.
 
 - Opdrachten bekijken en filteren
 - Sollicitatie met motivatie indienen
@@ -133,7 +133,7 @@ Bepaal je tarief op basis van de markt, je ervaring en je kosten. Een richtlijn 
 
 ## Beschikbaarheid
 
-Geef in je profiel aan hoeveel uur per week je beschikbaar bent en vanaf wanneer. Opdrachtgevers filteren hierop; een actuele beschikbaarheid vergroot je kansen. Werk je beschikbaarheid bij zodra er iets verandert.
+Geef in je profiel aan hoeveel uur per week je beschikbaar bent en vanaf wanneer. Organisaties filteren hierop; een actuele beschikbaarheid vergroot je kansen. Werk je beschikbaarheid bij zodra er iets verandert.
 
 - Uren per week en startdatum
 - Regio of type opdracht (op locatie / op afstand)
@@ -153,7 +153,7 @@ De afspraken over declaratie en facturatie maak je met de organisatie. Het platf
 
 ## Profiel optimaliseren
 
-Zorg dat je profiel volledig is: BIG geverifieerd, specialismen en regio's ingevuld, een korte bio en een indicatie van je tarief en beschikbaarheid. Opdrachtgevers scannen profielen snel; hoe completer en duidelijker, hoe groter de kans dat je wordt uitgenodigd.
+Zorg dat je profiel volledig is: BIG geverifieerd, specialismen en regio's ingevuld, een korte bio en een indicatie van je tarief en beschikbaarheid. Organisaties scannen profielen snel; hoe completer en duidelijker, hoe groter de kans dat je wordt uitgenodigd.
 
 - Alle velden invullen en actueel houden
 - Bio: wie ben je, wat doe je, wat is je toegevoegde waarde?

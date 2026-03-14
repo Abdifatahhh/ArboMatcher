@@ -31,7 +31,7 @@ export function CookieBanner() {
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-      <div className="max-w-4xl w-full mx-auto bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+      <div className="max-w-4xl w-full mx-auto bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
         <div className="p-4 sm:p-6">
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
@@ -50,20 +50,20 @@ export function CookieBanner() {
           </div>
 
           {showDetails && (
-            <div className="mt-4 pt-4 border-t border-gray-100 space-y-2 text-sm text-slate-600">
+            <div className="mt-4 pt-4 border-t border-slate-100 space-y-2 text-sm text-slate-600">
               <p className="text-xs text-slate-500 mb-1">
                 Hier ziet u precies welke soorten cookies we gebruiken:
               </p>
               <label className="flex items-center gap-2">
-                <input type="checkbox" defaultChecked disabled className="rounded border-gray-300 text-[#0F172A]" />
+                <input type="checkbox" defaultChecked disabled className="rounded border-slate-300 text-[#0F172A]" />
                 <span><span className="font-semibold">Noodzakelijk</span> – vereist voor de basiswerking van de site (altijd aan)</span>
               </label>
               <label className="flex items-center gap-2">
-                <input type="checkbox" defaultChecked className="rounded border-gray-300 text-[#0F172A]" />
+                <input type="checkbox" defaultChecked className="rounded border-slate-300 text-[#0F172A]" />
                 <span><span className="font-semibold">Analytisch</span> – helpt ons het gebruik en prestaties te meten</span>
               </label>
               <label className="flex items-center gap-2">
-                <input type="checkbox" className="rounded border-gray-300 text-[#0F172A]" />
+                <input type="checkbox" className="rounded border-slate-300 text-[#0F172A]" />
                 <span><span className="font-semibold">Voorkeuren</span> – onthoudt uw keuzes, zoals taal en instellingen</span>
               </label>
             </div>

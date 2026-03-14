@@ -35,7 +35,7 @@ export default function FAQ() {
             <HelpCircle className="w-8 h-8 text-slate-400" />
             <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Support</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Veelgestelde vragen</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4"><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300">Veelgestelde vragen</span></h1>
           <p className="text-xl text-slate-300 max-w-2xl">
             Antwoorden op de meest gestelde vragen over het platform, abonnementen en het matchen van opdrachten en professionals.
           </p>

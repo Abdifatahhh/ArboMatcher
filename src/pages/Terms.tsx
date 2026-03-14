@@ -4,7 +4,7 @@ export default function Terms() {
       <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Algemene Voorwaarden</h1>
-          <p className="text-gray-300 text-lg">
+          <p className="text-slate-300 text-lg">
             Algemene voorwaarden van ArboMatcher B.V.
           </p>
         </div>
@@ -26,7 +26,7 @@ export default function Terms() {
           </ol>
         </nav>
 
-        <div className="prose prose-lg max-w-none text-gray-700">
+        <div className="prose prose-lg max-w-none text-slate-700">
           <h2 id="section_definities" className="text-2xl font-bold text-[#0F172A] mt-10 mb-4 scroll-mt-24">1. Definities</h2>
           <p className="mb-3">Aan de woorden die met een hoofdletter zijn geschreven wordt de hiernavolgende betekenis toegekend:</p>
           <ul className="list-none space-y-3 mb-6">
@@ -39,7 +39,7 @@ export default function Terms() {
             <li><strong>Platform:</strong> alle websites en andere online toepassingen in eigendom of beheer van AM, waaronder de Website en het Gebruikersgedeelte.</li>
             <li><strong>Website:</strong> de webpagina’s op het internetdomein arbomatcher.nl en aanverwante domeinen die door AM worden beheerd.</li>
             <li><strong>Gebruikersgedeelte:</strong> het gedeelte van de Website dat uitsluitend toegankelijk is voor Gebruikers na inloggen, waaronder het plaatsen en bekijken van Opdrachten, het reageren op Opdrachten, het beheren van profielen, berichten en overige functionaliteit die AM voor Gebruikers beschikbaar stelt.</li>
-            <li><strong>Plaatsen:</strong> het door een Opdrachtgever of Intermediair indienen van een Opdracht bij AM met als doel deze onder de aandacht te brengen van Bezoekers en Gebruikers.</li>
+            <li><strong>Plaatsen:</strong> het door een Organisatie of Intermediair indienen van een Opdracht bij AM met als doel deze onder de aandacht te brengen van Bezoekers en Gebruikers.</li>
             <li><strong>Opdracht:</strong> een concrete vraag naar de tijdelijke terbeschikkingstelling van arbeid van een Professional, bijvoorbeeld voor verzuimbegeleiding, PAGO of andere arbodiensten.</li>
             <li><strong>Reactie:</strong> het door een Professional of namens een Professional via het Platform verstuurde bericht of aanbod ter zake van een specifieke Opdracht, bestaande uit tekst en eventueel bijlagen.</li>
             <li><strong>Content:</strong> alle teksten, gegevens, documenten (waaronder cv’s), afbeeldingen en overige materiaal die door Gebruikers of Bezoekers op of via het Platform ter beschikking worden gesteld.</li>
@@ -132,7 +132,7 @@ export default function Terms() {
             Indien een bepaling van de Voorwaarden ongeldig of niet-afdwingbaar wordt geacht, blijven de overige bepalingen van kracht. Kopjes en nummering zijn uitsluitend bedoeld ter leesbaarheid en beïnvloeden de uitleg van de bepalingen niet.
           </p>
 
-          <p className="mt-12 text-sm text-gray-600">
+          <p className="mt-12 text-sm text-slate-600">
             Laatste update: 6 maart 2026
           </p>
         </div>

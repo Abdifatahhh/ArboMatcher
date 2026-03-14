@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
@@ -30,6 +30,35 @@ export default function OpdrachtDetail() {
   const [viewsCount, setViewsCount] = useState(0);
   const [doctorPlan, setDoctorPlan] = useState<'GRATIS' | 'PRO' | null>(null);
   const [processStep, setProcessStep] = useState(1);
+  const [processProgress, setProcessProgress] = useState(0);
+  const processStartRef = useRef(Date.now());
+  const PROCESS_DURATION = 5000;
+  const PROCESS_TOTAL = 5;
+
+  const advanceProcess = useCallback(() => {
+    setProcessStep(prev => prev >= PROCESS_TOTAL ? 1 : prev + 1);
+    setProcessProgress(0);
+    processStartRef.current = Date.now();
+  }, []);
+
+  useEffect(() => {
+    processStartRef.current = Date.now();
+    const timer = setTimeout(advanceProcess, PROCESS_DURATION);
+    const raf = { id: 0 };
+    const tick = () => {
+      const elapsed = Date.now() - processStartRef.current;
+      setProcessProgress(Math.min(elapsed / PROCESS_DURATION, 1));
+      raf.id = requestAnimationFrame(tick);
+    };
+    raf.id = requestAnimationFrame(tick);
+    return () => { clearTimeout(timer); cancelAnimationFrame(raf.id); };
+  }, [processStep, advanceProcess]);
+
+  const handleProcessStepChange = (step: number) => {
+    setProcessStep(step);
+    setProcessProgress(0);
+    processStartRef.current = Date.now();
+  };
 
   useEffect(() => {
     fetchJob();
@@ -155,7 +184,7 @@ export default function OpdrachtDetail() {
       return;
     }
 
-    const jobTier = 'job_tier' in job ? job.job_tier : ((job as { is_pro?: boolean }).is_pro ? 'PRO' : 'STANDARD');
+    const jobTier = 'job_tier' in job ? job.job_tier : ((job as { is_pro?: boolean }).is_pro ? 'PRO' : 'GRATIS');
     const jobCreatedAt = job.created_at ? new Date(job.created_at).getTime() : 0;
     const cutoff48h = Date.now() - 48 * 60 * 60 * 1000;
     const plan = (doctor as { plan?: string }).plan ?? 'GRATIS';
@@ -259,7 +288,7 @@ export default function OpdrachtDetail() {
   const durationWeeks = isFakeJob ? (job as FakeJob).duration_weeks : (job as Job).duration_weeks;
   const applicationsCount = getApplicationsCount(job);
 
-  const jobTier = !isFakeJob && job ? ('job_tier' in job ? (job as Job).job_tier : ((job as { is_pro?: boolean }).is_pro ? 'PRO' : 'STANDARD')) : 'STANDARD';
+  const jobTier = !isFakeJob && job ? ('job_tier' in job ? (job as Job).job_tier : ((job as { is_pro?: boolean }).is_pro ? 'PRO' : 'GRATIS')) : 'GRATIS';
   const jobCreatedAt = job?.created_at ? new Date(job.created_at).getTime() : 0;
   const cutoff48h = Date.now() - 48 * 60 * 60 * 1000;
   const isProJobWithin48h = jobTier === 'PRO' && jobCreatedAt > cutoff48h;
@@ -585,7 +614,7 @@ export default function OpdrachtDetail() {
               <HowItWorksPreview activeStep={processStep} />
             </div>
             <div className="lg:col-span-2 order-1 lg:order-2">
-              <HowItWorksSteps activeStep={processStep} onStepChange={setProcessStep} />
+              <HowItWorksSteps activeStep={processStep} onStepChange={handleProcessStepChange} progress={processProgress} />
             </div>
           </div>
 

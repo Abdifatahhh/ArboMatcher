@@ -14,10 +14,10 @@ import { AdminBreadcrumbs } from '../../components/Admin/AdminBreadcrumbs';
 const VERIFICATION_STATUSES: Array<Doctor['verification_status']> = ['UNVERIFIED', 'PENDING', 'VERIFIED', 'REJECTED'];
 const APPLICATIONS_PAGE_SIZE = 10;
 
-const fi = 'w-full h-10 px-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition';
+const fi = 'w-full h-10 px-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition';
 const fd = 'w-full h-10 px-3 border border-slate-100 rounded-lg text-sm text-slate-500 bg-slate-50';
 const fl = 'block text-sm font-medium text-slate-700 mb-1.5';
-const ft = 'w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition resize-y';
+const ft = 'w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition resize-y';
 
 export default function AdminArtsDetail() {
   const { id } = useParams<{ id: string }>();
@@ -98,7 +98,7 @@ export default function AdminArtsDetail() {
     return (
       <AdminPage>
         <AdminAlert variant="error">Professional niet gevonden.</AdminAlert>
-        <Link to="/admin/professionals" className="text-sm text-blue-600 hover:underline mt-2 inline-block">Terug naar professionals</Link>
+        <Link to="/admin/professionals" className="text-sm text-emerald-600 hover:underline mt-2 inline-block">Terug naar professionals</Link>
       </AdminPage>
     );
   }
@@ -216,10 +216,10 @@ export default function AdminArtsDetail() {
             {applications.map((app) => (
               <div key={app.id} className="flex items-center justify-between px-5 py-2.5">
                 <div>
-                  <Link to="/admin/reacties" className="text-sm font-medium text-slate-900 hover:text-blue-600 transition-colors">{app.jobs?.title || 'Opdracht'}</Link>
+                  <Link to="/admin/reacties" className="text-sm font-medium text-slate-900 hover:text-emerald-600 transition-colors">{app.jobs?.title || 'Opdracht'}</Link>
                   <span className="ml-2 text-xs text-slate-400">{app.status} · {new Date(app.created_at).toLocaleDateString('nl-NL')}</span>
                 </div>
-                <Link to={`/opdrachten/${app.jobs?.id}`} className="text-xs text-blue-600 hover:underline">Bekijk</Link>
+                <Link to={`/opdrachten/${app.jobs?.id}`} className="text-xs text-emerald-600 hover:underline">Bekijk</Link>
               </div>
             ))}
           </div>

@@ -217,7 +217,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
       </div>
     );
   }
@@ -225,7 +225,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
   return (
     <div className={isOnboarding ? 'max-w-2xl mx-auto' : 'p-6 max-w-4xl'}>
       <h1 className={`font-bold text-[#0F172A] mb-6 ${isOnboarding ? 'text-2xl text-center' : 'text-3xl'}`}>
-        {isOnboarding ? 'Voltooi je profiel' : 'Mijn Profiel'}
+        {isOnboarding ? 'Voltooi uw profiel' : 'Mijn Profiel'}
       </h1>
 
       {message && (
@@ -467,7 +467,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
         {!isOnboarding && (
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
             <h2 className="text-xl font-bold text-[#0F172A] mb-2">Privacy & toestemming</h2>
-            <p className="text-sm text-slate-600 mb-3">Stel in of ArboMatcher jou als kandidaat mag tonen bij matches op opdrachten van organisaties (buiten je eigen reacties om).</p>
+            <p className="text-sm text-slate-600 mb-3">Stel in of ArboMatcher u als kandidaat mag tonen bij matches op opdrachten van organisaties (buiten uw eigen reacties om).</p>
             <button
               type="button"
               onClick={openConsentModal}
@@ -493,7 +493,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
                       role="switch"
                       aria-checked={consentToggles[i]}
                       onClick={() => setConsentToggle(i, !consentToggles[i])}
-                      className={`flex-shrink-0 w-11 h-6 rounded-full transition-colors flex items-center ${consentToggles[i] ? 'bg-[#0F172A] justify-end' : 'bg-slate-100 justify-start'}`}
+                      className={`flex-shrink-0 w-11 h-6 rounded-full transition-colors flex items-center ${consentToggles[i] ? 'bg-emerald-500 justify-end' : 'bg-slate-100 justify-start'}`}
                     >
                       <span className="w-5 h-5 bg-white rounded-full shadow mx-0.5" />
                     </button>

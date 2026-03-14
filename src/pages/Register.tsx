@@ -233,7 +233,7 @@ export default function Register() {
                   type="checkbox"
                   checked={acceptTerms}
                   onChange={(e) => setAcceptTerms(e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded border-slate-300 text-[#0F172A] focus:ring-slate-900"
+                  className="mt-1 w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                 />
                 <span className="text-sm text-slate-600">
                   Ik ga akkoord met de <Link to="/terms" className="text-[#0F172A] hover:underline font-medium">algemene voorwaarden</Link>

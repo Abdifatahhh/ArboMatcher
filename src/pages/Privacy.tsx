@@ -4,7 +4,7 @@ export default function Privacy() {
       <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Privacyverklaring & Cookies</h1>
-          <p className="text-gray-300 text-lg">
+          <p className="text-slate-300 text-lg">
             Hoe ArboMatcher B.V. omgaat met uw persoonsgegevens en cookies
           </p>
         </div>
@@ -26,7 +26,7 @@ export default function Privacy() {
           </ol>
         </nav>
 
-        <div className="prose prose-lg max-w-none text-gray-700">
+        <div className="prose prose-lg max-w-none text-slate-700">
           <p className="mb-8">
             ArboMatcher B.V. respecteert uw privacy en gaat zorgvuldig om met uw persoonsgegevens. In deze privacyverklaring leggen wij uit welke gegevens wij verzamelen, voor welke doelen, op welke rechtsgrond, hoe lang wij ze bewaren en welke rechten u heeft. Dit document voldoet aan de Algemene Verordening Gegevensbescherming (AVG).
           </p>
@@ -144,7 +144,7 @@ export default function Privacy() {
             E-mail: info@arbomatcher.nl
           </p>
 
-          <p className="mt-12 text-sm text-gray-600">
+          <p className="mt-12 text-sm text-slate-600">
             Laatste update: 6 maart 2026
           </p>
         </div>

@@ -134,7 +134,7 @@ export default function AdminJobsReview() {
                 {rows.map(({ job, employer }) => (
                   <tr key={job.id} className={t.row}>
                     <td className={t.td}>
-                      <button type="button" onClick={() => setSelectedId(selectedId === job.id ? null : job.id)} className="text-left font-medium text-slate-900 hover:text-blue-600 transition-colors">{job.title}</button>
+                      <button type="button" onClick={() => setSelectedId(selectedId === job.id ? null : job.id)} className="text-left font-medium text-slate-900 hover:text-emerald-600 transition-colors">{job.title}</button>
                     </td>
                     <td className={t.td}>{employer?.company_name ?? job.company_name ?? '—'}</td>
                     <td className={t.td}><span className="text-xs">{getContractFormLabel(job.job_type)} / {getRemoteTypeLabel(job.remote_type)}</span></td>

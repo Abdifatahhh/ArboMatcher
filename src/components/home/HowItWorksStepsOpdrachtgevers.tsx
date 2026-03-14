@@ -37,9 +37,10 @@ const STEPS: StepItem[] = [
 export interface HowItWorksStepsOpdrachtgeversProps {
   activeStep: number;
   onStepChange: (step: number) => void;
+  progress?: number;
 }
 
-export function HowItWorksStepsOpdrachtgevers({ activeStep, onStepChange }: HowItWorksStepsOpdrachtgeversProps) {
+export function HowItWorksStepsOpdrachtgevers({ activeStep, onStepChange, progress = 0 }: HowItWorksStepsOpdrachtgeversProps) {
   const listId = useId();
 
   return (
@@ -78,12 +79,20 @@ export function HowItWorksStepsOpdrachtgevers({ activeStep, onStepChange }: HowI
                 </span>
               </span>
               {isActive && (
-                <p
-                  id={`${listId}-desc-${step.id}`}
-                  className="mt-2 ml-11 text-sm text-slate-600 leading-relaxed"
-                >
-                  {step.description}
-                </p>
+                <>
+                  <p
+                    id={`${listId}-desc-${step.id}`}
+                    className="mt-2 ml-11 text-sm text-slate-600 leading-relaxed"
+                  >
+                    {step.description}
+                  </p>
+                  <div className="mt-3 ml-11 h-1 bg-slate-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"
+                      style={{ width: `${progress * 100}%` }}
+                    />
+                  </div>
+                </>
               )}
             </button>
           </li>

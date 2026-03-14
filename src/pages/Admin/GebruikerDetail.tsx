@@ -16,7 +16,7 @@ const ROLE_OPTIONS: { value: UserRole; label: string }[] = [
 ];
 const STATUS_OPTIONS = ['ACTIVE', 'BLOCKED'];
 
-const fi = 'w-full h-10 px-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition';
+const fi = 'w-full h-10 px-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition';
 const fd = 'w-full h-10 px-3 border border-slate-100 rounded-lg text-sm text-slate-500 bg-slate-50';
 const fl = 'block text-sm font-medium text-slate-700 mb-1.5';
 
@@ -81,7 +81,7 @@ export default function AdminGebruikerDetail() {
       <AdminPage>
         <div className="flex items-center justify-center min-h-[50vh]">
           <AdminCard className="max-w-md w-full text-center">
-            <CheckCircle className="w-12 h-12 text-blue-500 mx-auto mb-3" />
+            <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
             <h2 className="text-lg font-semibold text-slate-900 mb-1">Account verwijderd</h2>
             <p className="text-sm text-slate-500">U wordt doorgestuurd naar de gebruikerslijst.</p>
           </AdminCard>
@@ -94,7 +94,7 @@ export default function AdminGebruikerDetail() {
     return (
       <AdminPage>
         <AdminAlert variant="error">Gebruiker niet gevonden.</AdminAlert>
-        <Link to="/admin/gebruikers" className="text-sm text-blue-600 hover:underline mt-2 inline-block">Terug naar gebruikers</Link>
+        <Link to="/admin/gebruikers" className="text-sm text-emerald-600 hover:underline mt-2 inline-block">Terug naar gebruikers</Link>
       </AdminPage>
     );
   }
@@ -130,7 +130,7 @@ export default function AdminGebruikerDetail() {
               <p><span className="text-slate-500">BIG:</span> <code className="bg-slate-100 px-1.5 py-0.5 rounded text-xs">{doctor.big_number}</code></p>
               <p><span className="text-slate-500">Verificatie:</span> {doctor.verification_status}</p>
               <p><span className="text-slate-500">Plan:</span> {(doctor as any).plan === 'PRO' ? 'PRO' : 'Gratis'}</p>
-              <Link to="/admin/verificaties" className="text-blue-600 hover:underline text-sm">Naar verificaties →</Link>
+              <Link to="/admin/verificaties" className="text-emerald-600 hover:underline text-sm">Naar verificaties →</Link>
             </div>
           </AdminCard>
         )}

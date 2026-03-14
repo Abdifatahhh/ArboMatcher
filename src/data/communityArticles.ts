@@ -28,9 +28,9 @@ export const COMMUNITY_ARTICLES: CommunityArticle[] = [
 
 ## Waarom verifiëren we je BIG-nummer?
 
-Opdrachtgevers – arbodiensten en werkgevers – willen zeker weten dat ze met gekwalificeerde professionals werken. Door je BIG-nummer te controleren tegen het officiële register geven we hen die zekerheid. Daarnaast voldoen we daarmee aan de eisen die horen bij verantwoord matching in de zorg.
+Organisaties – arbodiensten en werkgevers – willen zeker weten dat ze met gekwalificeerde professionals werken. Door je BIG-nummer te controleren tegen het officiële register geven we hen die zekerheid. Daarnaast voldoen we daarmee aan de eisen die horen bij verantwoord matching in de zorg.
 
-- Opdrachtgevers zien direct dat je geregistreerd en bevoegd bent
+- Organisaties zien direct dat je geregistreerd en bevoegd bent
 - Er is geen twijfel over je kwalificatie bij het reageren op opdrachten
 - Het platform blijft betrouwbaar voor alle partijen
 

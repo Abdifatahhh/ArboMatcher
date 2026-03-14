@@ -9,7 +9,7 @@ interface JobAIReviewCardProps {
 export function JobAIReviewCard({ feedback, compact }: JobAIReviewCardProps) {
   if (!feedback || feedback.ai_status === 'idle' || feedback.ai_status === 'pending') {
     return (
-      <div className="bg-gray-50 rounded-xl p-4 text-center text-gray-500 text-sm">
+      <div className="bg-slate-50 rounded-xl p-4 text-center text-slate-500 text-sm">
         Geen AI-beoordeling beschikbaar. Dien de opdracht in om te beoordelen.
       </div>
     );
@@ -25,18 +25,18 @@ export function JobAIReviewCard({ feedback, compact }: JobAIReviewCardProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-gray-100 flex items-center gap-2">
+    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-slate-100 flex items-center gap-2">
         <Sparkles className="w-4 h-4 text-slate-500" />
         <span className="font-medium text-[#0F172A]">AI-beoordeling</span>
       </div>
       <div className={`space-y-3 ${compact ? 'p-3' : 'p-4'}`}>
         {feedback.ai_feedback_summary && (
-          <p className="text-sm text-gray-700">{feedback.ai_feedback_summary}</p>
+          <p className="text-sm text-slate-700">{feedback.ai_feedback_summary}</p>
         )}
         {feedback.ai_strengths && feedback.ai_strengths.length > 0 && (
           <div>
-            <p className="text-xs font-medium text-gray-500 uppercase mb-1">Sterke punten</p>
+            <p className="text-xs font-medium text-slate-500 uppercase mb-1">Sterke punten</p>
             <ul className="space-y-1">
               {feedback.ai_strengths.map((s, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-emerald-800">
@@ -49,7 +49,7 @@ export function JobAIReviewCard({ feedback, compact }: JobAIReviewCardProps) {
         )}
         {feedback.ai_improvements && feedback.ai_improvements.length > 0 && (
           <div>
-            <p className="text-xs font-medium text-gray-500 uppercase mb-1">Verbeterpunten</p>
+            <p className="text-xs font-medium text-slate-500 uppercase mb-1">Verbeterpunten</p>
             <ul className="space-y-1">
               {feedback.ai_improvements.map((s, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-amber-800">
@@ -61,7 +61,7 @@ export function JobAIReviewCard({ feedback, compact }: JobAIReviewCardProps) {
           </div>
         )}
         {feedback.ai_last_reviewed_at && (
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-slate-400">
             Laatst beoordeeld: {new Date(feedback.ai_last_reviewed_at).toLocaleString('nl-NL')}
           </p>
         )}

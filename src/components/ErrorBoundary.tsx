@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen bg-[#F3F4F6] flex items-center justify-center p-4">
           <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
             <h1 className="text-xl font-bold text-[#0F172A] mb-2">Er is iets misgegaan</h1>
-            <p className="text-gray-600 mb-4">
+            <p className="text-slate-600 mb-4">
               De pagina kon niet worden geladen. Probeer de pagina te vernieuwen of ga terug naar het startscherm.
             </p>
             <Link

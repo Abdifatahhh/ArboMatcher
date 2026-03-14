@@ -81,7 +81,7 @@ export default function ArtsDashboard() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
       </div>
     );
   }
@@ -95,8 +95,8 @@ export default function ArtsDashboard() {
           <div className="flex items-center gap-2 md:gap-3 min-w-0">
             <AlertCircle className="w-5 h-5 md:w-6 md:h-6 text-amber-600 shrink-0" />
             <div className="min-w-0">
-              <p className="font-semibold text-amber-900 text-sm md:text-base">Maak je profiel compleet om te reageren op opdrachten</p>
-              <p className="text-xs md:text-sm text-amber-800">Vul je gegevens, specialismen en BIG-nummer in op je profielpagina.</p>
+              <p className="font-semibold text-amber-900 text-sm md:text-base">Maak uw profiel compleet om te reageren op opdrachten</p>
+              <p className="text-xs md:text-sm text-amber-800">Vul uw gegevens, specialismen en BIG-nummer in op uw profielpagina.</p>
             </div>
           </div>
           <Link
@@ -216,7 +216,7 @@ export default function ArtsDashboard() {
                   to={`/opdrachten/${job.id}`}
                   className="flex items-start gap-2 md:gap-3 bg-white rounded-xl border border-slate-200 shadow-sm px-4 py-3 hover:border-slate-300 hover:shadow-md transition"
                 >
-                  <div className="w-8 h-8 md:w-10 md:h-10 bg-[#0F172A] rounded-lg md:rounded-xl flex items-center justify-center text-white font-bold text-[10px] md:text-xs flex-shrink-0">PRO</div>
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-emerald-500 to-green-400 rounded-lg md:rounded-xl flex items-center justify-center text-white font-bold text-[10px] md:text-xs flex-shrink-0">PRO</div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-[#0F172A] truncate text-sm md:text-base">{job.title}</p>
                     <div className="flex items-center text-xs md:text-sm text-slate-400 mt-0.5">

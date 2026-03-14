@@ -54,7 +54,7 @@ export default function OpdrachtgeverDashboard() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
       </div>
     );
   }
@@ -86,8 +86,8 @@ export default function OpdrachtgeverDashboard() {
             <Briefcase className="w-6 h-6 md:w-8 md:h-8 text-[#0F172A]" />
             <span className="text-xl md:text-3xl font-bold text-[#0F172A]">{stats.activeJobs}</span>
           </div>
-          <h3 className="text-sm md:text-lg font-semibold text-gray-800">Actieve opdrachten</h3>
-          <p className="text-xs md:text-sm text-gray-600">Uw openstaande vacatures</p>
+          <h3 className="text-sm md:text-lg font-semibold text-slate-800">Actieve opdrachten</h3>
+          <p className="text-xs md:text-sm text-slate-600">Uw openstaande vacatures</p>
         </Link>
         <Link
           to="/organisatie/kandidaten"
@@ -97,8 +97,8 @@ export default function OpdrachtgeverDashboard() {
             <Users className="w-6 h-6 md:w-8 md:h-8 text-slate-700" />
             <span className="text-xl md:text-3xl font-bold text-[#0F172A]">{stats.applications}</span>
           </div>
-          <h3 className="text-sm md:text-lg font-semibold text-gray-800">Kandidaten</h3>
-          <p className="text-xs md:text-sm text-gray-600">Totaal aantal reacties</p>
+          <h3 className="text-sm md:text-lg font-semibold text-slate-800">Kandidaten</h3>
+          <p className="text-xs md:text-sm text-slate-600">Totaal aantal reacties</p>
         </Link>
         <Link
           to="/organisatie/inbox"
@@ -108,19 +108,19 @@ export default function OpdrachtgeverDashboard() {
             <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-[#0F172A]" />
             <span className="text-xl md:text-3xl font-bold text-[#0F172A]">{stats.messages}</span>
           </div>
-          <h3 className="text-sm md:text-lg font-semibold text-gray-800">Berichten</h3>
-          <p className="text-xs md:text-sm text-gray-600">Conversaties met professionals</p>
+          <h3 className="text-sm md:text-lg font-semibold text-slate-800">Berichten</h3>
+          <p className="text-xs md:text-sm text-slate-600">Conversaties met professionals</p>
         </Link>
         <Link
           to="/organisatie/profiel"
           className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100 hover:border-slate-300 hover:shadow-slate-200/50 transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2 md:mb-4">
-            <User className="w-6 h-6 md:w-8 md:h-8 text-gray-500" />
-            <span className="text-xl md:text-3xl font-bold text-gray-700">—</span>
+            <User className="w-6 h-6 md:w-8 md:h-8 text-slate-500" />
+            <span className="text-xl md:text-3xl font-bold text-slate-700">—</span>
           </div>
-          <h3 className="text-sm md:text-lg font-semibold text-gray-800">Bedrijfsprofiel</h3>
-          <p className="text-xs md:text-sm text-gray-600">Gegevens beheren</p>
+          <h3 className="text-sm md:text-lg font-semibold text-slate-800">Bedrijfsprofiel</h3>
+          <p className="text-xs md:text-sm text-slate-600">Gegevens beheren</p>
         </Link>
       </div>
 
@@ -156,23 +156,23 @@ export default function OpdrachtgeverDashboard() {
           </h2>
           <div className="space-y-1.5 md:space-y-2">
             <Link to="/organisatie/opdrachten" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
-              <span className="font-medium text-gray-800">Nieuwe opdracht plaatsen</span>
-              <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
+              <span className="font-medium text-slate-800">Nieuwe opdracht plaatsen</span>
+              <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-slate-500" />
             </Link>
             <Link to="/organisatie/profiel" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
-              <span className="font-medium text-gray-800">Bedrijfsprofiel bewerken</span>
-              <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
+              <span className="font-medium text-slate-800">Bedrijfsprofiel bewerken</span>
+              <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-slate-500" />
             </Link>
             <Link to="/professional" className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition text-sm md:text-base">
-              <span className="font-medium text-gray-800">Zoek professionals</span>
-              <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500" />
+              <span className="font-medium text-slate-800">Zoek professionals</span>
+              <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-slate-500" />
             </Link>
           </div>
         </div>
         <div className="space-y-3 md:space-y-4">
           <div className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg shadow-slate-200/30 border border-slate-100">
             <h2 className="text-base md:text-xl font-bold text-[#0F172A] mb-3 md:mb-4">Overzicht</h2>
-            <p className="text-xs md:text-sm text-gray-600">
+            <p className="text-xs md:text-sm text-slate-600">
               Beheer uw opdrachten, bekijk kandidaten en voer gesprekken met professionals vanuit dit dashboard.
             </p>
           </div>

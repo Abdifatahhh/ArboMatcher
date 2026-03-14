@@ -13,9 +13,9 @@ function slugify(s: string): string {
 
 const DEFAULT_TOPIC: CommunityTopic = { slug: '', title: '', category: 'Voor professionals', description: '', imageUrl: '', imageAlt: '', content: '' };
 const DEFAULT_ARTICLE: CommunityArticle = { slug: '', title: '', date: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' }), category: 'Voor professionals', imageUrl: '', imageAlt: '', content: '' };
-const fi = 'w-full h-10 px-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition';
+const fi = 'w-full h-10 px-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition';
 const fl = 'block text-sm font-medium text-slate-700 mb-1.5';
-const ft = 'w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition resize-y font-mono';
+const ft = 'w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition resize-y font-mono';
 
 export default function AdminCommunityBeheer() {
   const [tab, setTab] = useState<TabId>('topics');

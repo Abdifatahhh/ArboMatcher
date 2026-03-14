@@ -3,7 +3,7 @@ export const faqGroups = [
     title: 'Platform',
     items: [
       { q: 'Wat is ArboMatcher?', a: 'ArboMatcher is het platform dat organisaties verbindt met bedrijfsartsen en arbo-professionals. U plaatst opdrachten of reageert op opdrachten voor ZZP, detachering of loondienst.' },
-      { q: 'Hoe werkt de matching?', a: 'Opdrachtgevers plaatsen een opdracht; professionals kunnen reageren. U kunt ook actief zoeken in ons netwerk. Na matching maakt u rechtstreeks afspraken. Binnen 48 uur ontvangt u doorgaans meerdere reacties.' },
+      { q: 'Hoe werkt de matching?', a: 'Organisaties plaatsen een opdracht; professionals kunnen reageren. U kunt ook actief zoeken in ons netwerk. Na matching maakt u rechtstreeks afspraken. Binnen 48 uur ontvangt u doorgaans meerdere reacties.' },
       { q: 'Is BIG-verificatie verplicht?', a: 'Ja. Alle professionals worden gecontroleerd op hun BIG-registratie, zodat u alleen met gecertificeerde professionals werkt.' },
     ],
   },

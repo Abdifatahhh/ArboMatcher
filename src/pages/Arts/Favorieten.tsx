@@ -55,7 +55,7 @@ export default function ArtsFavorieten() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0F172A]"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-500"></div>
       </div>
     );
   }
@@ -100,7 +100,7 @@ export default function ArtsFavorieten() {
 
               <div className="mb-4">
                 {(job as { job_tier?: string }).job_tier === 'PRO' ? (
-                  <div className="w-12 h-12 bg-[#0F172A] rounded-lg flex items-center justify-center text-white font-bold text-xs mb-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-400 rounded-lg flex items-center justify-center text-white font-bold text-xs mb-3">
                     PRO
                   </div>
                 ) : (

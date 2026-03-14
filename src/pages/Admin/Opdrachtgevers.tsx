@@ -48,7 +48,7 @@ export default function AdminOpdrachtgevers() {
 
   return (
     <AdminPage>
-      <AdminPageHeader icon={Building2} title="Opdrachtgevers" description="Beheer opdrachtgevers en hun bedrijfsgegevens" />
+      <AdminPageHeader icon={Building2} title="Organisaties" description="Beheer organisaties en hun bedrijfsgegevens" />
       {isDemo && <AdminAlert variant="warning">Demo-data wordt getoond. Wijzigingen worden niet opgeslagen.</AdminAlert>}
 
       <AdminFiltersBar>
@@ -57,7 +57,7 @@ export default function AdminOpdrachtgevers() {
 
       {loading ? <AdminLoadingState /> : data.length === 0 ? (
         <AdminTableWrapper>
-          <AdminEmptyState icon={Building2} title="Geen opdrachtgevers gevonden" description="Pas filters aan of zoek op een andere term." />
+          <AdminEmptyState icon={Building2} title="Geen organisaties gevonden" description="Pas filters aan of zoek op een andere term." />
         </AdminTableWrapper>
       ) : (
         <>

@@ -94,7 +94,7 @@ export default function OpdrachtgeverOpdrachten() {
       region: formData.region || null,
       remote_type: formData.remote_type as any,
       job_type: normalizeContractForm(formData.job_type),
-      job_tier: (formData as { job_tier?: string }).job_tier ?? 'STANDARD',
+      job_tier: (formData as { job_tier?: string }).job_tier ?? 'GRATIS',
       start_date: formData.start_date || null,
       duration_weeks: formData.duration_weeks || null,
       hours_per_week: formData.hours_per_week || null,
@@ -141,7 +141,7 @@ export default function OpdrachtgeverOpdrachten() {
       region: formData.region || null,
       remote_type: formData.remote_type as any,
       job_type: normalizeContractForm(formData.job_type),
-      job_tier: (formData as { job_tier?: string }).job_tier ?? 'STANDARD',
+      job_tier: (formData as { job_tier?: string }).job_tier ?? 'GRATIS',
       start_date: formData.start_date || null,
       duration_weeks: formData.duration_weeks || null,
       hours_per_week: formData.hours_per_week || null,
@@ -202,7 +202,7 @@ export default function OpdrachtgeverOpdrachten() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
       </div>
     );
   }
@@ -226,45 +226,45 @@ export default function OpdrachtgeverOpdrachten() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Titel *</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Titel *</label>
               <input
                 type="text"
                 value={formData.title || ''}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 placeholder="Bijv: Bedrijfsarts gezocht voor 3 maanden"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Beschrijving *</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Beschrijving *</label>
               <textarea
                 value={formData.description || ''}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={6}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 placeholder="Beschrijf de opdracht, vereisten en wat u zoekt..."
               />
             </div>
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Regio</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Regio</label>
                 <input
                   type="text"
                   value={formData.region || ''}
                   onChange={(e) => setFormData({ ...formData, region: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   placeholder="Amsterdam"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Contractvorm</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Contractvorm</label>
                 <select
                   value={normalizeContractForm(formData.job_type)}
                   onChange={(e) => setFormData({ ...formData, job_type: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 >
                   {CONTRACT_FORM_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -273,11 +273,11 @@ export default function OpdrachtgeverOpdrachten() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Werkwijze</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Werkwijze</label>
                 <select
                   value={formData.remote_type || 'ONSITE'}
                   onChange={(e) => setFormData({ ...formData, remote_type: e.target.value as 'ONSITE' | 'HYBRID' | 'REMOTE' })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 >
                   {REMOTE_TYPE_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -286,65 +286,65 @@ export default function OpdrachtgeverOpdrachten() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Duur (weken)</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Duur (weken)</label>
                 <input
                   type="number"
                   value={formData.duration_weeks || ''}
                   onChange={(e) => setFormData({ ...formData, duration_weeks: parseInt(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   placeholder="12"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Min. tarief (per uur)</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Min. tarief (per uur)</label>
                 <input
                   type="number"
                   value={formData.rate_min || ''}
                   onChange={(e) => setFormData({ ...formData, rate_min: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   placeholder="100"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Max. tarief (per uur)</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Max. tarief (per uur)</label>
                 <input
                   type="number"
                   value={formData.rate_max || ''}
                   onChange={(e) => setFormData({ ...formData, rate_max: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   placeholder="150"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Startdatum</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Startdatum</label>
                 <input
                   type="date"
                   value={formData.start_date || ''}
                   onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Uren/week</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Uren/week</label>
                 <input
                   type="number"
                   value={formData.hours_per_week || ''}
                   onChange={(e) => setFormData({ ...formData, hours_per_week: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   placeholder="32"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Type professional / doelgroep</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Type professional / doelgroep</label>
                 <select
                   value={(formData as { target_profession?: string }).target_profession || ''}
                   onChange={(e) => setFormData({ ...formData, target_profession: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F172A] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 >
                   <option value="">Selecteer...</option>
                   {TARGET_PROFESSION_OPTIONS.map((opt) => (
@@ -354,7 +354,7 @@ export default function OpdrachtgeverOpdrachten() {
               </div>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="mt-6 pt-6 border-t border-slate-200">
               <JobQualityScoreCard
                 checklist={checklist}
                 reviewStatus={null}
@@ -380,7 +380,7 @@ export default function OpdrachtgeverOpdrachten() {
               <button
                 onClick={handleSaveDraft}
                 disabled={submitting}
-                className="flex items-center justify-center bg-gray-100 text-gray-800 px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition disabled:opacity-50"
+                className="flex items-center justify-center bg-slate-100 text-slate-800 px-6 py-3 rounded-xl font-semibold hover:bg-slate-200 transition disabled:opacity-50"
               >
                 <Save className="w-5 h-5 mr-2" />
                 {submitting ? 'Bezig...' : 'Opslaan als concept'}
@@ -400,9 +400,9 @@ export default function OpdrachtgeverOpdrachten() {
 
       {jobs.length === 0 ? (
         <div className="bg-white p-12 rounded-lg shadow-lg text-center">
-          <Briefcase className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">Geen opdrachten</h3>
-          <p className="text-gray-600">Plaats uw eerste opdracht om te beginnen</p>
+          <Briefcase className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-slate-700 mb-2">Geen opdrachten</h3>
+          <p className="text-slate-600">Plaats uw eerste opdracht om te beginnen</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -418,14 +418,14 @@ export default function OpdrachtgeverOpdrachten() {
                       {job.title}
                     </Link>
                   </div>
-                  <p className="text-gray-600 line-clamp-2">{job.description}</p>
+                  <p className="text-slate-600 line-clamp-2">{job.description}</p>
                 </div>
                 {job.review_status ? (
                   <JobReviewStatusBadge status={job.review_status} />
                 ) : (
                   <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
                     job.status === 'PUBLISHED' ? 'bg-green-100 text-green-800' :
-                    job.status === 'CLOSED' ? 'bg-gray-100 text-gray-800' :
+                    job.status === 'CLOSED' ? 'bg-slate-100 text-slate-800' :
                     'bg-yellow-100 text-yellow-800'
                   }`}>
                     {job.status}

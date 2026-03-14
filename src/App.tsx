@@ -46,7 +46,7 @@ function App() {
           <MaintenanceGate>
             <Suspense fallback={
               <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="animate-spin rounded-full h-10 w-10 border-2 border-slate-900 border-t-transparent" />
+                <div className="animate-spin rounded-full h-10 w-10 border-2 border-emerald-500 border-t-transparent" />
               </div>
             }>
             <Routes>

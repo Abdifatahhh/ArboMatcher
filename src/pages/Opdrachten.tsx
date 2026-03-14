@@ -150,7 +150,7 @@ export default function Opdrachten() {
             <Briefcase className="w-8 h-8 text-slate-400" />
             <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Vacatures</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Opdrachten</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4"><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300">Opdrachten</span></h1>
           <p className="text-xl text-slate-300 max-w-2xl">
             Bekijk alle beschikbare opdrachten voor bedrijfsartsen en arbo-professionals.
             Of het nu gaat om ZZP, detachering of loondienst – zoek in onze actuele opdrachten en ga aan de slag.
@@ -249,7 +249,7 @@ export default function Opdrachten() {
 
             {loading ? (
               <div className="flex justify-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
               </div>
             ) : jobs.length === 0 ? (
               <div className="bg-slate-50 p-12 rounded-2xl border border-slate-200 text-center">

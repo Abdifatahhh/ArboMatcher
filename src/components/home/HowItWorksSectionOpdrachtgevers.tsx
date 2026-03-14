@@ -1,11 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { AuthLink } from '../AuthLink';
 import { ArrowRight, Building2 } from 'lucide-react';
 import { HowItWorksPreviewOpdrachtgevers } from './HowItWorksPreviewOpdrachtgevers';
 import { HowItWorksStepsOpdrachtgevers } from './HowItWorksStepsOpdrachtgevers';
 
+const TOTAL_STEPS = 5;
+const STEP_DURATION = 5000;
+
 export function HowItWorksSectionOpdrachtgevers() {
   const [activeStep, setActiveStep] = useState(1);
+  const [progress, setProgress] = useState(0);
+  const startTimeRef = useRef(Date.now());
+
+  const advanceStep = useCallback(() => {
+    setActiveStep(prev => prev >= TOTAL_STEPS ? 1 : prev + 1);
+    setProgress(0);
+    startTimeRef.current = Date.now();
+  }, []);
+
+  useEffect(() => {
+    startTimeRef.current = Date.now();
+    const timer = setTimeout(advanceStep, STEP_DURATION);
+    const raf = { id: 0 };
+    const tick = () => {
+      const elapsed = Date.now() - startTimeRef.current;
+      setProgress(Math.min(elapsed / STEP_DURATION, 1));
+      raf.id = requestAnimationFrame(tick);
+    };
+    raf.id = requestAnimationFrame(tick);
+    return () => { clearTimeout(timer); cancelAnimationFrame(raf.id); };
+  }, [activeStep, advanceStep]);
+
+  const handleStepChange = (step: number) => {
+    setActiveStep(step);
+    setProgress(0);
+    startTimeRef.current = Date.now();
+    elapsedBeforePauseRef.current = 0;
+  };
 
   return (
     <section
@@ -38,7 +69,7 @@ export function HowItWorksSectionOpdrachtgevers() {
           </div>
 
           <div className="lg:col-span-2 order-1 lg:order-2">
-            <HowItWorksStepsOpdrachtgevers activeStep={activeStep} onStepChange={setActiveStep} />
+            <HowItWorksStepsOpdrachtgevers activeStep={activeStep} onStepChange={handleStepChange} progress={progress} />
           </div>
         </div>
 

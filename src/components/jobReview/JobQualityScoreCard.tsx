@@ -41,18 +41,18 @@ export function JobQualityScoreCard({
   const statusMessage = getSubmissionMessage(overall, reviewStatus);
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
         <h3 className="font-semibold text-[#0F172A]">Kwaliteitsscore</h3>
         <JobScoreBadge score={overall} size={compact ? 'sm' : 'md'} showLabel={!compact} />
       </div>
       <div className="p-4 space-y-4">
         <div>
-          <div className="flex justify-between text-sm text-gray-600 mb-1">
+          <div className="flex justify-between text-sm text-slate-600 mb-1">
             <span>Totaal</span>
             <span>{overall}%</span>
           </div>
-          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-300"
               style={{
@@ -67,11 +67,11 @@ export function JobQualityScoreCard({
         <JobCompletionChecklist items={checklist.items} compact={compact} />
 
         {(aiSummary || (aiImprovements && aiImprovements.length > 0)) && (
-          <div className="pt-2 border-t border-gray-100">
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1">
+          <div className="pt-2 border-t border-slate-100">
+            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5" /> AI-beoordeling
             </p>
-            {aiSummary && <p className="text-sm text-gray-700 mb-2">{aiSummary}</p>}
+            {aiSummary && <p className="text-sm text-slate-700 mb-2">{aiSummary}</p>}
             {aiImprovements && aiImprovements.length > 0 && (
               <ul className="text-sm text-amber-800 space-y-1 list-disc list-inside">
                 {aiImprovements.slice(0, 5).map((t, i) => (

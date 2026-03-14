@@ -7,10 +7,10 @@ import { MAINTENANCE_STORAGE_KEY } from '../../lib/maintenance';
 import { AdminPage, AdminPageHeader, AdminCard, AdminAlert, AdminLoadingState } from '../../components/Admin/adminUI';
 import { Settings } from 'lucide-react';
 
-const fi = 'w-full h-10 px-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition';
+const fi = 'w-full h-10 px-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition';
 const fd = 'w-full h-10 px-3 border border-slate-100 rounded-lg text-sm text-slate-500 bg-slate-50';
 const fl = 'block text-sm font-medium text-slate-700 mb-1.5';
-const ft = 'w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition resize-y';
+const ft = 'w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition resize-y';
 
 export default function AdminInstellingen() {
   const { user, refreshProfile } = useAuth();
@@ -58,7 +58,7 @@ export default function AdminInstellingen() {
 
   return (
     <AdminPage className="max-w-2xl">
-      <AdminPageHeader icon={Settings} title="Instellingen" description="Beheer je accountgegevens als beheerder" />
+      <AdminPageHeader icon={Settings} title="Instellingen" description="Beheer uw accountgegevens als beheerder" />
       {message && <AdminAlert variant={message.type === 'success' ? 'success' : 'error'} onClose={() => setMessage(null)}>{message.text}</AdminAlert>}
 
       <form onSubmit={handleSave} className="space-y-5">
@@ -71,7 +71,7 @@ export default function AdminInstellingen() {
         </AdminCard>
 
         <AdminCard title="Account" actions={<Shield className="w-4 h-4 text-slate-400" />}>
-          <p className="text-sm text-slate-600">Je bent ingelogd als <span className="font-medium text-slate-900">beheerder</span>. Je hebt toegang tot verificaties, gebruikers en opdrachten.</p>
+          <p className="text-sm text-slate-600">U bent ingelogd als <span className="font-medium text-slate-900">beheerder</span>. U hebt toegang tot verificaties, gebruikers en opdrachten.</p>
         </AdminCard>
 
         <AdminCard title="Onderhoudsmodus" actions={<Lock className="w-4 h-4 text-slate-400" />}>
@@ -82,7 +82,7 @@ export default function AdminInstellingen() {
                 <p className="text-xs text-slate-500 mt-0.5">Schakel de website in onderhoudsmodus</p>
               </div>
               <button type="button" role="switch" aria-checked={maintenanceEnabled} onClick={() => setMaintenanceEnabled((v) => !v)}
-                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${maintenanceEnabled ? 'bg-blue-600' : 'bg-slate-200'}`}
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${maintenanceEnabled ? 'bg-emerald-500' : 'bg-slate-200'}`}
               >
                 <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ${maintenanceEnabled ? 'translate-x-5' : 'translate-x-0'}`} />
               </button>

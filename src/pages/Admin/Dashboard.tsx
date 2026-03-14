@@ -53,10 +53,10 @@ type StatCardProps = { label: string; value: number; icon: React.ElementType; to
 
 function StatCard({ label, value, icon: Icon, to, accent, sub }: StatCardProps) {
   return (
-    <Link to={to} className={`group relative rounded-xl border p-5 transition-all hover:shadow-md ${accent ? 'border-blue-200 bg-blue-50/40' : 'border-slate-200/80 bg-white'}`}>
+    <Link to={to} className={`group relative rounded-xl border p-5 transition-all hover:shadow-md ${accent ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-200/80 bg-white'}`}>
       <div className="flex items-center justify-between mb-3">
-        <span className={`inline-flex items-center justify-center w-9 h-9 rounded-lg ${accent ? 'bg-blue-100' : 'bg-slate-100'}`}>
-          <Icon className={`w-5 h-5 ${accent ? 'text-blue-600' : 'text-slate-600'}`} />
+        <span className={`inline-flex items-center justify-center w-9 h-9 rounded-lg ${accent ? 'bg-emerald-100' : 'bg-slate-100'}`}>
+          <Icon className={`w-5 h-5 ${accent ? 'text-emerald-600' : 'text-slate-600'}`} />
         </span>
         <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 transition-colors" />
       </div>
@@ -248,7 +248,7 @@ export default function AdminDashboard() {
               { to: '/admin/reacties', label: 'Sollicitaties bekijken', icon: FileText },
             ].map((a) => (
               <Link key={a.to} to={a.to} className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition-colors group">
-                <a.icon className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
+                <a.icon className="w-4 h-4 text-slate-400 group-hover:text-emerald-600 transition-colors" />
                 <span className="font-medium">{a.label}</span>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-300 ml-auto" />
               </Link>

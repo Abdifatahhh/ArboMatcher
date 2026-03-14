@@ -89,7 +89,7 @@ export default function AdminMatches() {
                 {copied ? <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
                 {copied ? 'Gekopieerd' : 'Kopieer'}
               </button>
-              <button type="button" onClick={handleMailto} disabled={!result?.employerEmail} className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-800 disabled:opacity-50 transition">
+              <button type="button" onClick={handleMailto} disabled={!result?.employerEmail} className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-green-400 px-3 py-1.5 text-xs font-medium text-white hover:from-emerald-600 hover:to-green-500 disabled:opacity-50 transition shadow-sm shadow-emerald-500/20">
                 <Mail className="w-3.5 h-3.5" /> E-mail
               </button>
             </div>
@@ -110,7 +110,7 @@ export default function AdminMatches() {
                     <div>
                       {m.canShareProfileCv ? (
                         <>
-                          <Link to={`/admin/professionals/${m.professional.id}`} className="text-sm font-medium text-slate-900 hover:text-blue-600 transition-colors">{m.profile.full_name || 'Naam onbekend'}</Link>
+                          <Link to={`/admin/professionals/${m.professional.id}`} className="text-sm font-medium text-slate-900 hover:text-emerald-600 transition-colors">{m.profile.full_name || 'Naam onbekend'}</Link>
                           {m.profile.email && <p className="text-xs text-slate-400">{m.profile.email}</p>}
                         </>
                       ) : (
@@ -123,7 +123,7 @@ export default function AdminMatches() {
                       </div>
                     </div>
                   </div>
-                  <span className="text-sm font-semibold text-blue-600">Score {m.matchScore}</span>
+                  <span className="text-sm font-semibold text-emerald-600">Score {m.matchScore}</span>
                 </li>
               ))}
             </ul>

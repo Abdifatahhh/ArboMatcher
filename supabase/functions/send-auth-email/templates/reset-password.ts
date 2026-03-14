@@ -6,13 +6,13 @@ export function renderResetPassword(params: {
 }): { subject: string; html: string } {
   const { resetUrl } = params;
   const body = `
-    <h1 style="margin:0 0 16px;font-size:22px;color:${LAYOUT.text}">Wachtwoord opnieuw instellen</h1>
-    <p style="margin:0 0 16px;font-size:16px;line-height:1.5;color:${LAYOUT.textMuted}">Je hebt een verzoek gedaan om je wachtwoord te wijzigen. Klik op de knop om een nieuw wachtwoord in te stellen.</p>
-    ${ctaButton(resetUrl, "Wachtwoord instellen")}
-    <p style="margin:24px 0 0;font-size:14px;color:${LAYOUT.textMuted}">Als je dit niet hebt aangevraagd, kun je deze e-mail negeren. Je wachtwoord blijft dan ongewijzigd.</p>
+    <h1 class="email-heading" style="margin:0 0 16px;font-size:24px;font-weight:700;color:${LAYOUT.text};line-height:1.3">Wachtwoord opnieuw instellen</h1>
+    <p style="margin:0 0 8px;font-size:16px;line-height:1.6;color:${LAYOUT.textMuted}">U heeft een verzoek ingediend om uw wachtwoord te wijzigen. Klik op de knop hieronder om een nieuw wachtwoord in te stellen.</p>
+    ${ctaButton(resetUrl, "Nieuw wachtwoord instellen")}
+    <p style="margin:24px 0 0;font-size:13px;color:${LAYOUT.footer};line-height:1.5">Heeft u dit niet aangevraagd? Dan kunt u deze e-mail negeren. Uw wachtwoord blijft ongewijzigd.</p>
   `;
   return {
     subject: "Wachtwoord opnieuw instellen – ArboMatcher",
-    html: wrapBody(body, "Stel je wachtwoord opnieuw in"),
+    html: wrapBody(body, "Stel uw wachtwoord opnieuw in"),
   };
 }

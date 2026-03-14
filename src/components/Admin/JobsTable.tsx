@@ -31,7 +31,7 @@ export function JobsTable({ rows, onStatusChange }: JobsTableProps) {
       <thead className={t.thead}>
         <tr>
           <th className={t.th}>Opdracht</th>
-          <th className={t.th}>Opdrachtgever</th>
+          <th className={t.th}>Organisatie</th>
           <th className={t.th}>Status</th>
           <th className={t.th}>Datum</th>
           <th className={t.thRight}>Acties</th>
@@ -48,7 +48,7 @@ export function JobsTable({ rows, onStatusChange }: JobsTableProps) {
                 {job.description && <p className="text-xs text-slate-400 mt-0.5 line-clamp-1 max-w-xs">{job.description}</p>}
               </td>
               <td className={t.td}>
-                <Link to={employer ? `/admin/opdrachtgevers/${employer.id}` : '#'} className="text-sm text-slate-600 hover:text-blue-600 transition-colors">
+                <Link to={employer ? `/admin/opdrachtgevers/${employer.id}` : '#'} className="text-sm text-slate-600 hover:text-emerald-600 transition-colors">
                   {job.company_name || employer?.company_name || '—'}
                 </Link>
               </td>

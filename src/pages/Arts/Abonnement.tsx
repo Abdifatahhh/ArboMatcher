@@ -31,7 +31,7 @@ export default function ArtsAbonnement() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
       </div>
     );
   }
@@ -80,7 +80,7 @@ export default function ArtsAbonnement() {
             )}
           </div>
 
-          <div className="bg-white rounded-xl border-2 border-[#0F172A] p-6 flex flex-col relative shadow-lg shadow-slate-900/5">
+          <div className="bg-white rounded-xl border-2 border-emerald-400 p-6 flex flex-col relative shadow-lg shadow-emerald-500/10">
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
               <span className="bg-gradient-to-r from-emerald-500 to-green-400 text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-md">
                 Aanbevolen

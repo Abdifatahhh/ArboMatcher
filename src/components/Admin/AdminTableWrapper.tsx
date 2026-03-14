@@ -21,7 +21,7 @@ export const tableStyles = {
   td: 'px-4 py-3.5 whitespace-nowrap text-sm text-slate-700',
   tdWrap: 'px-4 py-3.5 text-sm text-slate-700',
   row: 'border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-colors',
-  link: 'font-medium text-slate-900 hover:text-blue-600 transition-colors',
+  link: 'font-medium text-slate-900 hover:text-emerald-600 transition-colors',
   secondary: 'text-xs text-slate-500',
   actionBtn: 'inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors',
 } as const;

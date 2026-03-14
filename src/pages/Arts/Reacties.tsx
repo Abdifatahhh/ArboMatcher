@@ -58,7 +58,7 @@ export default function ArtsReacties() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0F172A]"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-500"></div>
       </div>
     );
   }
@@ -94,7 +94,7 @@ export default function ArtsReacties() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start space-x-4 flex-1 min-w-0">
                       {(application.jobs as { job_tier?: string })?.job_tier === 'PRO' ? (
-                        <div className="w-12 h-12 bg-[#0F172A] rounded-xl flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+                        <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-400 rounded-xl flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
                           PRO
                         </div>
                       ) : (

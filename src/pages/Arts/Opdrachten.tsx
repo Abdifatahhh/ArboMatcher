@@ -15,7 +15,8 @@ import {
   Clock,
   LayoutGrid,
   List,
-  X
+  X,
+  Building2
 } from 'lucide-react';
 
 interface FilterOption {
@@ -47,6 +48,15 @@ const postedByOptions: FilterOption[] = [
 ];
 
 const contractOptions: FilterOption[] = CONTRACT_FORM_OPTIONS;
+
+type SortOption = 'newest' | 'oldest' | 'most_viewed' | 'most_applications';
+
+const sortOptions: { value: SortOption; label: string }[] = [
+  { value: 'newest', label: 'Nieuwste eerst' },
+  { value: 'oldest', label: 'Oudste eerst' },
+  { value: 'most_viewed', label: 'Meest bekeken' },
+  { value: 'most_applications', label: 'Meeste reacties' },
+];
 
 interface FilterDropdownProps {
   label: string;
@@ -84,7 +94,7 @@ function FilterDropdown({ label, options, selected, onChange }: FilterDropdownPr
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition text-sm font-medium ${
           selected.length > 0
-            ? 'bg-slate-50 border-[#0F172A] text-[#0F172A]'
+            ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
             : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
         }`}
       >
@@ -108,7 +118,7 @@ function FilterDropdown({ label, options, selected, onChange }: FilterDropdownPr
                 type="checkbox"
                 checked={selected.includes(option.value)}
                 onChange={() => toggleOption(option.value)}
-                className="w-4 h-4 rounded border-slate-200 text-[#0F172A] focus:ring-slate-900/20"
+                className="w-4 h-4 rounded border-slate-200 text-emerald-600 focus:ring-emerald-500"
               />
               <span className="text-sm text-slate-600">{option.label}</span>
             </label>
@@ -120,37 +130,42 @@ function FilterDropdown({ label, options, selected, onChange }: FilterDropdownPr
 }
 
 const COMPANY_COLORS: Record<string, string> = {
-  'ArboNed': 'bg-[#E53935]',
-  'Zorg & Zekerheid': 'bg-[#1E88E5]',
-  'UWV Partner': 'bg-[#43A047]',
-  'Vitaal Werkt': 'bg-[#FB8C00]',
-  'Achmea Health': 'bg-[#5E35B1]',
-  'GGZ Eindhoven': 'bg-[#00ACC1]',
-  'Onderwijsgroep': 'bg-[#7CB342]',
-  'CBR Nederland': 'bg-[#F4511E]',
-  'Shell Health': 'bg-[#FFD600]',
-  'ING Arbo': 'bg-[#FF6F00]',
-  'Letselschade BV': 'bg-[#6D4C41]',
-  'PostNL Health': 'bg-[#EF5350]',
-  'Gemeente Amsterdam': 'bg-[#E53935]',
-  'ABP Medisch': 'bg-[#1565C0]',
-  'Albert Heijn HR': 'bg-[#2196F3]',
-  'UMC Utrecht': 'bg-[#D32F2F]',
-  'Interpolis': 'bg-[#FBC02D]',
-  'Booking.com Health': 'bg-[#0277BD]',
-  'BAM Bouw': 'bg-[#FF5722]',
-  'Nationale Nederlanden': 'bg-[#FF8F00]',
-  'Hotel Chains NL': 'bg-[#8E24AA]',
-  'Ministerie BZK': 'bg-[#0D47A1]',
-  'Werk Actief': 'bg-[#00897B]',
-  'Gasunie Health': 'bg-[#FFA000]',
-  'Philips Healthcare': 'bg-[#0288D1]',
-  'DAS Rechtsbijstand': 'bg-[#303F9F]',
-  'Caparis': 'bg-[#689F38]',
-  'KLM Health': 'bg-[#00B0FF]',
-  'Aegon Life': 'bg-[#F57C00]',
-  'ArboTech': 'bg-[#7B1FA2]'
+  'ArboNed': '#E53935',
+  'Zorg & Zekerheid': '#1E88E5',
+  'UWV Partner': '#43A047',
+  'Vitaal Werkt': '#FB8C00',
+  'Achmea Health': '#5E35B1',
+  'GGZ Eindhoven': '#00ACC1',
+  'Onderwijsgroep': '#7CB342',
+  'CBR Nederland': '#F4511E',
+  'Shell Health': '#FFD600',
+  'ING Arbo': '#FF6F00',
+  'Letselschade BV': '#6D4C41',
+  'PostNL Health': '#EF5350',
+  'Gemeente Amsterdam': '#E53935',
+  'ABP Medisch': '#1565C0',
+  'Albert Heijn HR': '#2196F3',
+  'UMC Utrecht': '#D32F2F',
+  'Interpolis': '#FBC02D',
+  'Booking.com Health': '#0277BD',
+  'BAM Bouw': '#FF5722',
+  'Nationale Nederlanden': '#FF8F00',
+  'Hotel Chains NL': '#8E24AA',
+  'Ministerie BZK': '#0D47A1',
+  'Werk Actief': '#00897B',
+  'Gasunie Health': '#FFA000',
+  'Philips Healthcare': '#0288D1',
+  'DAS Rechtsbijstand': '#303F9F',
+  'Caparis': '#689F38',
+  'KLM Health': '#00B0FF',
+  'Aegon Life': '#F57C00',
+  'ArboTech': '#7B1FA2',
 };
+
+function getCompanyColor(companyName?: string | null): string {
+  if (!companyName) return '#F97316';
+  return COMPANY_COLORS[companyName] || '#F97316';
+}
 
 export default function ArtsOpdrachten() {
   const { user } = useAuth();
@@ -163,6 +178,9 @@ export default function ArtsOpdrachten() {
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [sortOpen, setSortOpen] = useState(false);
+  const sortRef = useRef<HTMLDivElement>(null);
 
   const [filters, setFilters] = useState({
     expertise: [] as string[],
@@ -174,13 +192,21 @@ export default function ArtsOpdrachten() {
 
   useEffect(() => {
     fetchJobs();
-  }, [filters, searchTags]);
+  }, [filters, searchTags, sortBy]);
 
   useEffect(() => {
-    if (user) {
-      fetchFavorites();
-    }
+    if (user) fetchFavorites();
   }, [user]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+        setSortOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -202,7 +228,19 @@ export default function ArtsOpdrachten() {
       query = query.or(searchConditions);
     }
 
-    query = query.order('created_at', { ascending: false });
+    switch (sortBy) {
+      case 'oldest':
+        query = query.order('created_at', { ascending: true });
+        break;
+      case 'most_viewed':
+        query = query.order('views_count', { ascending: false });
+        break;
+      case 'most_applications':
+        query = query.order('applications_count', { ascending: false });
+        break;
+      default:
+        query = query.order('created_at', { ascending: false });
+    }
 
     const { data, count } = await query;
     setJobs(data || []);
@@ -217,7 +255,6 @@ export default function ArtsOpdrachten() {
       .select('ref_id')
       .eq('user_id', user.id)
       .eq('type', 'JOB');
-
     setFavorites(data?.map(f => f.ref_id) || []);
   };
 
@@ -261,13 +298,7 @@ export default function ArtsOpdrachten() {
   };
 
   const clearAllFilters = () => {
-    setFilters({
-      expertise: [],
-      hours: [],
-      location: [],
-      postedBy: [],
-      contract: [],
-    });
+    setFilters({ expertise: [], hours: [], location: [], postedBy: [], contract: [] });
     setSearchTags([]);
   };
 
@@ -280,8 +311,7 @@ export default function ArtsOpdrachten() {
     searchTags.length > 0;
 
   const filteredJobs = jobs.filter(job => {
-    const matchesFavorites = !showFavoritesOnly || favorites.includes(job.id);
-    return matchesFavorites;
+    return !showFavoritesOnly || favorites.includes(job.id);
   });
 
   const formatDate = (date: string) => {
@@ -289,26 +319,32 @@ export default function ArtsOpdrachten() {
     return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
+  const isPro = (job: Job) =>
+    (job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro;
+
   return (
     <div className="p-4 lg:p-6">
+      {/* Header */}
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-[#0F172A]">Opdrachten</h1>
-        <p className="text-sm text-slate-500 mt-1">{totalCount} beschikbare opdrachten</p>
+        <h1 className="text-xl font-bold text-slate-900">
+          Opdrachten <span className="text-slate-400 font-normal">({totalCount})</span>
+        </h1>
       </div>
 
+      {/* Search */}
       <div className="mb-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-          <div className="flex flex-wrap items-center gap-2 pl-10 pr-4 py-2.5 bg-white border border-slate-200 shadow-sm rounded-lg focus-within:ring-2 focus-within:ring-slate-900/20 focus-within:border-transparent min-h-[44px]">
+          <div className="flex flex-wrap items-center gap-2 pl-10 pr-4 py-2.5 bg-white border border-slate-200 shadow-sm rounded-lg focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:border-emerald-300 min-h-[44px]">
             {searchTags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-slate-50 text-[#0F172A] rounded-full text-sm font-medium"
+                className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium border border-emerald-200"
               >
                 {tag}
                 <button
                   onClick={() => removeSearchTag(tag)}
-                  className="hover:bg-[#0F172A] hover:text-white rounded-full p-0.5 transition"
+                  className="hover:bg-emerald-500 hover:text-white rounded-full p-0.5 transition"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -326,6 +362,7 @@ export default function ArtsOpdrachten() {
         </div>
       </div>
 
+      {/* Filters */}
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <FilterDropdown
           label="Expertise gebieden"
@@ -361,25 +398,54 @@ export default function ArtsOpdrachten() {
         {hasActiveFilters && (
           <button
             onClick={clearAllFilters}
-            className="flex items-center gap-1 px-3 py-2 text-sm text-slate-400 hover:text-slate-600"
+            className="flex items-center gap-1 px-3 py-2 text-sm text-slate-400 hover:text-slate-600 transition"
           >
             <X className="w-3 h-3" />
-            <span>Wis alle filters</span>
+            <span>Wis filters</span>
           </button>
         )}
+      </div>
 
-        <div className="flex-1" />
-
-        <label className="flex items-center space-x-2 cursor-pointer text-sm">
+      {/* Toolbar: favorites toggle, sort, view mode */}
+      <div className="mb-5 flex flex-wrap items-center gap-3">
+        <label className="flex items-center gap-2 cursor-pointer text-sm select-none">
           <input
             type="checkbox"
             checked={showFavoritesOnly}
             onChange={(e) => setShowFavoritesOnly(e.target.checked)}
-            className="w-4 h-4 rounded border-slate-200 text-[#0F172A] focus:ring-slate-900/20"
+            className="w-4 h-4 rounded border-slate-200 text-emerald-600 focus:ring-emerald-500"
           />
-          <span className="text-slate-600">Favorieten</span>
+          <span className="text-slate-600">Toon alleen favorieten</span>
         </label>
 
+        <div className="flex-1" />
+
+        {/* Sort dropdown */}
+        <div className="relative" ref={sortRef}>
+          <button
+            type="button"
+            onClick={() => setSortOpen(!sortOpen)}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-600 hover:border-slate-300 transition"
+          >
+            <span>{sortOptions.find(o => o.value === sortBy)?.label}</span>
+            <ChevronDown className={`w-4 h-4 transition-transform ${sortOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {sortOpen && (
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-50 py-1">
+              {sortOptions.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => { setSortBy(opt.value); setSortOpen(false); }}
+                  className={`w-full text-left px-4 py-2 text-sm transition ${sortBy === opt.value ? 'bg-emerald-50 text-emerald-700 font-medium' : 'text-slate-600 hover:bg-slate-50'}`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* View toggle */}
         <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden">
           <button
             onClick={() => setViewMode('grid')}
@@ -396,76 +462,104 @@ export default function ArtsOpdrachten() {
         </div>
       </div>
 
+      {/* Content */}
       {loading ? (
         <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0F172A]"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500" />
         </div>
       ) : filteredJobs.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-200">
+        <div className="text-center py-16 bg-slate-50 rounded-2xl border border-slate-200">
           <FileText className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-          <p className="text-slate-500">Geen opdrachten gevonden</p>
+          <p className="text-slate-500 font-medium">Geen opdrachten gevonden</p>
+          <p className="text-sm text-slate-400 mt-1">Pas uw filters aan of probeer andere zoektermen</p>
         </div>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           {filteredJobs.map((job) => {
-            const companyColor = job.company_name ? COMPANY_COLORS[job.company_name] || 'bg-[#F97316]' : 'bg-[#F97316]';
+            const color = getCompanyColor(job.company_name);
+            const pro = isPro(job);
 
             return (
               <div
                 key={job.id}
                 onClick={() => handleJobClick(job)}
-                className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 cursor-pointer transition-all hover:border-slate-300 hover:shadow-md"
+                className="group bg-white rounded-xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-300 overflow-hidden"
               >
-                <div className="flex items-start justify-between mb-4">
-                  {(job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro ? (
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
-                      PRO
-                    </div>
-                  ) : (
-                    <div className={`w-12 h-12 ${companyColor} rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm`}>
-                      {job.company_name?.split(' ').slice(0, 2).map(w => w[0]).join('') || 'AM'}
-                    </div>
-                  )}
-                  <button
-                    onClick={(e) => toggleFavorite(e, job.id)}
-                    className="p-1 transition text-slate-300 hover:text-[#0F172A]"
-                  >
-                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#0F172A] text-[#0F172A]' : ''}`} />
-                  </button>
-                </div>
+                {/* Color accent bar */}
+                <div className="h-1" style={{ background: pro ? '#0F172A' : color }} />
 
-                <h3 className="font-semibold text-[#0F172A] mb-4 line-clamp-2 leading-tight">
-                  {job.title}
-                </h3>
+                <div className="p-5">
+                  {/* Logo + favorite */}
+                  <div className="flex items-start justify-between mb-3">
+                    {pro ? (
+                      <div className="w-11 h-11 bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center text-white font-bold text-[11px] tracking-wide shadow-sm">
+                        PRO
+                      </div>
+                    ) : job.company_name ? (
+                      <div
+                        className="w-11 h-11 rounded-xl flex items-center justify-center text-white font-bold text-[11px] shadow-sm"
+                        style={{ background: color }}
+                      >
+                        {job.company_name.split(' ').slice(0, 2).map(w => w[0]).join('')}
+                      </div>
+                    ) : (
+                      <div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400">
+                        <Building2 className="w-5 h-5" />
+                      </div>
+                    )}
+                    <button
+                      onClick={(e) => toggleFavorite(e, job.id)}
+                      className="p-1 transition text-slate-300 hover:text-emerald-500"
+                    >
+                      <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-emerald-500 text-emerald-500' : ''}`} />
+                    </button>
+                  </div>
 
-                <div className="space-y-2 text-sm text-slate-500">
-                  {((job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro) && (
+                  {/* Title */}
+                  <h3 className="font-semibold text-slate-900 mb-3 line-clamp-2 leading-snug group-hover:text-emerald-700 transition-colors">
+                    {job.title}
+                  </h3>
+
+                  {/* Meta */}
+                  <div className="space-y-1.5 text-[13px] text-slate-500">
+                    {pro && (
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                        <span className="text-slate-900 font-medium">PRO opdracht</span>
+                      </div>
+                    )}
+                    {job.company_name && (
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                        <span className="truncate">{job.company_name}</span>
+                      </div>
+                    )}
+                    {job.region && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                        <span>{job.region}</span>
+                      </div>
+                    )}
                     <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-slate-400" />
-                      <span className="text-[#0F172A] font-medium">PRO opdracht</span>
+                      <FileText className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <span>{getContractFormLabel(job.job_type) || '—'}</span>
                     </div>
-                  )}
-                  {job.region && (
+
+                    {/* Divider */}
+                    <div className="border-t border-slate-100 !mt-2.5 !mb-2" />
+
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-slate-400" />
-                      <span>{job.region}</span>
+                      <Eye className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <span>{job.views_count || 0} keer bekeken</span>
                     </div>
-                  )}
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-slate-400" />
-                    <span>{getContractFormLabel(job.job_type) || '—'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Eye className="w-4 h-4 text-slate-400" />
-                    <span>{job.views_count || 0} keer bekeken</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4 text-slate-400" />
-                    <span>{job.applications_count || 0} reacties ontvangen</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-slate-400" />
-                    <span>{formatDate(job.created_at)}</span>
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <span>{job.applications_count || 0} reacties ontvangen</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <span>{formatDate(job.created_at)}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -473,36 +567,54 @@ export default function ArtsOpdrachten() {
           })}
         </div>
       ) : (
+        /* List view */
         <div className="space-y-2">
           {filteredJobs.map((job) => {
-            const companyColor = job.company_name ? COMPANY_COLORS[job.company_name] || 'bg-[#F97316]' : 'bg-[#F97316]';
+            const color = getCompanyColor(job.company_name);
+            const pro = isPro(job);
 
             return (
               <div
                 key={job.id}
                 onClick={() => handleJobClick(job)}
-                className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 cursor-pointer transition-all hover:border-slate-300 hover:shadow-md"
+                className="group bg-white rounded-xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-300 overflow-hidden flex"
               >
-                <div className="flex items-center gap-4">
+                {/* Left accent */}
+                <div className="w-1 flex-shrink-0" style={{ background: pro ? '#0F172A' : color }} />
+
+                <div className="flex items-center gap-4 p-4 flex-1 min-w-0">
                   <div className="flex-shrink-0">
-                    {(job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro ? (
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                    {pro ? (
+                      <div className="w-11 h-11 bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center text-white font-bold text-[11px] tracking-wide shadow-sm">
                         PRO
                       </div>
+                    ) : job.company_name ? (
+                      <div
+                        className="w-11 h-11 rounded-xl flex items-center justify-center text-white font-bold text-[11px] shadow-sm"
+                        style={{ background: color }}
+                      >
+                        {job.company_name.split(' ').slice(0, 2).map(w => w[0]).join('')}
+                      </div>
                     ) : (
-                      <div className={`w-12 h-12 ${companyColor} rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm`}>
-                        {job.company_name?.split(' ').slice(0, 2).map(w => w[0]).join('') || 'AM'}
+                      <div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400">
+                        <Building2 className="w-5 h-5" />
                       </div>
                     )}
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-[#0F172A] truncate">
+                    <h3 className="font-semibold text-slate-900 truncate group-hover:text-emerald-700 transition-colors">
                       {job.title}
                     </h3>
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-sm text-slate-500">
-                      {((job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro) && (
-                        <span className="text-[#0F172A] font-medium">PRO opdracht</span>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-[13px] text-slate-500">
+                      {pro && (
+                        <span className="text-slate-900 font-medium">PRO opdracht</span>
+                      )}
+                      {job.company_name && (
+                        <span className="flex items-center gap-1">
+                          <Building2 className="w-3.5 h-3.5" />
+                          {job.company_name}
+                        </span>
                       )}
                       {job.region && (
                         <span className="flex items-center gap-1">
@@ -519,6 +631,10 @@ export default function ArtsOpdrachten() {
                         {job.views_count || 0}x bekeken
                       </span>
                       <span className="flex items-center gap-1">
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        {job.applications_count || 0} reacties
+                      </span>
+                      <span className="flex items-center gap-1">
                         <Clock className="w-3.5 h-3.5" />
                         {formatDate(job.created_at)}
                       </span>
@@ -527,9 +643,9 @@ export default function ArtsOpdrachten() {
 
                   <button
                     onClick={(e) => toggleFavorite(e, job.id)}
-                    className="p-2 transition flex-shrink-0 text-slate-300 hover:text-[#0F172A]"
+                    className="p-2 transition flex-shrink-0 text-slate-300 hover:text-emerald-500"
                   >
-                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-[#0F172A] text-[#0F172A]' : ''}`} />
+                    <Heart className={`w-5 h-5 ${favorites.includes(job.id) ? 'fill-emerald-500 text-emerald-500' : ''}`} />
                   </button>
                 </div>
               </div>

@@ -29,7 +29,7 @@ export function UsersTable({ rows, selectedIds, onToggleBlock, onToggleSelect, o
               checked={allSelected}
               ref={(el) => { if (el) el.indeterminate = someSelected && !allSelected; }}
               onChange={(e) => onSelectAll(e.target.checked)}
-              className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
               aria-label="Alles selecteren"
             />
           </th>
@@ -46,13 +46,13 @@ export function UsersTable({ rows, selectedIds, onToggleBlock, onToggleSelect, o
           const isBlocked = profile.status === 'BLOCKED';
           const selected = selectedIds.includes(profile.id);
           return (
-            <tr key={profile.id} className={`${t.row} ${selected ? 'bg-blue-50/40' : ''}`}>
+            <tr key={profile.id} className={`${t.row} ${selected ? 'bg-emerald-50/40' : ''}`}>
               <td className="w-10 px-4 py-3.5">
                 <input
                   type="checkbox"
                   checked={selected}
                   onChange={(e) => onToggleSelect(profile.id, e.target.checked)}
-                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                   aria-label={`Selecteer ${profile.full_name || profile.email}`}
                 />
               </td>

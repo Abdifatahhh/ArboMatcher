@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Search, Mail, User, Send, Briefcase, MapPin, Clock } from 'lucide-react';
 
 const DUMMY_JOBS = [
@@ -14,6 +15,19 @@ export interface HowItWorksPreviewProps {
 }
 
 export function HowItWorksPreview({ activeStep }: HowItWorksPreviewProps) {
+  const [visible, setVisible] = useState(true);
+  const [displayStep, setDisplayStep] = useState(activeStep);
+
+  useEffect(() => {
+    if (activeStep === displayStep) return;
+    setVisible(false);
+    const t = setTimeout(() => {
+      setDisplayStep(activeStep);
+      setVisible(true);
+    }, 200);
+    return () => clearTimeout(t);
+  }, [activeStep, displayStep]);
+
   return (
     <div
       role="region"
@@ -22,11 +36,13 @@ export function HowItWorksPreview({ activeStep }: HowItWorksPreviewProps) {
     >
       <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
         <div className="h-1 bg-gradient-to-r from-emerald-500 to-green-400" />
-        {activeStep === 1 && <PreviewStep1 />}
-        {activeStep === 2 && <PreviewStep2 />}
-        {activeStep === 3 && <PreviewStep3 />}
-        {activeStep === 4 && <PreviewStep4 />}
-        {activeStep === 5 && <PreviewStep5 />}
+        <div className={`transition-all duration-300 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+          {displayStep === 1 && <PreviewStep1 />}
+          {displayStep === 2 && <PreviewStep2 />}
+          {displayStep === 3 && <PreviewStep3 />}
+          {displayStep === 4 && <PreviewStep4 />}
+          {displayStep === 5 && <PreviewStep5 />}
+        </div>
       </div>
     </div>
   );
@@ -204,7 +220,7 @@ function PreviewStep5() {
         </button>
       </div>
       <p className="text-sm text-slate-500">
-        Eén klik om te reageren. Opdrachtgevers ontvangen uw reactie direct.
+        Eén klik om te reageren. Organisaties ontvangen uw reactie direct.
       </p>
     </div>
   );

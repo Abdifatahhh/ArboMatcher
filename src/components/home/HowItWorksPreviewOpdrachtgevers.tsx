@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Users,
   FileText,
@@ -19,6 +20,19 @@ export interface HowItWorksPreviewOpdrachtgeversProps {
 }
 
 export function HowItWorksPreviewOpdrachtgevers({ activeStep }: HowItWorksPreviewOpdrachtgeversProps) {
+  const [visible, setVisible] = useState(true);
+  const [displayStep, setDisplayStep] = useState(activeStep);
+
+  useEffect(() => {
+    if (activeStep === displayStep) return;
+    setVisible(false);
+    const t = setTimeout(() => {
+      setDisplayStep(activeStep);
+      setVisible(true);
+    }, 200);
+    return () => clearTimeout(t);
+  }, [activeStep, displayStep]);
+
   return (
     <div
       role="region"
@@ -27,11 +41,13 @@ export function HowItWorksPreviewOpdrachtgevers({ activeStep }: HowItWorksPrevie
     >
       <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
         <div className="h-1 bg-gradient-to-r from-emerald-500 to-green-400" />
-        {activeStep === 1 && <PreviewStep1 />}
-        {activeStep === 2 && <PreviewStep2 />}
-        {activeStep === 3 && <PreviewStep3 />}
-        {activeStep === 4 && <PreviewStep4 />}
-        {activeStep === 5 && <PreviewStep5 />}
+        <div className={`transition-all duration-300 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+          {displayStep === 1 && <PreviewStep1 />}
+          {displayStep === 2 && <PreviewStep2 />}
+          {displayStep === 3 && <PreviewStep3 />}
+          {displayStep === 4 && <PreviewStep4 />}
+          {displayStep === 5 && <PreviewStep5 />}
+        </div>
       </div>
     </div>
   );

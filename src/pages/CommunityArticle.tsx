@@ -24,7 +24,7 @@ export default function CommunityArticle() {
   if (article === undefined) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-slate-900 border-t-transparent" />
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-emerald-500 border-t-transparent" />
       </div>
     );
   }
@@ -32,7 +32,7 @@ export default function CommunityArticle() {
   if (!article) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center px-4">
-        <p className="text-gray-600 mb-4">Artikel niet gevonden.</p>
+        <p className="text-slate-600 mb-4">Artikel niet gevonden.</p>
         <Link to="/community" className="text-[#0F172A] font-semibold hover:underline inline-flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
           Terug naar Community
@@ -50,7 +50,7 @@ export default function CommunityArticle() {
           <div className="mb-8">
             <Link
               to="/community"
-              className="inline-flex items-center gap-2 text-gray-300 hover:text-white text-sm font-medium transition"
+              className="inline-flex items-center gap-2 text-slate-300 hover:text-white text-sm font-medium transition"
             >
               <ArrowLeft className="w-4 h-4" />
               Terug naar Community
@@ -58,13 +58,13 @@ export default function CommunityArticle() {
           </div>
           <span className="block text-slate-400 font-medium text-sm mb-2">{article.category}</span>
           <h1 className="text-3xl sm:text-4xl font-bold mb-2">{article.title}</h1>
-          <p className="text-gray-400">{article.date}</p>
+          <p className="text-slate-400">{article.date}</p>
         </div>
       </section>
 
       {article.imageUrl && (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
-          <figure className="rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-white">
+          <figure className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-white">
             <img
               src={article.imageUrl}
               alt={article.imageAlt || article.title}
@@ -90,7 +90,7 @@ export default function CommunityArticle() {
               </div>
             </div>
           )}
-          <div className="mt-10 pt-8 border-t border-gray-100">
+          <div className="mt-10 pt-8 border-t border-slate-100">
             <Link
               to="/community"
               className="inline-flex items-center gap-2 text-[#0F172A] font-semibold hover:text-slate-700 transition"

@@ -38,7 +38,7 @@ export default function WachtwoordVergeten() {
         </Link>
       </div>
 
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm p-8">
+      <div className="w-full max-w-md bg-slate-50 rounded-2xl border border-slate-200 p-5 md:p-8">
         <h1 className="text-2xl font-bold text-[#0F172A] mb-4">Wachtwoord vergeten</h1>
 
         {success ? (

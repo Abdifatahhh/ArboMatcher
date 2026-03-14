@@ -11,7 +11,7 @@ export type SubscriptionStatus = 'ACTIVE' | 'CANCELLED' | 'EXPIRED';
 export type InvoiceStatus = 'DRAFT' | 'PAID' | 'FAILED';
 export type FavoriteType = 'JOB' | 'DOCTOR';
 export type { ContractForm, RemoteType } from './opdrachtConstants';
-export type JobTier = 'PRO' | 'STANDARD';
+export type JobTier = 'PRO' | 'GRATIS';
 export type PosterType = 'DIRECT' | 'INTERMEDIARY';
 
 export interface ConsentPreferences {

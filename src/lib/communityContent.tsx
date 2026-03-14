@@ -32,7 +32,7 @@ export function renderContent(content: string): React.ReactNode[] {
     if (isListBlock(trimmed)) {
       const items = trimmed.split('\n').map((l) => l.trimStart().replace(/^- /, '').trim()).filter(Boolean);
       return (
-        <ul key={blockIndex} className="list-disc list-inside text-gray-600 space-y-2 mb-4 pl-1">
+        <ul key={blockIndex} className="list-disc list-inside text-slate-600 space-y-2 mb-4 pl-1">
           {items.map((item, i) => (
             <li key={i}>{renderParagraph(item, blockIndex * 100 + i)}</li>
           ))}
@@ -40,7 +40,7 @@ export function renderContent(content: string): React.ReactNode[] {
       );
     }
     return (
-      <p key={blockIndex} className="text-gray-600 leading-relaxed mb-4">
+      <p key={blockIndex} className="text-slate-600 leading-relaxed mb-4">
         {renderParagraph(trimmed, blockIndex)}
       </p>
     );

@@ -250,11 +250,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </button>
           <div className="flex items-center gap-1 ml-auto">
             {getInboxPath() !== '#' && (
-              <Link to={getInboxPath()} className="p-2 rounded-lg hover:bg-gray-100 text-slate-700 lg:hidden">
+              <Link to={getInboxPath()} className="p-2 rounded-lg hover:bg-slate-100 text-slate-700 lg:hidden">
                 <MessageSquare className="w-5 h-5" />
               </Link>
             )}
-            <Link to={getInboxPath() !== '#' ? getInboxPath() : '#'} className="p-2 rounded-lg hover:bg-gray-100 text-slate-700 lg:hidden">
+            <Link to={getInboxPath() !== '#' ? getInboxPath() : '#'} className="p-2 rounded-lg hover:bg-slate-100 text-slate-700 lg:hidden">
               <Bell className="w-5 h-5" />
             </Link>
             <div className="relative hidden lg:block" ref={accountRef}>
@@ -265,7 +265,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 aria-expanded={accountOpen}
                 aria-haspopup="true"
               >
-                <div className="w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-medium">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-emerald-500 to-green-400 text-white flex items-center justify-center text-xs font-medium">
                   {(displayName[0] || 'A').toUpperCase()}
                 </div>
                 <span className="max-w-[120px] truncate text-sm font-medium">{displayName}</span>

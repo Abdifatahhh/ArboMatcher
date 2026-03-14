@@ -1,6 +1,6 @@
 /**
  * Structure score and checklist for jobs.
- * Pure functions; no Supabase. Used in opdrachtgever form and admin.
+ * Pure functions; no Supabase. Used in organisatie form and admin.
  */
 
 import type { Job } from '../lib/types';
