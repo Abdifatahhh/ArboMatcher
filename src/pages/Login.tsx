@@ -33,7 +33,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user || !profile) return;
+    if (!user || !profile || loading) return;
     if (showAlreadyLoggedInBanner) return;
     if (profile.role !== 'ADMIN' && profile.onboarding_completed !== true) {
       navigate('/onboarding', { replace: true });
@@ -52,7 +52,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
       return;
     }
     navigate('/', { replace: true });
-  }, [user, profile, navigate, showAlreadyLoggedInBanner]);
+  }, [user, profile, navigate, showAlreadyLoggedInBanner, loading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,18 +70,16 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
     }
 
     if (userProfile?.role !== 'ADMIN' && userProfile?.onboarding_completed !== true) {
-      navigate('/onboarding');
+      navigate('/onboarding', { replace: true });
     } else if (userProfile?.role === 'professional') {
-      navigate('/professional/dashboard');
+      navigate('/professional/dashboard', { replace: true });
     } else if (userProfile?.role === 'ORGANISATIE') {
-      navigate('/organisatie/dashboard');
+      navigate('/organisatie/dashboard', { replace: true });
     } else if (userProfile?.role === 'ADMIN') {
-      navigate('/admin/dashboard');
+      navigate('/admin/dashboard', { replace: true });
     } else {
-      navigate('/');
+      navigate('/', { replace: true });
     }
-
-    setLoading(false);
   };
 
   const ErrorIcon = errorCategory ? errorIcons[errorCategory] : AlertCircle;

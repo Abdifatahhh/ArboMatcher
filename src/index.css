@@ -8,6 +8,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: #059669;
+}
+
 a, button {
   touch-action: manipulation;
 }

@@ -45,13 +45,24 @@ export function PrivacyConsent({ checked, onChange, toggles, onTogglesChange }: 
   return (
     <>
       <div className="space-y-1">
-        <label className="flex items-start gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={checked}
-            onChange={(e) => onChange(e.target.checked)}
-            className="mt-0.5 w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-          />
+        <label className="flex items-start gap-3 cursor-pointer group">
+          <button
+            type="button"
+            role="checkbox"
+            aria-checked={checked}
+            onClick={() => onChange(!checked)}
+            className={`mt-0.5 w-5 h-5 flex-shrink-0 rounded border-2 flex items-center justify-center transition-all ${
+              checked
+                ? 'bg-emerald-500 border-emerald-500'
+                : 'bg-white border-slate-300 group-hover:border-emerald-400'
+            }`}
+          >
+            {checked && (
+              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </button>
           <span className="text-sm text-[#0F172A]">
             Ik ga akkoord met de verwerking van mijn persoonsgegevens
             <br />

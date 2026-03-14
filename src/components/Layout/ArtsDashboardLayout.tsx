@@ -130,11 +130,10 @@ export function ArtsDashboardLayout() {
 
   const SidebarContent = () => (
     <>
-      <div className="p-4 lg:p-5 border-b border-slate-200">
+      <div className="p-4 lg:p-5 border-b border-slate-200 lg:h-[65px] lg:flex lg:items-center">
         <Link to="/" className="inline-block">
           <LogoText theme="light" className="text-lg lg:text-xl" />
         </Link>
-        <p className="text-[11px] lg:text-xs mt-1.5 text-slate-400 font-medium tracking-wide">Professional Portal</p>
       </div>
 
       <nav className="flex-1 overflow-y-auto p-3 lg:p-3.5 space-y-5">
@@ -213,6 +212,32 @@ export function ArtsDashboardLayout() {
             </div>
           </div>
         </header>
+
+        <div className="hidden lg:flex items-center justify-end gap-2 border-b border-slate-200 bg-white h-[65px] px-6">
+          <Link to="/professional/inbox" className="p-2 rounded-lg hover:bg-slate-50 text-slate-500 relative">
+            <MessageSquare className="w-5 h-5" />
+            {unreadMessages > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-emerald-500 text-white rounded-full px-1">
+                {unreadMessages > 9 ? '9+' : unreadMessages}
+              </span>
+            )}
+          </Link>
+          <Link to="/professional/uitnodigingen" className="p-2 rounded-lg hover:bg-slate-50 text-slate-500 relative">
+            <Bell className="w-5 h-5" />
+            {pendingInvites > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-emerald-500 text-white rounded-full px-1">
+                {pendingInvites > 9 ? '9+' : pendingInvites}
+              </span>
+            )}
+          </Link>
+          <Link to="/professional/profiel" className="ml-1 p-1 rounded-full hover:bg-slate-50 flex items-center justify-center w-9 h-9 bg-emerald-50 border border-emerald-100">
+            {profile?.avatar_url ? (
+              <img src={profile.avatar_url} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover" />
+            ) : (
+              <span className="text-sm font-bold text-emerald-700">{(profile?.full_name || profile?.email || '?')[0].toUpperCase()}</span>
+            )}
+          </Link>
+        </div>
 
         <main className="flex-1 overflow-auto pb-20 lg:pb-0"><Outlet /></main>
 

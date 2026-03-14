@@ -179,6 +179,7 @@ export default function Onboarding() {
   const [statutaireNaam, setStatutaireNaam] = useState('');
   const [organisatieSaving, setOrganisatieSaving] = useState(false);
   const [organisationType, setOrganisationType] = useState<OrganisationType | null>(null);
+  const [pendingOrgType, setPendingOrgType] = useState<OrganisationType | null>(null);
   const [kvkLoading, setKvkLoading] = useState(false);
   const [kvkSearchMessage, setKvkSearchMessage] = useState<'idle' | 'no_results' | 'api_error'>('idle');
   const [kvkSearchErrorDetail, setKvkSearchErrorDetail] = useState('');
@@ -564,10 +565,10 @@ export default function Onboarding() {
                   type="button"
                   disabled={roleChoosing}
                   onClick={() => handleRoleChoose(opt.value)}
-                  className="group p-5 md:p-6 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all duration-200 flex flex-col items-center text-center disabled:opacity-50 min-h-[140px] md:min-h-[160px] justify-center"
+                  className="group p-5 md:p-6 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-lg transition-all duration-200 flex flex-col items-center text-center disabled:opacity-50 min-h-[140px] md:min-h-[160px] justify-center"
                 >
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-slate-100 flex items-center justify-center mb-3 md:mb-4 transition-colors">
-                    <Icon className="w-7 h-7 md:w-9 md:h-9 text-slate-700" strokeWidth={2} />
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-emerald-50 border border-emerald-100 group-hover:bg-emerald-100 flex items-center justify-center mb-3 md:mb-4 transition-colors">
+                    <Icon className="w-7 h-7 md:w-9 md:h-9 text-emerald-600" strokeWidth={2} />
                   </div>
                   <span className="font-bold text-[#0F172A] text-sm md:text-base">{opt.label}</span>
                   <span className="text-xs md:text-sm text-slate-500 mt-1 leading-snug">{opt.sub}</span>
@@ -579,7 +580,7 @@ export default function Onboarding() {
             Alle medische professionals worden gecontroleerd via het BIG-register.
           </p>
           </div>
-          <p className="mt-6 text-center text-sm text-slate-400">Komt u er niet uit? <Link to="/contact" className="text-[#0F172A] hover:underline">Neem contact op</Link> met onze klantenservice.</p>
+          <p className="mt-6 text-center text-sm text-slate-400">Komt u er niet uit? <Link to="/contact" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Neem contact op</Link> met onze klantenservice.</p>
         </div>
       </div>
     );
@@ -629,7 +630,7 @@ export default function Onboarding() {
                   <button
                     key={p.value}
                     type="button"
-                    onClick={() => { setProfession(p.value); setError(''); setProfessionStep(3); }}
+                    onClick={() => { setProfession(p.value); setError(''); }}
                     className={`w-full flex items-center gap-3 p-4 md:p-5 rounded-xl border transition-all duration-200 text-left ${
                       profession === p.value
                         ? 'border-emerald-500 bg-white shadow-md ring-1 ring-emerald-500'
@@ -645,6 +646,14 @@ export default function Onboarding() {
                   </button>
                 ))}
               </div>
+              <button
+                type="button"
+                disabled={!profession}
+                onClick={() => setProfessionStep(3)}
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold text-sm hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Volgende
+              </button>
             </>
           )}
 
@@ -666,18 +675,30 @@ export default function Onboarding() {
                   <button
                     key={opt.value}
                     type="button"
-                    onClick={() => {
-                      setError('');
-                      setEmploymentType(opt.value);
-                      if (opt.value === 'LOONDIENST') setProfessionStep(5);
-                      else setProfessionStep(4);
-                    }}
-                    className="w-full flex items-center gap-3 p-4 md:p-5 rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 text-left hover:border-slate-300 hover:shadow-md"
+                    onClick={() => { setError(''); setEmploymentType(opt.value); }}
+                    className={`w-full flex items-center gap-3 p-4 md:p-5 rounded-xl border transition-all duration-200 text-left ${
+                      employmentType === opt.value
+                        ? 'border-emerald-500 bg-white shadow-md ring-1 ring-emerald-500'
+                        : 'border-slate-200 bg-white shadow-sm hover:border-slate-300 hover:shadow-md'
+                    }`}
                   >
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                      employmentType === opt.value ? 'border-emerald-500 bg-emerald-50' : 'border-slate-300'
+                    }`}>
+                      {employmentType === opt.value && <div className="w-3 h-3 rounded-full bg-emerald-500" />}
+                    </div>
                     <span className="font-semibold text-[#0F172A] text-sm md:text-base">{opt.label}</span>
                   </button>
                 ))}
               </div>
+              <button
+                type="button"
+                disabled={!employmentType}
+                onClick={() => setProfessionStep(employmentType === 'LOONDIENST' ? 5 : 4)}
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold text-sm hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Volgende
+              </button>
             </>
           )}
 
@@ -1016,17 +1037,34 @@ export default function Onboarding() {
                   <button
                     key={opt.value}
                     type="button"
-                    onClick={() => { setOrganisationType(opt.value); setError(''); }}
-                    className="w-full flex items-center gap-3 p-4 md:p-5 rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 text-left hover:border-slate-300 hover:shadow-md"
+                    onClick={() => { setPendingOrgType(opt.value); setError(''); }}
+                    className={`w-full flex items-center gap-3 p-4 md:p-5 rounded-xl border transition-all duration-200 text-left ${
+                      pendingOrgType === opt.value
+                        ? 'border-emerald-500 bg-white shadow-md ring-1 ring-emerald-500'
+                        : 'border-slate-200 bg-white shadow-sm hover:border-slate-300 hover:shadow-md'
+                    }`}
                   >
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                      pendingOrgType === opt.value ? 'border-emerald-500 bg-emerald-50' : 'border-slate-300'
+                    }`}>
+                      {pendingOrgType === opt.value && <div className="w-3 h-3 rounded-full bg-emerald-500" />}
+                    </div>
                     <span className="font-semibold text-[#0F172A] text-sm md:text-base">{opt.label}</span>
                   </button>
                 ))}
               </div>
+              <button
+                type="button"
+                disabled={!pendingOrgType}
+                onClick={() => { setOrganisationType(pendingOrgType); }}
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold text-sm hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Volgende
+              </button>
             </>
           ) : (
             <>
-              <button type="button" onClick={() => setOrganisationType(null)} className="text-slate-500 hover:text-[#0F172A] font-medium mb-3 text-sm transition">← Terug naar type organisatie</button>
+              <button type="button" onClick={() => { setOrganisationType(null); setPendingOrgType(null); }} className="text-slate-500 hover:text-[#0F172A] font-medium mb-3 text-sm transition">← Terug naar type organisatie</button>
               <h1 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-1">Registreer uw bedrijf</h1>
               <p className="text-slate-500 text-sm md:text-base mb-4 md:mb-6">Zoek uw bedrijf op naam of KvK-nummer, kies uw bedrijf en voltooi de registratie. Adres en overige gegevens kunt u later op uw dashboard invullen.</p>
               {error && (
@@ -1132,7 +1170,7 @@ className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3
         </div>
       )}
 
-        <p className="mt-8 text-center text-sm text-slate-400">Komt u er niet uit? <Link to="/contact" className="text-[#0F172A] hover:underline">Neem contact op</Link> met onze klantenservice.</p>
+        <p className="mt-8 text-center text-sm text-slate-400">Komt u er niet uit? <Link to="/contact" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Neem contact op</Link> met onze klantenservice.</p>
       </div>
     </div>
   );

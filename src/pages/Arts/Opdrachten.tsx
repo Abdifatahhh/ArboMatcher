@@ -27,20 +27,29 @@ interface FilterOption {
 const expertiseOptions: FilterOption[] = [
   { value: 'bedrijfsarts', label: 'Bedrijfsarts' },
   { value: 'arbo-arts', label: 'Arbo-arts' },
-  { value: 'verzuim', label: 'Verzuim' },
+  { value: 'verzekeringsarts', label: 'Verzekeringsarts' },
+  { value: 'casemanager_verzuim', label: 'Casemanager verzuim' },
+  { value: 'pob', label: 'POB (Praktijkondersteuner)' },
+  { value: 'arbeidshygiene', label: 'Arbeidshygiëne' },
   { value: 'preventie', label: 'Preventie' },
   { value: 'reintegratie', label: 'Re-integratie' },
 ];
 
-const hoursOptions: FilterOption[] = [
-  { value: '0-16', label: '0 - 16 uur' },
-  { value: '16-24', label: '16 - 24 uur' },
-  { value: '24-32', label: '24 - 32 uur' },
-  { value: '32-40', label: '32 - 40 uur' },
-  { value: '40+', label: '40+ uur' },
-];
 
-const locationOptions: FilterOption[] = REMOTE_TYPE_OPTIONS;
+const locationOptions: FilterOption[] = [
+  { value: 'Drenthe', label: 'Drenthe' },
+  { value: 'Flevoland', label: 'Flevoland' },
+  { value: 'Friesland', label: 'Friesland' },
+  { value: 'Gelderland', label: 'Gelderland' },
+  { value: 'Groningen', label: 'Groningen' },
+  { value: 'Limburg', label: 'Limburg' },
+  { value: 'Noord-Brabant', label: 'Noord-Brabant' },
+  { value: 'Noord-Holland', label: 'Noord-Holland' },
+  { value: 'Overijssel', label: 'Overijssel' },
+  { value: 'Utrecht', label: 'Utrecht' },
+  { value: 'Zeeland', label: 'Zeeland' },
+  { value: 'Zuid-Holland', label: 'Zuid-Holland' },
+];
 
 const postedByOptions: FilterOption[] = [
   { value: 'direct', label: 'Direct door organisatie' },
@@ -129,6 +138,57 @@ function FilterDropdown({ label, options, selected, onChange }: FilterDropdownPr
   );
 }
 
+function HoursRangeDropdown({ min, max, onMinChange, onMaxChange }: { min: number; max: number; onMinChange: (v: number) => void; onMaxChange: (v: number) => void }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const active = min > 0 || max < 40;
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) setIsOpen(false);
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition text-sm font-medium ${
+          active ? 'bg-emerald-50 border-emerald-300 text-emerald-700' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+        }`}
+      >
+        <span>Uren per week</span>
+        {active && <span className="bg-emerald-500 text-white text-xs px-1.5 rounded-full">{min}–{max}</span>}
+        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-slate-200 z-50 p-4">
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <label className="block text-xs font-medium text-slate-500 mb-1">Minimaal</label>
+              <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden">
+                <input type="text" inputMode="numeric" value={min} onChange={(e) => { const v = e.target.value.replace(/\D/g, ''); onMinChange(v === '' ? 0 : Math.min(Number(v), 60)); }} className="w-full px-3 py-2 text-sm text-slate-700 outline-none [appearance:textfield]" />
+                <span className="px-2 text-xs text-slate-400 bg-slate-50 py-2 border-l border-slate-200">uur</span>
+              </div>
+            </div>
+            <span className="text-slate-300 mt-5">–</span>
+            <div className="flex-1">
+              <label className="block text-xs font-medium text-slate-500 mb-1">Maximaal</label>
+              <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden">
+                <input type="text" inputMode="numeric" value={max} onChange={(e) => { const v = e.target.value.replace(/\D/g, ''); onMaxChange(v === '' ? 0 : Math.max(Number(v), 0)); }} className="w-full px-3 py-2 text-sm text-slate-700 outline-none [appearance:textfield]" />
+                <span className="px-2 text-xs text-slate-400 bg-slate-50 py-2 border-l border-slate-200">uur</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const COMPANY_COLORS: Record<string, string> = {
   'ArboNed': '#E53935',
   'Zorg & Zekerheid': '#1E88E5',
@@ -184,7 +244,8 @@ export default function ArtsOpdrachten() {
 
   const [filters, setFilters] = useState({
     expertise: [] as string[],
-    hours: [] as string[],
+    hoursMin: 0,
+    hoursMax: 40,
     location: [] as string[],
     postedBy: [] as string[],
     contract: [] as string[],
@@ -212,14 +273,20 @@ export default function ArtsOpdrachten() {
     setLoading(true);
     let query = supabase
       .from('jobs')
-      .select('*', { count: 'exact' })
+      .select('*, applications(count)', { count: 'exact' })
       .eq('status', 'PUBLISHED');
 
     if (filters.location.length > 0) {
-      query = query.in('remote_type', filters.location);
+      query = query.in('region', filters.location);
     }
     if (filters.contract.length > 0) {
       query = query.in('job_type', filters.contract);
+    }
+    if (filters.hoursMin > 0) {
+      query = query.gte('hours_per_week', filters.hoursMin);
+    }
+    if (filters.hoursMax < 40) {
+      query = query.lte('hours_per_week', filters.hoursMax);
     }
     if (searchTags.length > 0) {
       const searchConditions = searchTags.map(tag =>
@@ -243,7 +310,11 @@ export default function ArtsOpdrachten() {
     }
 
     const { data, count } = await query;
-    setJobs(data || []);
+    const enriched = (data || []).map((job: Record<string, unknown>) => {
+      const appArr = job.applications as { count: number }[] | undefined;
+      return { ...job, applications_count: appArr?.[0]?.count ?? job.applications_count ?? 0 };
+    });
+    setJobs(enriched as Job[]);
     setTotalCount(count || 0);
     setLoading(false);
   };
@@ -279,6 +350,8 @@ export default function ArtsOpdrachten() {
   };
 
   const handleJobClick = (job: Job) => {
+    supabase.rpc('increment_job_views', { p_job_id: job.id }).then();
+    setJobs(prev => prev.map(j => j.id === job.id ? { ...j, views_count: (j.views_count || 0) + 1 } : j));
     navigate(`/opdrachten/${job.id}`);
   };
 
@@ -298,13 +371,13 @@ export default function ArtsOpdrachten() {
   };
 
   const clearAllFilters = () => {
-    setFilters({ expertise: [], hours: [], location: [], postedBy: [], contract: [] });
+    setFilters({ expertise: [], hoursMin: 0, hoursMax: 40, location: [], postedBy: [], contract: [] });
     setSearchTags([]);
   };
 
   const hasActiveFilters =
     filters.expertise.length > 0 ||
-    filters.hours.length > 0 ||
+    filters.hoursMin > 0 || filters.hoursMax < 40 ||
     filters.location.length > 0 ||
     filters.postedBy.length > 0 ||
     filters.contract.length > 0 ||
@@ -321,6 +394,9 @@ export default function ArtsOpdrachten() {
 
   const isPro = (job: Job) =>
     (job as { job_tier?: string }).job_tier === 'PRO' || (job as { is_pro?: boolean }).is_pro;
+
+  const isOlderThan48h = (date: string) => Date.now() - new Date(date).getTime() > 48 * 60 * 60 * 1000;
+  const showCompany = (job: Job) => !isPro(job) || isOlderThan48h(job.created_at);
 
   return (
     <div className="p-4 lg:p-6">
@@ -370,11 +446,11 @@ export default function ArtsOpdrachten() {
           selected={filters.expertise}
           onChange={(values) => setFilters({ ...filters, expertise: values })}
         />
-        <FilterDropdown
-          label="Uren per week"
-          options={hoursOptions}
-          selected={filters.hours}
-          onChange={(values) => setFilters({ ...filters, hours: values })}
+        <HoursRangeDropdown
+          min={filters.hoursMin}
+          max={filters.hoursMax}
+          onMinChange={(v) => setFilters({ ...filters, hoursMin: v })}
+          onMaxChange={(v) => setFilters({ ...filters, hoursMax: v })}
         />
         <FilterDropdown
           label="Werklocatie"
@@ -476,26 +552,24 @@ export default function ArtsOpdrachten() {
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           {filteredJobs.map((job) => {
-            const color = getCompanyColor(job.company_name);
             const pro = isPro(job);
+            const canShowCompany = showCompany(job);
+            const color = canShowCompany ? getCompanyColor(job.company_name) : '#059669';
 
             return (
               <div
                 key={job.id}
                 onClick={() => handleJobClick(job)}
-                className="group bg-white rounded-xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-300 overflow-hidden"
+                className="group bg-white rounded-xl border border-slate-200 shadow-md cursor-pointer transition-all hover:shadow-lg hover:border-slate-300 overflow-hidden"
               >
-                {/* Color accent bar */}
-                <div className="h-1" style={{ background: pro ? '#0F172A' : color }} />
 
                 <div className="p-5">
-                  {/* Logo + favorite */}
                   <div className="flex items-start justify-between mb-3">
                     {pro ? (
-                      <div className="w-11 h-11 bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center text-white font-bold text-[11px] tracking-wide shadow-sm">
+                      <div className="w-11 h-11 bg-gradient-to-br from-emerald-600 to-green-500 rounded-xl flex items-center justify-center text-white font-bold text-[11px] tracking-wide shadow-sm">
                         PRO
                       </div>
-                    ) : job.company_name ? (
+                    ) : canShowCompany && job.company_name ? (
                       <div
                         className="w-11 h-11 rounded-xl flex items-center justify-center text-white font-bold text-[11px] shadow-sm"
                         style={{ background: color }}
@@ -503,7 +577,7 @@ export default function ArtsOpdrachten() {
                         {job.company_name.split(' ').slice(0, 2).map(w => w[0]).join('')}
                       </div>
                     ) : (
-                      <div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400">
+                      <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500">
                         <Building2 className="w-5 h-5" />
                       </div>
                     )}
@@ -515,20 +589,18 @@ export default function ArtsOpdrachten() {
                     </button>
                   </div>
 
-                  {/* Title */}
                   <h3 className="font-semibold text-slate-900 mb-3 line-clamp-2 leading-snug group-hover:text-emerald-700 transition-colors">
                     {job.title}
                   </h3>
 
-                  {/* Meta */}
                   <div className="space-y-1.5 text-[13px] text-slate-500">
                     {pro && (
                       <div className="flex items-center gap-2">
-                        <FileText className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                        <span className="text-slate-900 font-medium">PRO opdracht</span>
+                        <FileText className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                        <span className="text-emerald-700 font-medium">PRO opdracht</span>
                       </div>
                     )}
-                    {job.company_name && (
+                    {canShowCompany && job.company_name && (
                       <div className="flex items-center gap-2">
                         <Building2 className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                         <span className="truncate">{job.company_name}</span>
@@ -545,7 +617,6 @@ export default function ArtsOpdrachten() {
                       <span>{getContractFormLabel(job.job_type) || '—'}</span>
                     </div>
 
-                    {/* Divider */}
                     <div className="border-t border-slate-100 !mt-2.5 !mb-2" />
 
                     <div className="flex items-center gap-2">
@@ -570,25 +641,24 @@ export default function ArtsOpdrachten() {
         /* List view */
         <div className="space-y-2">
           {filteredJobs.map((job) => {
-            const color = getCompanyColor(job.company_name);
             const pro = isPro(job);
+            const canShowCompany = showCompany(job);
+            const color = canShowCompany ? getCompanyColor(job.company_name) : '#059669';
 
             return (
               <div
                 key={job.id}
                 onClick={() => handleJobClick(job)}
-                className="group bg-white rounded-xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-300 overflow-hidden flex"
+                className="group bg-white rounded-xl border border-slate-200 shadow-md cursor-pointer transition-all hover:shadow-lg hover:border-slate-300 overflow-hidden flex"
               >
-                {/* Left accent */}
-                <div className="w-1 flex-shrink-0" style={{ background: pro ? '#0F172A' : color }} />
 
                 <div className="flex items-center gap-4 p-4 flex-1 min-w-0">
                   <div className="flex-shrink-0">
                     {pro ? (
-                      <div className="w-11 h-11 bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center text-white font-bold text-[11px] tracking-wide shadow-sm">
+                      <div className="w-11 h-11 bg-gradient-to-br from-emerald-600 to-green-500 rounded-xl flex items-center justify-center text-white font-bold text-[11px] tracking-wide shadow-sm">
                         PRO
                       </div>
-                    ) : job.company_name ? (
+                    ) : canShowCompany && job.company_name ? (
                       <div
                         className="w-11 h-11 rounded-xl flex items-center justify-center text-white font-bold text-[11px] shadow-sm"
                         style={{ background: color }}
@@ -596,7 +666,7 @@ export default function ArtsOpdrachten() {
                         {job.company_name.split(' ').slice(0, 2).map(w => w[0]).join('')}
                       </div>
                     ) : (
-                      <div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400">
+                      <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500">
                         <Building2 className="w-5 h-5" />
                       </div>
                     )}
@@ -608,9 +678,9 @@ export default function ArtsOpdrachten() {
                     </h3>
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-[13px] text-slate-500">
                       {pro && (
-                        <span className="text-slate-900 font-medium">PRO opdracht</span>
+                        <span className="text-emerald-700 font-medium">PRO opdracht</span>
                       )}
-                      {job.company_name && (
+                      {canShowCompany && job.company_name && (
                         <span className="flex items-center gap-1">
                           <Building2 className="w-3.5 h-3.5" />
                           {job.company_name}

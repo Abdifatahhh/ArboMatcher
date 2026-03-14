@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { Job } from '../../lib/types';
 import { getContractFormLabel, getRemoteTypeLabel } from '../../lib/opdrachtConstants';
-import { Heart, MapPin, Clock, Building2, FileText } from 'lucide-react';
+import { Heart, MapPin, Clock, Building2, FileText, Eye, MessageSquare } from 'lucide-react';
 
 export default function ArtsFavorieten() {
   const { user } = useAuth();
@@ -63,10 +63,10 @@ export default function ArtsFavorieten() {
   return (
     <div className="p-4 lg:p-6">
       <div className="mb-6">
-        <h1 className="text-2xl lg:text-3xl font-bold text-[#0F172A]">
-          Favoriete opdrachten ({favorites.length})
+        <h1 className="text-xl lg:text-2xl font-bold text-[#0F172A]">
+          Favorieten ({favorites.length})
         </h1>
-        <p className="text-slate-500 mt-1">Opdrachten die u heeft opgeslagen</p>
+        <p className="text-slate-500 text-sm mt-1">Opdrachten die u heeft opgeslagen</p>
       </div>
 
       {favorites.length === 0 ? (
@@ -84,59 +84,85 @@ export default function ArtsFavorieten() {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {favorites.map((job) => (
-            <div
-              key={job.id}
-              className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 hover:shadow-md hover:border-slate-300 transition relative"
-            >
-              <button
-                onClick={() => removeFavorite(job.id)}
-                className="absolute top-4 right-4 p-1 text-red-500 hover:text-red-600 transition"
-                title="Verwijder uit favorieten"
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+          {favorites.map((job) => {
+            const pro = (job as { job_tier?: string }).job_tier === 'PRO';
+            return (
+              <Link
+                key={job.id}
+                to={`/opdrachten/${job.id}`}
+                className="group bg-white rounded-xl border border-slate-200 shadow-md hover:shadow-lg hover:border-slate-300 transition overflow-hidden"
               >
-                <Heart className="w-5 h-5 fill-red-500" />
-              </button>
+                <div className="p-5">
+                  <div className="flex items-start justify-between mb-3">
+                    {pro ? (
+                      <div className="w-11 h-11 bg-gradient-to-br from-emerald-600 to-green-500 rounded-xl flex items-center justify-center text-white font-bold text-[11px] tracking-wide shadow-sm">
+                        PRO
+                      </div>
+                    ) : job.company_name ? (
+                      <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 font-bold text-[11px] shadow-sm">
+                        {job.company_name.split(' ').slice(0, 2).map(w => w[0]).join('')}
+                      </div>
+                    ) : (
+                      <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500">
+                        <Building2 className="w-5 h-5" />
+                      </div>
+                    )}
+                    <button
+                      onClick={(e) => { e.preventDefault(); removeFavorite(job.id); }}
+                      className="p-1 text-emerald-500 hover:text-emerald-600 transition"
+                    >
+                      <Heart className="w-5 h-5 fill-current" />
+                    </button>
+                  </div>
 
-              <div className="mb-4">
-                {(job as { job_tier?: string }).job_tier === 'PRO' ? (
-                  <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-400 rounded-lg flex items-center justify-center text-white font-bold text-xs mb-3">
-                    PRO
-                  </div>
-                ) : (
-                  <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 font-bold text-xs mb-3">
-                    {job.company_name?.slice(0, 2).toUpperCase() || 'OP'}
-                  </div>
-                )}
-                <Link to={`/opdrachten/${job.id}`}>
-                  <h3 className="font-bold text-[#0F172A] hover:text-[#0F172A] transition line-clamp-2 pr-6">
+                  <h3 className="font-semibold text-slate-900 mb-3 line-clamp-2 leading-snug group-hover:text-emerald-700 transition-colors">
                     {job.title}
                   </h3>
-                </Link>
-              </div>
 
-              <div className="space-y-2 text-sm text-slate-500">
-                <div className="flex items-center space-x-2">
-                  <FileText className="w-4 h-4 text-slate-300 flex-shrink-0" />
-                  <span className="truncate">{getContractFormLabel(job.job_type) || '—'}</span>
-                </div>
-                {job.region && (
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="w-4 h-4 text-slate-300 flex-shrink-0" />
-                    <span className="truncate">{job.region}</span>
+                  <div className="space-y-1.5 text-[13px] text-slate-500">
+                    {pro && (
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                        <span className="text-emerald-700 font-medium">PRO opdracht</span>
+                      </div>
+                    )}
+                    {!pro && job.company_name && (
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                        <span className="truncate">{job.company_name}</span>
+                      </div>
+                    )}
+                    {job.region && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                        <span>{job.region}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <span>{getContractFormLabel(job.job_type) || '—'}</span>
+                    </div>
+
+                    <div className="border-t border-slate-100 !mt-2.5 !mb-2" />
+
+                    <div className="flex items-center gap-2">
+                      <Eye className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <span>{(job as Record<string, unknown>).views_count as number || 0} keer bekeken</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <span>{(job as Record<string, unknown>).applications_count as number || 0} reacties ontvangen</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <span>{new Date(job.created_at).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                    </div>
                   </div>
-                )}
-                <div className="flex items-center space-x-2">
-                  <Building2 className="w-4 h-4 text-slate-300 flex-shrink-0" />
-                  <span className="truncate">{getRemoteTypeLabel(job.remote_type) || '—'}</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Clock className="w-4 h-4 text-slate-300 flex-shrink-0" />
-                  <span>{new Date(job.created_at).toLocaleDateString('nl-NL')}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>

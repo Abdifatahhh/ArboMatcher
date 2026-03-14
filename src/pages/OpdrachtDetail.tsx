@@ -120,10 +120,8 @@ export default function OpdrachtDetail() {
   };
 
   const incrementViews = async (jobId: string, currentViews: number) => {
-    await supabase
-      .from('jobs')
-      .update({ views_count: currentViews + 1 })
-      .eq('id', jobId);
+    await supabase.rpc('increment_job_views', { p_job_id: jobId });
+    setViewsCount(currentViews + 1);
   };
 
   const checkIfApplied = async () => {
