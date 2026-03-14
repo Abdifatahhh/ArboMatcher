@@ -111,7 +111,7 @@ export function ArtsDashboardLayout() {
         to={item.path}
         className={`flex items-center justify-between px-3 py-2 ${compact ? '' : 'lg:px-3.5 lg:py-2.5'} rounded-xl transition-all duration-200 text-[13px] lg:text-sm ${
           isActive
-            ? 'bg-[#0F172A] text-white shadow-md shadow-slate-900/10'
+            ? 'bg-gradient-to-r from-emerald-500 to-green-400 text-white shadow-md shadow-emerald-500/10'
             : 'text-slate-600 hover:bg-white hover:text-[#0F172A] hover:shadow-sm'
         }`}
       >
@@ -120,7 +120,7 @@ export function ArtsDashboardLayout() {
           <span className="truncate">{item.label}</span>
         </div>
         {badge > 0 && (
-          <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${isActive ? 'bg-white text-[#0F172A]' : 'bg-[#0F172A] text-white'}`}>
+          <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${isActive ? 'bg-white text-emerald-600' : 'bg-emerald-500 text-white'}`}>
             {badge > 9 ? '9+' : badge}
           </span>
         )}
@@ -155,7 +155,7 @@ export function ArtsDashboardLayout() {
           to="/professional/instellingen"
           className={`flex items-center gap-2.5 px-3 py-2 lg:px-3.5 lg:py-2.5 rounded-xl transition text-[13px] lg:text-sm ${
             location.pathname === '/professional/instellingen'
-              ? 'bg-[#0F172A] text-white shadow-md shadow-slate-900/10'
+              ? 'bg-gradient-to-r from-emerald-500 to-green-400 text-white shadow-md shadow-emerald-500/10'
               : 'text-slate-600 hover:bg-white hover:text-[#0F172A]'
           }`}
         >
@@ -190,7 +190,7 @@ export function ArtsDashboardLayout() {
               <Link to="/professional/inbox" className="p-2 rounded-lg hover:bg-slate-50 text-[#0F172A] relative">
                 <MessageSquare className="w-5 h-5" />
                 {unreadMessages > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-[#0F172A] text-white rounded-full px-1">
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-emerald-500 text-white rounded-full px-1">
                     {unreadMessages > 9 ? '9+' : unreadMessages}
                   </span>
                 )}
@@ -198,7 +198,7 @@ export function ArtsDashboardLayout() {
               <Link to="/professional/uitnodigingen" className="p-2 rounded-lg hover:bg-slate-50 text-[#0F172A] relative">
                 <Bell className="w-5 h-5" />
                 {pendingInvites > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-[#0F172A] text-white rounded-full px-1">
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold bg-emerald-500 text-white rounded-full px-1">
                     {pendingInvites > 9 ? '9+' : pendingInvites}
                   </span>
                 )}
@@ -261,14 +261,14 @@ export function ArtsDashboardLayout() {
                             key={item.path}
                             to={item.path}
                             onClick={() => setBottomSheetOpen(false)}
-                            className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm ${isActive ? 'bg-[#0F172A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}
+                            className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm ${isActive ? 'bg-gradient-to-r from-emerald-500 to-green-400 text-white' : 'text-slate-700 hover:bg-slate-50'}`}
                           >
                             <div className="flex items-center gap-3">
                               <Icon className="w-5 h-5 shrink-0" />
                               <span>{item.label}</span>
                             </div>
                             {badge > 0 && (
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-[#0F172A] text-white'}`}>
+                              <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-emerald-500 text-white'}`}>
                                 {badge > 9 ? '9+' : badge}
                               </span>
                             )}

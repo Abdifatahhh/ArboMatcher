@@ -32,7 +32,7 @@ export default function Over() {
 
         <section className="mb-16">
           <div className="bg-slate-50 rounded-2xl p-5 sm:p-8 border border-slate-200">
-            <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Waar wij voor staan</h2>
+            <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Waar wij voor <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-400">staan</span></h2>
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 { icon: Shield, title: 'Kwaliteit', desc: 'Alle professionals worden geverifieerd via hun BIG-registratie. Zo garanderen we dat u werkt met gecertificeerde professionals.' },
@@ -41,8 +41,8 @@ export default function Over() {
                 { icon: Lock, title: 'Betrouwbaarheid', desc: 'AVG-proof communicatie en veilige gegevensuitwisseling volgens de hoogste standaarden.' },
               ].map((item) => (
                 <div key={item.title} className="p-5 sm:p-8 rounded-2xl bg-white shadow-sm border border-slate-200">
-                  <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-4">
-                    <item.icon className="w-6 h-6 text-slate-700" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100 rounded-xl flex items-center justify-center mb-4">
+                    <item.icon className="w-6 h-6 text-emerald-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-[#0F172A] mb-3">{item.title}</h3>
                   <p className="text-slate-600">{item.desc}</p>
@@ -110,7 +110,7 @@ export default function Over() {
           </p>
           <AuthLink
             to="/register"
-            className="inline-flex items-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+            className="inline-flex items-center bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
           >
             Gratis registreren
             <ArrowRight className="w-4 h-4 ml-2" />

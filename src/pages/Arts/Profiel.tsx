@@ -503,7 +503,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
               </div>
               <div className="p-5 border-t border-slate-100 flex justify-end gap-2">
                 <button type="button" onClick={() => setShowConsentModal(false)} className="px-5 py-2.5 border border-slate-200 rounded-xl font-medium text-slate-700 hover:bg-slate-50 transition">Annuleren</button>
-                <button type="button" onClick={saveConsentPreferences} className="px-5 py-2.5 bg-[#0F172A] text-white font-medium rounded-xl hover:bg-[#1E293B] transition">Instellingen opslaan</button>
+                <button type="button" onClick={saveConsentPreferences} className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white font-medium rounded-xl hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20">Instellingen opslaan</button>
               </div>
             </div>
           </div>
@@ -512,7 +512,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
         <button
           onClick={handleSave}
           disabled={saving}
-          className={`w-full flex items-center justify-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50 shadow-lg shadow-slate-900/10 ${isOnboarding ? '' : 'md:w-auto'}`}
+          className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition disabled:opacity-50 shadow-lg shadow-emerald-500/20 ${isOnboarding ? '' : 'md:w-auto'}`}
         >
           <Save className="w-5 h-5 mr-2" />
           {saving ? 'Bezig met opslaan...' : 'Opslaan'}

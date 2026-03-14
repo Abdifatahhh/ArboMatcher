@@ -68,7 +68,7 @@ export default function AdminCommunityBeheer() {
         <AdminCard noPadding title="Onderwerpen" actions={
           <div className="flex items-center gap-2">
             <button type="button" onClick={resetTopics} className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700"><RotateCcw className="w-3 h-3" /> Reset</button>
-            <button type="button" onClick={addTopic} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-900 text-white text-xs font-medium hover:bg-slate-800 transition"><Plus className="w-3.5 h-3.5" /> Nieuw</button>
+            <button type="button" onClick={addTopic} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-gradient-to-r from-emerald-500 to-green-400 text-white text-xs font-medium hover:from-emerald-600 hover:to-green-500 transition"><Plus className="w-3.5 h-3.5" /> Nieuw</button>
           </div>
         }>
           <ul className="divide-y divide-slate-50">
@@ -86,14 +86,14 @@ export default function AdminCommunityBeheer() {
             ))}
           </ul>
           <div className="px-5 py-3 border-t border-slate-100 flex justify-end">
-            <button type="button" onClick={handleSaveTopics} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition"><Save className="w-4 h-4" /> Opslaan</button>
+            <button type="button" onClick={handleSaveTopics} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-400 text-white text-sm font-medium hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"><Save className="w-4 h-4" /> Opslaan</button>
           </div>
         </AdminCard>
       ) : (
         <AdminCard noPadding title="Artikelen" actions={
           <div className="flex items-center gap-2">
             <button type="button" onClick={resetArticles} className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700"><RotateCcw className="w-3 h-3" /> Reset</button>
-            <button type="button" onClick={addArticle} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-900 text-white text-xs font-medium hover:bg-slate-800 transition"><Plus className="w-3.5 h-3.5" /> Nieuw</button>
+            <button type="button" onClick={addArticle} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-gradient-to-r from-emerald-500 to-green-400 text-white text-xs font-medium hover:from-emerald-600 hover:to-green-500 transition"><Plus className="w-3.5 h-3.5" /> Nieuw</button>
           </div>
         }>
           <ul className="divide-y divide-slate-50">
@@ -111,7 +111,7 @@ export default function AdminCommunityBeheer() {
             ))}
           </ul>
           <div className="px-5 py-3 border-t border-slate-100 flex justify-end">
-            <button type="button" onClick={handleSaveArticles} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition"><Save className="w-4 h-4" /> Opslaan</button>
+            <button type="button" onClick={handleSaveArticles} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-400 text-white text-sm font-medium hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"><Save className="w-4 h-4" /> Opslaan</button>
           </div>
         </AdminCard>
       )}
@@ -140,7 +140,7 @@ function TopicForm({ topic, onChange, onSave, onClose }: { topic: CommunityTopic
         </div>
         <div className="px-6 py-4 border-t border-slate-100 flex justify-end gap-2">
           <button type="button" onClick={onClose} className="px-4 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 hover:bg-slate-50">Annuleren</button>
-          <button type="button" onClick={onSave} className="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800">Opslaan</button>
+          <button type="button" onClick={onSave} className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-lg text-sm font-medium hover:from-emerald-600 hover:to-green-500 shadow-lg shadow-emerald-500/20">Opslaan</button>
         </div>
       </div>
     </div>
@@ -167,7 +167,7 @@ function ArticleForm({ article, onChange, onSave, onClose }: { article: Communit
         </div>
         <div className="px-6 py-4 border-t border-slate-100 flex justify-end gap-2">
           <button type="button" onClick={onClose} className="px-4 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 hover:bg-slate-50">Annuleren</button>
-          <button type="button" onClick={onSave} className="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800">Opslaan</button>
+          <button type="button" onClick={onSave} className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-lg text-sm font-medium hover:from-emerald-600 hover:to-green-500 shadow-lg shadow-emerald-500/20">Opslaan</button>
         </div>
       </div>
     </div>

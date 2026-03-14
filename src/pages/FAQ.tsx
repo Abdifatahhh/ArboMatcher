@@ -11,10 +11,11 @@ function FaqItem({ q, a }: { q: string; a: string }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
         className="w-full flex items-center justify-between py-3.5 px-4 text-left hover:bg-slate-50/50 transition rounded-xl"
       >
         <span className="font-semibold text-[#0F172A] pr-4">{q}</span>
-        {open ? <ChevronUp className="w-5 h-5 text-slate-400 shrink-0" /> : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />}
+        {open ? <ChevronUp className="w-5 h-5 text-slate-400 shrink-0" aria-hidden="true" /> : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" aria-hidden="true" />}
       </button>
       {open && (
         <div className="pb-4 px-4">
@@ -66,7 +67,7 @@ export default function FAQ() {
             <p className="text-slate-600 mb-4">Niet gevonden wat u zocht?</p>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
             >
               Neem contact op
             </Link>

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthLink } from '../components/AuthLink';
-import { getLoginPath } from '../config/portal';
+
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { AlertCircle, Loader2 } from 'lucide-react';
@@ -58,7 +58,7 @@ export default function Register() {
     e.preventDefault();
     setError('');
     if (isOnCooldown) {
-      setError(`Wacht nog ${cooldownSecondsLeft} seconden voordat je opnieuw kunt proberen.`);
+      setError(`Wacht nog ${cooldownSecondsLeft} seconden voordat u opnieuw kunt proberen.`);
       return;
     }
     if (password !== confirmPassword) {
@@ -70,7 +70,7 @@ export default function Register() {
       return;
     }
     if (!acceptPrivacy || !acceptTerms) {
-      setError('Je moet akkoord gaan met de voorwaarden');
+      setError('U moet akkoord gaan met de voorwaarden');
       return;
     }
     const emailTrim = email.trim().toLowerCase();
@@ -109,7 +109,7 @@ export default function Register() {
     if (signUpError) {
       if (signUpError.category === 'too_many_requests') {
         setCooldownUntil(Date.now() + COOLDOWN_SECONDS * 1000);
-        setError('De aanmeldservice heeft even een limiet bereikt. Je kunt over een minuut opnieuw proberen.');
+        setError('De aanmeldservice heeft even een limiet bereikt. U kunt over een minuut opnieuw proberen.');
       } else {
         setError(signUpError.userMessage);
       }
@@ -244,7 +244,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={isOnCooldown}
-              className="w-full bg-[#0F172A] text-white py-3.5 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-slate-900/10"
+              className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3.5 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span>
@@ -256,7 +256,7 @@ export default function Register() {
 
           <div className="mt-5 text-center">
             <p className="text-slate-500 text-sm">
-              Heb je al een account?{' '}
+              Heeft u al een account?{' '}
               <AuthLink to="/login" className="text-[#0F172A] hover:underline font-semibold">Inloggen</AuthLink>
             </p>
           </div>

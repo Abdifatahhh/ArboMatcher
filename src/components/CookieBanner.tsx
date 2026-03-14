@@ -72,13 +72,13 @@ export function CookieBanner() {
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <button
               onClick={() => save('all')}
-              className="px-4 py-2.5 bg-[#0F172A] text-white rounded-xl font-semibold text-sm hover:bg-[#1E293B] transition"
+              className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl font-semibold text-sm hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
             >
               Alles accepteren
             </button>
             <button
               onClick={() => save('necessary')}
-              className="px-4 py-2.5 bg-[#0F172A] text-white rounded-xl font-semibold text-sm hover:bg-[#1E293B] transition"
+              className="px-4 py-2.5 border border-emerald-200 text-[#0F172A] rounded-xl font-semibold text-sm hover:bg-emerald-50 transition"
             >
               Alleen noodzakelijk
             </button>

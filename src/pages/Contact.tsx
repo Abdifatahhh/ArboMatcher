@@ -39,7 +39,7 @@ export default function Contact() {
             <Mail className="w-8 h-8 text-slate-400" />
             <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Contact</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Neem contact op</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Neem <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300">contact</span> op</h1>
           <p className="text-xl text-slate-300 max-w-2xl">
             Heeft u vragen over ArboMatcher? Wij staan klaar om u te helpen.
           </p>
@@ -52,8 +52,8 @@ export default function Contact() {
             <div className="bg-white rounded-2xl p-8 sm:p-10 shadow-lg shadow-slate-200/40 border border-slate-100 overflow-hidden">
               {submitted ? (
                 <div className="text-center py-14 px-4">
-                  <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 ring-4 ring-slate-100">
-                    <CheckCircle className="w-10 h-10 text-slate-700" />
+                  <div className="w-20 h-20 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-6 ring-4 ring-emerald-50">
+                    <CheckCircle className="w-10 h-10 text-emerald-600" />
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-bold text-[#0F172A] mb-3">
                     Bericht verzonden
@@ -173,7 +173,7 @@ export default function Contact() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full sm:w-auto min-w-[200px] px-8 py-4 bg-[#0F172A] text-white font-semibold rounded-xl hover:bg-[#1E293B] transition flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-slate-900/10 hover:shadow-slate-200/50"
+                      className="w-full sm:w-auto min-w-[200px] px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-400 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-green-500 transition flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20"
                     >
                       {loading ? (
                         <>
@@ -198,8 +198,8 @@ export default function Contact() {
               <h3 className="text-lg font-bold text-[#0F172A] mb-4 px-1">Contactgegevens</h3>
               <div className="space-y-2.5">
                 <a href="tel:013-1234567" className="flex items-start gap-4 group bg-white rounded-xl px-4 py-3.5 border border-slate-200 shadow-sm hover:shadow-md transition">
-                  <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#0F172A] transition">
-                    <Phone className="w-5 h-5 text-slate-700 group-hover:text-white transition" />
+                  <div className="w-11 h-11 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:from-emerald-100 group-hover:to-green-100 transition">
+                    <Phone className="w-5 h-5 text-emerald-600 transition" />
                   </div>
                   <div>
                     <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-0.5">Telefoon</p>
@@ -207,8 +207,8 @@ export default function Contact() {
                   </div>
                 </a>
                 <a href="mailto:info@arbomatcher.nl" className="flex items-start gap-4 group bg-white rounded-xl px-4 py-3.5 border border-slate-200 shadow-sm hover:shadow-md transition">
-                  <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#0F172A] transition">
-                    <Mail className="w-5 h-5 text-slate-700 group-hover:text-white transition" />
+                  <div className="w-11 h-11 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:from-emerald-100 group-hover:to-green-100 transition">
+                    <Mail className="w-5 h-5 text-emerald-600 transition" />
                   </div>
                   <div>
                     <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-0.5">E-mail</p>
@@ -216,8 +216,8 @@ export default function Contact() {
                   </div>
                 </a>
                 <div className="flex items-start gap-4 bg-white rounded-xl px-4 py-3.5 border border-slate-200 shadow-sm">
-                  <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-slate-700" />
+                  <div className="w-11 h-11 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-emerald-600" />
                   </div>
                   <div>
                     <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-0.5">Adres</p>
@@ -294,10 +294,11 @@ function ContactFaqItem({ q, a }: { q: string; a: string }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
         className="w-full flex items-center justify-between py-3.5 px-4 text-left hover:bg-slate-50/50 transition rounded-xl"
       >
         <span className="font-semibold text-[#0F172A] pr-4">{q}</span>
-        {open ? <ChevronUp className="w-5 h-5 text-slate-400 shrink-0" /> : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />}
+        {open ? <ChevronUp className="w-5 h-5 text-slate-400 shrink-0" aria-hidden="true" /> : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" aria-hidden="true" />}
       </button>
       {open && (
         <div className="pb-4 px-4">

@@ -155,7 +155,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const navGroups = getNavigationGroups();
   const allNavItems = getAllNavItems();
 
-  const navActive = 'bg-slate-900 text-white shadow-sm';
+  const navActive = 'bg-gradient-to-r from-emerald-500 to-green-400 text-white shadow-sm shadow-emerald-500/10';
   const navInactive = 'text-slate-600 hover:bg-slate-50 hover:text-slate-900';
 
   const [accountOpen, setAccountOpen] = useState(false);
@@ -367,7 +367,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                               key={item.path}
                               to={item.path}
                               onClick={() => setBottomSheetOpen(false)}
-                              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm ${isActive ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-50'}`}
+                              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm ${isActive ? 'bg-gradient-to-r from-emerald-500 to-green-400 text-white' : 'text-slate-700 hover:bg-slate-50'}`}
                             >
                               <Icon className="w-5 h-5 shrink-0" />
                               <span>{item.label}</span>

@@ -564,7 +564,7 @@ export default function Onboarding() {
                   type="button"
                   disabled={roleChoosing}
                   onClick={() => handleRoleChoose(opt.value)}
-                  className="group p-5 md:p-6 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-[#0F172A] hover:shadow-md transition-all duration-200 flex flex-col items-center text-center disabled:opacity-50 min-h-[140px] md:min-h-[160px] justify-center"
+                  className="group p-5 md:p-6 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all duration-200 flex flex-col items-center text-center disabled:opacity-50 min-h-[140px] md:min-h-[160px] justify-center"
                 >
                   <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-slate-100 flex items-center justify-center mb-3 md:mb-4 transition-colors">
                     <Icon className="w-7 h-7 md:w-9 md:h-9 text-slate-700" strokeWidth={2} />
@@ -632,14 +632,14 @@ export default function Onboarding() {
                     onClick={() => { setProfession(p.value); setError(''); setProfessionStep(3); }}
                     className={`w-full flex items-center gap-3 p-4 md:p-5 rounded-xl border transition-all duration-200 text-left ${
                       profession === p.value
-                        ? 'border-[#0F172A] bg-white shadow-md ring-1 ring-[#0F172A]'
+                        ? 'border-emerald-500 bg-white shadow-md ring-1 ring-emerald-500'
                         : 'border-slate-200 bg-white shadow-sm hover:border-slate-300 hover:shadow-md'
                     }`}
                   >
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                      profession === p.value ? 'border-[#0F172A] bg-slate-100' : 'border-gray-300'
+                      profession === p.value ? 'border-emerald-500 bg-emerald-50' : 'border-gray-300'
                     }`}>
-                      {profession === p.value && <div className="w-3 h-3 rounded-full bg-[#0F172A]" />}
+                      {profession === p.value && <div className="w-3 h-3 rounded-full bg-emerald-500" />}
                     </div>
                     <span className="font-semibold text-[#0F172A] text-sm md:text-base">{p.label}</span>
                   </button>
@@ -703,7 +703,7 @@ export default function Onboarding() {
                     {kvkConfirmPending.plaats && <> · {kvkConfirmPending.plaats}</>}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    <button type="button" onClick={() => { applyKvkResult(kvkConfirmPending); setKvkConfirmPending(null); }} className="px-4 py-2.5 bg-[#0F172A] text-white rounded-xl font-medium hover:bg-[#1E293B] transition">Ja, dit is mijn bedrijf</button>
+                    <button type="button" onClick={() => { applyKvkResult(kvkConfirmPending); setKvkConfirmPending(null); }} className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20">Ja, dit is mijn bedrijf</button>
                     <button type="button" onClick={() => setKvkConfirmPending(null)} className="px-4 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl font-medium hover:bg-slate-50 transition">Nee, ander bedrijf kiezen</button>
                   </div>
                 </div>
@@ -734,7 +734,7 @@ export default function Onboarding() {
                             placeholder="Bedrijf (min. 3 tekens)"
                           />
                         </div>
-                      <button type="button" disabled={companySearchQuery.trim().length < 3 || kvkLoading} onClick={() => searchKvk()} className="px-4 py-3 bg-[#0F172A] text-white rounded-xl font-medium hover:bg-[#1E293B] whitespace-nowrap">
+                      <button type="button" disabled={companySearchQuery.trim().length < 3 || kvkLoading} onClick={() => searchKvk()} className="px-4 py-3 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-green-500 whitespace-nowrap shadow-lg shadow-emerald-500/20">
                           <Search className="w-5 h-5" />
                         </button>
                       </div>
@@ -764,7 +764,7 @@ export default function Onboarding() {
                 </>
               )}
               {companyName && kvk.replace(/\D/g, '').length === 8 && !kvkConfirmPending && (
-                <button type="button" onClick={() => setProfessionStep(5)} className="w-full bg-[#0F172A] text-white py-4 rounded-xl font-semibold text-sm hover:bg-[#1E293B] transition shadow-lg shadow-slate-900/10">
+                <button type="button" onClick={() => setProfessionStep(5)} className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-4 rounded-xl font-semibold text-sm hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20">
                   Volgende
                 </button>
               )}
@@ -874,7 +874,7 @@ export default function Onboarding() {
                           if (res.error) setBigSearchError(res.error);
                           else setBigSearchResults(res.resultaten ?? []);
                         }}
-                        className="sm:col-span-3 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0F172A] text-white rounded-xl font-medium text-sm hover:bg-[#1E293B] disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="sm:col-span-3 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl font-medium text-sm hover:from-emerald-600 hover:to-green-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20"
                       >
                         {bigSearchLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
                         Zoeken
@@ -913,7 +913,7 @@ export default function Onboarding() {
                                   setBigSearchPendingSelection(null);
                                   setError('');
                                 }}
-                                className="px-3 py-1.5 bg-[#0F172A] text-white text-sm font-medium rounded-lg hover:bg-[#1E293B]"
+                                className="px-3 py-1.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white text-sm font-medium rounded-lg hover:from-emerald-600 hover:to-green-500"
                               >
                                 Ja, bevestigen
                               </button>
@@ -987,7 +987,7 @@ export default function Onboarding() {
                 type="button"
                 disabled={loading || (profession && NEEDS_BIG.includes(profession) && bigNumber.replace(/\D/g, '').length !== 11)}
                 onClick={saveProfessionalAndComplete}
-                className="w-full bg-[#0F172A] text-white py-3 rounded-xl font-semibold text-sm hover:bg-[#1E293B] transition shadow-lg shadow-slate-900/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold text-sm hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span> : 'Registratie voltooien'}
               </button>
@@ -1063,7 +1063,7 @@ export default function Onboarding() {
                   type="button"
                   disabled={companySearchQuery.trim().length < 3 || kvkLoading}
                   onClick={() => searchKvk()}
-                  className="px-4 py-3 bg-[#0F172A] text-white rounded-xl font-medium hover:bg-[#1E293B] whitespace-nowrap"
+                  className="px-4 py-3 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-green-500 whitespace-nowrap shadow-lg shadow-emerald-500/20"
                 >
                   <Search className="w-5 h-5" />
                 </button>
@@ -1100,7 +1100,7 @@ export default function Onboarding() {
                 <button
                   type="button"
                   onClick={() => { applyKvkResult(kvkConfirmPending); setKvkConfirmPending(null); }}
-                  className="px-4 py-2.5 bg-[#0F172A] text-white rounded-xl font-medium hover:bg-[#1E293B] transition"
+                  className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
                 >
                   Ja, dit is mijn bedrijf
                 </button>
@@ -1123,7 +1123,7 @@ export default function Onboarding() {
             type="button"
             disabled={organisatieSaving || !companyName.trim() || kvk.replace(/\D/g, '').length !== 8}
             onClick={saveOrganisatieAndComplete}
-className="w-full bg-[#0F172A] text-white py-3 rounded-xl font-semibold text-sm hover:bg-[#1E293B] transition shadow-lg shadow-slate-900/10 disabled:opacity-50 disabled:cursor-not-allowed"
+className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold text-sm hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
             >
             {organisatieSaving ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Bezig...</span> : 'Registratie voltooien'}
           </button>

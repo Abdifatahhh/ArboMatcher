@@ -78,7 +78,7 @@ export default function ArtsFavorieten() {
           </p>
           <Link
             to="/professional/opdrachten"
-            className="inline-block bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+            className="inline-block bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
           >
             Bekijk opdrachten
           </Link>

@@ -62,7 +62,7 @@ export default function Community() {
             <BookOpen className="w-8 h-8 text-slate-400" />
             <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Kennis & support</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Community</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4"><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300">Community</span></h1>
           <p className="text-xl text-slate-300 max-w-2xl">
             Handige informatie, tips en uitleg voor professionals en organisaties. Alles over het platform, BIG-verificatie en succesvol matchen.
           </p>
@@ -78,7 +78,7 @@ export default function Community() {
               onClick={() => setActiveTab('professionals')}
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition flex items-center gap-2 ${
                 activeTab === 'professionals'
-                  ? 'bg-[#0F172A] text-white shadow-lg shadow-slate-900/10'
+                  ? 'bg-gradient-to-r from-emerald-500 to-green-400 text-white shadow-lg shadow-emerald-500/10'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
@@ -90,7 +90,7 @@ export default function Community() {
               onClick={() => setActiveTab('organisaties')}
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition flex items-center gap-2 ${
                 activeTab === 'organisaties'
-                  ? 'bg-[#0F172A] text-white shadow-lg shadow-slate-900/10'
+                  ? 'bg-gradient-to-r from-emerald-500 to-green-400 text-white shadow-lg shadow-emerald-500/10'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
@@ -110,8 +110,8 @@ export default function Community() {
                 >
                   <div className="p-5 sm:p-6">
                     <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-6 h-6 text-slate-700" />
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100 flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-6 h-6 text-emerald-600" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <Link to={topicPath} className="block">
@@ -178,7 +178,7 @@ export default function Community() {
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="bg-slate-50 rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/30 p-8 sm:p-10 hover:shadow-slate-200/50 hover:border-slate-300 transition-all duration-300">
-            <CheckCircle className="w-12 h-12 mx-auto mb-4 text-slate-700" />
+            <CheckCircle className="w-12 h-12 mx-auto mb-4 text-emerald-600" />
             <h2 className="text-2xl font-bold text-[#0F172A] mb-2">Nog vragen?</h2>
             <p className="text-slate-600 mb-6">
               Bekijk de veelgestelde vragen of neem contact met ons op. Wij helpen u graag verder.
@@ -186,14 +186,14 @@ export default function Community() {
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
               >
                 Contact opnemen
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/opdrachten"
-                className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
               >
                 Opdrachten bekijken
               </Link>

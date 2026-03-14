@@ -43,7 +43,7 @@ export default function Home() {
     <div className="font-['Inter']">
       <section className="relative bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white pt-20 pb-24 sm:pt-28 sm:pb-32 overflow-hidden [contain:layout]">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-blue-500/8 rounded-full blur-3xl" />
+          <div className="absolute top-20 right-10 w-72 h-72 bg-emerald-500/8 rounded-full blur-3xl" />
           <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#1E293B]/50 rounded-full blur-3xl" />
           <svg className="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.03]" width="700" height="700" viewBox="0 0 700 700">
             <circle cx="350" cy="350" r="200" stroke="currentColor" strokeWidth="1" fill="none" />
@@ -65,7 +65,7 @@ export default function Home() {
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-[1.15] tracking-tight">
               Organisaties en professionals<br className="hidden sm:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">efficiënt verbonden</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300">efficiënt verbonden</span>
             </h1>
             <p className="text-lg sm:text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto">
               Eén platform voor het vinden van gekwalificeerde <span className="text-white font-medium">bedrijfsartsen</span> en <span className="text-white font-medium">arbo-professionals</span>. Flexibel inzetbaar, landelijk beschikbaar.
@@ -81,12 +81,12 @@ export default function Home() {
                   placeholder="Zoek op specialisatie, regio of contractvorm..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-white rounded-xl border-0 focus:ring-2 focus:ring-blue-400 text-slate-900 placeholder:text-slate-400 text-base sm:text-lg shadow-inner"
+                  className="w-full pl-12 pr-4 py-4 bg-white rounded-xl border-0 focus:ring-2 focus:ring-emerald-400 text-slate-900 placeholder:text-slate-400 text-base sm:text-lg shadow-inner"
                 />
               </div>
               <button
                 type="submit"
-                className="bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-cyan-500 transition-all whitespace-nowrap text-base sm:text-lg shadow-lg shadow-blue-500/25"
+                className="bg-gradient-to-r from-emerald-500 to-green-400 text-white px-8 py-4 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition-all whitespace-nowrap text-base sm:text-lg shadow-lg shadow-emerald-500/25"
               >
                 Zoek opdrachten
               </button>
@@ -100,7 +100,7 @@ export default function Home() {
               'Gratis registreren',
             ].map((label) => (
               <span key={label} className="flex items-center gap-2 text-slate-400/80">
-                <CheckCircle className="w-4 h-4 text-blue-400/70" />
+                <CheckCircle className="w-4 h-4 text-emerald-400/70" />
                 {label}
               </span>
             ))}
@@ -136,7 +136,7 @@ export default function Home() {
       </div>
 
       <section className="py-12 sm:py-24 bg-slate-50 relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-50/40 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-50/40 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-8 sm:mb-16">
             <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-1.5 mb-4 border border-slate-200">
@@ -144,7 +144,7 @@ export default function Home() {
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
               Hoe ArboMatcher{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">werkt</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-400">werkt</span>
             </h2>
             <p className="text-slate-500 text-lg max-w-xl mx-auto">
               Van registratie tot samenwerking in drie eenvoudige stappen
@@ -154,8 +154,8 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8 relative">
             {[
               { num: '01', icon: UserPlus, title: 'Registreer gratis', desc: 'Maak een account aan als professional, organisatie of bemiddelingspartner. Volledig gratis en zonder verplichtingen.', gradient: 'from-[#0F172A] to-slate-700' },
-              { num: '02', icon: PenLine, title: 'Plaats of reageer', desc: 'Plaats een opdracht of reageer direct op beschikbare opdrachten die bij uw expertise passen.', gradient: 'from-blue-600 to-blue-500' },
-              { num: '03', icon: Handshake, title: 'Start samenwerking', desc: 'Maak direct afspraken en start de samenwerking. ZZP, detachering of loondienst.', gradient: 'from-cyan-500 to-cyan-400' },
+              { num: '02', icon: PenLine, title: 'Plaats of reageer', desc: 'Plaats een opdracht of reageer direct op beschikbare opdrachten die bij uw expertise passen.', gradient: 'from-emerald-600 to-emerald-500' },
+              { num: '03', icon: Handshake, title: 'Start samenwerking', desc: 'Maak direct afspraken en start de samenwerking. ZZP, detachering of loondienst.', gradient: 'from-green-500 to-green-400' },
             ].map((step, i) => (
               <div key={step.num} className="relative flex flex-col">
                 <div className="w-full bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden hover:shadow-lg hover:border-slate-300 transition-all duration-300 h-full flex flex-col">
@@ -183,7 +183,7 @@ export default function Home() {
       </section>
 
       <section className="py-12 sm:py-24 bg-white relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-50/40 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-50/40 rounded-full blur-3xl" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-8 sm:mb-16">
             <div className="inline-flex items-center gap-2 bg-slate-100 rounded-full px-4 py-1.5 mb-4">
@@ -191,7 +191,7 @@ export default function Home() {
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
               Oplossingen voor{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">iedereen</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-400">iedereen</span>
             </h2>
             <p className="text-slate-500 text-lg max-w-xl mx-auto">
               Of u nu organisatie of professional bent, ArboMatcher biedt de juiste oplossing.
@@ -212,7 +212,7 @@ export default function Home() {
                 <p className="text-slate-500 leading-relaxed flex-1 mb-6">
                   Direct toegang tot een netwerk van ervaren bedrijfsartsen voor verzuimbegeleiding, preventie en re-integratie.
                 </p>
-                <span className="inline-flex items-center text-blue-600 font-semibold group-hover:gap-3 transition-all gap-2 text-sm">
+                <span className="inline-flex items-center text-emerald-600 font-semibold group-hover:gap-3 transition-all gap-2 text-sm">
                   Ontdek de mogelijkheden
                   <ArrowRight className="w-4 h-4" />
                 </span>
@@ -223,16 +223,16 @@ export default function Home() {
               to="/oplossingen"
               className="group block relative bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg hover:border-slate-300 transition-all duration-300 h-full"
             >
-              <div className="h-1.5 bg-gradient-to-r from-blue-500 to-cyan-400" />
+              <div className="h-1.5 bg-gradient-to-r from-emerald-500 to-green-400" />
               <div className="p-6 sm:p-8 flex flex-col h-full">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 mb-5 group-hover:scale-105 transition-transform">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 mb-5 group-hover:scale-105 transition-transform">
                   <UserCheck className="w-7 h-7" strokeWidth={2} />
                 </div>
                 <h3 className="text-xl font-bold text-[#0F172A] mb-2">Voor professionals</h3>
                 <p className="text-slate-500 leading-relaxed flex-1 mb-6">
                   Vind opdrachten die bij uw expertise passen. Reageer direct en start met flexibele inzetvormen.
                 </p>
-                <span className="inline-flex items-center text-blue-600 font-semibold group-hover:gap-3 transition-all gap-2 text-sm">
+                <span className="inline-flex items-center text-emerald-600 font-semibold group-hover:gap-3 transition-all gap-2 text-sm">
                   Ontdek de mogelijkheden
                   <ArrowRight className="w-4 h-4" />
                 </span>
@@ -243,7 +243,7 @@ export default function Home() {
       </section>
 
       <section className="py-12 sm:py-24 bg-slate-50 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-50/60 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-50/60 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             <div>
@@ -252,7 +252,7 @@ export default function Home() {
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-3 tracking-tight">
                 Waarom{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">ArboMatcher</span>?
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-400">ArboMatcher</span>?
               </h2>
               <p className="text-slate-500 text-lg mb-8">Alles wat u nodig heeft op één platform</p>
               <div className="space-y-3">
@@ -264,8 +264,8 @@ export default function Home() {
                   { icon: Award, text: 'Eén platform, twee doelgroepen', desc: 'Voor zowel organisaties als professionals' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-4 bg-white rounded-xl px-4 py-4 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-100 flex items-center justify-center flex-shrink-0">
-                      <item.icon className="w-5 h-5 text-blue-600" strokeWidth={2} />
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100 flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-5 h-5 text-emerald-600" strokeWidth={2} />
                     </div>
                     <div>
                       <p className="text-[#0F172A] font-semibold">{item.text}</p>
@@ -277,7 +277,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden hover:shadow-2xl transition-all duration-300">
-              <div className="h-1.5 bg-gradient-to-r from-blue-500 to-cyan-400" />
+              <div className="h-1.5 bg-gradient-to-r from-emerald-500 to-green-400" />
               <div className="p-5 sm:p-8 lg:p-10">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-700 flex items-center justify-center text-white shadow-lg mb-6">
                   <FileText className="w-7 h-7" strokeWidth={2} />
@@ -291,7 +291,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
                     to="/opdrachten"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-6 py-3.5 rounded-xl font-semibold hover:from-blue-600 hover:to-cyan-500 transition-all shadow-lg shadow-blue-500/20"
+                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3.5 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition-all shadow-lg shadow-emerald-500/20"
                   >
                     Bekijk opdrachten
                     <ArrowRight className="w-4 h-4" />
@@ -311,8 +311,8 @@ export default function Home() {
 
       <section className="py-12 sm:py-20 bg-[#0F172A] relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-10 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-1/4 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-10 left-1/4 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-1/4 w-48 h-48 bg-green-500/10 rounded-full blur-3xl" />
         </div>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight">

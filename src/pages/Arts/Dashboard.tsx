@@ -101,7 +101,7 @@ export default function ArtsDashboard() {
           </div>
           <Link
             to="/professional/profiel"
-            className="shrink-0 inline-flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#0F172A] text-white rounded-xl text-sm md:text-base font-semibold hover:bg-[#1E293B] transition shadow-lg shadow-slate-900/10"
+            className="shrink-0 inline-flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl text-sm md:text-base font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
           >
             Profiel voltooien
             <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -144,7 +144,7 @@ export default function ArtsDashboard() {
             </div>
           </div>
           {!stats.isPremium && (
-            <Link to="/professional/abonnement" className="bg-[#0F172A] text-white px-3 py-2 md:px-4 md:py-2.5 rounded-xl text-xs md:text-sm font-semibold hover:bg-[#1E293B] transition shadow-md shadow-slate-900/10">
+            <Link to="/professional/abonnement" className="bg-gradient-to-r from-emerald-500 to-green-400 text-white px-3 py-2 md:px-4 md:py-2.5 rounded-xl text-xs md:text-sm font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-md shadow-emerald-500/20">
               Upgrade naar PRO
             </Link>
           )}

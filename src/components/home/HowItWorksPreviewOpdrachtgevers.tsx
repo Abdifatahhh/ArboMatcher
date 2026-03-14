@@ -26,7 +26,7 @@ export function HowItWorksPreviewOpdrachtgevers({ activeStep }: HowItWorksPrevie
       aria-label={`Preview stap organisaties ${activeStep}`}
     >
       <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
-        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-400" />
+        <div className="h-1 bg-gradient-to-r from-emerald-500 to-green-400" />
         {activeStep === 1 && <PreviewStep1 />}
         {activeStep === 2 && <PreviewStep2 />}
         {activeStep === 3 && <PreviewStep3 />}
@@ -48,7 +48,7 @@ function PreviewStep1() {
         {DUMMY_ARTISTS.map((a, i) => (
           <div
             key={i}
-            className="flex items-center gap-3 py-3 px-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-blue-50/40 hover:border-blue-100 transition-colors"
+            className="flex items-center gap-3 py-3 px-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-emerald-50/40 hover:border-emerald-100 transition-colors"
           >
             <div className="w-10 h-10 rounded-full bg-slate-200/60 flex items-center justify-center flex-shrink-0">
               <span className="text-slate-700 font-bold text-sm">{a.name.charAt(0)}</span>
@@ -87,7 +87,7 @@ function PreviewStep2() {
         </div>
         <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#0F172A] rounded-full transition-all duration-500"
+            className="h-full bg-gradient-to-r from-emerald-500 to-green-400 rounded-full transition-all duration-500"
             style={{ width: '80%' }}
           />
         </div>
@@ -114,7 +114,7 @@ function PreviewStep2() {
         ))}
       </div>
       <p className="text-sm text-slate-500 mt-4">
-        Vul de velden in en ontvang reacties van professionals die bij je opdracht passen.
+        Vul de velden in en ontvang reacties van professionals die bij uw opdracht passen.
       </p>
     </div>
   );
@@ -136,7 +136,7 @@ function PreviewStep3() {
           <div
             key={i}
             className={`flex items-center gap-3 py-3 px-4 rounded-xl border transition-colors ${
-              c.new ? 'bg-blue-50/40 border-blue-100' : 'bg-slate-50/50 border-slate-100'
+              c.new ? 'bg-emerald-50/40 border-emerald-100' : 'bg-slate-50/50 border-slate-100'
             }`}
           >
             <div className="w-2 h-2 rounded-full bg-[#0F172A] flex-shrink-0" style={{ opacity: c.new ? 1 : 0 }} />
@@ -207,7 +207,7 @@ function PreviewStep5() {
         </div>
       </div>
       <p className="text-sm text-slate-500 mt-4">
-        Maak onderling afspraken over facturatie en inzet. De arts is klaar om bij je aan de slag te gaan.
+        Maak onderling afspraken over facturatie en inzet. De professional is klaar om bij u aan de slag te gaan.
       </p>
     </div>
   );

@@ -7,7 +7,7 @@ export default function Prijzen() {
     <div className="min-h-screen bg-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4">Prijzen</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4"><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-400">Prijzen</span></h1>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
             Kies het abonnement dat bij uw behoeften past. Geen verborgen kosten.
           </p>
@@ -24,15 +24,15 @@ export default function Prijzen() {
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 <div className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
-                  <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-[#0F172A] font-medium">1 actieve opdracht</span>
                 </div>
                 <div className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
-                  <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-[#0F172A] font-medium">Maximaal 10 reacties per maand</span>
                 </div>
                 <div className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
-                  <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
                   <span className="text-[#0F172A] font-medium">Basisfilters professionalslijst</span>
                 </div>
                 <div className="flex items-start bg-slate-50 rounded-lg px-3 py-2.5">
@@ -46,14 +46,14 @@ export default function Prijzen() {
               </div>
               <AuthLink
                 to="/register"
-                className="block w-full bg-slate-200 text-[#0F172A] text-center py-3 rounded-lg font-semibold hover:bg-slate-300 transition"
+                className="block w-full border border-emerald-200 text-[#0F172A] text-center py-3 rounded-xl font-semibold hover:bg-emerald-50 transition"
               >
                 Start met Basic
               </AuthLink>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl border-2 border-[#0F172A] p-5 sm:p-8 relative">
-              <div className="absolute top-0 right-0 bg-[#0F172A] text-white px-4 py-1 text-sm font-semibold rounded-bl-lg rounded-tr-lg">
+            <div className="bg-white rounded-2xl shadow-xl border-2 border-emerald-500 p-5 sm:p-8 relative">
+              <div className="absolute top-0 right-0 bg-gradient-to-r from-emerald-500 to-green-400 text-white px-4 py-1 text-sm font-semibold rounded-bl-lg rounded-tr-lg">
                 Populair
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Pro</h3>
@@ -64,14 +64,14 @@ export default function Prijzen() {
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 {['5 actieve opdrachten', 'Onbeperkt reacties', 'Volledige professionalslijst', 'Direct messaging', 'Professionals uitnodigen'].map((t) => (
                   <div key={t} className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
-                    <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-[#0F172A] font-medium">{t}</span>
                   </div>
                 ))}
               </div>
               <AuthLink
                 to="/register"
-                className="block w-full bg-[#0F172A] text-white text-center py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                className="block w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white text-center py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
               >
                 Start met Pro
               </AuthLink>
@@ -85,14 +85,14 @@ export default function Prijzen() {
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 {['Onbeperkt opdrachten', 'Alle Pro-functies', 'Dedicated support', 'Custom SLA', 'API-toegang'].map((t) => (
                   <div key={t} className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
-                    <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-[#0F172A] font-medium">{t}</span>
                   </div>
                 ))}
               </div>
               <Link
                 to="/contact"
-                className="block w-full bg-[#0F172A] text-white text-center py-3 rounded-lg font-semibold hover:bg-[#1e293b] transition"
+                className="block w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white text-center py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
               >
                 Neem contact op
               </Link>
@@ -114,22 +114,22 @@ export default function Prijzen() {
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 {['Direct toegang tot een selectie van opdrachten', 'Beperkt aantal reacties per week'].map((t) => (
                   <div key={t} className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
-                    <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-[#0F172A] font-medium">{t}</span>
                   </div>
                 ))}
               </div>
               <AuthLink
                 to="/register"
-                className="block w-full border border-slate-300 text-[#0F172A] text-center py-3 rounded-lg font-semibold hover:bg-slate-50 transition"
+                className="block w-full border border-emerald-200 text-[#0F172A] text-center py-3 rounded-xl font-semibold hover:bg-emerald-50 transition"
               >
                 Start gratis
               </AuthLink>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl border-2 border-[#0F172A] p-5 sm:p-8 relative">
+            <div className="bg-white rounded-2xl shadow-xl border-2 border-emerald-500 p-5 sm:p-8 relative">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#0F172A] text-white text-sm px-4 py-1 rounded-full">
+                <span className="bg-gradient-to-r from-emerald-500 to-green-400 text-white text-sm px-4 py-1 rounded-full">
                   Meest gekozen
                 </span>
               </div>
@@ -138,20 +138,20 @@ export default function Prijzen() {
                 Voor professionals die direct willen reageren en de mooiste opdrachten willen scoren.
               </p>
               <div className="mb-6">
-                <span className="text-3xl font-bold text-[#0F172A]">&#8364; 159</span>
+                <span className="text-3xl font-bold text-[#0F172A]">€159</span>
                 <span className="text-slate-600"> per jaar</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 {['Direct toegang tot alle opdrachten', 'Onbeperkt reageren op opdrachten', 'Onbeperkt zoekopdrachten opslaan', 'Bespaar 42% t.o.v. een Flex-abonnement'].map((t) => (
                   <div key={t} className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
-                    <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-[#0F172A] font-medium">{t}</span>
                   </div>
                 ))}
               </div>
               <AuthLink
                 to="/register"
-                className="block w-full bg-[#0F172A] text-white text-center py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                className="block w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white text-center py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
               >
                 Ga verder
               </AuthLink>
@@ -169,14 +169,14 @@ export default function Prijzen() {
               <div className="bg-slate-50 rounded-xl p-4 space-y-2.5 mb-8 border border-slate-100">
                 {['Direct toegang tot alle opdrachten', 'Onbeperkt reageren op opdrachten', 'Onbeperkt zoekopdrachten opslaan'].map((t) => (
                   <div key={t} className="flex items-start bg-white rounded-lg px-3 py-2.5 border border-slate-200 shadow-sm">
-                    <Check className="w-5 h-5 text-slate-700 mr-3 mt-0.5 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-[#0F172A] font-medium">{t}</span>
                   </div>
                 ))}
               </div>
               <AuthLink
                 to="/register"
-                className="block w-full bg-[#0F172A] text-white text-center py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                className="block w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white text-center py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
               >
                 Ga verder
               </AuthLink>

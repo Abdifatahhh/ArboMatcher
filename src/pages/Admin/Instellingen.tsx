@@ -90,7 +90,7 @@ export default function AdminInstellingen() {
             <div><label htmlFor="maintenance_password" className={fl}>Toegangswachtwoord</label><input id="maintenance_password" type="password" value={maintenancePassword} onChange={(e) => setMaintenancePassword(e.target.value)} placeholder="Wachtwoord tijdens onderhoud" className={fi} /></div>
             <div><label htmlFor="maintenance_message" className={fl}>Onderhoudsbericht</label><textarea id="maintenance_message" rows={3} value={maintenanceMessage} onChange={(e) => setMaintenanceMessage(e.target.value)} className={ft} /></div>
             <div className="flex justify-end">
-              <button type="button" onClick={handleSaveMaintenance} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition">
+              <button type="button" onClick={handleSaveMaintenance} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-400 text-white text-sm font-medium hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20">
                 <Save className="w-4 h-4" /> Onderhoud opslaan
               </button>
             </div>
@@ -98,7 +98,7 @@ export default function AdminInstellingen() {
         </AdminCard>
 
         <div className="flex justify-end">
-          <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 disabled:opacity-50 transition">
+          <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-400 text-white text-sm font-medium hover:from-emerald-600 hover:to-green-500 disabled:opacity-50 transition shadow-lg shadow-emerald-500/20">
             <Save className="w-4 h-4" /> {saving ? 'Opslaan...' : 'Profiel opslaan'}
           </button>
         </div>

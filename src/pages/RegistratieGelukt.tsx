@@ -16,13 +16,13 @@ export default function RegistratieGelukt() {
           <Check className="w-7 h-7" />
         </div>
         <h1 className="text-xl font-bold text-[#0F172A] mb-2">Account aangemaakt</h1>
-        <p className="text-gray-600 mb-6">
-          We hebben een e-mail gestuurd om je adres te verifiëren. Klik op de link in de e-mail. Je komt dan op een bedankpagina waar je kunt inloggen om je profiel af te maken.
+        <p className="text-slate-600 mb-6">
+          We hebben een e-mail gestuurd om uw e-mailadres te verifiëren. Klik op de link in de e-mail. U komt dan op een bedankpagina waar u kunt inloggen om uw profiel af te maken.
         </p>
         <div className="flex flex-col gap-3">
           <Link
             to={getLoginPath()}
-            className="w-full bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition text-center"
+            className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20 text-center"
           >
             Naar inloggen
           </Link>

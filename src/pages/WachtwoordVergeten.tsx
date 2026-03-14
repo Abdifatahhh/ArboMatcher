@@ -46,7 +46,7 @@ export default function WachtwoordVergeten() {
             <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-start">
               <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 mr-3 flex-shrink-0" />
               <p className="text-sm text-green-800">
-                We hebben een e-mail gestuurd naar <strong>{email}</strong> met instructies om je wachtwoord te herstellen.
+                We hebben een e-mail gestuurd naar <strong>{email}</strong> met instructies om uw wachtwoord te herstellen.
               </p>
             </div>
             <Link
@@ -58,8 +58,8 @@ export default function WachtwoordVergeten() {
           </div>
         ) : (
           <>
-            <p className="text-gray-600 mb-6">
-              Vul hieronder het e-mailadres in waarmee je bekend bent bij ArboMatcher. Wij sturen je vervolgens een e-mail waarmee je het wachtwoord kunt herstellen.
+            <p className="text-slate-600 mb-6">
+              Vul hieronder het e-mailadres in waarmee u bekend bent bij ArboMatcher. Wij sturen u vervolgens een e-mail waarmee u het wachtwoord kunt herstellen.
             </p>
 
             {error && (
@@ -71,7 +71,7 @@ export default function WachtwoordVergeten() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-500 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-slate-500 mb-2">
                   E-mailadres
                 </label>
                 <input
@@ -80,15 +80,15 @@ export default function WachtwoordVergeten() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#EDF2F7] border-0 rounded-lg focus:ring-2 focus:ring-slate-900 focus:bg-white transition text-[#0F172A]"
-                  placeholder="Vul hier je e-mailadres in"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
+                  placeholder="Vul hier uw e-mailadres in"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20"
               >
                 {loading ? 'Bezig...' : 'Wachtwoord herstellen'}
               </button>

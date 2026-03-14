@@ -70,7 +70,7 @@ export default function OpdrachtgeverDashboard() {
         </div>
         <Link
           to="/organisatie/opdrachten"
-          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#0F172A] text-white rounded-xl text-xs md:text-sm font-medium hover:bg-[#1E293B] shadow-md shadow-slate-900/10 transition"
+          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl text-xs md:text-sm font-medium hover:from-emerald-600 hover:to-green-500 shadow-md shadow-emerald-500/20 transition"
         >
           <Plus className="w-4 h-4 md:w-5 md:h-5" />
           Nieuwe opdracht
@@ -127,7 +127,7 @@ export default function OpdrachtgeverDashboard() {
       <div className="mb-4 md:mb-6 flex flex-wrap gap-2 md:gap-3">
         <Link
           to="/organisatie/opdrachten"
-          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#0F172A] text-white rounded-xl text-xs md:text-sm font-medium hover:bg-[#1E293B] shadow-md shadow-slate-900/10 transition"
+          className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl text-xs md:text-sm font-medium hover:from-emerald-600 hover:to-green-500 shadow-md shadow-emerald-500/20 transition"
         >
           <Briefcase className="w-3.5 h-3.5 md:w-4 md:h-4" />
           Nieuwe opdracht

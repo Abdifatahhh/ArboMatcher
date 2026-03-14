@@ -91,13 +91,13 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
       <div className="w-full max-w-md">
         {showAlreadyLoggedInBanner && user?.email && (
           <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm">
-            <p className="font-medium text-emerald-900 mb-2">Je bent al ingelogd ({user.email})</p>
-            <p className="text-emerald-800 mb-3">Wil je doorgaan met registratie of met een ander account inloggen?</p>
+            <p className="font-medium text-emerald-900 mb-2">U bent al ingelogd ({user.email})</p>
+            <p className="text-emerald-800 mb-3">Wilt u doorgaan met registratie of met een ander account inloggen?</p>
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
                 onClick={() => navigate('/onboarding', { replace: true })}
-                className="px-4 py-2 bg-[#0F172A] text-white rounded-lg font-medium hover:bg-[#1E293B]"
+                className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-lg font-medium hover:from-emerald-600 hover:to-green-500 transition"
               >
                 Doorgaan naar onboarding
               </button>
@@ -133,7 +133,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
           {verified && !error && (
             <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-xl flex items-start text-sm">
               <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 mr-3 flex-shrink-0" />
-              <p className="text-green-800">Je e-mail is geverifieerd. Log in om verder te gaan.</p>
+              <p className="text-green-800">Uw e-mail is geverifieerd. Log in om verder te gaan.</p>
             </div>
           )}
 
@@ -163,7 +163,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] placeholder:text-slate-400 outline-none"
-                placeholder="Vul hier je e-mailadres in"
+                placeholder="Vul hier uw e-mailadres in"
               />
             </div>
 
@@ -178,7 +178,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] placeholder:text-slate-400 outline-none"
-                placeholder="Vul hier je wachtwoord in"
+                placeholder="Vul hier uw wachtwoord in"
               />
               <div className="mt-2">
                 <Link to="/wachtwoord-vergeten" className="text-xs text-slate-500 hover:text-[#0F172A] font-medium transition">
@@ -190,7 +190,7 @@ export default function Login({ showAlreadyLoggedInBanner }: LoginProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#0F172A] text-white py-3.5 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50 disabled:cursor-not-allowed text-base shadow-lg shadow-slate-900/10"
+              className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3.5 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition disabled:opacity-50 disabled:cursor-not-allowed text-base shadow-lg shadow-emerald-500/20"
             >
               {loading ? 'Bezig met inloggen...' : 'Inloggen'}
             </button>

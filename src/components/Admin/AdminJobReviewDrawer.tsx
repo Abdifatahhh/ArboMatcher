@@ -350,7 +350,7 @@ export function AdminJobReviewDrawer({ jobId, onClose, onAction }: AdminJobRevie
                     <button
                       onClick={handleAddNote}
                       disabled={!noteText.trim() || addingNote}
-                      className="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800 disabled:opacity-50"
+                      className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-lg text-sm font-medium hover:from-emerald-600 hover:to-green-500 disabled:opacity-50 shadow-lg shadow-emerald-500/20"
                     >
                       {addingNote ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Toevoegen'}
                     </button>

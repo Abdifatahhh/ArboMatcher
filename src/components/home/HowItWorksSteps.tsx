@@ -15,17 +15,17 @@ const STEPS: StepItem[] = [
   {
     id: 2,
     title: 'Selecteer snel relevante opdrachten',
-    description: 'Gebruik de zoekfilters en vind direct de opdrachten die aantrekkelijk en relevant zijn voor jou.',
+    description: 'Gebruik de zoekfilters en vind direct de opdrachten die aantrekkelijk en relevant zijn voor u.',
   },
   {
     id: 3,
-    title: 'Ontvang opdrachten direct in je mailbox',
-    description: 'Krijg een melding wanneer nieuwe opdrachten passen bij je profiel en regio.',
+    title: 'Ontvang opdrachten direct in uw mailbox',
+    description: 'Krijg een melding wanneer nieuwe opdrachten passen bij uw profiel en regio.',
   },
   {
     id: 4,
-    title: 'Val op en verrijk je profiel',
-    description: 'Maak je profiel compleet met specialismen, regio\'s en BIG-verificatie om op te vallen.',
+    title: 'Val op en verrijk uw profiel',
+    description: 'Maak uw profiel compleet met specialismen, regio\'s en BIG-verificatie om op te vallen.',
   },
   {
     id: 5,
@@ -58,7 +58,7 @@ export function HowItWorksSteps({ activeStep, onStepChange }: HowItWorksStepsPro
               onClick={() => onStepChange(step.id)}
               className={`w-full text-left rounded-xl px-4 py-4 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 ${
                 isActive
-                  ? 'bg-white border border-slate-200 shadow-md shadow-slate-100 border-l-[3px] border-l-blue-500'
+                  ? 'bg-white border border-slate-200 shadow-md shadow-slate-100 border-l-[3px] border-l-emerald-500'
                   : 'border border-transparent hover:bg-white/60 hover:border-slate-100'
               }`}
               aria-pressed={isActive}
@@ -68,7 +68,7 @@ export function HowItWorksSteps({ activeStep, onStepChange }: HowItWorksStepsPro
               <span className="flex items-center gap-3">
                 <span
                   className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                    isActive ? 'bg-gradient-to-br from-blue-500 to-cyan-400 text-white shadow-sm' : 'bg-slate-200 text-slate-600'
+                    isActive ? 'bg-gradient-to-br from-emerald-500 to-green-400 text-white shadow-sm' : 'bg-slate-200 text-slate-600'
                   }`}
                 >
                   {step.id}

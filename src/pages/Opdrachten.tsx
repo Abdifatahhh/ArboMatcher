@@ -140,7 +140,7 @@ export default function Opdrachten() {
       <div className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] py-16 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
-            <Link to="/" className="hover:text-white transition flex items-center gap-1">
+            <Link to="/" className="hover:text-white transition flex items-center gap-1" aria-label="Terug naar home">
               <Home className="w-4 h-4" />
             </Link>
             <span>/</span>
@@ -165,20 +165,20 @@ export default function Opdrachten() {
             <h2 className="text-lg font-semibold text-[#0F172A] mb-4">De juiste professional vinden?</h2>
             <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-4 sm:gap-6">
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-slate-700 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0" />
                 <span className="text-slate-600"><span className="font-semibold text-[#0F172A]">Persoonlijke hulp</span> bij opdrachtplaatsing</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-slate-700 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0" />
                 <span className="text-slate-600">Binnen <span className="font-semibold text-[#0F172A]">48 uur</span> de juiste match</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-slate-700 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0" />
                 <span className="text-slate-600">Geheel <span className="font-semibold text-[#0F172A]">onafhankelijk</span></span>
               </div>
               <AuthLink
                 to="/register"
-                className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition w-full sm:w-auto sm:ml-auto justify-center"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20 w-full sm:w-auto sm:ml-auto justify-center"
               >
                 Plaats uw eerste opdracht gratis
                 <ArrowRight className="w-4 h-4" />
@@ -200,6 +200,7 @@ export default function Opdrachten() {
                 <select
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest')}
+                  aria-label="Sorteer opdrachten"
                   className="appearance-none bg-white border border-slate-200 rounded-xl px-4 py-2 pr-10 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900/20 cursor-pointer shadow-sm"
                 >
                   <option value="newest">Nieuwste eerst</option>
@@ -212,14 +213,14 @@ export default function Opdrachten() {
             {hasActiveFilters && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {searchTerm && (
-                  <button onClick={() => setSearchTerm('')} className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#0F172A] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E293B] transition">
+                  <button onClick={() => setSearchTerm('')} className="inline-flex items-center gap-1.5 text-xs font-medium bg-emerald-500 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-600 transition">
                     "{searchTerm}" <X className="w-3 h-3" />
                   </button>
                 )}
                 {filters.expertise.map(v => {
                   const label = expertiseOptions.find(o => o.value === v)?.label || v;
                   return (
-                    <button key={v} onClick={() => toggleFilter('expertise', v)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#0F172A] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E293B] transition">
+                    <button key={v} onClick={() => toggleFilter('expertise', v)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-emerald-500 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-600 transition">
                       {label} <X className="w-3 h-3" />
                     </button>
                   );
@@ -227,7 +228,7 @@ export default function Opdrachten() {
                 {filters.location.map(v => {
                   const label = locationOptions.find(o => o.value === v)?.label || v;
                   return (
-                    <button key={v} onClick={() => toggleFilter('location', v)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#0F172A] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E293B] transition">
+                    <button key={v} onClick={() => toggleFilter('location', v)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-emerald-500 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-600 transition">
                       {label} <X className="w-3 h-3" />
                     </button>
                   );
@@ -235,7 +236,7 @@ export default function Opdrachten() {
                 {filters.contractvorm.map(v => {
                   const label = CONTRACT_FORM_OPTIONS.find(o => o.value === v)?.label || v;
                   return (
-                    <button key={v} onClick={() => toggleFilter('contractvorm', v)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#0F172A] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E293B] transition">
+                    <button key={v} onClick={() => toggleFilter('contractvorm', v)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-emerald-500 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-600 transition">
                       {label} <X className="w-3 h-3" />
                     </button>
                   );
@@ -341,7 +342,7 @@ export default function Opdrachten() {
                         onClick={() => setPage(p)}
                         className={`min-w-[2.5rem] py-2 px-3 rounded-lg text-sm font-medium transition ${
                           p === page
-                            ? 'bg-[#0F172A] text-white'
+                            ? 'bg-gradient-to-r from-emerald-500 to-green-400 text-white'
                             : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
                         }`}
                       >
@@ -369,13 +370,13 @@ export default function Opdrachten() {
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <AuthLink
                       to="/login"
-                      className="px-6 py-3 bg-[#0F172A] text-white rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                      className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
                     >
                       Inloggen
                     </AuthLink>
                     <AuthLink
                       to="/register"
-                      className="px-6 py-3 bg-[#0F172A] text-white rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                      className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
                     >
                       Gratis registreren
                     </AuthLink>
@@ -472,7 +473,7 @@ export default function Opdrachten() {
 
                 <button
                   onClick={() => fetchJobs()}
-                  className="w-full bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                  className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
                 >
                   Filters toepassen
                 </button>

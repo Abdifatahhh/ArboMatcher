@@ -145,7 +145,7 @@ export default function AdminGebruikerDetail() {
         )}
 
         <div className="flex flex-wrap items-center gap-3">
-          <button type="submit" disabled={saving || isDemo} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 disabled:opacity-50 transition">
+          <button type="submit" disabled={saving || isDemo} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-400 text-white text-sm font-medium hover:from-emerald-600 hover:to-green-500 disabled:opacity-50 transition shadow-lg shadow-emerald-500/20">
             <Save className="w-4 h-4" /> {saving ? 'Opslaan...' : 'Opslaan'}
           </button>
           <button type="button" onClick={() => navigate('/admin/gebruikers')} className="px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition">Annuleren</button>

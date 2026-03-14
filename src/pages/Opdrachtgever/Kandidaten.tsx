@@ -135,7 +135,7 @@ export default function OpdrachtgeverKandidaten() {
                       </button>
                       <button
                         onClick={() => handleStatusUpdate(application.id, 'ACCEPTED')}
-                        className="px-4 py-2 bg-[#0F172A] text-white rounded-xl hover:bg-[#1E293B] transition"
+                        className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
                       >
                         Accepteren
                       </button>

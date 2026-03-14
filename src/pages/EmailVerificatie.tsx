@@ -20,7 +20,7 @@ export default function EmailVerificatie() {
           <h1 className="text-2xl font-bold text-[#0F172A]">E-mail verifiëren</h1>
         </div>
 
-        <p className="text-gray-600 mb-6">
+        <p className="text-slate-600 mb-6">
           Na uw aanmelding stuurt ArboMatcher een verificatie-e-mail naar het adres dat u heeft opgegeven. U moet deze stap voltooien voordat u volledig kunt inloggen.
         </p>
 
@@ -49,7 +49,7 @@ export default function EmailVerificatie() {
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             to={getLoginPath()}
-            className="flex-1 text-center bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+            className="flex-1 text-center bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
           >
             Naar inloggen
           </Link>

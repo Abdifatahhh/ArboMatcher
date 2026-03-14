@@ -110,7 +110,7 @@ export default function AdminJobsReview() {
           </select>
         </div>
         <div className="flex items-end">
-          <button type="button" onClick={() => { setPage(1); load(); }} className="h-9 px-4 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition">Zoeken</button>
+          <button type="button" onClick={() => { setPage(1); load(); }} className="h-9 px-4 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-lg text-sm font-medium hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20">Zoeken</button>
         </div>
       </AdminFiltersBar>
 

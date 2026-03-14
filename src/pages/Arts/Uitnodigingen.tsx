@@ -108,7 +108,7 @@ export default function ArtsUitnodigingen() {
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleResponse(invite.id, 'ACCEPTED')}
-                    className="flex items-center bg-[#0F172A] text-white px-4 py-2 rounded-xl hover:bg-[#1E293B] transition"
+                    className="flex items-center bg-gradient-to-r from-emerald-500 to-green-400 text-white px-4 py-2 rounded-xl hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
                   >
                     <CheckCircle className="w-4 h-4 mr-2" />
                     Accepteren

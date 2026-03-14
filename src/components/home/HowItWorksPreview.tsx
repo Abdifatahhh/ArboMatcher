@@ -21,7 +21,7 @@ export function HowItWorksPreview({ activeStep }: HowItWorksPreviewProps) {
       aria-label={`Preview stap ${activeStep}`}
     >
       <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
-        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-400" />
+        <div className="h-1 bg-gradient-to-r from-emerald-500 to-green-400" />
         {activeStep === 1 && <PreviewStep1 />}
         {activeStep === 2 && <PreviewStep2 />}
         {activeStep === 3 && <PreviewStep3 />}
@@ -76,7 +76,7 @@ function PreviewStep2() {
         {FILTER_TAGS.map((tag) => (
           <span
             key={tag}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0F172A] text-white text-xs font-medium"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-green-400 text-white text-xs font-medium"
           >
             {tag}
             <span className="opacity-70" aria-hidden>×</span>
@@ -87,7 +87,7 @@ function PreviewStep2() {
         {DUMMY_JOBS.map((job) => (
           <div
             key={job.id}
-            className="flex items-start gap-3 p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-blue-50/40 hover:border-blue-100 transition-colors"
+            className="flex items-start gap-3 p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-emerald-50/40 hover:border-emerald-100 transition-colors"
           >
             <div className="flex-1 min-w-0">
               <p className="font-medium text-[#0F172A] text-sm truncate">{job.title}</p>
@@ -117,18 +117,18 @@ function PreviewStep3() {
     <div className="p-6 sm:p-8">
       <div className="flex items-center gap-2 mb-6">
         <Mail className="w-5 h-5 text-slate-700" />
-        <span className="font-semibold text-[#0F172A]">Opdrachten in je inbox</span>
+        <span className="font-semibold text-[#0F172A]">Opdrachten in uw inbox</span>
       </div>
       <div className="space-y-2">
         {[
           { from: 'ArboMatcher', subject: 'Nieuwe opdracht: Bedrijfsarts Amsterdam', time: 'Vandaag 09:42', unread: true },
           { from: 'ArboMatcher', subject: 'Match: PMO-opdracht Utrecht', time: 'Gisteren 14:20', unread: false },
-          { from: 'ArboMatcher', subject: 'Reminder: 3 opdrachten passen bij je profiel', time: 'Ma 11:00', unread: false },
+          { from: 'ArboMatcher', subject: 'Reminder: 3 opdrachten passen bij uw profiel', time: 'Ma 11:00', unread: false },
         ].map((mail, i) => (
           <div
             key={i}
             className={`flex items-center gap-3 py-3 px-4 rounded-xl border transition-colors ${
-              mail.unread ? 'bg-blue-50/40 border-blue-100' : 'bg-slate-50/50 border-slate-100'
+              mail.unread ? 'bg-emerald-50/40 border-emerald-100' : 'bg-slate-50/50 border-slate-100'
             }`}
           >
             <div className="w-2 h-2 rounded-full bg-[#0F172A] flex-shrink-0" style={{ opacity: mail.unread ? 1 : 0 }} />
@@ -140,7 +140,7 @@ function PreviewStep3() {
         ))}
       </div>
       <p className="text-sm text-slate-500 mt-4">
-        Ontvang alleen opdrachten die aansluiten op je specialismen en regio.
+        Ontvang alleen opdrachten die aansluiten op uw specialismen en regio.
       </p>
     </div>
   );
@@ -151,7 +151,7 @@ function PreviewStep4() {
     <div className="p-6 sm:p-8">
       <div className="flex items-center gap-2 mb-6">
         <User className="w-5 h-5 text-slate-700" />
-        <span className="font-semibold text-[#0F172A]">Verrijk je profiel</span>
+        <span className="font-semibold text-[#0F172A]">Verrijk uw profiel</span>
       </div>
       <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4 space-y-4">
         <div>
@@ -174,7 +174,7 @@ function PreviewStep4() {
         </div>
       </div>
       <p className="text-sm text-slate-500 mt-4">
-        Een compleet profiel vergroot je zichtbaarheid bij organisaties.
+        Een compleet profiel vergroot uw zichtbaarheid bij organisaties.
       </p>
     </div>
   );
@@ -198,13 +198,13 @@ function PreviewStep5() {
         />
         <button
           type="button"
-          className="mt-3 w-full py-2.5 bg-[#0F172A] text-white rounded-xl font-semibold text-sm hover:bg-[#1E293B] transition-colors"
+          className="mt-3 w-full py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white rounded-xl font-semibold text-sm hover:from-emerald-600 hover:to-green-500 transition-colors shadow-lg shadow-emerald-500/20"
         >
           Reactie versturen
         </button>
       </div>
       <p className="text-sm text-slate-500">
-        Eén klik om te reageren. Opdrachtgevers ontvangen je reactie direct.
+        Eén klik om te reageren. Opdrachtgevers ontvangen uw reactie direct.
       </p>
     </div>
   );

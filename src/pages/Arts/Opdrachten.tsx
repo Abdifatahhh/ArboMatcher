@@ -90,7 +90,7 @@ function FilterDropdown({ label, options, selected, onChange }: FilterDropdownPr
       >
         <span>{label}</span>
         <span className={`flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full text-xs ${
-          selected.length > 0 ? 'bg-[#0F172A] text-white' : 'bg-slate-100 text-slate-600'
+          selected.length > 0 ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600'
         }`}>
           {selected.length}
         </span>
@@ -383,13 +383,13 @@ export default function ArtsOpdrachten() {
         <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden">
           <button
             onClick={() => setViewMode('grid')}
-            className={`p-2 transition ${viewMode === 'grid' ? 'bg-[#0F172A] text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
+            className={`p-2 transition ${viewMode === 'grid' ? 'bg-emerald-500 text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
           >
             <LayoutGrid className="w-4 h-4" />
           </button>
           <button
             onClick={() => setViewMode('list')}
-            className={`p-2 transition ${viewMode === 'list' ? 'bg-[#0F172A] text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
+            className={`p-2 transition ${viewMode === 'list' ? 'bg-emerald-500 text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
           >
             <List className="w-4 h-4" />
           </button>

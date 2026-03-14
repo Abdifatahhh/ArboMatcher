@@ -98,7 +98,7 @@ export function PrivacyConsent({ checked, onChange, toggles, onTogglesChange }: 
               <button
                 type="button"
                 onClick={() => setShowExtended(false)}
-                className="px-5 py-2.5 bg-[#0F172A] text-white font-medium rounded-xl hover:bg-[#1E293B] transition"
+                className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white font-medium rounded-xl hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
               >
                 Instellingen opslaan
               </button>

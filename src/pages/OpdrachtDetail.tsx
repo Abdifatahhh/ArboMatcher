@@ -193,6 +193,17 @@ export default function OpdrachtDetail() {
     return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
+  const getRelativeDate = (date: string) => {
+    const diff = Date.now() - new Date(date).getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    if (days === 0) return 'Vandaag geplaatst';
+    if (days === 1) return 'Gisteren geplaatst';
+    if (days < 7) return `${days} dagen geleden`;
+    if (days < 14) return '1 week geleden';
+    if (days < 30) return `${Math.floor(days / 7)} weken geleden`;
+    return `${Math.floor(days / 30)} maand${Math.floor(days / 30) > 1 ? 'en' : ''} geleden`;
+  };
+
   const getProfessionalLabel = (title: string) => {
     if (!title) return '';
     const voor = title.indexOf(' voor ');
@@ -221,7 +232,7 @@ export default function OpdrachtDetail() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center bg-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0F172A]" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
       </div>
     );
   }
@@ -280,7 +291,7 @@ export default function OpdrachtDetail() {
               <div className="flex flex-wrap items-center gap-3 mb-2">
                 <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A]">{getProfessionalLabel(job.title)}</h1>
                 {!isFakeJob && jobTier === 'PRO' && (
-                  <span className="px-2.5 py-1 bg-[#0F172A] text-white text-xs font-semibold rounded-lg">
+                  <span className="px-2.5 py-1 bg-gradient-to-r from-emerald-500 to-green-400 text-white text-xs font-semibold rounded-lg">
                     PRO
                   </span>
                 )}
@@ -309,7 +320,7 @@ export default function OpdrachtDetail() {
             {!user && (
               <AuthLink
                 to="/login"
-                className="inline-flex items-center justify-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition whitespace-nowrap shadow-lg shadow-slate-900/10"
+                className="inline-flex items-center justify-center bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition whitespace-nowrap shadow-lg shadow-emerald-500/20"
               >
                 Direct solliciteren
               </AuthLink>
@@ -321,13 +332,13 @@ export default function OpdrachtDetail() {
       <div className="w-full relative">
         <>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
               <h2 className="text-lg font-bold text-[#0F172A] mb-4 px-1">Omschrijving</h2>
               <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
                 {!user ? (
-                  <div className="text-slate-600 leading-relaxed whitespace-pre-wrap max-h-[320px] overflow-hidden">
+                  <div className="text-slate-600 leading-relaxed whitespace-pre-wrap max-h-[520px] overflow-hidden">
                     {description ? descriptionWithoutClient(description) || 'Geen omschrijving beschikbaar.' : 'Geen omschrijving beschikbaar.'}
                   </div>
                 ) : (
@@ -358,7 +369,7 @@ export default function OpdrachtDetail() {
                 ) : !showApplicationForm ? (
                   <button
                     onClick={() => setShowApplicationForm(true)}
-                    className="w-full bg-[#0F172A] text-white py-3.5 rounded-xl font-semibold hover:bg-[#1E293B] transition shadow-lg shadow-slate-900/10"
+                    className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3.5 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
                   >
                     Reageer op deze opdracht
                   </button>
@@ -376,7 +387,7 @@ export default function OpdrachtDetail() {
                       <button
                         onClick={handleApply}
                         disabled={applying}
-                        className="flex-1 bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition disabled:opacity-50"
+                        className="flex-1 bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition disabled:opacity-50 shadow-lg shadow-emerald-500/20"
                       >
                         {applying ? 'Bezig...' : 'Verstuur reactie'}
                       </button>
@@ -398,19 +409,20 @@ export default function OpdrachtDetail() {
               <h3 className="font-bold text-[#0F172A] mb-4 px-1">Opdrachtdetails</h3>
               <div className="space-y-2.5">
                 <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
-                  <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Calendar className="w-4.5 h-4.5 text-slate-600" />
+                  <div className="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-[18px] h-[18px] text-emerald-600" />
                   </div>
                   <div>
                     <p className="text-xs text-slate-400 font-medium">Publicatiedatum</p>
                     <p className="text-[#0F172A] font-semibold text-sm">{formatDate(job.created_at)}</p>
+                    <p className="text-xs text-slate-400">{getRelativeDate(job.created_at)}</p>
                   </div>
                 </div>
 
                 {job.region && (
                   <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
-                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-4.5 h-4.5 text-slate-600" />
+                    <div className="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-[18px] h-[18px] text-emerald-600" />
                     </div>
                     <div>
                       <p className="text-xs text-slate-400 font-medium">Locatie</p>
@@ -421,8 +433,8 @@ export default function OpdrachtDetail() {
 
                 {job.job_type && (
                   <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
-                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Briefcase className="w-4.5 h-4.5 text-slate-600" />
+                    <div className="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Briefcase className="w-[18px] h-[18px] text-emerald-600" />
                     </div>
                     <div>
                       <p className="text-xs text-slate-400 font-medium">Contractvorm</p>
@@ -433,8 +445,8 @@ export default function OpdrachtDetail() {
 
                 {user && job.hours_per_week && (
                   <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
-                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-4.5 h-4.5 text-slate-600" />
+                    <div className="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-[18px] h-[18px] text-emerald-600" />
                     </div>
                     <div>
                       <p className="text-xs text-slate-400 font-medium">Uren per week</p>
@@ -445,8 +457,8 @@ export default function OpdrachtDetail() {
 
                 {user && durationWeeks && durationWeeks > 0 && (
                   <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
-                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-4.5 h-4.5 text-slate-600" />
+                    <div className="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-[18px] h-[18px] text-emerald-600" />
                     </div>
                     <div>
                       <p className="text-xs text-slate-400 font-medium">Duur opdracht</p>
@@ -457,8 +469,8 @@ export default function OpdrachtDetail() {
 
                 {user && remoteType && (
                   <div className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 border border-slate-200 shadow-sm">
-                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Building2 className="w-4.5 h-4.5 text-slate-600" />
+                    <div className="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Building2 className="w-[18px] h-[18px] text-emerald-600" />
                     </div>
                     <div>
                       <p className="text-xs text-slate-400 font-medium">Werklocatie</p>
@@ -507,7 +519,7 @@ export default function OpdrachtDetail() {
                     <button
                       type="button"
                       onClick={() => setShowApplicationForm(true)}
-                      className="w-full inline-flex items-center justify-center gap-2 bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
                     >
                       Reageer op deze opdracht
                       <ArrowRight className="w-4 h-4" />
@@ -520,7 +532,7 @@ export default function OpdrachtDetail() {
                     <p className="text-sm text-slate-600 mb-3">Alleen professionals kunnen reageren op opdrachten.</p>
                     <AuthLink
                       to="/register"
-                      className="w-full inline-flex items-center justify-center gap-2 bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition text-sm"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20 text-sm"
                     >
                       Registreren als professional
                       <ArrowRight className="w-4 h-4" />
@@ -536,18 +548,15 @@ export default function OpdrachtDetail() {
 
         {!user && (
           <div
-            className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-end min-h-[200px] pt-16 pb-8"
+            className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-end pt-32 pb-8"
             style={{
-              width: '100vw',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'linear-gradient(to bottom, transparent 0%, rgba(248,250,252,0.95) 40%, #f8fafc 60%)',
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(248,250,252,0.97) 40%, #f8fafc 55%)',
             }}
           >
             <h2 className="text-xl font-bold text-[#0F172A] mb-3 text-center">Volledige opdracht bekijken?</h2>
             <AuthLink
               to="/login"
-              className="inline-flex items-center justify-center bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition mb-3"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20 mb-3"
             >
               Heeft u al een account? Log hier in
             </AuthLink>
@@ -587,46 +596,34 @@ export default function OpdrachtDetail() {
           <section className="mt-12 sm:mt-16">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="bg-slate-50 rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/30 p-5 sm:p-10 hover:shadow-slate-200/50 hover:border-slate-300 transition-all duration-300">
-                <CheckCircle className="w-12 h-12 text-slate-700 mb-4" />
+                <CheckCircle className="w-12 h-12 text-emerald-600 mb-4" />
                 <h2 className="text-2xl font-bold text-[#0F172A] mb-2">
-                  {user && profile?.role !== 'professional'
-                    ? 'Professional worden en reageren op opdrachten?'
-                    : 'Volledige opdracht bekijken en reageren?'}
+                  Professional worden en reageren op opdrachten?
                 </h2>
                 <p className="text-slate-600 mb-6">
-                  {user && profile?.role !== 'professional'
-                    ? 'Registreer als professional (met BIG-nummer) om te solliciteren op opdrachten en in contact te komen met organisaties.'
-                    : 'Maak gratis een account aan om de volledige omschrijving te bekijken, direct te reageren en toegang te krijgen tot alle functies van ArboMatcher.'}
+                  Registreer als professional (met BIG-nummer) om te solliciteren op opdrachten en in contact te komen met organisaties.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  {!user && (
-                    <AuthLink
-                      to="/login"
-                      className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
-                    >
-                      Inloggen
-                    </AuthLink>
-                  )}
                   <AuthLink
                     to="/register"
-                    className="inline-flex items-center gap-2 bg-[#0F172A] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
                   >
-                    {user && profile?.role !== 'professional' ? 'Registreren als professional' : 'Gratis registreren'}
+                    Registreren als professional
                     <ArrowRight className="w-4 h-4" />
                   </AuthLink>
                 </div>
                 <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8 text-sm text-slate-500">
                   <span className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-slate-700" />
+                    <CheckCircle className="w-4 h-4 text-emerald-500" />
                     Gratis account
                   </span>
                   <span className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-slate-700" />
+                    <CheckCircle className="w-4 h-4 text-emerald-500" />
                     Direct reageren
                   </span>
                   <span className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-slate-700" />
-                    Alle opdrachten zien
+                    <CheckCircle className="w-4 h-4 text-emerald-500" />
+                    Alle opdrachten bekijken
                   </span>
                 </div>
               </div>

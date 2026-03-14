@@ -82,7 +82,7 @@ export default function ArtsAbonnement() {
 
           <div className="bg-white rounded-xl border-2 border-[#0F172A] p-6 flex flex-col relative shadow-lg shadow-slate-900/5">
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-              <span className="bg-[#0F172A] text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-md">
+              <span className="bg-gradient-to-r from-emerald-500 to-green-400 text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-md">
                 Aanbevolen
               </span>
             </div>
@@ -90,7 +90,7 @@ export default function ArtsAbonnement() {
               <div className="flex items-center gap-2 mb-3">
                 <h3 className="text-lg font-bold text-[#0F172A]">PRO</h3>
                 {currentPlan === 'PRO' && (
-                  <span className="bg-[#0F172A] text-white text-xs px-2 py-0.5 rounded-full font-medium">Actief</span>
+                  <span className="bg-emerald-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">Actief</span>
                 )}
               </div>
               <p className="text-sm text-slate-500 mb-5 leading-relaxed">
@@ -114,7 +114,7 @@ export default function ArtsAbonnement() {
             ) : (
               <button
                 onClick={() => handleSelectPlan('PRO')}
-                className="w-full bg-[#0F172A] text-white py-3 rounded-xl font-semibold hover:bg-[#1E293B] transition shadow-lg shadow-slate-900/10"
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition shadow-lg shadow-emerald-500/20"
               >
                 Upgrade naar PRO
               </button>
