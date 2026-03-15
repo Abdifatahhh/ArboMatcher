@@ -1,12 +1,22 @@
 import { useEffect } from 'react';
 import { getAuthBaseUrl } from '../config/portal';
-import { preloadMarketingRoutes } from '../routes/lazyPages';
 
 const PORTAL_URL = 'https://portal.arbomatcher.nl/';
+
+function canPrefetch(): boolean {
+  const nav = navigator as Navigator & {
+    connection?: { saveData?: boolean; effectiveType?: string };
+  };
+  const connection = nav.connection;
+  if (!connection) return true;
+  if (connection.saveData) return false;
+  return connection.effectiveType !== 'slow-2g' && connection.effectiveType !== '2g';
+}
 
 export function PortalPrefetch() {
   useEffect(() => {
     if (!getAuthBaseUrl()) return;
+    if (!canPrefetch()) return;
     const run = () => {
       const link = document.createElement('link');
       link.rel = 'prefetch';
@@ -16,19 +26,6 @@ export function PortalPrefetch() {
     };
     if (document.readyState === 'complete') setTimeout(run, 2000);
     else window.addEventListener('load', () => setTimeout(run, 2000));
-  }, []);
-  return null;
-}
-
-export function RoutePreloader() {
-  useEffect(() => {
-    const cb = () => preloadMarketingRoutes();
-    const run = () => {
-      if (typeof requestIdleCallback !== 'undefined') requestIdleCallback(cb, { timeout: 3000 });
-      else setTimeout(cb, 1000);
-    };
-    if (document.readyState === 'complete') setTimeout(run, 500);
-    else window.addEventListener('load', () => setTimeout(run, 500));
   }, []);
   return null;
 }

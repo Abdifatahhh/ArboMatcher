@@ -36,9 +36,7 @@ interface NavGroup {
 const NAV_GROUPS: NavGroup[] = [
   {
     title: 'Overzicht',
-    items: [
-      { path: '/professional/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    ],
+    items: [{ path: '/professional/dashboard', label: 'Dashboard', icon: LayoutDashboard }],
   },
   {
     title: 'Opdrachten',
@@ -66,9 +64,7 @@ const NAV_GROUPS: NavGroup[] = [
   },
 ];
 
-const ALL_NAV_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
-
-export function ArtsDashboardLayout() {
+export function ProfessionalDashboardLayout() {
   const { profile, signOut, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();

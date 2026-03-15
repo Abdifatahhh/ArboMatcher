@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { Job } from '../../lib/types';
@@ -16,7 +16,8 @@ import {
   LayoutGrid,
   List,
   X,
-  Building2
+  Building2,
+  Bell
 } from 'lucide-react';
 
 interface FilterOption {
@@ -230,9 +231,13 @@ function getCompanyColor(companyName?: string | null): string {
 export default function ArtsOpdrachten() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTags, setSearchTags] = useState<string[]>([]);
+  const [searchTags, setSearchTags] = useState<string[]>(() => {
+    const t = searchParams.get('tags');
+    return t ? t.split(',').filter(Boolean) : [];
+  });
   const [searchInput, setSearchInput] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
@@ -241,14 +246,23 @@ export default function ArtsOpdrachten() {
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [sortOpen, setSortOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [saveName, setSaveName] = useState('');
+  const [saveNotifyDirect, setSaveNotifyDirect] = useState(false);
+  const [saveNotifyDigest, setSaveNotifyDigest] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const showSaveSearchButton = searchParams.get('newSearch') === '1';
 
-  const [filters, setFilters] = useState({
-    expertise: [] as string[],
-    hoursMin: 0,
-    hoursMax: 40,
-    location: [] as string[],
-    postedBy: [] as string[],
-    contract: [] as string[],
+  const [filters, setFilters] = useState(() => {
+    const arr = (key: string) => { const v = searchParams.get(key); return v ? v.split(',').filter(Boolean) : []; };
+    return {
+      expertise: arr('expertise'),
+      hoursMin: Number(searchParams.get('hoursMin')) || 0,
+      hoursMax: Number(searchParams.get('hoursMax')) || 40,
+      location: arr('location'),
+      postedBy: arr('postedBy'),
+      contract: arr('contract'),
+    };
   });
 
   useEffect(() => {
@@ -347,6 +361,22 @@ export default function ArtsOpdrachten() {
         .insert({ user_id: user.id, ref_id: jobId, type: 'JOB' });
       setFavorites(prev => [...prev, jobId]);
     }
+  };
+
+  const handleSaveSearch = async () => {
+    if (!user || !saveName.trim()) return;
+    setSaving(true);
+    await supabase.from('saved_searches').insert({
+      user_id: user.id,
+      name: saveName.trim(),
+      filters,
+      search_tags: searchTags,
+      notify_direct: saveNotifyDirect,
+      notify_digest: saveNotifyDigest,
+    });
+    setSaving(false);
+    setShowSaveModal(false);
+    setSaveName('');
   };
 
   const handleJobClick = (job: Job) => {
@@ -470,6 +500,16 @@ export default function ArtsOpdrachten() {
           selected={filters.contract}
           onChange={(values) => setFilters({ ...filters, contract: values })}
         />
+
+        {showSaveSearchButton && (
+          <button
+            onClick={() => setShowSaveModal(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-gradient-to-r from-emerald-600 to-green-500 text-white text-sm font-medium shadow-sm hover:from-emerald-700 hover:to-green-600 transition"
+          >
+            <Bell className="w-3.5 h-3.5" />
+            Zoekopdracht opslaan
+          </button>
+        )}
 
         {hasActiveFilters && (
           <button
@@ -721,6 +761,82 @@ export default function ArtsOpdrachten() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {showSaveModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 p-6">
+            <h2 className="text-lg font-bold text-slate-800 mb-5">Zoekopdracht opslaan</h2>
+
+            <label className="block text-sm font-medium text-slate-600 mb-1.5">Naam van zoekopdracht</label>
+            <input
+              type="text"
+              value={saveName}
+              onChange={(e) => setSaveName(e.target.value)}
+              placeholder="Naam van zoekopdracht"
+              className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-300 mb-5"
+            />
+
+            <p className="text-sm font-medium text-slate-600 mb-2">Notificatie instellingen</p>
+            <label className="flex items-center gap-3 mb-2 cursor-pointer">
+              <input type="checkbox" checked={saveNotifyDirect} onChange={(e) => setSaveNotifyDirect(e.target.checked)} className="w-4 h-4 rounded" />
+              <span className="text-sm text-slate-600">Directe e-mailnotificatie bij match</span>
+            </label>
+            <label className="flex items-center gap-3 mb-5 cursor-pointer">
+              <input type="checkbox" checked={saveNotifyDigest} onChange={(e) => setSaveNotifyDigest(e.target.checked)} className="w-4 h-4 rounded" />
+              <span className="text-sm text-slate-600">Opnemen in verzamel e-mailnotificatie</span>
+            </label>
+
+            <p className="text-sm font-medium text-slate-600 mb-2">Opgeslagen filters</p>
+            <div className="space-y-1 mb-6">
+              {searchTags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {searchTags.map(t => (
+                    <span key={t} className="px-2.5 py-1 bg-slate-800 text-white text-xs rounded-full font-medium">{t}</span>
+                  ))}
+                </div>
+              )}
+              {filters.expertise.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {filters.expertise.map(v => (
+                    <span key={v} className="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">{expertiseOptions.find(o => o.value === v)?.label || v}</span>
+                  ))}
+                </div>
+              )}
+              {filters.contract.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {filters.contract.map(v => (
+                    <span key={v} className="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">{contractOptions.find(o => o.value === v)?.label || v}</span>
+                  ))}
+                </div>
+              )}
+              {filters.location.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {filters.location.map(v => (
+                    <span key={v} className="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">{v}</span>
+                  ))}
+                </div>
+              )}
+              {(filters.hoursMin > 0 || filters.hoursMax < 40) && (
+                <span className="inline-block px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200 mt-1">{filters.hoursMin}–{filters.hoursMax} uur/week</span>
+              )}
+              {!hasActiveFilters && searchTags.length === 0 && (
+                <p className="text-sm text-slate-400">Geen filters ingesteld</p>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button onClick={() => setShowSaveModal(false)} className="px-4 py-2 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 transition">Annuleren</button>
+              <button
+                onClick={handleSaveSearch}
+                disabled={!saveName.trim() || saving}
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-600 to-green-500 rounded-lg shadow-sm hover:from-emerald-700 hover:to-green-600 transition disabled:opacity-50"
+              >
+                {saving ? 'Opslaan...' : 'Opslaan'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

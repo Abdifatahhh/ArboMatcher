@@ -23,7 +23,9 @@ export const LazyFAQ = lazy(() => import('../pages/FAQ'));
 export const LazyProfessionalDashboard = lazy(() => import('../pages/Arts/Dashboard'));
 export const LazyProfessionalProfiel = lazy(() => import('../pages/Arts/Profiel'));
 export const LazyProfessionalOpdrachten = lazy(() => import('../pages/Arts/Opdrachten'));
+export const LazyProfessionalZoekopdrachten = lazy(() => import('../pages/Arts/Zoekopdrachten'));
 export const LazyProfessionalReacties = lazy(() => import('../pages/Arts/Reacties'));
+export const LazyProfessionalReactieDetail = lazy(() => import('../pages/Arts/ReactieDetail'));
 export const LazyProfessionalUitnodigingen = lazy(() => import('../pages/Arts/Uitnodigingen'));
 export const LazyProfessionalInbox = lazy(() => import('../pages/Arts/Inbox'));
 export const LazyProfessionalAbonnement = lazy(() => import('../pages/Arts/Abonnement'));
@@ -52,21 +54,6 @@ export const LazyAdminOpdrachtgevers = lazy(() => import('../pages/Admin/Opdrach
 export const LazyAdminOpdrachtgeverDetail = lazy(() => import('../pages/Admin/OpdrachtgeverDetail'));
 export const LazyAdminCommunityBeheer = lazy(() => import('../pages/Admin/CommunityBeheer'));
 export const LazyAdminMatches = lazy(() => import('../pages/Admin/Matches'));
-
-const preload = (fn: () => Promise<{ default: unknown }>) => {
-  fn().catch(() => {});
-};
-
-export function preloadMarketingRoutes() {
-  preload(() => import('../pages/Over'));
-  preload(() => import('../pages/Opdrachten'));
-  preload(() => import('../pages/Prijzen'));
-  preload(() => import('../pages/Login'));
-  preload(() => import('../pages/Register'));
-  preload(() => import('../pages/Oplossingen'));
-  preload(() => import('../pages/FAQ'));
-  preload(() => import('../pages/Contact'));
-}
 
 const pathPreloaders: Record<string, () => Promise<unknown>> = {
   '/over': () => import('../pages/Over'),

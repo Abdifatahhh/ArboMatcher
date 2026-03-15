@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Cookie, Settings } from 'lucide-react';
 
@@ -7,27 +7,51 @@ const STORAGE_KEY = 'arbomatcher_cookie_consent';
 type Consent = 'all' | 'necessary' | 'custom' | null;
 
 export function CookieBanner() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const stored = window.localStorage.getItem(STORAGE_KEY) as Consent | null;
+    return !stored;
+  });
   const [showDetails, setShowDetails] = useState(false);
+  const [readyToShow, setReadyToShow] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY) as Consent | null;
-    if (!stored) setVisible(true);
+    document.body.classList.remove('cookie-banner-reserved');
   }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    let shown = false;
+    const show = () => {
+      if (shown) return;
+      shown = true;
+      setReadyToShow(true);
+      window.removeEventListener('pointerdown', show);
+      window.removeEventListener('keydown', show);
+      window.removeEventListener('touchstart', show);
+      window.removeEventListener('scroll', show);
+    };
+    window.addEventListener('pointerdown', show, { once: true, passive: true });
+    window.addEventListener('keydown', show, { once: true });
+    window.addEventListener('touchstart', show, { once: true, passive: true });
+    window.addEventListener('scroll', show, { once: true, passive: true });
+    const fallbackId = window.setTimeout(show, 12000);
+    return () => {
+      window.clearTimeout(fallbackId);
+      window.removeEventListener('pointerdown', show);
+      window.removeEventListener('keydown', show);
+      window.removeEventListener('touchstart', show);
+      window.removeEventListener('scroll', show);
+    };
+  }, [visible]);
 
   const save = (value: Consent) => {
     localStorage.setItem(STORAGE_KEY, value ?? 'necessary');
-    document.body.classList.remove('cookie-banner-reserved');
     setVisible(false);
     setShowDetails(false);
   };
 
-  useEffect(() => {
-    if (!visible) document.body.classList.remove('cookie-banner-reserved');
-    else document.body.classList.add('cookie-banner-reserved');
-  }, [visible]);
-
-  if (!visible) return null;
+  if (!visible || !readyToShow) return null;
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">

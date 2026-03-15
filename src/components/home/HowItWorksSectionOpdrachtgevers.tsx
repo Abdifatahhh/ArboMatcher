@@ -6,6 +6,28 @@ import { HowItWorksStepsOpdrachtgevers } from './HowItWorksStepsOpdrachtgevers';
 
 const TOTAL_STEPS = 5;
 const STEP_DURATION = 5000;
+const STEP_CONTENT = [
+  {
+    title: 'Kies uit een groot aanbod van professionals',
+    description: 'Zoek in ons netwerk van BIG-geregistreerde bedrijfsartsen en arbo-professionals op specialisme en regio.',
+  },
+  {
+    title: 'Jouw opdracht snel onder de aandacht',
+    description: 'Plaats eenvoudig jouw opdracht. Dat kan automatisch, maar ook met persoonlijke ondersteuning van ons team.',
+  },
+  {
+    title: 'Binnen 48 uur kandidaten',
+    description: 'Ontvang reacties van gekwalificeerde professionals die passen bij jouw vacature. Vaak al binnen een werkdag.',
+  },
+  {
+    title: 'Eenvoudig een selectie maken',
+    description: 'Bekijk profielen, vergelijk kandidaten en nodig de juiste arts uit voor een gesprek of directe inzet.',
+  },
+  {
+    title: 'Samen aan het werk',
+    description: 'Maak afspraken over start, uren en contractvorm. De professional kan direct aan de slag bij jouw organisatie.',
+  },
+];
 
 export function HowItWorksSectionOpdrachtgevers() {
   const [activeStep, setActiveStep] = useState(1);
@@ -35,7 +57,6 @@ export function HowItWorksSectionOpdrachtgevers() {
     setActiveStep(step);
     setProgress(0);
     startTimeRef.current = Date.now();
-    elapsedBeforePauseRef.current = 0;
   };
 
   return (
@@ -63,7 +84,51 @@ export function HowItWorksSectionOpdrachtgevers() {
           </p>
         </header>
 
-        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
+        <div className="lg:hidden">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/40 overflow-hidden">
+            <div className="h-[400px] overflow-hidden">
+              <HowItWorksPreviewOpdrachtgevers activeStep={activeStep} />
+            </div>
+
+            <div className="border-t border-slate-100 p-5">
+              <h3 className="text-xl font-bold text-[#0F172A] mb-2">
+                {activeStep}. {STEP_CONTENT[activeStep - 1].title}
+              </h3>
+              <p className="text-slate-600 text-base leading-relaxed">
+                {STEP_CONTENT[activeStep - 1].description}
+              </p>
+              <div className="mt-3 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"
+                  style={{ width: `${progress * 100}%` }}
+                />
+              </div>
+
+              <div className="flex items-center justify-center gap-2.5 mt-3" aria-label="Navigatie stappen organisaties">
+                {STEP_CONTENT.map((_, index) => {
+                  const step = index + 1;
+                  const isActive = activeStep === step;
+                  return (
+                    <button
+                      key={step}
+                      type="button"
+                      onClick={() => handleStepChange(step)}
+                      className={`w-3.5 h-3.5 rounded-full transition-all ${
+                        isActive
+                          ? 'bg-white border-2 border-emerald-500 ring-2 ring-emerald-500/20'
+                          : 'bg-slate-300 hover:bg-slate-400'
+                      }`}
+                      aria-label={`Ga naar stap ${step}`}
+                      aria-current={isActive ? 'true' : undefined}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden lg:grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-3 order-2 lg:order-1">
             <HowItWorksPreviewOpdrachtgevers activeStep={activeStep} />
           </div>

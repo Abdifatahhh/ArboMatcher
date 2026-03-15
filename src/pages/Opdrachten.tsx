@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { AuthLink } from '../components/AuthLink';
 import { supabase } from '../lib/supabase';
 import type { Job } from '../lib/types';
-import { Search, MapPin, Briefcase, Calendar, ChevronDown, ChevronLeft, ChevronRight, X, CheckCircle, ArrowRight, Home, Users, Building2, Clock } from 'lucide-react';
+import { Search, MapPin, Briefcase, Calendar, ChevronDown, ChevronLeft, ChevronRight, X, CheckCircle, ArrowRight, Users, Building2, Clock } from 'lucide-react';
 import { CONTRACT_FORM_OPTIONS, REMOTE_TYPE_OPTIONS, getContractFormLabel, getRemoteTypeLabel } from '../lib/opdrachtConstants';
 
 const isDev = import.meta.env.DEV;
@@ -31,6 +31,7 @@ export default function Opdrachten() {
     contractvorm: [] as string[],
   });
   const [page, setPage] = useState(1);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const PAGE_SIZE = 15;
   const totalPages = Math.max(1, Math.ceil(jobs.length / PAGE_SIZE));
@@ -43,6 +44,15 @@ export default function Opdrachten() {
   useEffect(() => {
     setPage(1);
   }, [filters, searchTerm, sortOrder]);
+
+  useEffect(() => {
+    if (!mobileFiltersOpen) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [mobileFiltersOpen]);
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -130,6 +140,11 @@ export default function Opdrachten() {
     filters.location.length > 0 ||
     filters.contractvorm.length > 0 ||
     searchTerm !== '';
+  const activeFilterCount =
+    filters.expertise.length +
+    filters.location.length +
+    filters.contractvorm.length +
+    (searchTerm ? 1 : 0);
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'numeric', year: 'numeric' });
@@ -139,13 +154,6 @@ export default function Opdrachten() {
     <div className="min-h-screen bg-[#0F172A]">
       <div className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] py-16 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
-            <Link to="/" className="hover:text-white transition flex items-center gap-1" aria-label="Terug naar home">
-              <Home className="w-4 h-4" />
-            </Link>
-            <span>/</span>
-            <span className="text-white font-medium">Opdrachten</span>
-          </div>
           <div className="flex items-center gap-3 mb-4">
             <Briefcase className="w-8 h-8 text-slate-400" />
             <span className="text-slate-400 font-semibold text-sm uppercase tracking-wider">Vacatures</span>
@@ -158,7 +166,7 @@ export default function Opdrachten() {
         </div>
       </div>
 
-      <div className="bg-white rounded-t-3xl pt-8 pb-12">
+      <div className="bg-white rounded-t-3xl pt-8 pb-24 lg:pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <div className="bg-slate-50 rounded-2xl p-5 sm:p-8 border border-slate-200 shadow-lg shadow-slate-200/30 hover:shadow-slate-200/50 hover:border-slate-300 transition-all duration-300">
@@ -386,7 +394,7 @@ export default function Opdrachten() {
             )}
           </div>
 
-          <div className="w-full lg:w-80 order-1 lg:order-2">
+          <div className="w-full lg:w-80 order-1 lg:order-2 hidden lg:block">
             <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 sticky top-24">
               <div className="flex items-center justify-between mb-5">
                 <h3 className="font-bold text-[#0F172A]">Zoekfilter</h3>
@@ -483,6 +491,132 @@ export default function Opdrachten() {
         </div>
         </div>
       </div>
+
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-gradient-to-r from-emerald-500 to-green-400 shadow-lg shadow-emerald-500/20">
+        <button
+          type="button"
+          onClick={() => setMobileFiltersOpen(true)}
+          className="w-full max-w-7xl mx-auto flex items-center justify-start gap-2 px-5 py-3.5 text-white font-semibold text-xl leading-none"
+        >
+          <span>Filters</span>
+          <span className="inline-flex items-center justify-center min-w-7 h-7 rounded-full bg-white text-emerald-600 text-sm font-bold px-1.5">
+            {activeFilterCount}
+          </span>
+        </button>
+      </div>
+
+      {mobileFiltersOpen && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          <button
+            type="button"
+            aria-label="Sluit filters"
+            className="absolute inset-0 bg-black/35"
+            onClick={() => setMobileFiltersOpen(false)}
+          />
+          <div className="absolute bottom-0 inset-x-0 bg-white rounded-t-2xl border-t border-slate-200 shadow-2xl max-h-[88vh] flex flex-col">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+              <h3 className="font-bold text-[#0F172A]">Zoekfilter</h3>
+              <button
+                type="button"
+                onClick={() => setMobileFiltersOpen(false)}
+                className="p-2 rounded-lg text-slate-500 hover:text-[#0F172A] hover:bg-slate-100 transition"
+                aria-label="Sluit filterpaneel"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="overflow-y-auto p-4 space-y-4">
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Zoekterm</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Zoekterm(en)"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-9 py-2.5 border border-slate-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 outline-none transition"
+                  />
+                  {searchTerm && (
+                    <button type="button" onClick={() => setSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <X className="w-4 h-4 text-slate-400 hover:text-slate-600" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Expertisegebied</label>
+                <div className="space-y-2.5">
+                  {expertiseOptions.map((option) => (
+                    <label key={option.value} className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={filters.expertise.includes(option.value)}
+                        onChange={() => toggleFilter('expertise', option.value)}
+                        className="w-4 h-4 rounded border-slate-300 text-[#0F172A] focus:ring-slate-900"
+                      />
+                      <span className="text-sm text-slate-600 group-hover:text-[#0F172A] transition">{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Werklocatie</label>
+                <div className="space-y-2.5">
+                  {locationOptions.map((option) => (
+                    <label key={option.value} className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={filters.location.includes(option.value)}
+                        onChange={() => toggleFilter('location', option.value)}
+                        className="w-4 h-4 rounded border-slate-300 text-[#0F172A] focus:ring-slate-900"
+                      />
+                      <span className="text-sm text-slate-600 group-hover:text-[#0F172A] transition">{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Contractvorm</label>
+                <div className="space-y-2.5">
+                  {CONTRACT_FORM_OPTIONS.map((option) => (
+                    <label key={option.value} className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={filters.contractvorm.includes(option.value)}
+                        onChange={() => toggleFilter('contractvorm', option.value)}
+                        className="w-4 h-4 rounded border-slate-300 text-[#0F172A] focus:ring-slate-900"
+                      />
+                      <span className="text-sm text-slate-600 group-hover:text-[#0F172A] transition">{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-slate-100 p-4 grid grid-cols-2 gap-3 bg-white">
+              <button
+                type="button"
+                onClick={clearAllFilters}
+                className="w-full border border-slate-200 text-slate-700 py-3 rounded-xl font-semibold hover:bg-slate-50 transition"
+              >
+                Wissen
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobileFiltersOpen(false)}
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition"
+              >
+                Toepassen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

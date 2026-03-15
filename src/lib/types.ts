@@ -159,6 +159,9 @@ export interface Application {
   message: string | null;
   attachment_url: string | null;
   status: ApplicationStatus;
+  status_changed_at: string | null;
+  viewed_at: string | null;
+  cv_downloaded: boolean;
   created_at: string;
   updated_at: string;
 }

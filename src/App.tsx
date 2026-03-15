@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
@@ -6,22 +6,16 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { RedirectToDashboard, RedirectToProfiel } from './components/auth/RedirectByRole';
 import { MaintenanceGate } from './components/MaintenanceGate';
 import { EnvBanner } from './components/EnvBanner';
-import { CookieBanner } from './components/CookieBanner';
-import { PublicLayout } from './components/Layout/PublicLayout';
-import { DashboardLayout } from './components/Layout/DashboardLayout';
-import { ArtsDashboardLayout } from './components/Layout/ArtsDashboardLayout';
-import { PortalRoot } from './components/PortalRoot';
 import { RequireMarketingSite } from './components/RequireMarketingSite';
-import { PortalPrefetch, RoutePreloader } from './components/PortalPrefetch';
+import { PortalPrefetch } from './components/PortalPrefetch';
 import { isPortal } from './config/portal';
 
-import Home from './pages/Home';
 import {
   LazyOver, LazyOpdrachten, LazyOpdrachtDetail, LazyPrijzen, LazyLogin, LazyRegister,
   LazyOnboarding, LazyWachtwoordVergeten, LazyEmailVerificatie, LazyRegistratieGelukt, LazyVerificatieGelukt,
   LazyPrivacy, LazyTerms, LazyContact, LazyCommunity, LazyCommunityArticle, LazyCommunityTopic,
   LazyOplossingen, LazyFAQ,
-  LazyProfessionalDashboard, LazyProfessionalProfiel, LazyProfessionalOpdrachten, LazyProfessionalReacties, LazyProfessionalUitnodigingen,
+  LazyProfessionalDashboard, LazyProfessionalProfiel, LazyProfessionalOpdrachten, LazyProfessionalZoekopdrachten, LazyProfessionalReacties, LazyProfessionalReactieDetail, LazyProfessionalUitnodigingen,
   LazyProfessionalInbox, LazyProfessionalAbonnement, LazyProfessionalFavorieten,
   LazyOpdrachtgeverDashboard, LazyOpdrachtgeverProfiel, LazyOpdrachtgeverOpdrachten, LazyOpdrachtgeverKandidaten,
   LazyOpdrachtgeverFavorieten, LazyOpdrachtgeverInbox, LazyOpdrachtgeverAbonnement,
@@ -29,6 +23,38 @@ import {
   LazyAdminAbonnementen, LazyAdminInstellingen, LazyAdminGebruikerDetail, LazyAdminProfessionals, LazyAdminArtsDetail,
   LazyAdminReacties, LazyAdminOpdrachtgevers, LazyAdminOpdrachtgeverDetail, LazyAdminCommunityBeheer, LazyAdminMatches,
 } from './routes/lazyPages';
+
+const PublicLayout = lazy(async () => {
+  const mod = await import('./components/Layout/PublicLayout');
+  return { default: mod.PublicLayout };
+});
+
+const AdminDashboardLayout = lazy(async () => {
+  const mod = await import('./components/Layout/AdminDashboardLayout');
+  return { default: mod.AdminDashboardLayout };
+});
+
+const OrganisatieDashboardLayout = lazy(async () => {
+  const mod = await import('./components/Layout/OrganisatieDashboardLayout');
+  return { default: mod.OrganisatieDashboardLayout };
+});
+
+const ProfessionalDashboardLayout = lazy(async () => {
+  const mod = await import('./components/Layout/ProfessionalDashboardLayout');
+  return { default: mod.ProfessionalDashboardLayout };
+});
+
+const Home = lazy(() => import('./pages/Home'));
+
+const PortalRoot = lazy(async () => {
+  const mod = await import('./components/PortalRoot');
+  return { default: mod.PortalRoot };
+});
+
+const CookieBanner = lazy(async () => {
+  const mod = await import('./components/CookieBanner');
+  return { default: mod.CookieBanner };
+});
 
 function OpdrachtRedirect() {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +65,6 @@ function App() {
   return (
     <Router>
       <PortalPrefetch />
-      <RoutePreloader />
       <AuthProvider>
         <EnvBanner />
         <ToastProvider>
@@ -74,14 +99,7 @@ function App() {
               </RequireMarketingSite>
             }
           />
-            <Route
-            path="/opdrachten/:id"
-            element={
-              <RequireMarketingSite>
-                <PublicLayout><LazyOpdrachtDetail /></PublicLayout>
-              </RequireMarketingSite>
-            }
-          />
+            <Route path="/opdrachten/:id" element={<PublicLayout><LazyOpdrachtDetail /></PublicLayout>} />
             <Route
             path="/opdracht/:id"
             element={<RequireMarketingSite><OpdrachtRedirect /></RequireMarketingSite>}
@@ -215,17 +233,18 @@ function App() {
             }
           />
 
-            <Route path="/professional" element={<ProtectedRoute allowedRoles={['professional']}><ArtsDashboardLayout /></ProtectedRoute>}>
+            <Route path="/professional" element={<ProtectedRoute allowedRoles={['professional']}><ProfessionalDashboardLayout /></ProtectedRoute>}>
               <Route index element={<Navigate to="/professional/dashboard" replace />} />
               <Route path="dashboard" element={<LazyProfessionalDashboard />} />
               <Route path="profiel" element={<LazyProfessionalProfiel />} />
               <Route path="opdrachten" element={<LazyProfessionalOpdrachten />} />
               <Route path="reacties" element={<LazyProfessionalReacties />} />
+              <Route path="reacties/:id" element={<LazyProfessionalReactieDetail />} />
               <Route path="uitnodigingen" element={<LazyProfessionalUitnodigingen />} />
               <Route path="inbox" element={<LazyProfessionalInbox />} />
               <Route path="abonnement" element={<LazyProfessionalAbonnement />} />
               <Route path="favorieten" element={<LazyProfessionalFavorieten />} />
-              <Route path="zoekopdrachten" element={<LazyProfessionalOpdrachten />} />
+              <Route path="zoekopdrachten" element={<LazyProfessionalZoekopdrachten />} />
               <Route path="beoordelingen" element={<LazyProfessionalReacties />} />
               <Route path="instellingen" element={<LazyProfessionalProfiel />} />
               <Route path=":id" element={<Navigate to="/professional/dashboard" replace />} />
@@ -235,9 +254,9 @@ function App() {
             path="/organisatie/dashboard"
             element={
               <ProtectedRoute allowedRoles={['ORGANISATIE']}>
-                <DashboardLayout>
+                <OrganisatieDashboardLayout>
                   <LazyOpdrachtgeverDashboard />
-                </DashboardLayout>
+                </OrganisatieDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -245,9 +264,9 @@ function App() {
             path="/organisatie/profiel"
             element={
               <ProtectedRoute allowedRoles={['ORGANISATIE']}>
-                <DashboardLayout>
+                <OrganisatieDashboardLayout>
                   <LazyOpdrachtgeverProfiel />
-                </DashboardLayout>
+                </OrganisatieDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -255,9 +274,9 @@ function App() {
             path="/organisatie/opdrachten"
             element={
               <ProtectedRoute allowedRoles={['ORGANISATIE']}>
-                <DashboardLayout>
+                <OrganisatieDashboardLayout>
                   <LazyOpdrachtgeverOpdrachten />
-                </DashboardLayout>
+                </OrganisatieDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -265,9 +284,9 @@ function App() {
             path="/organisatie/kandidaten"
             element={
               <ProtectedRoute allowedRoles={['ORGANISATIE']}>
-                <DashboardLayout>
+                <OrganisatieDashboardLayout>
                   <LazyOpdrachtgeverKandidaten />
-                </DashboardLayout>
+                </OrganisatieDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -275,9 +294,9 @@ function App() {
             path="/organisatie/favorieten"
             element={
               <ProtectedRoute allowedRoles={['ORGANISATIE']}>
-                <DashboardLayout>
+                <OrganisatieDashboardLayout>
                   <LazyOpdrachtgeverFavorieten />
-                </DashboardLayout>
+                </OrganisatieDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -285,9 +304,9 @@ function App() {
             path="/organisatie/inbox"
             element={
               <ProtectedRoute allowedRoles={['ORGANISATIE']}>
-                <DashboardLayout>
+                <OrganisatieDashboardLayout>
                   <LazyOpdrachtgeverInbox />
-                </DashboardLayout>
+                </OrganisatieDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -295,9 +314,9 @@ function App() {
             path="/organisatie/abonnement"
             element={
               <ProtectedRoute allowedRoles={['ORGANISATIE']}>
-                <DashboardLayout>
+                <OrganisatieDashboardLayout>
                   <LazyOpdrachtgeverAbonnement />
-                </DashboardLayout>
+                </OrganisatieDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -306,9 +325,9 @@ function App() {
             path="/admin/dashboard"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminDashboard />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -316,9 +335,9 @@ function App() {
             path="/admin/verificaties"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminVerificaties />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -326,9 +345,9 @@ function App() {
             path="/admin/gebruikers"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminGebruikers />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -336,9 +355,9 @@ function App() {
             path="/admin/gebruikers/:id"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminGebruikerDetail />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -346,9 +365,9 @@ function App() {
             path="/admin/professionals"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminProfessionals />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -356,9 +375,9 @@ function App() {
             path="/admin/professionals/:id"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminArtsDetail />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -366,9 +385,9 @@ function App() {
             path="/admin/reacties"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminReacties />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -376,9 +395,9 @@ function App() {
             path="/admin/organisaties"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminOpdrachtgevers />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -386,9 +405,9 @@ function App() {
             path="/admin/organisaties/:id"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminOpdrachtgeverDetail />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -396,9 +415,9 @@ function App() {
             path="/admin/opdrachten"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminOpdrachten />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -406,9 +425,9 @@ function App() {
             path="/admin/matches"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminMatches />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -416,9 +435,9 @@ function App() {
             path="/admin/jobs/review"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminJobsReview />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -426,9 +445,9 @@ function App() {
             path="/admin/abonnementen"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminAbonnementen />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -436,9 +455,9 @@ function App() {
             path="/admin/instellingen"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminInstellingen />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -446,9 +465,9 @@ function App() {
             path="/admin/community"
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <DashboardLayout>
+                <AdminDashboardLayout>
                   <LazyAdminCommunityBeheer />
-                </DashboardLayout>
+                </AdminDashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -456,7 +475,11 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             </Suspense>
-          {!isPortal() && <CookieBanner />}
+          {!isPortal() && (
+            <Suspense fallback={null}>
+              <CookieBanner />
+            </Suspense>
+          )}
           </MaintenanceGate>
         </ToastProvider>
       </AuthProvider>

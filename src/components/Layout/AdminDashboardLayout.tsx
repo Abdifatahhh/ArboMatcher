@@ -6,8 +6,6 @@ import {
   Briefcase,
   Users,
   Building2,
-  MessageSquare,
-  Heart,
   Settings,
   LogOut,
   User,
@@ -18,14 +16,13 @@ import {
   List,
   X,
   BookOpen,
-  Bell,
   ChevronDown,
   Search,
   Sparkles,
 } from 'lucide-react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-interface DashboardLayoutProps {
+interface AdminDashboardLayoutProps {
   children: React.ReactNode;
 }
 
@@ -40,132 +37,70 @@ interface NavGroup {
   items: NavItem[];
 }
 
-export function DashboardLayout({ children }: DashboardLayoutProps) {
+const NAV_GROUPS: NavGroup[] = [
+  {
+    title: '',
+    items: [{ path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard }],
+  },
+  {
+    title: 'Beheer',
+    items: [
+      { path: '/admin/verificaties', label: 'BIG Verificaties', icon: CheckCircle },
+      { path: '/admin/gebruikers', label: 'Gebruikers', icon: Users },
+      { path: '/admin/professionals', label: 'Professionals', icon: User },
+      { path: '/admin/organisaties', label: 'Organisaties', icon: Building2 },
+    ],
+  },
+  {
+    title: 'Opdrachten',
+    items: [
+      { path: '/admin/opdrachten', label: 'Opdrachten', icon: Briefcase },
+      { path: '/admin/jobs/review', label: 'Review', icon: FileCheck },
+      { path: '/admin/matches', label: 'Matching', icon: Sparkles },
+      { path: '/admin/reacties', label: 'Reacties', icon: FileText },
+    ],
+  },
+  {
+    title: 'Systeem',
+    items: [
+      { path: '/admin/abonnementen', label: 'Abonnementen', icon: CreditCard },
+      { path: '/admin/community', label: 'Community', icon: BookOpen },
+    ],
+  },
+];
+
+const MOBILE_QUICK_ACTIONS = [
+  { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/admin/professionals', label: 'Professionals', icon: User },
+  { path: '/admin/instellingen', label: 'Instellingen', icon: Settings },
+];
+
+export function AdminDashboardLayout({ children }: AdminDashboardLayoutProps) {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
   };
 
-  const getInstellingenPath = () => {
-    if (!profile) return '/';
-    switch (profile.role) {
-      case 'ORGANISATIE': return '/organisatie/profiel';
-      case 'ADMIN': return '/admin/instellingen';
-      default: return '/';
-    }
-  };
-
-  const getInboxPath = () => {
-    if (!profile) return '/';
-    return profile.role === 'ORGANISATIE' ? '/organisatie/inbox' : '#';
-  };
-
-  const getProfilePath = () => {
-    if (!profile) return '/';
-    switch (profile.role) {
-      case 'ORGANISATIE': return '/organisatie/profiel';
-      case 'ADMIN': return '/admin/instellingen';
-      default: return '/';
-    }
-  };
-
-  const getMobileQuickActions = () => {
-    if (!profile) return [];
-    if (profile.role === 'ADMIN') {
-      return [
-        { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-        { path: '/admin/professionals', label: 'Professionals', icon: User },
-        { path: '/admin/instellingen', label: 'Instellingen', icon: Settings },
-      ];
-    }
-    return [
-      { path: '/organisatie/opdrachten', label: 'Opdrachten', icon: Briefcase },
-      { path: '/organisatie/kandidaten', label: 'Kandidaten', icon: Users },
-      { path: '/organisatie/abonnement', label: 'Abonnement', icon: CreditCard },
-    ];
-  };
-
-  const getNavigationGroups = (): NavGroup[] => {
-    if (!profile) return [];
-    if (profile.role === 'ADMIN') {
-      return [
-        {
-          title: '',
-          items: [{ path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard }],
-        },
-        {
-          title: 'Beheer',
-          items: [
-            { path: '/admin/verificaties', label: 'BIG Verificaties', icon: CheckCircle },
-            { path: '/admin/gebruikers', label: 'Gebruikers', icon: Users },
-            { path: '/admin/professionals', label: 'Professionals', icon: User },
-            { path: '/admin/organisaties', label: 'Organisaties', icon: Building2 },
-          ],
-        },
-        {
-          title: 'Opdrachten',
-          items: [
-            { path: '/admin/opdrachten', label: 'Opdrachten', icon: Briefcase },
-            { path: '/admin/jobs/review', label: 'Review', icon: FileCheck },
-            { path: '/admin/matches', label: 'Matching', icon: Sparkles },
-            { path: '/admin/reacties', label: 'Reacties', icon: FileText },
-          ],
-        },
-        {
-          title: 'Systeem',
-          items: [
-            { path: '/admin/abonnementen', label: 'Abonnementen', icon: CreditCard },
-            { path: '/admin/community', label: 'Community', icon: BookOpen },
-          ],
-        },
-      ];
-    }
-    if (profile.role === 'ORGANISATIE') {
-      return [
-        {
-          title: '',
-          items: [{ path: '/organisatie/dashboard', label: 'Dashboard', icon: LayoutDashboard }],
-        },
-        {
-          title: '',
-          items: [
-            { path: '/organisatie/profiel', label: 'Profiel', icon: User },
-            { path: '/organisatie/opdrachten', label: 'Mijn opdrachten', icon: Briefcase },
-            { path: '/organisatie/kandidaten', label: 'Kandidaten', icon: Users },
-            { path: '/organisatie/favorieten', label: 'Favorieten', icon: Heart },
-            { path: '/organisatie/inbox', label: 'Berichten', icon: MessageSquare },
-            { path: '/organisatie/abonnement', label: 'Abonnement', icon: CreditCard },
-          ].sort((a, b) => a.label.localeCompare(b.label, 'nl')),
-        },
-      ];
-    }
-    return [];
-  };
-
-  const getAllNavItems = (): NavItem[] => {
-    return getNavigationGroups().flatMap((g) => g.items);
-  };
-
-  const navGroups = getNavigationGroups();
-  const allNavItems = getAllNavItems();
-
+  const allNavItems = NAV_GROUPS.flatMap((g) => g.items);
   const navActive = 'bg-gradient-to-r from-emerald-500 to-green-400 text-white shadow-sm shadow-emerald-500/10';
   const navInactive = 'text-slate-600 hover:bg-slate-50 hover:text-slate-900';
+  const displayName = profile?.full_name?.trim() || profile?.email || 'Account';
 
-  const [accountOpen, setAccountOpen] = useState(false);
-  const accountRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const fn = (e: MouseEvent) => { if (accountRef.current && !accountRef.current.contains(e.target as Node)) setAccountOpen(false); };
+    const fn = (e: MouseEvent) => {
+      if (accountRef.current && !accountRef.current.contains(e.target as Node)) setAccountOpen(false);
+    };
     document.addEventListener('click', fn);
     return () => document.removeEventListener('click', fn);
   }, []);
-  const displayName = profile?.full_name?.trim() || profile?.email || 'Account';
 
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
@@ -180,7 +115,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const SidebarContent = () => (
     <nav className="flex-1 p-3 lg:p-4 space-y-4 overflow-y-auto">
-      {navGroups.map((group, gi) => (
+      {NAV_GROUPS.map((group, gi) => (
         <div key={gi}>
           {group.title && (
             <p className="px-3 lg:px-4 mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
@@ -190,8 +125,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="space-y-0.5">
             {group.items.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.path ||
-                (item.path !== '/admin/dashboard' && item.path !== '/organisatie/dashboard' && location.pathname.startsWith(item.path));
+              const isActive = location.pathname === item.path || (item.path !== '/admin/dashboard' && location.pathname.startsWith(item.path));
               return (
                 <Link
                   key={item.path}
@@ -207,27 +141,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       ))}
     </nav>
-  );
-
-  const SidebarFooter = () => (
-    <div className="border-t border-slate-100 p-3 lg:p-4 space-y-1">
-      <Link
-        to={getInstellingenPath()}
-        className={`flex items-center space-x-3 px-3 py-2 lg:px-4 lg:py-2.5 rounded-lg text-sm ${location.pathname === getInstellingenPath() ? navActive : navInactive}`}
-      >
-        <Settings className="w-4 h-4 lg:w-[18px] lg:h-[18px] shrink-0" />
-        <span>Instellingen</span>
-      </Link>
-      <button
-        type="button"
-        onClick={handleSignOut}
-        className="flex items-center space-x-3 px-3 py-2 lg:px-4 lg:py-2.5 rounded-lg text-sm text-slate-500 hover:bg-red-50 hover:text-red-600 transition-all duration-150 w-full"
-      >
-        <LogOut className="w-4 h-4 lg:w-[18px] lg:h-[18px] shrink-0" />
-        <span>Uitloggen</span>
-      </button>
-      <p className="px-3 lg:px-4 pt-1 text-[10px] text-slate-300">v0.30.0</p>
-    </div>
   );
 
   return (
@@ -249,14 +162,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <kbd className="ml-auto text-[10px] font-mono bg-slate-100 px-1.5 py-0.5 rounded text-slate-400">⌘K</kbd>
           </button>
           <div className="flex items-center gap-1 ml-auto">
-            {getInboxPath() !== '#' && (
-              <Link to={getInboxPath()} className="p-2 rounded-lg hover:bg-slate-100 text-slate-700 lg:hidden">
-                <MessageSquare className="w-5 h-5" />
-              </Link>
-            )}
-            <Link to={getInboxPath() !== '#' ? getInboxPath() : '#'} className="p-2 rounded-lg hover:bg-slate-100 text-slate-700 lg:hidden">
-              <Bell className="w-5 h-5" />
-            </Link>
             <div className="relative hidden lg:block" ref={accountRef}>
               <button
                 type="button"
@@ -278,7 +183,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                     {profile?.email && <p className="text-xs text-slate-500 truncate mt-0.5">{profile.email}</p>}
                   </div>
                   <Link
-                    to={getInstellingenPath()}
+                    to="/admin/instellingen"
                     onClick={() => setAccountOpen(false)}
                     className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50"
                   >
@@ -296,12 +201,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 </div>
               )}
             </div>
-            <Link to={getProfilePath()} className="p-1.5 rounded-full hover:bg-slate-100 text-slate-700 flex items-center justify-center w-9 h-9 bg-slate-50 border border-slate-200 lg:hidden">
-              {profile?.avatar_url ? (
-                <img src={profile.avatar_url} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover" />
-              ) : (
-                <User className="w-5 h-5 text-slate-500" />
-              )}
+            <Link to="/admin/instellingen" className="p-1.5 rounded-full hover:bg-slate-100 text-slate-700 flex items-center justify-center w-9 h-9 bg-slate-50 border border-slate-200 lg:hidden">
+              <User className="w-5 h-5 text-slate-500" />
             </Link>
           </div>
         </div>
@@ -309,7 +210,21 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="flex flex-1 min-w-0">
         <aside className="hidden lg:flex lg:flex-col lg:w-64 bg-white border-r border-slate-200">
           <SidebarContent />
-          <SidebarFooter />
+          <div className="border-t border-slate-100 p-3 lg:p-4 space-y-1">
+            <Link to="/admin/instellingen" className={`flex items-center space-x-3 px-3 py-2 lg:px-4 lg:py-2.5 rounded-lg text-sm ${location.pathname === '/admin/instellingen' ? navActive : navInactive}`}>
+              <Settings className="w-4 h-4 lg:w-[18px] lg:h-[18px] shrink-0" />
+              <span>Instellingen</span>
+            </Link>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="flex items-center space-x-3 px-3 py-2 lg:px-4 lg:py-2.5 rounded-lg text-sm text-slate-500 hover:bg-red-50 hover:text-red-600 transition-all duration-150 w-full"
+            >
+              <LogOut className="w-4 h-4 lg:w-[18px] lg:h-[18px] shrink-0" />
+              <span>Uitloggen</span>
+            </button>
+            <p className="px-3 lg:px-4 pt-1 text-[10px] text-slate-300">v0.30.0</p>
+          </div>
         </aside>
         <div className="flex-1 flex flex-col min-w-0">
           <main className="flex-1 overflow-auto pb-20 lg:pb-0">{children}</main>
@@ -317,9 +232,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 lg:hidden safe-area-pb">
             <div className="grid grid-cols-3 h-14">
               {(() => {
-                const qa = getMobileQuickActions();
-                if (qa.length < 3) return null;
-                const [first, , third] = qa;
+                const [first, , third] = MOBILE_QUICK_ACTIONS;
                 const FirstIcon = first.icon;
                 const ThirdIcon = third.icon;
                 return (
@@ -353,11 +266,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   </button>
                 </div>
                 <nav className="flex-1 overflow-auto p-3 space-y-3">
-                  {navGroups.map((group, gi) => (
+                  {NAV_GROUPS.map((group, gi) => (
                     <div key={gi}>
-                      {group.title && (
-                        <p className="px-4 mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{group.title}</p>
-                      )}
+                      {group.title && <p className="px-4 mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{group.title}</p>}
                       <div className="space-y-0.5">
                         {group.items.map((item) => {
                           const Icon = item.icon;
@@ -379,7 +290,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   ))}
                 </nav>
                 <div className="p-3 border-t border-slate-100 space-y-1">
-                  <Link to={getInstellingenPath()} onClick={() => setBottomSheetOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-50 text-sm">
+                  <Link to="/admin/instellingen" onClick={() => setBottomSheetOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-50 text-sm">
                     <Settings className="w-5 h-5" />
                     <span>Instellingen</span>
                   </Link>
@@ -409,10 +320,7 @@ function CommandPalette({ items, onClose, onNavigate }: { items: NavItem[]; onCl
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const filtered = query.trim()
-    ? items.filter((item) => item.label.toLowerCase().includes(query.toLowerCase()))
-    : items;
+  const filtered = query.trim() ? items.filter((item) => item.label.toLowerCase().includes(query.toLowerCase())) : items;
 
   useEffect(() => { inputRef.current?.focus(); }, []);
   useEffect(() => { setSelectedIndex(0); }, [query]);
@@ -421,7 +329,7 @@ function CommandPalette({ items, onClose, onNavigate }: { items: NavItem[]; onCl
     if (e.key === 'Escape') { onClose(); return; }
     if (e.key === 'ArrowDown') { e.preventDefault(); setSelectedIndex((i) => Math.min(i + 1, filtered.length - 1)); return; }
     if (e.key === 'ArrowUp') { e.preventDefault(); setSelectedIndex((i) => Math.max(i - 1, 0)); return; }
-    if (e.key === 'Enter' && filtered[selectedIndex]) { onNavigate(filtered[selectedIndex].path); }
+    if (e.key === 'Enter' && filtered[selectedIndex]) onNavigate(filtered[selectedIndex].path);
   }, [filtered, selectedIndex, onClose, onNavigate]);
 
   return (
@@ -454,15 +362,11 @@ function CommandPalette({ items, onClose, onNavigate }: { items: NavItem[]; onCl
                     type="button"
                     onClick={() => onNavigate(item.path)}
                     onMouseEnter={() => setSelectedIndex(i)}
-                    className={`flex items-center gap-3 px-4 py-2.5 w-full text-left text-sm transition-colors ${
-                      i === selectedIndex ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50'
-                    }`}
+                    className={`flex items-center gap-3 px-4 py-2.5 w-full text-left text-sm transition-colors ${i === selectedIndex ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50'}`}
                   >
                     <Icon className="w-4 h-4 shrink-0" />
                     <span>{item.label}</span>
-                    {i === selectedIndex && (
-                      <span className="ml-auto text-[10px] text-slate-400">↵ openen</span>
-                    )}
+                    {i === selectedIndex && <span className="ml-auto text-[10px] text-slate-400">↵ openen</span>}
                   </button>
                 );
               })

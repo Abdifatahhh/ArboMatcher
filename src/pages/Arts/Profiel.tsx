@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import type { ConsentPreferences, Doctor, Profile, ProfessionType } from '../../lib/types';
 import { CONSENT_KEYS, EXTENDED_SETTINGS } from '../../components/PrivacyConsent';
-import { Save, AlertCircle, FileText, Upload, Settings } from 'lucide-react';
+import { Save, AlertCircle, FileText, Upload, Settings, BadgeCheck, UserRound, Briefcase, Euro, CalendarClock, ShieldCheck, ChevronDown } from 'lucide-react';
 
 const PROFESSION_TYPES: { value: ProfessionType; label: string }[] = [
   { value: 'BEDRIJFSARTS', label: 'Bedrijfsarts' },
@@ -26,7 +26,46 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
   const [message, setMessage] = useState('');
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [consentToggles, setConsentToggles] = useState<boolean[]>(CONSENT_KEYS.map(() => false));
+  const [sectionsOpen, setSectionsOpen] = useState({
+    personal: true,
+    professional: true,
+    privacy: false,
+  });
   const isOnboarding = variant === 'onboarding';
+
+  const completionChecks = [
+    Boolean(profile.full_name?.trim()),
+    Boolean(profile.phone?.trim()),
+    Boolean(professional.profession_type),
+    professional.profession_type === 'POB' || professional.profession_type === 'CASEMANAGER_VERZUIM'
+      ? Boolean(professional.rcm_number?.trim())
+      : Boolean(professional.big_number?.trim()),
+    Boolean(professional.bio?.trim()),
+    (professional.specialties?.length || 0) > 0,
+    (professional.regions?.length || 0) > 0,
+    professional.hourly_rate != null,
+    Boolean(professional.availability_text?.trim()),
+    Boolean(professional.cv_url),
+  ];
+  const completedCount = completionChecks.filter(Boolean).length;
+  const completionPercent = Math.round((completedCount / completionChecks.length) * 100);
+  const verificationStatus = professional.verification_status || 'UNVERIFIED';
+  const verificationText =
+    verificationStatus === 'VERIFIED'
+      ? 'Geverifieerd'
+      : verificationStatus === 'PENDING'
+      ? 'In behandeling'
+      : verificationStatus === 'REJECTED'
+      ? 'Afgewezen'
+      : 'Nog niet geverifieerd';
+  const verificationClass =
+    verificationStatus === 'VERIFIED'
+      ? 'bg-green-50 text-green-700 border-green-200'
+      : verificationStatus === 'PENDING'
+      ? 'bg-amber-50 text-amber-700 border-amber-200'
+      : verificationStatus === 'REJECTED'
+      ? 'bg-red-50 text-red-700 border-red-200'
+      : 'bg-slate-50 text-slate-700 border-slate-200';
 
   useEffect(() => {
     fetchData();
@@ -190,6 +229,10 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
     setConsentToggles(next);
   };
 
+  const toggleSection = (section: 'personal' | 'professional' | 'privacy') => {
+    setSectionsOpen((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
   const handleCvUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
@@ -223,10 +266,52 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
   }
 
   return (
-    <div className={isOnboarding ? 'max-w-2xl mx-auto' : 'p-6 max-w-4xl'}>
-      <h1 className={`font-bold text-[#0F172A] mb-6 ${isOnboarding ? 'text-2xl text-center' : 'text-3xl'}`}>
+    <div className={isOnboarding ? 'max-w-2xl mx-auto' : 'p-4 md:p-6 max-w-5xl'}>
+      <h1 className={`font-bold text-[#0F172A] ${isOnboarding ? 'text-2xl text-center mb-6' : 'text-3xl mb-4'}`}>
         {isOnboarding ? 'Voltooi uw profiel' : 'Mijn Profiel'}
       </h1>
+
+      {!isOnboarding && (
+        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-1">Profielstatus</p>
+              <h2 className="text-xl font-bold text-[#0F172A]">Maak uw profiel compleet voor betere matches</h2>
+              <p className="text-slate-500 mt-1">
+                Volledigheid: <span className="font-semibold text-[#0F172A]">{completionPercent}%</span>
+              </p>
+            </div>
+            <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-sm font-semibold ${verificationClass}`}>
+              <ShieldCheck className="w-4 h-4" />
+              BIG-status: {verificationText}
+            </div>
+          </div>
+          <div className="mt-4 h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-emerald-500 to-green-400 rounded-full transition-all duration-300"
+              style={{ width: `${completionPercent}%` }}
+            />
+          </div>
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+            <div className="rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 flex items-center gap-2">
+              <UserRound className="w-4 h-4 text-slate-500" />
+              <span className="text-slate-700">Persoonsgegevens</span>
+            </div>
+            <div className="rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 flex items-center gap-2">
+              <BadgeCheck className="w-4 h-4 text-slate-500" />
+              <span className="text-slate-700">Verificatie</span>
+            </div>
+            <div className="rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 flex items-center gap-2">
+              <Briefcase className="w-4 h-4 text-slate-500" />
+              <span className="text-slate-700">Specialisaties</span>
+            </div>
+            <div className="rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 flex items-center gap-2">
+              <CalendarClock className="w-4 h-4 text-slate-500" />
+              <span className="text-slate-700">Beschikbaarheid</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {message && (
         <div className={`mb-6 p-4 rounded-lg flex items-start ${
@@ -239,10 +324,27 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
         </div>
       )}
 
-      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 md:p-7 space-y-6">
+      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 md:p-7 space-y-5">
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-          <h2 className="text-xl font-bold text-[#0F172A] mb-4">Persoonlijke gegevens</h2>
-          <div className="space-y-4">
+          {!isOnboarding ? (
+            <button
+              type="button"
+              onClick={() => toggleSection('personal')}
+              className="w-full flex items-start justify-between text-left"
+            >
+              <div>
+                <h2 className="text-xl font-bold text-[#0F172A] mb-1">Persoonlijke gegevens</h2>
+                <p className="text-sm text-slate-500">Deze gegevens gebruiken we voor communicatie en accountbeheer.</p>
+              </div>
+              <ChevronDown className={`w-5 h-5 mt-1 text-slate-500 transition-transform ${sectionsOpen.personal ? 'rotate-180' : ''}`} />
+            </button>
+          ) : (
+            <>
+              <h2 className="text-xl font-bold text-[#0F172A] mb-1">Persoonlijke gegevens</h2>
+              <p className="text-sm text-slate-500">Deze gegevens gebruiken we voor communicatie en accountbeheer.</p>
+            </>
+          )}
+          {(isOnboarding || sectionsOpen.personal) && <div className="space-y-4 mt-4">
             <div>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 Volledige naam *
@@ -276,12 +378,29 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
                 className="w-full px-4 py-2 border border-slate-200 rounded-lg bg-slate-100 cursor-not-allowed"
               />
             </div>
-          </div>
+          </div>}
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-          <h2 className="text-xl font-bold text-[#0F172A] mb-4">Professionele gegevens</h2>
-          <div className="space-y-4">
+          {!isOnboarding ? (
+            <button
+              type="button"
+              onClick={() => toggleSection('professional')}
+              className="w-full flex items-start justify-between text-left"
+            >
+              <div>
+                <h2 className="text-xl font-bold text-[#0F172A] mb-1">Professionele gegevens</h2>
+                <p className="text-sm text-slate-500">Dit zien opdrachtgevers bij matches en reacties op opdrachten.</p>
+              </div>
+              <ChevronDown className={`w-5 h-5 mt-1 text-slate-500 transition-transform ${sectionsOpen.professional ? 'rotate-180' : ''}`} />
+            </button>
+          ) : (
+            <>
+              <h2 className="text-xl font-bold text-[#0F172A] mb-1">Professionele gegevens</h2>
+              <p className="text-sm text-slate-500">Dit zien opdrachtgevers bij matches en reacties op opdrachten.</p>
+            </>
+          )}
+          {(isOnboarding || sectionsOpen.professional) && <div className="space-y-4 mt-4">
             {professional.profession_type && (
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Beroep</label>
@@ -413,7 +532,7 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
               <input
                 type="number"
                 value={professional.hourly_rate || ''}
-                onChange={(e) => setProfessional({ ...professional, hourly_rate: parseFloat(e.target.value) })}
+                onChange={(e) => setProfessional({ ...professional, hourly_rate: e.target.value === '' ? null : parseFloat(e.target.value) })}
                 className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400 focus:bg-white transition text-[#0F172A] outline-none"
                 placeholder="125"
               />
@@ -461,21 +580,34 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
                 )}
               </div>
             </div>
-          </div>
+          </div>}
         </div>
 
         {!isOnboarding && (
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-            <h2 className="text-xl font-bold text-[#0F172A] mb-2">Privacy & toestemming</h2>
-            <p className="text-sm text-slate-600 mb-3">Stel in of ArboMatcher u als kandidaat mag tonen bij matches op opdrachten van organisaties (buiten uw eigen reacties om).</p>
             <button
               type="button"
-              onClick={openConsentModal}
-              className="inline-flex items-center gap-2 px-4 py-2 border border-[#0F172A] text-[#0F172A] rounded-xl font-medium hover:bg-slate-100 transition"
+              onClick={() => toggleSection('privacy')}
+              className="w-full flex items-start justify-between text-left"
             >
-              <Settings className="w-4 h-4" />
-              Uitgebreide instellingen
+              <div>
+                <h2 className="text-xl font-bold text-[#0F172A] mb-1">Privacy & toestemming</h2>
+                <p className="text-sm text-slate-600">Beheer hoe uw profiel zichtbaar is in matches en notificaties.</p>
+              </div>
+              <ChevronDown className={`w-5 h-5 mt-1 text-slate-500 transition-transform ${sectionsOpen.privacy ? 'rotate-180' : ''}`} />
             </button>
+            {sectionsOpen.privacy && (
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={openConsentModal}
+                  className="inline-flex items-center gap-2 px-4 py-2 border border-[#0F172A] text-[#0F172A] rounded-xl font-medium hover:bg-slate-100 transition"
+                >
+                  <Settings className="w-4 h-4" />
+                  Uitgebreide instellingen
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -509,14 +641,22 @@ export default function ArtsProfiel({ variant }: { variant?: 'default' | 'onboar
           </div>
         )}
 
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition disabled:opacity-50 shadow-lg shadow-emerald-500/20 ${isOnboarding ? '' : 'md:w-auto'}`}
-        >
-          <Save className="w-5 h-5 mr-2" />
-          {saving ? 'Bezig met opslaan...' : 'Opslaan'}
-        </button>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-500 to-green-400 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-500 transition disabled:opacity-50 shadow-lg shadow-emerald-500/20 ${isOnboarding ? '' : 'sm:w-auto'}`}
+          >
+            <Save className="w-5 h-5 mr-2" />
+            {saving ? 'Bezig met opslaan...' : 'Wijzigingen opslaan'}
+          </button>
+          {!isOnboarding && (
+            <div className="inline-flex items-center gap-2 text-sm text-slate-500">
+              <Euro className="w-4 h-4" />
+              Tip: complete profielen krijgen sneller reacties.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
